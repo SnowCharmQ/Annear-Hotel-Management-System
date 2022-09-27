@@ -13,6 +13,7 @@
         <module>hotel-member</module>
         <module>hotel-discount</module>
         <module>hotel-order</module>
+        <module>hotel-room</module>
     </modules>
 
     <properties>

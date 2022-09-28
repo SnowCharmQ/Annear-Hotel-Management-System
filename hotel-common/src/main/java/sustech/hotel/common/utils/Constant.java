@@ -11,6 +11,13 @@ import java.util.stream.Stream;
  * 常量
  */
 public class Constant {
+
+
+    /**
+     * 成功状态码
+     */
+    public static final int OK = 200;
+
     /**
      * 当前页码
      */

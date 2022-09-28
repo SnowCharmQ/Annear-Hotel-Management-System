@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sustech.hotel.discount.dao.CouponDao">
+
+    <resultMap type="sustech.hotel.discount.entity.CouponEntity" id="couponMap">
+        <result property="couponId" column="coupon_id"/>
+        <result property="typeId" column="type_id"/>
+        <result property="reduction" column="reduction"/>
+        <result property="couponName" column="coupon_name"/>
+        <result property="enableStartTime" column="enable_start_time"/>
+        <result property="enableEndTime" column="enable_end_time"/>
+        <result property="useStartTime" column="use_start_time"/>
+        <result property="useEndTime" column="use_end_time"/>
+    </resultMap>
+
+
+</mapper>

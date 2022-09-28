@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sustech.hotel.room.dao.RoomTypePictureDao">
+
+    <resultMap type="sustech.hotel.room.entity.RoomTypePictureEntity" id="roomTypePictureMap">
+        <result property="typeId" column="type_id"/>
+        <result property="picturePath" column="picture_path"/>
+    </resultMap>
+
+
+</mapper>

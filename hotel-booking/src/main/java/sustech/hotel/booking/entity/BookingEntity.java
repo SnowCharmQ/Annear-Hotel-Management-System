@@ -16,7 +16,7 @@ public class BookingEntity implements Serializable {
 
     private Long userId;
     private String orderId;
-    private Long hrId;
+    private Long roomId;
     private Date startTime;
     private Date endTime;
 }

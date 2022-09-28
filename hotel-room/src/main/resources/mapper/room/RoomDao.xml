@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sustech.hotel.room.dao.RoomDao">
+
+    <resultMap type="sustech.hotel.room.entity.RoomEntity" id="roomMap">
+        <result property="roomId" column="room_id"/>
+        <result property="hotelId" column="hotel_id"/>
+        <result property="roomNumber" column="room_number"/>
+        <result property="typeId" column="type_id"/>
+        <result property="layoutId" column="layout_id"/>
+    </resultMap>
+
+
+</mapper>

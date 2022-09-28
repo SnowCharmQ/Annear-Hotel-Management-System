@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sustech.hotel.member.dao.VipLevelDao">
+
+    <resultMap type="sustech.hotel.member.entity.VipLevelEntity" id="vipLevelMap">
+        <result property="vipLevel" column="vip_level"/>
+        <result property="vipName" column="vip_name"/>
+        <result property="growthNeeded" column="growth_needed"/>
+    </resultMap>
+
+
+</mapper>

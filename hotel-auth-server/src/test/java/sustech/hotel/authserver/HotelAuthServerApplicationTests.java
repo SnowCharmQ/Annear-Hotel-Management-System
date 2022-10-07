@@ -1,0 +1,22 @@
+package sustech.hotel.authserver;
+
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.request.AlipaySystemOauthTokenRequest;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+
+@SpringBootTest
+class HotelAuthServerApplicationTests {
+
+    @Test
+    void test() {
+        String appId = "2021003156620376";
+        String privateKey = "MIIEpgIBAAKCAQEAyYDU9wWbx8sSfkpI2dkovhLdI6qcw8Bm7TO7M9Uz8m5ALthnzYlPhLzSO0oNo2Fg6984pg/SU57Wi1urW07gNq88F80yxcDaEyVYJkLisCSRjk9y61KjsKEx0oRehRNwlew0j9ujkT6jTsneRFt14Udi/xFim5Q0rPvbZor4ki++Yjpl92YnCA8brlJJsmLKiH+B/qLDFjNd2YFhYoZ7u60eDKGpm7y76I/MdNnBrU1HhKVZCUOd9iALJfjejk9A8Rsn0U0suS7OuCFrGO1/FgIIgCpP57m7l5io6sXmfTlLXm5PZ8y+ActRJz71gqjX5Zw6z8Rj0ADPaQCuL6D5jwIDAQABAoIBAQCuieBuQ7Zm/fh72d52jIqk8XQJU9xMFtlQt1F9GTzQzjzcFuj6+OgfAutbHc7oaQ3p4cWQ2f2GHvyZY4LvKUg/NdRojX5gGqcKlHthUOhISLSnvxu8yC0vbsDYJ34z6N3JjvsMbOSmh8ovEd5r+YkG5K3UYHu4ZUynVdT6Yn/jJtwtGcTRgv8eKelP1chaUCbuyqnC46o5E/7FB6AWVWGmeYHrBzLvaA1YCZIM+B0Ebx6Iqeecq5tcejRL7xtLVwZwcWlye1N5wbzO9uTt4weuEOm/V9kFh+/YpLUiBjoFLcwZSTChlOTggsakbXLoMRIzDBlGo6pl4t6OQ7cAQ9Q5AoGBAOojy7X4t2k2S6Cb2iN2Fr6Kjc5eud7eLgXviRZIfknjD4HSBvbnebbrMVpLgYg1pDpQGvJjDcE98BWbBBoPww6yyG2UavYDPLVo/tcI3rBCNJ8stSf5B5a+swqGXt/5mGxgRgV47EucVlP6sTY7jtMd3mmj+2ZFWOUYGuwbx4sjAoGBANxQ/EFSbF/cH0XVDBxLuhKNxKN8kMpLP8RLZ2STs1mZd1XCLqfehHOI4C8cAkHA82XkqwN70935CKLLXH5G4QGHKM05Vw8rbQsRptRG3AR97T3QzQ+qCVUA2Z1xHjnL1VuXAtYgQnr3pM3hWsumPNFmsAwwrtDvHvfoU4NZJUSlAoGBAKQ81cFgpK89sdEIYfyr8gpYQF55XeIycZAiVUP3N/b2OkNzIwWAm4Uu92CCRGtaTUfGNxC9YMGjg8xz/22Ujtu5lxQenuTQon4SF2iZRTPYTPc2siBG9AbO3+JLHTP47e1fnt5p0z66fGfOGw6Sun3mnsP1jfxQOqoAvanPVqqHAoGBAJdbi/HUjl/M+i8fjpJh9BOLEey/RzmzOLvCkeWnEzAbHsDsBuGNHbHB90JmG6bQyGbYEiTyjTuSOzycOY8HYs2J7Z4QJp9lViSkm9h6Ve1AFhzBth9s0bx0OQzRCdLrFkk2FdzFjOat+6r1h0shiebShV/akj84CC6IjddPByuBAoGBAM+a/AShVSaMFw3nswiK8jQrU6h0rTJiaAOuqhHU7yUeDmW4KDPW0Y2S55SiVKTV0AdxmEupL945zhV18R0RyzXfThVcM6lqDCW/J1vSOWSTmOSaOAxsltQuABLU52wgtjstPhTWlwqm0P1iCfDLPAh4ak+8/wVOyNHRgVvRDOsK";
+        String publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlYenw4EiUc2KOIiLpZEmK1Ez9AheFPPv/lCEKojKdoHWTkThDcqpSeFr+xN1FthXTGvZaUZHXcc4dgnMDUclQOu4SKZMa9vzRYcwb5nMM+uAvRoygVhuErnvWb2CNg7NKW5+Z7c5Yg1doGStCGmXsEzRQ29J7EJtZAMkuCSfits5iQR13prENJry8aex9WbWglePObkS0YorsWMM01/6KNzWsEb9Mf/V/mu5PH/kuKHL2x2kkoHqpBtwGJMPWFbG2xxN2aaPAzjQxfPbK5UCaiMWP6YL92RE8lwFUFU3PjNPALwop+BlVL73qviEjetfj3PPI00nmU4YbszoLLAbjwIDAQAB";
+        String URL = "https://openapi.alipay.com/gateway.do";
+        AlipayClient client = new DefaultAlipayClient(URL, appId, privateKey, "json", "utf-8", publicKey, "rsa2");
+        AlipaySystemOauthTokenRequest request = new AlipaySystemOauthTokenRequest();
+    }
+
+}

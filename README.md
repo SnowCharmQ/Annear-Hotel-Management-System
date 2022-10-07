@@ -27,3 +27,29 @@ MySQL 5.7
 Redis 7.0.4
 
 nacos 2.1.1
+
+### 前端版本：
+
+
+% vue --version                                              
+@vue/cli 5.0.8
+
+% node -v      
+v18.10.0
+
+% npm -v            
+8.19.2
+
+还需要安装`element`组件库
+
+% npm i element-ui -S
+
+运行程序
+
+% npm run serve
+
+
+
+
+
+

@@ -30,7 +30,7 @@ public class PromotionController {
     @RequestMapping("/list")
     public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = promotionService.queryPage(params);
-        return new JsonResult<>(Constant.OK, page);
+        return new JsonResult<>(page);
     }
 
     /**
@@ -39,7 +39,7 @@ public class PromotionController {
     @RequestMapping("/info/{promotionId}")
     public JsonResult<PromotionEntity> info(@PathVariable("promotionId") Integer promotionId){
 		PromotionEntity promotion = promotionService.getById(promotionId);
-        return new JsonResult<>(Constant.OK, promotion);
+        return new JsonResult<>(promotion);
     }
 
     /**
@@ -48,7 +48,7 @@ public class PromotionController {
     @RequestMapping("/save")
     public JsonResult<Void> save(@RequestBody PromotionEntity promotion){
 		promotionService.save(promotion);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -57,7 +57,7 @@ public class PromotionController {
     @RequestMapping("/update")
     public JsonResult<Void> update(@RequestBody PromotionEntity promotion){
 		promotionService.updateById(promotion);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -66,6 +66,6 @@ public class PromotionController {
     @RequestMapping("/delete")
     public JsonResult<Void> delete(@RequestBody Integer[] promotionIds){
 		promotionService.removeByIds(Arrays.asList(promotionIds));
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 }

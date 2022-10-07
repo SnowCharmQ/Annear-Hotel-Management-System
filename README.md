@@ -26,4 +26,10 @@ MySQL 5.7
 
 Redis 7.0.4
 
-nacos 2.1.1
+nacos 1.3.1
+
+
+### 配置信息：
+
+服务器公网IP 1.12.55.105
+MySQL数据库root用户密码 sustech-ooad2022

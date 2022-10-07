@@ -30,7 +30,7 @@ public class OwnCouponController {
     @RequestMapping("/list")
     public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = ownCouponService.queryPage(params);
-        return new JsonResult<>(Constant.OK, page);
+        return new JsonResult<>(page);
     }
 
     /**
@@ -39,7 +39,7 @@ public class OwnCouponController {
     @RequestMapping("/save")
     public JsonResult<Void> save(@RequestBody OwnCouponEntity ownCoupon){
 		ownCouponService.save(ownCoupon);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -48,7 +48,7 @@ public class OwnCouponController {
     @RequestMapping("/update")
     public JsonResult<Void> update(@RequestBody OwnCouponEntity ownCoupon){
 		ownCouponService.updateById(ownCoupon);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -57,6 +57,6 @@ public class OwnCouponController {
     @RequestMapping("/delete")
     public JsonResult<Void> delete(@RequestBody Long[] userIds){
 		ownCouponService.removeByIds(Arrays.asList(userIds));
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 }

@@ -20,13 +20,13 @@ public class SmsComponent {
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "APPCODE " + appcode);
         headers.put("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
-        Map<String, String> querys = new HashMap<>();
-        Map<String, String> bodys = new HashMap<>();
-        bodys.put("content", "code:" + code);
-        bodys.put("phone_number", phone);
-        bodys.put("template_id", "TPL_0000");
+        Map<String, String> queries = new HashMap<>();
+        String content = "【OOAD】您的验证码是" + code + "，1分钟内有效！";
+        queries.put("content", content);
+        queries.put("mobile", phone);
+        Map<String, String> bodies = new HashMap<>();
         try {
-            HttpUtils.doPost(host, path, headers, querys, bodys);
+            HttpUtils.doPost(host, path, headers, queries, bodies);
         } catch (Exception e) {
             e.printStackTrace();
         }

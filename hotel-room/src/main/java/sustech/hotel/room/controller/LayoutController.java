@@ -30,7 +30,7 @@ public class LayoutController {
     @RequestMapping("/list")
     public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = layoutService.queryPage(params);
-        return new JsonResult<>(Constant.OK, page);
+        return new JsonResult<>(page);
     }
 
 
@@ -40,7 +40,7 @@ public class LayoutController {
     @RequestMapping("/info/{layoutId}")
     public JsonResult<LayoutEntity> info(@PathVariable("layoutId") Integer layoutId){
 		LayoutEntity layout = layoutService.getById(layoutId);
-        return new JsonResult<>(Constant.OK, layout);
+        return new JsonResult<>(layout);
     }
 
     /**
@@ -49,7 +49,7 @@ public class LayoutController {
     @RequestMapping("/save")
     public JsonResult<Void> save(@RequestBody LayoutEntity layout){
 		layoutService.save(layout);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -58,7 +58,7 @@ public class LayoutController {
     @RequestMapping("/update")
     public JsonResult<Void> update(@RequestBody LayoutEntity layout){
 		layoutService.updateById(layout);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -67,6 +67,6 @@ public class LayoutController {
     @RequestMapping("/delete")
     public JsonResult<Void> delete(@RequestBody Integer[] layoutIds){
 		layoutService.removeByIds(Arrays.asList(layoutIds));
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 }

@@ -30,7 +30,7 @@ public class RoomTypeController {
     @RequestMapping("/list")
     public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = roomTypeService.queryPage(params);
-        return new JsonResult<>(Constant.OK, page);
+        return new JsonResult<>(page);
     }
 
 
@@ -40,7 +40,7 @@ public class RoomTypeController {
     @RequestMapping("/info/{typeId}")
     public JsonResult<RoomTypeEntity> info(@PathVariable("typeId") Integer typeId){
 		RoomTypeEntity roomType = roomTypeService.getById(typeId);
-        return new JsonResult<>(Constant.OK, roomType);
+        return new JsonResult<>(roomType);
     }
 
     /**
@@ -49,7 +49,7 @@ public class RoomTypeController {
     @RequestMapping("/save")
     public JsonResult<Void> save(@RequestBody RoomTypeEntity roomType){
 		roomTypeService.save(roomType);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -58,7 +58,7 @@ public class RoomTypeController {
     @RequestMapping("/update")
     public JsonResult<Void> update(@RequestBody RoomTypeEntity roomType){
 		roomTypeService.updateById(roomType);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -67,6 +67,6 @@ public class RoomTypeController {
     @RequestMapping("/delete")
     public JsonResult<Void> delete(@RequestBody Integer[] typeIds){
 		roomTypeService.removeByIds(Arrays.asList(typeIds));
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 }

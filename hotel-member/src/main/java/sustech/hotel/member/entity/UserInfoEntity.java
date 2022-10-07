@@ -20,7 +20,7 @@ public class UserInfoEntity implements Serializable {
     private Long userId;
     private String username;
     private String password;
-    private String telephone;
+    private String phone;
     private String email;
     private String avatar;
     private Integer gender;

@@ -30,7 +30,7 @@ public class HotelPictureController {
     @RequestMapping("/list")
     public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = hotelPictureService.queryPage(params);
-        return new JsonResult<>(Constant.OK, page);
+        return new JsonResult<>(page);
     }
 
     /**
@@ -39,7 +39,7 @@ public class HotelPictureController {
     @RequestMapping("/save")
     public JsonResult<Void> save(@RequestBody HotelPictureEntity hotelPicture){
 		hotelPictureService.save(hotelPicture);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -48,7 +48,7 @@ public class HotelPictureController {
     @RequestMapping("/update")
     public JsonResult<Void> update(@RequestBody HotelPictureEntity hotelPicture){
 		hotelPictureService.updateById(hotelPicture);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -57,6 +57,6 @@ public class HotelPictureController {
     @RequestMapping("/delete")
     public JsonResult<Void> delete(@RequestBody Integer[] hotelIds){
 		hotelPictureService.removeByIds(Arrays.asList(hotelIds));
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 }

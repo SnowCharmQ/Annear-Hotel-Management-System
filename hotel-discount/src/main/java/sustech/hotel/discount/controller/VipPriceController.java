@@ -30,7 +30,7 @@ public class VipPriceController {
     @RequestMapping("/list")
     public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = vipPriceService.queryPage(params);
-        return new JsonResult<>(Constant.OK, page);
+        return new JsonResult<>(page);
     }
 
 
@@ -40,7 +40,7 @@ public class VipPriceController {
     @RequestMapping("/info/{vipLevel}")
     public JsonResult<VipPriceEntity> info(@PathVariable("vipLevel") Integer vipLevel){
 		VipPriceEntity vipPrice = vipPriceService.getById(vipLevel);
-        return new JsonResult<>(Constant.OK, vipPrice);
+        return new JsonResult<>(vipPrice);
     }
 
     /**
@@ -49,7 +49,7 @@ public class VipPriceController {
     @RequestMapping("/save")
     public JsonResult<Void> save(@RequestBody VipPriceEntity vipPrice){
 		vipPriceService.save(vipPrice);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -58,7 +58,7 @@ public class VipPriceController {
     @RequestMapping("/update")
     public JsonResult<Void> update(@RequestBody VipPriceEntity vipPrice){
 		vipPriceService.updateById(vipPrice);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -67,6 +67,6 @@ public class VipPriceController {
     @RequestMapping("/delete")
     public JsonResult<Void> delete(@RequestBody Integer[] vipLevels){
 		vipPriceService.removeByIds(Arrays.asList(vipLevels));
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 }

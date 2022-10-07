@@ -30,7 +30,7 @@ public class IncomeRefundController {
     @RequestMapping("/list")
     public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = incomeRefundService.queryPage(params);
-        return new JsonResult<>(Constant.OK, page);
+        return new JsonResult<>(page);
     }
 
     /**
@@ -39,7 +39,7 @@ public class IncomeRefundController {
     @RequestMapping("/save")
     public JsonResult<Void> save(@RequestBody IncomeRefundEntity incomeRefund){
 		incomeRefundService.save(incomeRefund);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -48,7 +48,7 @@ public class IncomeRefundController {
     @RequestMapping("/update")
     public JsonResult<Void> update(@RequestBody IncomeRefundEntity incomeRefund){
 		incomeRefundService.updateById(incomeRefund);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -57,6 +57,6 @@ public class IncomeRefundController {
     @RequestMapping("/delete")
     public JsonResult<Void> delete(@RequestBody String[] orderIds){
 		incomeRefundService.removeByIds(Arrays.asList(orderIds));
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 }

@@ -30,7 +30,7 @@ public class SeckillController {
     @RequestMapping("/list")
     public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = seckillService.queryPage(params);
-        return new JsonResult<>(Constant.OK, page);
+        return new JsonResult<>(page);
     }
 
     /**
@@ -39,7 +39,7 @@ public class SeckillController {
     @RequestMapping("/info/{seckillId}")
     public JsonResult<SeckillEntity> info(@PathVariable("seckillId") Integer seckillId){
 		SeckillEntity seckill = seckillService.getById(seckillId);
-        return new JsonResult<>(Constant.OK, seckill);
+        return new JsonResult<>(seckill);
     }
 
     /**
@@ -48,7 +48,7 @@ public class SeckillController {
     @RequestMapping("/save")
     public JsonResult<Void> save(@RequestBody SeckillEntity seckill){
 		seckillService.save(seckill);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -57,7 +57,7 @@ public class SeckillController {
     @RequestMapping("/update")
     public JsonResult<Void> update(@RequestBody SeckillEntity seckill){
 		seckillService.updateById(seckill);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -66,6 +66,6 @@ public class SeckillController {
     @RequestMapping("/delete")
     public JsonResult<Void> delete(@RequestBody Integer[] seckillIds){
 		seckillService.removeByIds(Arrays.asList(seckillIds));
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 }

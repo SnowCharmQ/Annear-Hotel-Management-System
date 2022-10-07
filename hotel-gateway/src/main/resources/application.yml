@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    gateway:
+      routes:
+        - id: member_route
+          uri: lb://hotel-member
+          predicates:
+            - Path=/*/member/**

@@ -30,7 +30,7 @@ public class CouponController {
     @RequestMapping("/list")
     public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = couponService.queryPage(params);
-        return new JsonResult<>(Constant.OK, page);
+        return new JsonResult<>(page);
     }
 
 
@@ -40,7 +40,7 @@ public class CouponController {
     @RequestMapping("/info/{couponId}")
     public JsonResult<CouponEntity> info(@PathVariable("couponId") Integer couponId){
 		CouponEntity coupon = couponService.getById(couponId);
-        return new JsonResult<>(Constant.OK, coupon);
+        return new JsonResult<>(coupon);
     }
 
     /**
@@ -49,7 +49,7 @@ public class CouponController {
     @RequestMapping("/save")
     public JsonResult<Void> save(@RequestBody CouponEntity coupon){
 		couponService.save(coupon);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -58,7 +58,7 @@ public class CouponController {
     @RequestMapping("/update")
     public JsonResult<Void> update(@RequestBody CouponEntity coupon){
 		couponService.updateById(coupon);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -67,6 +67,6 @@ public class CouponController {
     @RequestMapping("/delete")
     public JsonResult<Void> delete(@RequestBody Integer[] couponIds){
 		couponService.removeByIds(Arrays.asList(couponIds));
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 }

@@ -30,7 +30,7 @@ public class VipLevelController {
     @RequestMapping("/list")
     public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = vipLevelService.queryPage(params);
-        return new JsonResult<>(Constant.OK, page);
+        return new JsonResult<>(page);
     }
 
 
@@ -40,7 +40,7 @@ public class VipLevelController {
     @RequestMapping("/save")
     public JsonResult<Void> save(@RequestBody VipLevelEntity vipLevel){
 		vipLevelService.save(vipLevel);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -49,7 +49,7 @@ public class VipLevelController {
     @RequestMapping("/update")
     public JsonResult<Void> update(@RequestBody VipLevelEntity vipLevel){
 		vipLevelService.updateById(vipLevel);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -58,6 +58,6 @@ public class VipLevelController {
     @RequestMapping("/delete")
     public JsonResult<Void> delete(@RequestBody Integer[] vipLevels){
 		vipLevelService.removeByIds(Arrays.asList(vipLevels));
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 }

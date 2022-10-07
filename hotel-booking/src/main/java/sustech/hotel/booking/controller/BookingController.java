@@ -30,7 +30,7 @@ public class BookingController {
     @RequestMapping("/list")
     public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = bookingService.queryPage(params);
-        return new JsonResult<>(Constant.OK, page);
+        return new JsonResult<>(page);
     }
 
 
@@ -40,7 +40,7 @@ public class BookingController {
     @RequestMapping("/info/{userId}")
     public JsonResult<BookingEntity> info(@PathVariable("userId") Long userId){
 		BookingEntity booking = bookingService.getById(userId);
-        return new JsonResult<>(Constant.OK, booking);
+        return new JsonResult<>(booking);
     }
 
     /**
@@ -49,7 +49,7 @@ public class BookingController {
     @RequestMapping("/save")
     public JsonResult<Void> save(@RequestBody BookingEntity booking){
 		bookingService.save(booking);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -58,7 +58,7 @@ public class BookingController {
     @RequestMapping("/update")
     public JsonResult<Void> update(@RequestBody BookingEntity booking){
 		bookingService.updateById(booking);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -67,6 +67,6 @@ public class BookingController {
     @RequestMapping("/delete")
     public JsonResult<Void> delete(@RequestBody Long[] userIds){
 		bookingService.removeByIds(Arrays.asList(userIds));
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 }

@@ -30,7 +30,7 @@ public class RoomTypePictureController {
     @RequestMapping("/list")
     public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = roomTypePictureService.queryPage(params);
-        return new JsonResult<>(Constant.OK, page);
+        return new JsonResult<>(page);
     }
 
     /**
@@ -39,7 +39,7 @@ public class RoomTypePictureController {
     @RequestMapping("/save")
     public JsonResult<Void> save(@RequestBody RoomTypePictureEntity roomTypePicture){
 		roomTypePictureService.save(roomTypePicture);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -48,7 +48,7 @@ public class RoomTypePictureController {
     @RequestMapping("/update")
     public JsonResult<Void> update(@RequestBody RoomTypePictureEntity roomTypePicture){
 		roomTypePictureService.updateById(roomTypePicture);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -57,6 +57,6 @@ public class RoomTypePictureController {
     @RequestMapping("/delete")
     public JsonResult<Void> delete(@RequestBody Integer[] typeIds){
 		roomTypePictureService.removeByIds(Arrays.asList(typeIds));
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 }

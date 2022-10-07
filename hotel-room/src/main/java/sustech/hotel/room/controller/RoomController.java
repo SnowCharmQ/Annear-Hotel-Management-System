@@ -31,7 +31,7 @@ public class RoomController {
     @RequestMapping("/list")
     public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = roomService.queryPage(params);
-        return new JsonResult<>(Constant.OK, page);
+        return new JsonResult<>(page);
     }
 
 
@@ -41,7 +41,7 @@ public class RoomController {
     @RequestMapping("/info/{roomId}")
     public JsonResult<RoomEntity> info(@PathVariable("roomId") Integer roomId){
 		RoomEntity room = roomService.getById(roomId);
-        return new JsonResult<>(Constant.OK, room);
+        return new JsonResult<>(room);
     }
 
     /**
@@ -50,7 +50,7 @@ public class RoomController {
     @RequestMapping("/save")
     public JsonResult<Void> save(@RequestBody RoomEntity room){
 		roomService.save(room);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -59,7 +59,7 @@ public class RoomController {
     @RequestMapping("/update")
     public JsonResult<Void> update(@RequestBody RoomEntity room){
 		roomService.updateById(room);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -68,6 +68,6 @@ public class RoomController {
     @RequestMapping("/delete")
     public JsonResult<Void> delete(@RequestBody Integer[] roomIds){
 		roomService.removeByIds(Arrays.asList(roomIds));
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 }

@@ -30,7 +30,7 @@ public class OrderInfoController {
     @RequestMapping("/list")
     public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = orderInfoService.queryPage(params);
-        return new JsonResult<>(Constant.OK, page);
+        return new JsonResult<>(page);
     }
 
     /**
@@ -39,7 +39,7 @@ public class OrderInfoController {
     @RequestMapping("/save")
     public JsonResult<Void> save(@RequestBody OrderInfoEntity orderInfo){
 		orderInfoService.save(orderInfo);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -48,7 +48,7 @@ public class OrderInfoController {
     @RequestMapping("/update")
     public JsonResult<Void> update(@RequestBody OrderInfoEntity orderInfo){
 		orderInfoService.updateById(orderInfo);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -57,6 +57,6 @@ public class OrderInfoController {
     @RequestMapping("/delete")
     public JsonResult<Void> delete(@RequestBody String[] orderIds){
 		orderInfoService.removeByIds(Arrays.asList(orderIds));
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 }

@@ -4,7 +4,7 @@ CREATE TABLE chm_user_info
     user_id        bigint(20)                                                    not null AUTO_INCREMENT,
     username       varchar(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL,
     password       varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL     DEFAULT NULL,
-    telephone      char(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci     NULL     DEFAULT NULL,
+    phone          varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL     DEFAULT NULL,
     email          varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  NULL     DEFAULT NULL,
     avatar         varchar(500) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL     DEFAULT NULL,
     gender         tinyint(4)                                                    NULL     DEFAULT NULL,

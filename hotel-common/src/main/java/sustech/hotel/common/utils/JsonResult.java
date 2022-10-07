@@ -2,6 +2,8 @@ package sustech.hotel.common.utils;
 
 import java.io.Serializable;
 
+import static sustech.hotel.common.utils.Constant.OK;
+
 public class JsonResult<E> implements Serializable {
     private Integer state;
     private String message;
@@ -9,10 +11,12 @@ public class JsonResult<E> implements Serializable {
 
     public JsonResult() {
         super();
+        this.state = OK;
     }
 
     public JsonResult(E data) {
         super();
+        this.state = OK;
         this.data = data;
     }
 
@@ -26,10 +30,10 @@ public class JsonResult<E> implements Serializable {
         this.message = e.getMessage();
     }
 
-    public JsonResult(Integer state, E data) {
+    public JsonResult(Integer state, String message) {
         super();
         this.state = state;
-        this.data = data;
+        this.message = message;
     }
 
     public Integer getState() {

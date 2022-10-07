@@ -30,7 +30,7 @@ public class CollectHotelController {
     @RequestMapping("/list")
     public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params){
         PageUtils page = collectHotelService.queryPage(params);
-        return new JsonResult<>(Constant.OK, page);
+        return new JsonResult<>(page);
     }
 
 
@@ -40,7 +40,7 @@ public class CollectHotelController {
     @RequestMapping("/save")
     public JsonResult<Void> save(@RequestBody CollectHotelEntity collectHotel){
 		collectHotelService.save(collectHotel);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -49,7 +49,7 @@ public class CollectHotelController {
     @RequestMapping("/update")
     public JsonResult<Void> update(@RequestBody CollectHotelEntity collectHotel){
 		collectHotelService.updateById(collectHotel);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -58,6 +58,6 @@ public class CollectHotelController {
     @RequestMapping("/delete")
     public JsonResult<Void> delete(@RequestBody Long[] userIds){
 		collectHotelService.removeByIds(Arrays.asList(userIds));
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 }

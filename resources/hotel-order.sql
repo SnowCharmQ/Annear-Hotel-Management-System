@@ -1,10 +1,10 @@
 drop table if exists cho_order;
 CREATE TABLE cho_order
 (
-    user_id        bigint(20)     not null,
     order_id       varchar(30) primary key,
-    room_id          bigint(20)     not null, -- room
-    order_status         int            not null, -- 0 booking, 1 isPayed, 2 isCheckIn, 3 isLeaved, 4 isCancelled
+    user_id        bigint(20)     not null,
+    room_id        bigint(20)     not null, -- room
+    order_status   int            not null, -- 0 booking, 1 isPayed, 2 isCheckIn, 3 isLeaved, 4 isCancelled
     start_time     date           not null,
     end_time       date           not null,
     origin_money   decimal(18, 2) not null,
@@ -12,8 +12,8 @@ CREATE TABLE cho_order
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci
-    ROW_FORMAT = DYNAMIC;
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = DYNAMIC;
 
 drop table if exists cho_order_info;
 CREATE TABLE cho_order_info
@@ -25,8 +25,8 @@ CREATE TABLE cho_order_info
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci
-    ROW_FORMAT = DYNAMIC;
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = DYNAMIC;
 
 drop table if exists cho_order_operation;
 CREATE TABLE cho_order_operation
@@ -38,8 +38,8 @@ CREATE TABLE cho_order_operation
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci
-    ROW_FORMAT = DYNAMIC;
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = DYNAMIC;
 
 drop table if exists cho_order_comments;
 CREATE TABLE cho_order_comments
@@ -50,8 +50,8 @@ CREATE TABLE cho_order_comments
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci
-    ROW_FORMAT = DYNAMIC;
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = DYNAMIC;
 
 drop table if exists cho_income_refund;
 CREATE TABLE cho_income_refund
@@ -62,5 +62,5 @@ CREATE TABLE cho_income_refund
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci
-    ROW_FORMAT = DYNAMIC;
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = DYNAMIC;

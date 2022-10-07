@@ -7,8 +7,8 @@ CREATE TABLE chd_vip_price
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci
-    ROW_FORMAT = DYNAMIC;
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = DYNAMIC;
 
 DROP TABLE IF EXISTS chd_coupon;
 CREATE TABLE chd_coupon
@@ -24,8 +24,8 @@ CREATE TABLE chd_coupon
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci
-    ROW_FORMAT = DYNAMIC;
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = DYNAMIC;
 
 DROP TABLE IF EXISTS chd_promotion;
 CREATE TABLE chd_promotion
@@ -41,8 +41,8 @@ CREATE TABLE chd_promotion
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci
-    ROW_FORMAT = DYNAMIC;
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = DYNAMIC;
 
 DROP TABLE IF EXISTS chd_seckill;
 CREATE TABLE chd_seckill
@@ -58,8 +58,8 @@ CREATE TABLE chd_seckill
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci
-    ROW_FORMAT = DYNAMIC;
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = DYNAMIC;
 
 DROP TABLE IF EXISTS chd_own_coupon;
 CREATE TABLE chd_own_coupon
@@ -71,5 +71,5 @@ CREATE TABLE chd_own_coupon
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci
-    ROW_FORMAT = DYNAMIC;
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = DYNAMIC;

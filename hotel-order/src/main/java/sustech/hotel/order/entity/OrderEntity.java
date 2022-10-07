@@ -1,5 +1,6 @@
 package sustech.hotel.order.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serial;
@@ -15,8 +16,9 @@ public class OrderEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Long userId;
+    @TableId
     private String orderId;
+    private Long userId;
     private Long roomId;
     private Integer orderStatus;
     private Date startTime;

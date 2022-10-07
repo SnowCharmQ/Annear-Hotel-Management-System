@@ -1,5 +1,6 @@
 package sustech.hotel.room.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serial;
@@ -13,6 +14,7 @@ public class LayoutEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @TableId
     private Integer layoutId;
     private Integer hotelId;
     private Integer floor;

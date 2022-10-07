@@ -1,5 +1,6 @@
 package sustech.hotel.member.entity;
 
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serial;
@@ -15,6 +16,7 @@ public class UserInfoEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
+    @TableId
     private Long userId;
     private String username;
     private String password;

@@ -30,8 +30,8 @@ CREATE TABLE chm_user_info
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci
-    ROW_FORMAT = DYNAMIC;
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = DYNAMIC;
 
 DROP TABLE IF EXISTS chm_vip_level;
 CREATE TABLE chm_vip_level
@@ -42,8 +42,8 @@ CREATE TABLE chm_vip_level
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci
-    ROW_FORMAT = DYNAMIC;
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = DYNAMIC;
 
 DROP TABLE IF EXISTS chm_collect_hotel;
 CREATE TABLE chm_collect_hotel
@@ -53,5 +53,5 @@ CREATE TABLE chm_collect_hotel
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
-    COLLATE = utf8mb4_general_ci
-    ROW_FORMAT = DYNAMIC;
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = DYNAMIC;

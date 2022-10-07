@@ -3,6 +3,7 @@ package sustech.hotel.room.controller;
 import java.util.Arrays;
 import java.util.Map;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -16,7 +17,7 @@ import sustech.hotel.common.utils.Constant;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
 
-
+@Api("房间控制类")
 @RestController
 @RequestMapping("room/room")
 public class RoomController {

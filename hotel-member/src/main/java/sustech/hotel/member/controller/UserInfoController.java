@@ -5,19 +5,18 @@ import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
-import io.swagger.annotations.ApiImplicitParam;
-import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import sustech.hotel.common.utils.Constant;
 import sustech.hotel.member.entity.UserInfoEntity;
 import sustech.hotel.member.service.UserInfoService;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
+import sustech.hotel.model.vo.member.CodeLoginVo;
+import sustech.hotel.model.vo.member.PasswordLoginVo;
 import sustech.hotel.model.vo.member.UserRegisterVo;
+import sustech.hotel.model.vo.member.UserRespVo;
 
 @Api("用户信息控制类")
 @RestController
@@ -27,12 +26,24 @@ public class UserInfoController {
     @Autowired
     private UserInfoService userInfoService;
 
+    @Operation(summary = "根据手机号验证码登录或注册（feign调用）")
+    @PostMapping("/login/code")
+    public JsonResult<UserRespVo> loginByCode(@RequestBody String phone) {
+        return userInfoService.loginByCode(phone);
+    }
+
+    @Operation(summary = "根据手机号密码登录（feign调用）")
+    @PostMapping("/login/password")
+    public JsonResult<UserRespVo> loginByPassword(@RequestBody PasswordLoginVo vo) {
+        return userInfoService.loginByPassword(vo);
+    }
+
     /**
      * @param vo 注册VO类
      * @return 根据传入的用户名、密码、手机号完成用户注册
      */
     @Operation(summary = "注册（feign调用）")
-    @GetMapping("/register")
+    @PostMapping("/register")
     public JsonResult<Void> register(@RequestBody UserRegisterVo vo) {
         return userInfoService.register(vo);
     }
@@ -75,7 +86,7 @@ public class UserInfoController {
     @RequestMapping("/save")
     public JsonResult<Void> save(@RequestBody UserInfoEntity userInfo) {
         userInfoService.save(userInfo);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -84,7 +95,7 @@ public class UserInfoController {
     @RequestMapping("/update")
     public JsonResult<Void> update(@RequestBody UserInfoEntity userInfo) {
         userInfoService.updateById(userInfo);
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 
     /**
@@ -93,6 +104,6 @@ public class UserInfoController {
     @RequestMapping("/delete")
     public JsonResult<Void> delete(@RequestBody Long[] userIds) {
         userInfoService.removeByIds(Arrays.asList(userIds));
-        return new JsonResult<>(Constant.OK);
+        return new JsonResult<>();
     }
 }

@@ -16,7 +16,8 @@ public class SmsComponent {
     private String path;
     private String appcode;
 
-    public void sendSmsCode(String phone, String code) {
+    public void sendSmsCode(String phone, String code) throws Exception {
+        //发送短信
         Map<String, String> headers = new HashMap<>();
         headers.put("Authorization", "APPCODE " + appcode);
         headers.put("Content-Type", "application/x-www-form-urlencoded; charset=UTF-8");
@@ -25,10 +26,6 @@ public class SmsComponent {
         queries.put("content", content);
         queries.put("mobile", phone);
         Map<String, String> bodies = new HashMap<>();
-        try {
-            HttpUtils.doPost(host, path, headers, queries, bodies);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        HttpUtils.doPost(host, path, headers, queries, bodies);
     }
 }

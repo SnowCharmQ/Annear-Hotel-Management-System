@@ -7,8 +7,12 @@ public enum ExceptionCodeEnum {
 
     UNKNOWN_EXCEPTION(10000, "系统未知异常"),
     // 10001 - 10999 登录注册异常
-    SMS_CODE_EXCEPTION(10002, "短信验证码频率过高"),
-    USERNAME_EXISTED_EXCEPTION(10003, "用户名已经存在");
+    SMS_CODE_EXCEPTION(10001, "短信发送异常"),
+    SMS_CODE_HIGH_FREQUENCY_EXCEPTION(10002, "短信验证码频率过高"),
+    USERNAME_EXISTED_EXCEPTION(10003, "用户名已经存在"),
+    NOT_REGISTER_EXCEPTION(10004, "该手机号未被注册"),
+    PASSWORD_INCORRECT_EXCEPTION(10005, "密码不正确"),
+    SMS_CODE_INCORRECT_EXCEPTION(10006, "验证码不正确");
     // 11001 - 11999 订单异常
 
 

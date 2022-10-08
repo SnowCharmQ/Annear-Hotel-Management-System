@@ -5,7 +5,10 @@ import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,9 +31,9 @@ public class UserInfoController {
      * @param vo 注册VO类
      * @return 根据传入的用户名、密码、手机号完成用户注册
      */
-    @Operation(summary = "注册")
+    @Operation(summary = "注册（feign调用）")
     @GetMapping("/register")
-    public JsonResult<Void> register(@RequestBody UserRegisterVo vo){
+    public JsonResult<Void> register(@RequestBody UserRegisterVo vo) {
         return userInfoService.register(vo);
     }
 
@@ -38,8 +41,8 @@ public class UserInfoController {
      * @param phone 手机号
      * @return 根据手机号查询是否已经注册过
      */
-    @Operation(summary = "根据手机号查询")
-    @GetMapping("/info/phone")
+    @Operation(summary = "根据手机号查询（feign调用）")
+    @GetMapping("/phone")
     public JsonResult<Boolean> queryByPhone(@RequestBody String phone) {
         QueryWrapper<UserInfoEntity> wrapper = new QueryWrapper<>();
         wrapper.eq("phone", phone);

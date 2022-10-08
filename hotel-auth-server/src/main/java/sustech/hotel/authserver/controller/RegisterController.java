@@ -1,8 +1,11 @@
 package sustech.hotel.authserver.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.v3.oas.annotations.Operation;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,12 +23,14 @@ import sustech.hotel.model.vo.member.UserRegisterVo;
 import javax.validation.Valid;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import static sustech.hotel.common.utils.Constant.OK;
 
+@Api("注册接口类：发送短信、注册功能")
 @Controller
 public class RegisterController {
 
@@ -35,6 +40,10 @@ public class RegisterController {
     @Autowired
     StringRedisTemplate redisTemplate;
 
+    @Operation(summary = "发送验证码接口")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "phone", value = "手机号", required = true)
+    })
     @ResponseBody
     @GetMapping("/message")
     public JsonResult<Void> message(@RequestParam("phone") String phone) {
@@ -58,11 +67,12 @@ public class RegisterController {
     }
 
 
+    @Operation(summary = "注册接口")
     @PostMapping("/register")
     public JsonResult<Map<String, String>> register(@Valid UserRegisterVo vo, BindingResult result) {
         if (result.hasErrors()) {
             Map<String, String> errors = result.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField,
-                    DefaultMessageSourceResolvable::getDefaultMessage));
+                    o -> Optional.ofNullable(o.getDefaultMessage()).orElse("")));
             return new JsonResult<>(errors);
         }
         JsonResult<Boolean> queryByPhone = memberFeignService.queryByPhone(vo.getPhone());
@@ -77,7 +87,7 @@ public class RegisterController {
             if (code.equals(redisCode.substring(0, 6))) {
                 redisTemplate.delete(AuthConstant.SMS_CODE_CACHE_PREFIX + vo.getPhone());
                 JsonResult<Void> jsonResult = memberFeignService.register(vo);
-                if (jsonResult.getState() == OK){
+                if (jsonResult.getState() == OK) {
                     return new JsonResult<>(new HashMap<>());
                 } else {
                     Map<String, String> errors = new HashMap<>();

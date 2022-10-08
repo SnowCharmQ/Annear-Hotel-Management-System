@@ -7,7 +7,7 @@ import sustech.hotel.model.vo.member.UserRegisterVo;
 
 @FeignClient("hotel-member")
 public interface MemberFeignService {
-    @GetMapping("/member/userinfo/info/phone")
+    @GetMapping("/member/userinfo/phone")
     JsonResult<Boolean> queryByPhone(String phone);
 
     @GetMapping("/member/userinfo/register")

@@ -1,5 +1,10 @@
 package sustech.hotel.thirdparty.controller;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
+import io.swagger.annotations.ApiImplicitParams;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,14 +15,27 @@ import sustech.hotel.thirdparty.component.SmsComponent;
 
 import static sustech.hotel.common.utils.Constant.OK;
 
+@Api("发送短信工具类")
 @RestController
 @RequestMapping("/sms")
 public class SmsController {
     @Autowired
     SmsComponent smsComponent;
 
+    /**
+     * @param phone 手机号
+     * @param code 验证码
+     * @return 发送短信成功（暂未实现成功发送，未申请模板）
+     * TODO：申请模板（需盖章）
+     */
+    @Operation(summary = "发送短信")
+    @ApiImplicitParams({
+            @ApiImplicitParam(name = "phone", value = "手机号", required = true),
+            @ApiImplicitParam(name = "code", value = "验证码", required = true)
+    })
     @GetMapping("/sendcode")
-    public JsonResult<Void> sendCode(@RequestParam("phone") String phone, @RequestParam("code") String code) {
+    public JsonResult<Void> sendCode(@RequestParam("phone") String phone,
+                                     @RequestParam("code") String code) {
         smsComponent.sendSmsCode(phone, code);
         return new JsonResult<>(OK);
     }

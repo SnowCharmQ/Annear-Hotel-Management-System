@@ -1,12 +1,19 @@
 package sustech.hotel.common.utils;
 
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
+
 import java.io.Serializable;
 
 import static sustech.hotel.common.utils.Constant.OK;
 
+@ApiModel("API通用返回数据")
 public class JsonResult<E> implements Serializable {
+    @ApiModelProperty("响应码")
     private Integer state;
+    @ApiModelProperty("响应信息")
     private String message;
+    @ApiModelProperty("响应数据")
     private E data;
 
     public JsonResult() {

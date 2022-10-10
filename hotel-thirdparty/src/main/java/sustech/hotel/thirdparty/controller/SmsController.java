@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.exception.ExceptionCodeEnum;
+import sustech.hotel.exception.auth.SmsCodeException;
 import sustech.hotel.thirdparty.component.SmsComponent;
 
 
@@ -38,8 +39,8 @@ public class SmsController {
         try {
             smsComponent.sendSmsCode(phone, code);
         } catch (Exception e) {
-            return new JsonResult<>(ExceptionCodeEnum.SMS_CODE_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.SMS_CODE_EXCEPTION.getMessage());
+            return new JsonResult<>(new SmsCodeException(ExceptionCodeEnum.SMS_CODE_EXCEPTION.getCode(),
+                    ExceptionCodeEnum.SMS_CODE_EXCEPTION.getMessage()));
         }
         return new JsonResult<>();
     }

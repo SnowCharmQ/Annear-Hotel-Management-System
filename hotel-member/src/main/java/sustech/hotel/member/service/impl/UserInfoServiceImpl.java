@@ -15,6 +15,9 @@ import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.Query;
 
 import sustech.hotel.exception.ExceptionCodeEnum;
+import sustech.hotel.exception.auth.NotRegisterException;
+import sustech.hotel.exception.auth.PasswordIncorrectException;
+import sustech.hotel.exception.auth.UsernameExistedException;
 import sustech.hotel.member.dao.UserInfoDao;
 import sustech.hotel.member.entity.UserInfoEntity;
 import sustech.hotel.member.service.UserInfoService;
@@ -42,8 +45,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
                 = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>()
                 .eq("username", vo.getUsername()));
         if (one != null) {
-            return new JsonResult<>(ExceptionCodeEnum.USERNAME_EXISTED_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.USERNAME_EXISTED_EXCEPTION.getMessage());
+            return new JsonResult<>(new UsernameExistedException(ExceptionCodeEnum.USERNAME_EXISTED_EXCEPTION.getCode(),
+                    ExceptionCodeEnum.USERNAME_EXISTED_EXCEPTION.getMessage()));
         }
         UserInfoEntity entity = new UserInfoEntity();
         entity.setUsername(vo.getUsername());
@@ -65,8 +68,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         //判断是否有这个手机号注册的用户
         UserInfoEntity entity = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>().eq("phone", phone));
         if (entity == null) {
-            return new JsonResult<>(ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getMessage());
+            return new JsonResult<>(new NotRegisterException(ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getCode(),
+                    ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getMessage()));
         }
         //判断密码是否正确
         String pwdDb = entity.getPassword();
@@ -77,8 +80,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
             BeanUtils.copyProperties(entity, resp);
             return new JsonResult<>(resp);
         } else {
-            return new JsonResult<>(ExceptionCodeEnum.PASSWORD_INCORRECT_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.PASSWORD_INCORRECT_EXCEPTION.getMessage());
+            return new JsonResult<>(new PasswordIncorrectException(ExceptionCodeEnum.PASSWORD_INCORRECT_EXCEPTION.getCode(),
+                    ExceptionCodeEnum.PASSWORD_INCORRECT_EXCEPTION.getMessage()));
         }
     }
 

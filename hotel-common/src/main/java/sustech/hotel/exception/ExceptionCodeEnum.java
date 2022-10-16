@@ -12,7 +12,9 @@ public enum ExceptionCodeEnum {
     USERNAME_EXISTED_EXCEPTION(10003, "用户名已经存在"),
     NOT_REGISTER_EXCEPTION(10004, "该手机号未被注册"),
     PASSWORD_INCORRECT_EXCEPTION(10005, "密码不正确"),
-    SMS_CODE_INCORRECT_EXCEPTION(10006, "验证码不正确");
+    SMS_CODE_INCORRECT_EXCEPTION(10006, "验证码不正确"),
+    NOT_FOUND_EXCEPTION(10007, "用户不存在");
+
     // 11001 - 11999 订单异常
 
 

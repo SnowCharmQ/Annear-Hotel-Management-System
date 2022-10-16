@@ -106,4 +106,12 @@ public class UserInfoController {
         userInfoService.removeByIds(Arrays.asList(userIds));
         return new JsonResult<>();
     }
+
+    /**
+     * query user info by id
+     */
+    @RequestMapping("/??")
+    public JsonResult<UserInfoEntity> queryUserInfoById(@RequestBody Long userId) {
+        return userInfoService.queryUserInfoById(userId);
+    }
 }

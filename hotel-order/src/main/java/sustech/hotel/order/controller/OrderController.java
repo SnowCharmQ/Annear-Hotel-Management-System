@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.order.entity.OrderEntity;
 import sustech.hotel.order.service.OrderService;
 import sustech.hotel.common.utils.Constant;
@@ -23,6 +24,11 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @RequestMapping("/test")
+    public JsonResult<OrderTo> test(){
+        return new JsonResult<>(new OrderTo());
+    }
 
     /**
      * 根据传入的参数map进行分页查询

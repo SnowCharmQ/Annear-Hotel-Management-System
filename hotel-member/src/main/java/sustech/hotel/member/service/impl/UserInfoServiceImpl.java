@@ -1,10 +1,12 @@
 package sustech.hotel.member.service.impl;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -25,6 +27,8 @@ import sustech.hotel.model.vo.member.UserRespVo;
 
 @Service("userInfoService")
 public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity> implements UserInfoService {
+    @Autowired
+    private UserInfoDao userInfoDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -98,5 +102,46 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         UserRespVo resp = new UserRespVo();
         BeanUtils.copyProperties(entity, resp);
         return new JsonResult<>(resp);
+    }
+
+    @Override
+    public JsonResult<UserInfoEntity> queryUserInfoById(Long userId) {
+        UserInfoEntity entity = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>().eq("userId", userId));
+        if (entity == null) {
+            return new JsonResult<>(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(),
+                    ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage());
+        }
+        return new JsonResult<UserInfoEntity>(entity);
+    }
+
+    @Override
+    public JsonResult<UserInfoEntity> queryUserInfoByName(String username){
+        UserInfoEntity entity = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>().eq("username", username));
+        if (entity == null) {
+            return new JsonResult<>(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(),
+                    ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage());
+        }
+        return new JsonResult<UserInfoEntity>(entity);
+    }
+
+    @Override
+    public JsonResult<UserInfoEntity> alterInfo(Long toEditId, String phone, String email, String avatar, Integer gender, Date birthday, String province, String city, String detailAddress, String job, Integer isBlocked, String socialName, String accessToken, Long growth, Date createTime, BigDecimal balance, Integer vipLevel, String identityCard, BigDecimal consumeAmount, BigDecimal couponAmount, Long orderCount, Long commentCount, Long loginCount) {
+        this.userInfoDao.updateInfo(toEditId, phone, email, avatar, gender, birthday, province, city, detailAddress, job, isBlocked, socialName);
+        return null;
+    }
+
+    @Override
+    public JsonResult<Void> queryOrderInfo() {
+        return null;
+    }
+
+    @Override
+    public JsonResult<Void> querySales() {
+        return null;
+    }
+
+    @Override
+    public JsonResult<Void> queryHotels() {
+        return null;
     }
 }

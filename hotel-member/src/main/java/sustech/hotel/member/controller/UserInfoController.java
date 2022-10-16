@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import sustech.hotel.exception.BaseException;
 import sustech.hotel.member.entity.UserInfoEntity;
 import sustech.hotel.member.service.UserInfoService;
 import sustech.hotel.common.utils.PageUtils;
@@ -28,13 +29,23 @@ public class UserInfoController {
     @Operation(summary = "根据手机号验证码登录或注册（feign调用）")
     @PostMapping("/login/code")
     public JsonResult<UserRespVo> loginByCode(@RequestBody String phone) {
-        return userInfoService.loginByCode(phone);
+        try {
+            UserRespVo userRespVo = userInfoService.loginByCode(phone);
+            return new JsonResult<>(userRespVo);
+        } catch (BaseException e) {
+            return new JsonResult<>(e);
+        }
     }
 
     @Operation(summary = "根据手机号密码登录（feign调用）")
     @PostMapping("/login/password")
     public JsonResult<UserRespVo> loginByPassword(@RequestBody PasswordLoginVo vo) {
-        return userInfoService.loginByPassword(vo);
+        try {
+            UserRespVo userRespVo = userInfoService.loginByPassword(vo);
+            return new JsonResult<>(userRespVo);
+        } catch (BaseException e) {
+            return new JsonResult<>(e);
+        }
     }
 
     /**
@@ -44,7 +55,12 @@ public class UserInfoController {
     @Operation(summary = "注册（feign调用）")
     @PostMapping("/register")
     public JsonResult<Void> register(@RequestBody UserRegisterVo vo) {
-        return userInfoService.register(vo);
+        try {
+            userInfoService.register(vo);
+            return new JsonResult<>();
+        } catch (BaseException e) {
+            return new JsonResult<>(e);
+        }
     }
 
     /**

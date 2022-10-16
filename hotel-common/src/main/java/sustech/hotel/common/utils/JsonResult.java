@@ -2,6 +2,7 @@ package sustech.hotel.common.utils;
 
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import sustech.hotel.exception.BaseException;
 
 import java.io.Serializable;
 
@@ -15,6 +16,8 @@ public class JsonResult<E> implements Serializable {
     private String message;
     @ApiModelProperty("响应数据")
     private E data;
+    @ApiModelProperty("响应异常信息")
+    private BaseException ex;
 
     public JsonResult() {
         super();
@@ -27,9 +30,11 @@ public class JsonResult<E> implements Serializable {
         this.data = data;
     }
 
-    public JsonResult(Throwable e) {
+    public JsonResult(BaseException ex) {
         super();
-        this.message = e.getMessage();
+        this.ex = ex;
+        this.state = ex.getState();
+        this.message = ex.getMessage();
     }
 
     public JsonResult(Integer state, String message) {
@@ -60,5 +65,13 @@ public class JsonResult<E> implements Serializable {
 
     public void setData(E data) {
         this.data = data;
+    }
+
+    public BaseException getEx() {
+        return ex;
+    }
+
+    public void setEx(BaseException ex) {
+        this.ex = ex;
     }
 }

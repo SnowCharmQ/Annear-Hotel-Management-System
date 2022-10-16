@@ -19,6 +19,7 @@ import sustech.hotel.authserver.feign.ThirdpartyFeignService;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.constant.AuthConstant;
 import sustech.hotel.exception.ExceptionCodeEnum;
+import sustech.hotel.exception.auth.SmsCodeHighFrequencyException;
 import sustech.hotel.model.vo.member.UserRegisterVo;
 
 import javax.validation.Valid;
@@ -56,8 +57,8 @@ public class RegisterController {
             //设定发送短信间隔时长1min
             long l = Long.parseLong(redisCode.substring(7));
             if (System.currentTimeMillis() - l < 60000) {
-                return new JsonResult<>(ExceptionCodeEnum.SMS_CODE_HIGH_FREQUENCY_EXCEPTION.getCode(),
-                        ExceptionCodeEnum.SMS_CODE_HIGH_FREQUENCY_EXCEPTION.getMessage());
+                return new JsonResult<>(new SmsCodeHighFrequencyException(ExceptionCodeEnum.SMS_CODE_HIGH_FREQUENCY_EXCEPTION.getCode(),
+                        ExceptionCodeEnum.SMS_CODE_HIGH_FREQUENCY_EXCEPTION.getMessage()));
             }
         }
         //随机生成验证码

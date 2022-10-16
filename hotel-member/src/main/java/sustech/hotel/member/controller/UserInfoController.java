@@ -13,7 +13,6 @@ import sustech.hotel.member.entity.UserInfoEntity;
 import sustech.hotel.member.service.UserInfoService;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
-import sustech.hotel.model.vo.member.CodeLoginVo;
 import sustech.hotel.model.vo.member.PasswordLoginVo;
 import sustech.hotel.model.vo.member.UserRegisterVo;
 import sustech.hotel.model.vo.member.UserRespVo;

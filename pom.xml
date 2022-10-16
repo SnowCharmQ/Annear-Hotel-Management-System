@@ -17,6 +17,7 @@
         <module>hotel-booking</module>
         <module>hotel-gateway</module>
         <module>hotel-auth-server</module>
+        <module>hotel-thirdparty</module>
     </modules>
 
     <properties>

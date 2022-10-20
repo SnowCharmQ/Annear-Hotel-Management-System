@@ -33,7 +33,13 @@
 
     <update id="updateInfo">
         UPDATE chm_user_info
-        SET telephone = #{phone}, email = #{email}, avatar = #{avatar}, gender = #{gender}, birthday = #{birthday}, province #{province}, city = #{city}, detail_address = #{detailAddress}, job = #{job}, is_blocked = #{isBlocked}, social_name = #{socialName}
-        WHERE usr_id  = #{toEditId}
+        SET phone = #{phone}, email = #{email}, avatar = #{avatar}, gender = #{gender}, birthday = #{birthday}, province = #{province}, city = #{city}, detail_address = #{detailAddress}, job = #{job}, is_blocked = #{isBlocked}, social_name = #{socialName}
+        WHERE user_id  = #{toEditId}
+    </update>
+
+    <update id="test">
+        UPDATE chm_user_info
+        SET username = #{name}
+        WHERE user_id  = #{toEditId}
     </update>
 </mapper>

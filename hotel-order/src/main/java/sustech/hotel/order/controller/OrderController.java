@@ -1,6 +1,7 @@
 package sustech.hotel.order.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,6 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
-
-    @RequestMapping("/test")
-    public JsonResult<OrderTo> test(){
-        return new JsonResult<>(new OrderTo());
-    }
 
     /**
      * 根据传入的参数map进行分页查询
@@ -74,5 +70,15 @@ public class OrderController {
     public JsonResult<Void> delete(@RequestBody String[] orderIds){
 		orderService.removeByIds(Arrays.asList(orderIds));
         return new JsonResult<>();
+    }
+
+    @RequestMapping("/queryByUser")
+    public JsonResult<List<OrderTo>> queryByUser(Long userId){
+        return new JsonResult<>(orderService.queryOrderByUser(userId));
+    }
+
+    @RequestMapping("/test")
+    public String queryByUser(){
+        return orderService.queryOrderByUser((long)12012705).toString();
     }
 }

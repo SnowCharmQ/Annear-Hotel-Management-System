@@ -15,4 +15,15 @@ public class OrderTo {
     private Date endTime;
     private BigDecimal originMoney;
     private BigDecimal afterDiscount;
+
+    public OrderTo(String orderId, Long userId, Long roomId, Integer orderStatus, Date startTime, Date endTime, BigDecimal originMoney, BigDecimal afterDiscount) {
+        this.orderId = orderId;
+        this.userId = userId;
+        this.roomId = roomId;
+        this.orderStatus = orderStatus;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.originMoney = originMoney;
+        this.afterDiscount = afterDiscount;
+    }
 }

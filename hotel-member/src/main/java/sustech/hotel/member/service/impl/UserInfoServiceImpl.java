@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -16,13 +17,19 @@ import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.Query;
 
+import sustech.hotel.exception.BaseException;
 import sustech.hotel.exception.ExceptionCodeEnum;
+import sustech.hotel.exception.auth.NotFoundException;
 import sustech.hotel.exception.auth.NotRegisterException;
 import sustech.hotel.exception.auth.PasswordIncorrectException;
 import sustech.hotel.exception.auth.UsernameExistedException;
 import sustech.hotel.member.dao.UserInfoDao;
 import sustech.hotel.member.entity.UserInfoEntity;
+import sustech.hotel.member.feign.DiscountFeignService;
+import sustech.hotel.member.feign.OrderFeignService;
 import sustech.hotel.member.service.UserInfoService;
+import sustech.hotel.model.to.discount.DiscountTo;
+import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.model.vo.member.PasswordLoginVo;
 import sustech.hotel.model.vo.member.UserRegisterVo;
 import sustech.hotel.model.vo.member.UserRespVo;
@@ -32,6 +39,12 @@ import sustech.hotel.model.vo.member.UserRespVo;
 public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity> implements UserInfoService {
     @Autowired
     private UserInfoDao userInfoDao;
+
+    @Autowired
+    private OrderFeignService orderFeignService;
+
+    @Autowired
+    private DiscountFeignService discountFeignService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -43,14 +56,14 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
     }
 
     @Override
-    public JsonResult<Void> register(UserRegisterVo vo) {
+    public void register(UserRegisterVo vo) throws BaseException{
         //判断手机号是否已经被注册
         UserInfoEntity one
                 = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>()
                 .eq("username", vo.getUsername()));
         if (one != null) {
-            return new JsonResult<>(new UsernameExistedException(ExceptionCodeEnum.USERNAME_EXISTED_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.USERNAME_EXISTED_EXCEPTION.getMessage()));
+            throw new UsernameExistedException(ExceptionCodeEnum.USERNAME_EXISTED_EXCEPTION.getCode(),
+                    ExceptionCodeEnum.USERNAME_EXISTED_EXCEPTION.getMessage());
         }
         UserInfoEntity entity = new UserInfoEntity();
         entity.setUsername(vo.getUsername());
@@ -62,18 +75,17 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         entity.setBalance(balance);
         //插入一条新的用户信息到数据库
         this.baseMapper.insert(entity);
-        return new JsonResult<>();
     }
 
     @Override
-    public JsonResult<UserRespVo> loginByPassword(PasswordLoginVo vo) {
+    public UserRespVo loginByPassword(PasswordLoginVo vo) throws BaseException {
         String phone = vo.getPhone();
         String password = vo.getPassword();
         //判断是否有这个手机号注册的用户
         UserInfoEntity entity = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>().eq("phone", phone));
         if (entity == null) {
-            return new JsonResult<>(new NotRegisterException(ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getMessage()));
+            throw new NotRegisterException(ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getCode(),
+                    ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getMessage());
         }
         //判断密码是否正确
         String pwdDb = entity.getPassword();
@@ -82,15 +94,15 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         if (matches) {
             UserRespVo resp = new UserRespVo();
             BeanUtils.copyProperties(entity, resp);
-            return new JsonResult<>(resp);
+            return resp;
         } else {
-            return new JsonResult<>(new PasswordIncorrectException(ExceptionCodeEnum.PASSWORD_INCORRECT_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.PASSWORD_INCORRECT_EXCEPTION.getMessage()));
+            throw new PasswordIncorrectException(ExceptionCodeEnum.PASSWORD_INCORRECT_EXCEPTION.getCode(),
+                    ExceptionCodeEnum.PASSWORD_INCORRECT_EXCEPTION.getMessage());
         }
     }
 
     @Override
-    public JsonResult<UserRespVo> loginByCode(String phone) {
+    public UserRespVo loginByCode(String phone) {
         QueryWrapper<UserInfoEntity> wrapper = new QueryWrapper<UserInfoEntity>().eq("phone", phone);
         UserInfoEntity entity = this.baseMapper.selectOne(wrapper);
         if (entity == null) {
@@ -104,47 +116,50 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         //拷贝信息并返回
         UserRespVo resp = new UserRespVo();
         BeanUtils.copyProperties(entity, resp);
-        return new JsonResult<>(resp);
+        return resp;
     }
 
     @Override
-    public JsonResult<UserInfoEntity> queryUserInfoById(Long userId) {
-        UserInfoEntity entity = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>().eq("userId", userId));
+    public UserInfoEntity queryUserInfoById(Long userId) {
+        UserInfoEntity entity = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>().eq("user_id", userId));
         if (entity == null) {
-            return new JsonResult<>(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage());
+            throw new NotFoundException(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(), ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage());
         }
-        return new JsonResult<UserInfoEntity>(entity);
+        return entity;
     }
 
     @Override
-    public JsonResult<UserInfoEntity> queryUserInfoByName(String username){
+    public UserInfoEntity queryUserInfoByName(String username){
         UserInfoEntity entity = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>().eq("username", username));
         if (entity == null) {
-            return new JsonResult<>(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage());
+            throw new NotFoundException(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(), ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage());
         }
-        return new JsonResult<UserInfoEntity>(entity);
+        return entity;
     }
 
     @Override
-    public JsonResult<UserInfoEntity> alterInfo(Long toEditId, String phone, String email, String avatar, Integer gender, Date birthday, String province, String city, String detailAddress, String job, Integer isBlocked, String socialName, String accessToken, Long growth, Date createTime, BigDecimal balance, Integer vipLevel, String identityCard, BigDecimal consumeAmount, BigDecimal couponAmount, Long orderCount, Long commentCount, Long loginCount) {
+    public void alterInfo(Long toEditId, String phone, String email, String avatar, Integer gender, Date birthday, String province, String city, String detailAddress, String job, Integer isBlocked, String socialName) {
         this.userInfoDao.updateInfo(toEditId, phone, email, avatar, gender, birthday, province, city, detailAddress, job, isBlocked, socialName);
-        return null;
     }
 
     @Override
-    public JsonResult<Void> queryOrderInfo() {
-        return null;
+    public JsonResult<List<OrderTo>> queryOrderByUser(Long userId) {
+        return orderFeignService.queryOrderByUser(userId);
     }
 
     @Override
-    public JsonResult<Void> querySales() {
-        return null;
+    public JsonResult<List<DiscountTo>> queryDiscountByUser() {
+        return discountFeignService.queryDiscount();
     }
 
     @Override
-    public JsonResult<Void> queryHotels() {
-        return null;
+    public void collectHotel(Long userId, Integer hotelId) {
+
     }
+
+    @Override
+    public void updateTest(Long toEdit, String name){
+        this.userInfoDao.test(toEdit, name);
+    }
+
 }

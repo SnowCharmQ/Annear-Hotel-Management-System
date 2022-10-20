@@ -11,5 +11,5 @@ import java.util.List;
 @FeignClient("hotel-order")
 public interface OrderFeignService {
     @RequestMapping("/order/order/queryByUser")
-    JsonResult<List<OrderTo>> queryOrderByUser(Long userId);
+    JsonResult<List<OrderTo>> queryOrderByUser(@RequestBody Long userId);
 }

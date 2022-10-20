@@ -1,5 +1,6 @@
 package sustech.hotel.order.service.impl;
 
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -35,7 +36,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         List<OrderEntity> orders = this.baseMapper.selectList(new QueryWrapper<OrderEntity>().eq("user_id", userId));
         List<OrderTo> orderTos = new ArrayList<>();
         for(OrderEntity order: orders){
-            orderTos.add(new OrderTo(order.getOrderId(), order.getUserId(), order.getRoomId(), order.getOrderStatus(), order.getStartTime(), order.getEndTime(), order.getOriginMoney(), order.getAfterDiscount()));
+            OrderTo to = new OrderTo();
+            BeanUtils.copyProperties(order, to);
+            orderTos.add(to);
         }
         return orderTos;
     }

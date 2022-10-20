@@ -1,11 +1,15 @@
 package sustech.hotel.model.to.order;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class OrderTo {
     private String orderId;
     private Long userId;
@@ -15,15 +19,4 @@ public class OrderTo {
     private Date endTime;
     private BigDecimal originMoney;
     private BigDecimal afterDiscount;
-
-    public OrderTo(String orderId, Long userId, Long roomId, Integer orderStatus, Date startTime, Date endTime, BigDecimal originMoney, BigDecimal afterDiscount) {
-        this.orderId = orderId;
-        this.userId = userId;
-        this.roomId = roomId;
-        this.orderStatus = orderStatus;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.originMoney = originMoney;
-        this.afterDiscount = afterDiscount;
-    }
 }

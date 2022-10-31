@@ -1,10 +1,10 @@
 package sustech.hotel.member.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import sustech.hotel.member.entity.CollectHotelEntity;
 import sustech.hotel.member.service.CollectHotelService;
-import sustech.hotel.common.utils.Constant;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
 
@@ -59,5 +58,22 @@ public class CollectHotelController {
     public JsonResult<Void> delete(@RequestBody Long[] userIds){
 		collectHotelService.removeByIds(Arrays.asList(userIds));
         return new JsonResult<>();
+    }
+
+    @RequestMapping("/collectHotel")
+    public JsonResult<Void> collectHotelByUser(long userId, int hotelId){
+        collectHotelService.collectHotelByUser(userId, hotelId);
+        return new JsonResult<>();
+    }
+
+    @RequestMapping("/cancelCollectHotel")
+    public JsonResult<Void> cancelCollectHotelByUser(long userId, int hotelId){
+        collectHotelService.cancelCollectHotel(userId, hotelId);
+        return new JsonResult<>();
+    }
+
+    @RequestMapping("/showCollectedHotel")
+    public JsonResult<List<Integer>> showCollectedHotel(long userId){
+        return new JsonResult<>(collectHotelService.showCollectedHotel(userId));
     }
 }

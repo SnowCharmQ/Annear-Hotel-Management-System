@@ -1,6 +1,7 @@
 package sustech.hotel.member.controller;
 
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -133,8 +134,17 @@ public class UserInfoController {
      */
     @RequestMapping("/queryUserInfoById")
     public JsonResult<UserInfoEntity> queryUserInfoById(@RequestBody Long userId) {
-        return new JsonResult<UserInfoEntity>(userInfoService.queryUserInfoById(userId));
+        return new JsonResult<>(userInfoService.queryUserInfoById(userId));
     }
+
+    /**
+     * query user info by name
+     */
+    @RequestMapping("/queryUserInfoByName")
+    public JsonResult<UserInfoEntity> queryUserInfoById(@RequestBody String userName) {
+        return new JsonResult<>(userInfoService.queryUserInfoByName(userName));
+    }
+
 
     /**
      * query user's order by id
@@ -142,5 +152,11 @@ public class UserInfoController {
     @RequestMapping("/queryOrdersByUserId")
     public JsonResult<List<OrderTo>> queryOrdersByUserId(Long userId) {
         return orderFeignService.queryOrderByUser(userId);
+    }
+
+    @RequestMapping("/alterUserInfo")
+    public JsonResult<Void> alterUserInfo(Long toEditId, String phone, String email, String avatar, Integer gender, Date birthday, String province, String city, String detailAddress, String job, Integer isBlocked, String socialName){
+        userInfoService.alterInfo(toEditId, phone, email, avatar, gender, birthday, province, city, detailAddress, job, isBlocked, socialName);
+        return new JsonResult<>();
     }
 }

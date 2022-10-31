@@ -1,6 +1,9 @@
 package sustech.hotel.member.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -15,6 +18,8 @@ import sustech.hotel.member.service.CollectHotelService;
 
 @Service("collectHotelService")
 public class CollectHotelServiceImpl extends ServiceImpl<CollectHotelDao, CollectHotelEntity> implements CollectHotelService {
+    @Autowired
+    CollectHotelDao collectHotelDao;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -24,5 +29,21 @@ public class CollectHotelServiceImpl extends ServiceImpl<CollectHotelDao, Collec
         );
         return new PageUtils(page);
     }
+
+    @Override
+    public void collectHotelByUser(long userId, int hotelId) {
+        collectHotelDao.collectHotelByUser(userId, hotelId);
+    }
+
+    @Override
+    public void cancelCollectHotel(long userId, int hotelId) {
+        collectHotelDao.cancelCollectHotel(userId, hotelId);
+    }
+
+    @Override
+    public List<Integer> showCollectedHotel(long userId) {
+        return collectHotelDao.showCollectedHotels(userId);
+    }
+
 
 }

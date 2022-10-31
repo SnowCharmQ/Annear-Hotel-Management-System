@@ -8,5 +8,20 @@
         <result property="hotelId" column="hotel_id"/>
     </resultMap>
 
+    <insert id="collectHotelByUser">
+        INSERT INTO chm_collect_hotel (user_id, hotel_id)
+        VALUES (#{userId}, #{hotelId});
+    </insert>
+
+    <delete id="cancelCollectHotel">
+        DELETE FROM chm_collect_hotel
+        WHERE user_id = #{userId}
+        AND hotel_id = #{hotelId};
+    </delete>
+
+    <select id="showCollectedHotels" resultType="java.lang.Integer">
+        SELECT hotel_id FROM chm_collect_hotel
+        WHERE user_id = #{userId};
+    </select>
 
 </mapper>

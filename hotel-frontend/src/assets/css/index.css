@@ -1,0 +1,52 @@
+@charset "utf-8";
+/*reset样式重置 对话框头部和抽屉框头部*/
+.el-dialog__header, .el-drawer__header {
+    border-bottom: 1px solid #ddd;
+    padding: 0 15px;
+}
+
+/*index.vue里定义的类名*/
+.page-main {
+    width: 1300px;
+    margin: 0 auto;
+}
+
+/*下拉菜单*/
+.el-dropdown-menu__item .title-name {
+    color: #333;
+}
+
+.el-dropdown-menu__item .desc-name {
+    font-size: 13px;
+    color: #999;
+    margin-top: -10px;
+}
+
+.title-popover {
+    line-height: 50px;
+    border-bottom: 1px solid #ddd;
+}
+
+.add-form .el-input-number__increase, .add-form .el-input-number__decrease {
+    background: #121212;
+    color: #fff;
+    font-size: 16px;
+}
+
+.add-form .el-button--info {
+    background: #121212;
+    color: #fff;
+}
+
+.el-calendar-table .el-calendar-day {
+    height: 50px;
+}
+
+.el-calendar-table td.is-selected, .el-calendar-table .el-calendar-day:hover {
+    background: #F3EEE7;
+}
+
+.el-popper {
+    max-height: 500px;
+    overflow: auto;
+}

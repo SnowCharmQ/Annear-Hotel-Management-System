@@ -24,5 +24,4 @@ public class RoomServiceImpl extends ServiceImpl<RoomDao, RoomEntity> implements
         );
         return new PageUtils(page);
     }
-
 }

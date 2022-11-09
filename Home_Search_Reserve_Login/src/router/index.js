@@ -22,9 +22,9 @@ const routes = [
 				name:'Reserve',
 				component:() => import('../pages/Reserve')
 			} ,{
-				path:'/Login',
-				name:'Login',
-				component:() => import('../pages/Login')
+				path:'/Order',
+				name:'Order',
+				component:() => import('../pages/Order')
 			}
 		]
 	}

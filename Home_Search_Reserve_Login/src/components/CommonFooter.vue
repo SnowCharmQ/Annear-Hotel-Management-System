@@ -161,7 +161,7 @@ export default {
   watch: {
     '$route': {
       handler: function (val, oldVal) {
-        if (this.$route.name == 'Search' || this.$route.name == 'Reserve' || this.$route.name == 'Login') {
+        if (this.$route.name == 'Search' || this.$route.name == 'Reserve' || this.$route.name == 'Order') {
           this.show = false;
         } else {
           this.show = true;

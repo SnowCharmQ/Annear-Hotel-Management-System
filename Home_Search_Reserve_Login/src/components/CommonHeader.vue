@@ -62,25 +62,25 @@ export default {
         {
           name: 'Destinations', url: '',
           children: [
-            {name: 'Aman Journeys', url: 'login', children: []},
-            {name: 'Celebrations', url: 'login', children: []},
-            {name: 'Active Adventure', url: 'login', children: []},
-            {name: 'Wellness', url: 'login', children: []}
+            {name: 'Aman Journeys', url: '', children: []},
+            {name: 'Celebrations', url: '', children: []},
+            {name: 'Active Adventure', url: '', children: []},
+            {name: 'Wellness', url: '', children: []}
           ]
         },
-        {name: 'Hotels & Resorts', url: 'login', children: []},
-        {name: 'Villas', url: 'login', children: []},
-        {name: 'Residences', url: 'login', children: []},
+        {name: 'Hotels & Resorts', url: '', children: []},
+        {name: 'Villas', url: '', children: []},
+        {name: 'Residences', url: '', children: []},
         {
-          name: 'Yachts', url: 'login',
+          name: 'Yachts', url: '',
           children: [
-            {name: 'Aman Journeys', url: 'login', children: []},
-            {name: 'Celebrations', url: 'login', children: []},
-            {name: 'Culture & Conservation', url: 'login', children: []},
-            {name: 'Active Adventure', url: 'login', children: []}
+            {name: 'Aman Journeys', url: '', children: []},
+            {name: 'Celebrations', url: '', children: []},
+            {name: 'Culture & Conservation', url: '', children: []},
+            {name: 'Active Adventure', url: '', children: []}
           ]
         },
-        {name: 'Private Travel ', url: 'login', children: []}
+        {name: 'Private Travel ', url: '', children: []}
       ]
     }
   },
@@ -90,7 +90,7 @@ export default {
     },
     // 登录
     loginHandle() {
-      this.$message.info('Login')
+      this.$message.info('Order')
     },
     //点击菜单
     menuClick(curMenu) {

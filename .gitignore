@@ -42,3 +42,6 @@ build/
 **/mvnw
 **/mvnw.cmd
 **/HELP.md
+
+**/node_modules
+node_modules

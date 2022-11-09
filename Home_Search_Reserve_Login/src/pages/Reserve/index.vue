@@ -523,7 +523,7 @@ export default {
         this.$message.info('more')
     },
 	toCheckOut(){
-		this.$router.push('Login')
+		this.$router.push('Order')
 	}
 
   }

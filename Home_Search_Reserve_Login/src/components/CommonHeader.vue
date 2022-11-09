@@ -10,9 +10,9 @@
 
     <!--homepage右上角的两个按钮-->
     <div class="r-content">
-      <el-button type="text" @click="loginHandle" v-if="show">Login</el-button>
-      <el-button @click="toSearch" v-if="show">Search</el-button>
-      <el-button @click="toHome" v-if="!show">Home</el-button>
+      <el-button type="text" @click="loginHandle" v-if="showLogin">Login</el-button>
+      <el-button @click="toSearch" v-if="showSearch">Search</el-button>
+      <el-button @click="toHome" v-if="showHome">Home</el-button>
     </div>
 
     <!-- 登录弹窗 -->
@@ -59,7 +59,9 @@ export default {
     return {
       loginDialog: false,
       drawer: false,
-      show: true,
+      showLogin: true,
+      showSearch: true,
+      showHome: false,
       form: {},
       menu: [
         {name: 'Home', url: '/', children: []},
@@ -91,15 +93,15 @@ export default {
   methods: {
     //跳转Search
     toSearch() {
-      this.$router.push('Search')
+      this.$router.push('search')
     },
     //返回Home
     toHome() {
-      this.$router.push('Home')
+      this.$router.push('home')
     },
     // 登录
     loginHandle() {
-      this.$router.push('Login')
+      this.$router.push('login')
     },
     //点击菜单
     menuClick(curMenu) {
@@ -111,7 +113,9 @@ export default {
   watch: {
     '$route': {
       handler: function () {
-        this.show = !(this.$route.name === 'Login');
+        this.showLogin = !(this.$route.name === 'login');
+        this.showSearch = !(this.$route.name === 'search' || this.$route.name === 'login');
+        this.showHome = (this.$route.name === 'search' || this.$route.name === 'login');
       },
       // 深度观察监听
       deep: true,

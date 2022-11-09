@@ -92,7 +92,8 @@
           </div>
         </div>
         <p class="copyright">Copyright 2022, Aman Group S.a.r.l.</p>
-      </div><br><br><br><br> <br>
+      </div>
+      <br><br><br><br> <br>
 
       <!--homepage底部的selection bar-->
       <div class="flex-row fixedbox">
@@ -128,7 +129,9 @@
           </el-select>
         </div>
 
-        <div><el-button style="margin-top:10px;">Check availatity</el-button></div>
+        <div>
+          <el-button style="margin-top:10px;">Check availatity</el-button>
+        </div>
 
       </div>
     </div>
@@ -161,7 +164,7 @@ export default {
   watch: {
     '$route': {
       handler: function () {
-        this.show = !(this.$route.name === 'Search' || this.$route.name === 'Reserve' || this.$route.name === 'Order' || this.$route.name === 'Login');
+        this.show = !(this.$route.name === 'search' || this.$route.name === 'reserve' || this.$route.name === 'order' || this.$route.name === 'login');
       },
       // 深度观察监听
       deep: true,

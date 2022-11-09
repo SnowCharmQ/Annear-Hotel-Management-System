@@ -12,27 +12,27 @@ const routes = [
             {
                 path: '/',
                 name: 'home',
-                component: () => import('../pages/Home')
+                component: () => import('../pages/Home/home')
             }, {
-                path: '/Home',
+                path: '/home',
                 name: 'home',
-                component: () => import('../pages/Home')
+                component: () => import('../pages/Home/home')
             }, {
-                path: '/Search',
-                name: 'Search',
-                component: () => import('../pages/Search')
+                path: '/search',
+                name: 'search',
+                component: () => import('../pages/Search/search')
             }, {
-                path: '/Reserve',
-                name: 'Reserve',
-                component: () => import('../pages/Reserve')
+                path: '/reserve',
+                name: 'reserve',
+                component: () => import('../pages/Reserve/reserve')
             }, {
-                path: '/Order',
-                name: 'Order',
-                component: () => import('../pages/Order')
+                path: '/order',
+                name: 'order',
+                component: () => import('../pages/Order/order')
             }, {
-                path: '/Login',
-                name: 'Login',
-                component: () => import('../pages/Login')
+                path: '/login',
+                name: 'login',
+                component: () => import('../pages/Login/login')
             }
         ]
     }

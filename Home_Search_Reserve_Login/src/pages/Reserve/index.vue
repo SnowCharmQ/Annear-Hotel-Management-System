@@ -25,8 +25,8 @@
 								<div class="select-item">CNY - China Yuan Renminbi</div>
 								<div class="select-item">EUR - Euros</div>
 								<div class="select-item">GBP - British Pounds</div>
-								<div class="select-item">INR - Indian Rupees</div> 
-								<div class="select-item">SGD - Singapore Dollars</div> 
+								<div class="select-item">INR - Indian Rupees</div>
+								<div class="select-item">SGD - Singapore Dollars</div>
 								<div class="select-item">USD - US Dollars</div>
                 <br><br>
 							</el-col>
@@ -37,39 +37,39 @@
 
 								<el-col :span="12" class="top-select">
 									<div class="select-item">AFN - Afghanistan Afghanis</div>
-									<div class="select-item">DZD - Algerian Dinar</div> 
-									<div class="select-item">AED - Arab Emirate Dirham</div> 
-									<div class="select-item">AMD - Armenia Drams</div> 
-									<div class="select-item">AUD - Australian Dollars</div> 
-									<div class="select-item">BSD - Bahamas Bahamian Dollar</div> 
-									<div class="select-item">BDT - Bangladeshi Taka</div> 
-									<div class="select-item">LSL - Basotho Loti</div> 
-									<div class="select-item">BZD - Belize Dollar</div> 
-									<div class="select-item">BTN - Bhutan Ngultrum</div> 
-									<div class="select-item">BWP - Botswana Pula</div> 
-									<div class="select-item">AMD - Armenia Drams</div> 
+									<div class="select-item">DZD - Algerian Dinar</div>
+									<div class="select-item">AED - Arab Emirate Dirham</div>
+									<div class="select-item">AMD - Armenia Drams</div>
+									<div class="select-item">AUD - Australian Dollars</div>
+									<div class="select-item">BSD - Bahamas Bahamian Dollar</div>
+									<div class="select-item">BDT - Bangladeshi Taka</div>
+									<div class="select-item">LSL - Basotho Loti</div>
+									<div class="select-item">BZD - Belize Dollar</div>
+									<div class="select-item">BTN - Bhutan Ngultrum</div>
+									<div class="select-item">BWP - Botswana Pula</div>
+									<div class="select-item">AMD - Armenia Drams</div>
 									<div class="select-item">AUD - Australian Dollars</div>
                   <br><br>
 								</el-col>
 
 								<el-col :span="12" class="top-select">
 									<div class="select-item">ALL - Albania Leke</div>
-									<div class="select-item">AOA - Angola Kwanza</div> 
-									<div class="select-item">ARS - Argentina Pesos</div> 
-									<div class="select-item">AWG - Aruban Florin</div> 
-									<div class="select-item">AZN - Azerbaijani New Manat</div> 
-									<div class="select-item">BHD - Bahrain Dinar</div> 
-									<div class="select-item">BBD - Barbadian Dollar</div> 
-									<div class="select-item">BYN - Belarusian Ruble</div> 
-									<div class="select-item">BMD - Bermudian Dollars</div> 
-									<div class="select-item">BAM - Bosnian Convertible Marka</div> 
-									<div class="select-item">BRL - Brazilian Reals</div> 
-									<div class="select-item">BBD - Barbadian Dollar</div> 
+									<div class="select-item">AOA - Angola Kwanza</div>
+									<div class="select-item">ARS - Argentina Pesos</div>
+									<div class="select-item">AWG - Aruban Florin</div>
+									<div class="select-item">AZN - Azerbaijani New Manat</div>
+									<div class="select-item">BHD - Bahrain Dinar</div>
+									<div class="select-item">BBD - Barbadian Dollar</div>
+									<div class="select-item">BYN - Belarusian Ruble</div>
+									<div class="select-item">BMD - Bermudian Dollars</div>
+									<div class="select-item">BAM - Bosnian Convertible Marka</div>
+									<div class="select-item">BRL - Brazilian Reals</div>
+									<div class="select-item">BBD - Barbadian Dollar</div>
 									<div class="select-item">BYN - Belarusian Ruble</div>
                   <br><br>
 								</el-col>
 
-							</el-col> 
+							</el-col>
 						</div>
 
 						<div class="flex-row" slot="reference" >
@@ -161,7 +161,7 @@
 						<el-option label="Group Code" value="2"></el-option>
 					</el-select>
 					<el-input placeholder="Enter Code" v-model="input3" class="input-with-select" />
-					<div class="date-btn" style="margin-top:15px;"> 
+					<div class="date-btn" style="margin-top:15px;">
 						<el-link class="date-item" @click="showSel=false">Cancel</el-link>
 						<el-button class="date-item" type="info" style="background:#fff;color:black;">Apply</el-button>
 					</div>
@@ -196,11 +196,11 @@
 										<div class="row-label">Rooms</div>
 									</div>
 									<i class="el-icon-caret-bottom el-icon--right" style="font-size:18px;"></i>
-								</div> 
+								</div>
 							</span>
 							<el-dropdown-menu slot="dropdown">
 								<el-dropdown-item>Relevance</el-dropdown-item>
-								<el-dropdown-item>Hotel Name (A-Z)</el-dropdown-item> 
+								<el-dropdown-item>Hotel Name (A-Z)</el-dropdown-item>
 							</el-dropdown-menu>
 						</el-dropdown>
 
@@ -213,11 +213,11 @@
 										<div class="row-label">Relevance</div>
 									</div>
 									<i class="el-icon-caret-bottom el-icon--right" style="font-size:18px;"></i>
-								</div> 
+								</div>
 							</span>
 							<el-dropdown-menu slot="dropdown">
 								<el-dropdown-item>Relevance</el-dropdown-item>
-								<el-dropdown-item>Hotel Name (A-Z)</el-dropdown-item> 
+								<el-dropdown-item>Hotel Name (A-Z)</el-dropdown-item>
 							</el-dropdown-menu>
 						</el-dropdown>
 
@@ -250,7 +250,7 @@
 											<div>View</div>
 											<el-link style="font-size:13px;">Clear</el-link>
 										</div>
-										<div style="line-height:30px;"> 
+										<div style="line-height:30px;">
 											<div><el-checkbox v-model="checked3">57th Street</el-checkbox></div>
 											<div><el-checkbox v-model="checked4">Fifth Avenue</el-checkbox></div>
 										</div>
@@ -262,7 +262,7 @@
 											<div>Rate Type</div>
 											<div style="font-size:13px;">Clear</div>
 										</div>
-										<div style="line-height:30px;"> 
+										<div style="line-height:30px;">
 											<div><el-checkbox v-model="checked5">Breakfast in Manhattan</el-checkbox></div>
 											<div><el-checkbox v-model="checked6">Standard Daily Rate</el-checkbox></div>
 										</div>
@@ -307,7 +307,7 @@
 									</el-col>
 
 									<el-col :span="24" style="line-height:50px;border-top:1px solid #ddd;text-align:right;">
-										<span style="margin-right:50px;">6 matching rooms</span> 
+										<span style="margin-right:50px;">6 matching rooms</span>
 										<el-button type="info" style="background:#333;">Apply</el-button>
 									</el-col>
 
@@ -345,7 +345,7 @@
 								<div>{{item.detail}}</div>
 								<div>Per Night</div>
 							</div>
-							<div style="text-align:right;font-size:12px;margin-top: -10px;">{{item.detail1}}</div> 
+							<div style="text-align:right;font-size:12px;margin-top: -10px;">{{item.detail1}}</div>
 							<div style="text-align:right;"><el-button type="info" style="background:black;color:#fff;" @click="toCheckOut">Book Now</el-button></div>
 							<el-divider></el-divider>
 
@@ -357,7 +357,7 @@
 								<div>The stay includes</div>
 								<div>{{item.detail3}}</div>
 							</div>
-							<div style="text-align:right;font-size:12px;margin-top: -10px;">{{item.detail1}}</div> 
+							<div style="text-align:right;font-size:12px;margin-top: -10px;">{{item.detail1}}</div>
 							<div style="display:flex;width:560px;justify-content: space-between;">
 								<div style="width:380px;">{{item.detail2}}</div>
 								<div style="text-align:right;"><el-button type="info" style="background:black;color:#fff;" @click="toCheckOut">Book Now</el-button></div>
@@ -413,7 +413,7 @@
 				</el-col>
 			</el-col>
 		</el-row>
-		
+
 	</div>
 </template>
 
@@ -514,7 +514,7 @@ export default {
       ]
 	};
   },
-  methods:{  
+  methods:{
 	// 显示日历
 	showDate(){
 		this.showCheck = true;
@@ -530,7 +530,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .page-main {
   background: #f3eee7;
 
@@ -540,7 +540,7 @@ export default {
   }
 
   .top-link {
-    width: 480 p;
+    width: 480px;
     margin: 0 auto;
     text-align: center;
     display: flex;
@@ -722,4 +722,4 @@ export default {
   vertical-align: middle;
 }
 
-</style>  
+</style>

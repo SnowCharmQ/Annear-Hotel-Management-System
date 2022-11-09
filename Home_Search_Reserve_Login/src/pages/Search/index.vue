@@ -72,7 +72,7 @@
 								<div class="row-label">Location</div>
 								<div>{{ curSel }}</div>
 							</div>
-						</div> 
+						</div>
 					</span>
 
           <el-dropdown-menu slot="dropdown">
@@ -129,7 +129,7 @@
 									<div class="row-label">Relevance</div>
 								</div>
 								<i class="el-icon-caret-bottom el-icon--right" style="font-size:18px;"></i>
-							</div> 
+							</div>
 						</span>
             <!--两个选项-->
             <el-dropdown-menu slot="dropdown">
@@ -300,7 +300,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .page-main {
   background: #f3eee7;
 
@@ -310,7 +310,7 @@ export default {
   }
 
   .top-link {
-    width: 480 p;
+    width: 480px;
     margin: 0 auto;
     text-align: center;
   }

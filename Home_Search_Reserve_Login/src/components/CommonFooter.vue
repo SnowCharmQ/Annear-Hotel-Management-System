@@ -160,12 +160,8 @@ export default {
   },
   watch: {
     '$route': {
-      handler: function (val, oldVal) {
-        if (this.$route.name == 'Search' || this.$route.name == 'Reserve' || this.$route.name == 'Order') {
-          this.show = false;
-        } else {
-          this.show = true;
-        }
+      handler: function () {
+        this.show = !(this.$route.name === 'Search' || this.$route.name === 'Reserve' || this.$route.name === 'Order' || this.$route.name === 'Login');
       },
       // 深度观察监听
       deep: true,
@@ -241,7 +237,7 @@ export default {
   width: 1300px;
   display: flex;
   justify-content: space-between;
-  margin-top: 0 auto;
+  margin-top: auto;
   padding: 0 15px;
   padding-top: 25px;
   background: #fff;

@@ -1,8 +1,8 @@
 <template>
   <header>
     <div class="l-content">
-      <i class="el-icon-s-unfold" @click="drawer=true"></i>
-      <span class="titles">Menu</span>
+      <i class="el-icon-s-unfold" v-if="show" @click="drawer=true"></i>
+      <span class="titles" v-if="show">Menu</span>
     </div>
 
     <!--------to be changed--------->
@@ -10,18 +10,19 @@
 
     <!--homepage右上角的两个按钮-->
     <div class="r-content">
-      <el-button type="text" @click="loginDialog=true">Login</el-button>
-      <el-button @click="toReserve">Reserve</el-button>
+      <el-button type="text" @click="loginHandle" v-if="show">Login</el-button>
+      <el-button @click="toSearch" v-if="show">Search</el-button>
+      <el-button @click="toHome" v-if="!show">Home</el-button>
     </div>
 
     <!-- 登录弹窗 -->
-    <el-dialog title="Login" :visible.sync="loginDialog" width="30%">
+    <!-- <el-dialog title="Login" :visible.sync="loginDialog" width="30%">
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="account"><el-input v-model="form.account"></el-input></el-form-item>
         <el-form-item label="password"><el-input v-model="form.password" type="password"></el-input></el-form-item>
         <el-form-item><el-button type="primary" @click="loginHandle" style="width:100%;">Login</el-button></el-form-item>
       </el-form>
-    </el-dialog>
+    </el-dialog> -->
 
     <!-- 菜单抽屉 -->
     <el-drawer
@@ -32,12 +33,14 @@
         <!-- 第一级菜单 -->
         <el-tabs tab-position="left" @tab-click="menuClick">
           <el-tab-pane label="" v-for="(item,index) in menu" :key="index" :name="item.url+'-'+index">
-            <template slot="label">{{ item.name }}<i class="el-icon-arrow-right right-icon" v-if="item.children.length > 0"></i></template>
+            <template slot="label">{{ item.name }}<i class="el-icon-arrow-right right-icon"
+                                                     v-if="item.children.length > 0"></i></template>
             <!-- 第二级菜单 -->
             <div>
               <el-tabs tab-position="left" @tab-click="menuClick">
                 <el-tab-pane v-for="(child,idx) in item.children" :key="idx" :name="child.url+'-'+idx">
-                  <template slot="label">{{ child.name }}<i class="el-icon-arrow-right right-icon" v-if="child.children.length > 0"></i></template>
+                  <template slot="label">{{ child.name }}<i class="el-icon-arrow-right right-icon"
+                                                            v-if="child.children.length > 0"></i></template>
                 </el-tab-pane>
               </el-tabs>
             </div>
@@ -56,6 +59,7 @@ export default {
     return {
       loginDialog: false,
       drawer: false,
+      show: true,
       form: {},
       menu: [
         {name: 'Home', url: '/', children: []},
@@ -85,18 +89,33 @@ export default {
     }
   },
   methods: {
-    toReserve() {
+    //跳转Search
+    toSearch() {
       this.$router.push('Search')
+    },
+    //返回Home
+    toHome() {
+      this.$router.push('Home')
     },
     // 登录
     loginHandle() {
-      this.$message.info('Order')
+      this.$router.push('Login')
     },
     //点击菜单
     menuClick(curMenu) {
-      console.log('当前路由：' + curMenu.name)
+      // console.log('当前路由：' + curMenu.name)
       this.$router.push(curMenu.name.split('-')[0])
       this.drawer = false
+    }
+  },
+  watch: {
+    '$route': {
+      handler: function () {
+        this.show = !(this.$route.name === 'Login');
+      },
+      // 深度观察监听
+      deep: true,
+      immediate: true,
     }
   }
 }

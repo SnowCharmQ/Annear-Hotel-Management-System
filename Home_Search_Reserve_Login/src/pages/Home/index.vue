@@ -50,7 +50,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scope>
+<style lang="scss" scoped>
 .page-main {
   background: #f3eee7;  /////////////背景的米白色here
 

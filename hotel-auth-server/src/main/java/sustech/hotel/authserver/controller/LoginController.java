@@ -43,7 +43,7 @@ public class LoginController {
             @ApiImplicitParam(name = "phone", value = "手机号", required = true)
     })
     @ResponseBody
-    @GetMapping("/message/login")
+    @GetMapping("/message")
     public JsonResult<Void> message(@RequestParam("phone") String phone) {
         String redisCode = redisTemplate.opsForValue().get(AuthConstant.SMS_CODE_CACHE_LOGIN_PREFIX + phone);
         if (redisCode != null) {
@@ -73,12 +73,14 @@ public class LoginController {
     }
 
     @Operation(summary = "根据手机号和密码登录")
+    @ResponseBody
     @PostMapping("/login/password")
     public JsonResult<UserRespVo> loginByPassword(PasswordLoginVo vo) {
         return memberFeignService.loginByPassword(vo);
     }
 
     @Operation(summary = "根据手机号和验证码登录")
+    @ResponseBody
     @PostMapping("/login/code")
     public JsonResult<UserRespVo> loginByCode(CodeLoginVo vo) {
         String code = vo.getCode();

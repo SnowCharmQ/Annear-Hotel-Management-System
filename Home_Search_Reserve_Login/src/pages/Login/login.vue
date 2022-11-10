@@ -1,7 +1,7 @@
 <template>
   <div class="page-main">
     <el-row class="card-search" :gutter="20" style="width:900px;margin:14px auto;">
-      <el-col :span="22" style="background:#fff; padding: 0 0;">
+      <el-col :span="22" style="background:#fff; padding: 0 0;height: 600px">
         <el-col class="login-title">Login In</el-col>
         <el-col class="privacy-info">We are committed to protecting the privacy and security of your personal
           information. More information
@@ -54,14 +54,17 @@
   text-align: center;
   font-family: "Times New Roman", serif;
   display: inline-flex;
+  margin-top: 100px;
 }
 
 .active-type {
   font-weight: 800;
+  font-size: 16px;
 }
 
 .inactive-type {
   font-weight: 400;
+  font-size: 16px;
 }
 </style>
 

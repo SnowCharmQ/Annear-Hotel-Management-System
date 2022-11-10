@@ -5,15 +5,15 @@ package sustech.hotel.exception;
  */
 public enum ExceptionCodeEnum {
 
-    UNKNOWN_EXCEPTION(10000, "系统未知异常"),
+    UNKNOWN_EXCEPTION(10000, "Unknown Exception"),
     // 10001 - 10999 登录注册异常
-    SMS_CODE_EXCEPTION(10001, "短信发送异常"),
-    SMS_CODE_HIGH_FREQUENCY_EXCEPTION(10002, "短信验证码频率过高"),
-    USERNAME_EXISTED_EXCEPTION(10003, "用户名已经存在"),
-    NOT_REGISTER_EXCEPTION(10004, "该手机号未被注册"),
-    PASSWORD_INCORRECT_EXCEPTION(10005, "密码不正确"),
-    SMS_CODE_INCORRECT_EXCEPTION(10006, "验证码不正确"),
-    NOT_FOUND_EXCEPTION(10007, "用户不存在");
+    SMS_CODE_EXCEPTION(10001, "The exception occurs when sending the message"),
+    SMS_CODE_HIGH_FREQUENCY_EXCEPTION(10002, "Too high frequency for SMS code"),
+    USERNAME_EXISTED_EXCEPTION(10003, "The username is existed"),
+    NOT_REGISTER_EXCEPTION(10004, "The phone number has not been registered"),
+    PASSWORD_INCORRECT_EXCEPTION(10005, "The password is incorrect"),
+    SMS_CODE_INCORRECT_EXCEPTION(10006, "The SMS code is incorrect"),
+    NOT_FOUND_EXCEPTION(10007, "The user does not exist");
 
     // 11001 - 11999 订单异常
 

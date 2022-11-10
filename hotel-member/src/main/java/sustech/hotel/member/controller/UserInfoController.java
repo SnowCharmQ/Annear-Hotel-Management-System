@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import sustech.hotel.common.utils.JwtHelper;
 import sustech.hotel.exception.BaseException;
 import sustech.hotel.member.entity.UserInfoEntity;
 import sustech.hotel.member.feign.OrderFeignService;
@@ -38,6 +39,7 @@ public class UserInfoController {
     public JsonResult<UserRespVo> loginByCode(@RequestBody String phone) {
         try {
             UserRespVo userRespVo = userInfoService.loginByCode(phone);
+            userRespVo.setToken(JwtHelper.createToken(userRespVo.getUserId(), userRespVo.getUsername()));
             return new JsonResult<>(userRespVo);
         } catch (BaseException e) {
             return new JsonResult<>(e);
@@ -49,6 +51,7 @@ public class UserInfoController {
     public JsonResult<UserRespVo> loginByPassword(@RequestBody PasswordLoginVo vo) {
         try {
             UserRespVo userRespVo = userInfoService.loginByPassword(vo);
+            userRespVo.setToken(JwtHelper.createToken(userRespVo.getUserId(), userRespVo.getUsername()));
             return new JsonResult<>(userRespVo);
         } catch (BaseException e) {
             return new JsonResult<>(e);

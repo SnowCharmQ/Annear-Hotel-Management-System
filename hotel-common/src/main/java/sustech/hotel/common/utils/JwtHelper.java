@@ -28,7 +28,7 @@ public class JwtHelper {
      */
     public static String createToken(Long userId, String username) {
         return Jwts.builder()
-                .setSubject("HOTEL-USER")
+                .setSubject("token")
                 .setExpiration(new Date(System.currentTimeMillis() + tokenExpiration))
                 .claim("userId", userId)
                 .claim("username", username)

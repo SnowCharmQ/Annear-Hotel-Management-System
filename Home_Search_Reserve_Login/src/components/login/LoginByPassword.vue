@@ -22,13 +22,15 @@
 </template>
 
 <script>
+import cookie from 'js-cookie'
+import {isMobile} from "../../utils/validate";
 export default {
   name: "LoginByPassword",
   data() {
     let checkPhone = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("The phone number can not be left empty!"));
-      } else if (!Number.isInteger(value)) {
+      } else if (!isMobile(value)) {
         callback(new Error("The phone number is invalid!"));
       } else {
         callback();
@@ -40,7 +42,7 @@ export default {
       } else {
         callback();
       }
-    }
+    };
     return {
       dataForm: {
         phone: '',
@@ -53,11 +55,28 @@ export default {
     }
   }, methods: {
     dataFormSubmit() {
-      // this.$refs['dataForm'].validate((valid) => {
-      //   if (valid) {
-      //
-      //   }
-      // })
+      this.$refs['dataForm'].validate((valid) => {
+        if (valid) {
+          this.$http({
+            url: this.$http.adornUrl('/auth/login/password'),
+            method: 'post',
+            data: this.$http.adornData({
+              'phone': this.dataForm.phone,
+              'password': this.dataForm.password
+            })
+          }).then(data => {
+            let resp = data.data;
+              if (resp && resp.code === 200){
+                cookie.set('token', resp.token);
+                this.$router.push('home')
+              } else if (resp && resp.code !== 200) {
+                this.$message.error(resp.message);
+              } else{
+                this.$message.error("Network Error")
+              }
+          })
+        }
+      })
     }
   }
 }
@@ -86,8 +105,4 @@ export default {
   width: 160px;
 }
 
-//.form-title {
-//  font-size: 18px;
-//  font-family: "Times New Roman", serif;
-//}
 </style>

@@ -74,4 +74,13 @@ public class JsonResult<E> implements Serializable {
     public void setEx(BaseException ex) {
         this.ex = ex;
     }
+
+    @Override
+    public String toString() {
+        return "JsonResult{" +
+                "state=" + state +
+                ", message='" + message + '\'' +
+                ", data=" + data +
+                '}';
+    }
 }

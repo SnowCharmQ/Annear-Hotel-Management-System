@@ -62,6 +62,7 @@ export default {
       showLogin: true,
       showSearch: true,
       showHome: false,
+      show: true,
       form: {},
       menu: [
         {name: 'Home', url: '/', children: []},
@@ -113,6 +114,7 @@ export default {
   watch: {
     '$route': {
       handler: function () {
+        this.show = !(this.$route.name === 'login');
         this.showLogin = !(this.$route.name === 'login');
         this.showSearch = !(this.$route.name === 'search' || this.$route.name === 'login');
         this.showHome = (this.$route.name === 'search' || this.$route.name === 'login');

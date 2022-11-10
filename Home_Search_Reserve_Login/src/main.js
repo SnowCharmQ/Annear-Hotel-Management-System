@@ -8,7 +8,7 @@ import router from './router'
 
 import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
-console.log(lang,'lang')
+// console.log(lang,'lang')
 // 设置语言
 locale.use(lang)
 

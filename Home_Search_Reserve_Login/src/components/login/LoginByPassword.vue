@@ -15,7 +15,8 @@
       <br>
       <br>
       <el-form-item>
-        <el-button @click="dataFormSubmit()" class="submit-btn">Login In</el-button>
+        <el-button @click="dataFormSubmit()" class="submit-btn" :disabled="disabled" v-model="checked">Login In
+        </el-button>
       </el-form-item>
     </el-form>
   </el-col>
@@ -24,6 +25,8 @@
 <script>
 import cookie from 'js-cookie'
 import {isMobile} from "../../utils/validate";
+
+const Base64 = require("js-base64").Base64;
 export default {
   name: "LoginByPassword",
   data() {
@@ -44,6 +47,8 @@ export default {
       }
     };
     return {
+      checked: false,
+      disabled: false,
       dataForm: {
         phone: '',
         password: '',
@@ -53,7 +58,19 @@ export default {
         password: [{validator: checkPassword, trigger: 'blur'}]
       }
     }
-  }, methods: {
+  },
+  mounted() {
+    let phone = localStorage.getItem("phone");
+    if (phone) {
+      this.dataForm.phone = phone;
+      this.dataForm.password = localStorage.getItem("pwd");
+      this.checked = true;
+    }
+  },
+  methods: {
+    enableBtn() {
+      this.disabled = false;
+    },
     dataFormSubmit() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
@@ -66,18 +83,31 @@ export default {
             })
           }).then(data => {
             let resp = data.data;
-              if (resp && resp.code === 200){
-                cookie.set('token', resp.token);
-                this.$router.push('home')
-              } else if (resp && resp.code !== 200) {
-                this.$message.error(resp.message);
-              } else{
-                this.$message.error("Network Error")
-              }
+            if (resp && resp.code === 200) {
+              cookie.set('token', resp.token);
+              this.$router.push('home')
+            } else if (resp && resp.code !== 200) {
+              this.$message.error(resp.message);
+            } else {
+              this.$message.error("Network Error");
+            }
+          }).catch(err => {
+            this.$message.error("Network Error");
           })
+          this.disabled = true;
+          window.setTimeout(this.enableBtn, 3000);
+          if (this.checked) {
+            let pwd = Base64.encode(this.dataForm.password);
+            localStorage.setItem("phone", this.dataForm.phone);
+            localStorage.setItem("pwd", pwd);
+          } else {
+            localStorage.removeItem("phone");
+            localStorage.removeItem("pwd");
+          }
         }
       })
-    }
+    },
+
   }
 }
 </script>

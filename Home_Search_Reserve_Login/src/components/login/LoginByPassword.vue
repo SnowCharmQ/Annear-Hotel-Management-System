@@ -1,6 +1,7 @@
 <template>
   <el-col :span="24" class="form-row">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" status-icon>
+      <br><br>
       <el-form-item prop="phone" class="form-item" label="Phone Number" label-width="200px">
         <!--        <el-col class="form-title">Phone Number</el-col>-->
         <el-input class="form-input" v-model="dataForm.phone" auto-complete="off"></el-input>
@@ -11,11 +12,12 @@
         <el-input class="form-input" v-model="dataForm.password" type="password" auto-complete="off"></el-input>
       </el-form-item>
       <br><br>
-      <el-checkbox class="remember-me">Remember me</el-checkbox>
-      <br>
-      <br>
+      <el-checkbox class="remember-me" v-model="checked">Remember me</el-checkbox>
+      <br><br>
+      <a class="forget-pwd" href="">Forget Password?</a>
+      <br><br>
       <el-form-item>
-        <el-button @click="dataFormSubmit()" class="submit-btn" :disabled="disabled" v-model="checked">Login In
+        <el-button @click="dataFormSubmit()" class="submit-btn" :disabled="disabled">Login In
         </el-button>
       </el-form-item>
     </el-form>
@@ -32,9 +34,9 @@ export default {
   data() {
     let checkPhone = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("The phone number can not be left empty!"));
+        callback(new Error("The phone number can not be left empty"));
       } else if (!isMobile(value)) {
-        callback(new Error("The phone number is invalid!"));
+        callback(new Error("The phone number is invalid"));
       } else {
         callback();
       }
@@ -83,10 +85,10 @@ export default {
             })
           }).then(data => {
             let resp = data.data;
-            if (resp && resp.code === 200) {
-              cookie.set('token', resp.token);
+            if (resp && resp.state === 200) {
+              cookie.set('token', resp.data.token);
               this.$router.push('home')
-            } else if (resp && resp.code !== 200) {
+            } else if (resp && resp.state !== 200) {
               this.$message.error(resp.message);
             } else {
               this.$message.error("Network Error");
@@ -104,6 +106,8 @@ export default {
             localStorage.removeItem("phone");
             localStorage.removeItem("pwd");
           }
+        } else {
+          this.$message.error("Invalid Input");
         }
       })
     },
@@ -128,6 +132,12 @@ export default {
 
 .remember-me {
   margin-left: 300px;
+}
+
+.forget-pwd {
+  margin-left: 310px;
+  text-decoration: underline;
+  color: deepskyblue;
 }
 
 .submit-btn {

@@ -68,10 +68,11 @@ http.adornParams = (params = {}, openDefaultParams = true) => {
  *  form: 'application/x-www-form-urlencoded; charset=utf-8'
  */
 http.adornData = (data = {}, openDefaultData = true, contentType = 'json') => {
-    const defaults = {
-        't': new Date().getTime()
-    };
-    data = openDefaultData ? merge(defaults, data) : data
+    // const defaults = {
+    //     't': new Date().getTime()
+    // };
+    // data = openDefaultData ? merge(defaults, data) : data
+    console.log(data)
     return contentType === 'json' ? JSON.stringify(data) : qs.stringify(data)
 }
 

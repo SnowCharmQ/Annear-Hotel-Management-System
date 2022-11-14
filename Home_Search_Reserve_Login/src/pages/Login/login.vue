@@ -10,7 +10,7 @@
         <el-col :span="24">
           <el-divider></el-divider>
         </el-col>
-        <component :is="curType"></component>
+        <component :is="curType" id="curType"></component>
         <div class="login-type">
           <a href="" :class="[curType==='LoginByPassword'?'active-type':'inactive-type']"
              @click.prevent="curType='LoginByPassword'">Password</a>
@@ -28,6 +28,10 @@
 </template>
 
 <style lang="scss" scoped>
+
+#curType{
+  height: 300px;
+}
 
 .login-block {
   background: #fff;

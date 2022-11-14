@@ -7,10 +7,7 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import sustech.hotel.authserver.feign.MemberFeignService;
 import sustech.hotel.authserver.feign.ThirdpartyFeignService;
 import sustech.hotel.common.utils.JsonResult;
@@ -20,6 +17,7 @@ import sustech.hotel.exception.auth.SmsCodeHighFrequencyException;
 import sustech.hotel.exception.auth.SmsCodeIncorrectException;
 import sustech.hotel.model.vo.member.CodeLoginVo;
 import sustech.hotel.model.vo.member.PasswordLoginVo;
+import sustech.hotel.model.vo.member.PhoneVo;
 import sustech.hotel.model.vo.member.UserRespVo;
 
 import java.util.Random;
@@ -43,9 +41,9 @@ public class LoginController {
             @ApiImplicitParam(name = "phone", value = "手机号", required = true)
     })
     @ResponseBody
-    @GetMapping("/message")
-    public JsonResult<Void> message(@RequestParam("phone") String phone) {
-        String redisCode = redisTemplate.opsForValue().get(AuthConstant.SMS_CODE_CACHE_LOGIN_PREFIX + phone);
+    @GetMapping("/message/login")
+    public JsonResult<Void> message(PhoneVo vo) {
+        String redisCode = redisTemplate.opsForValue().get(AuthConstant.SMS_CODE_CACHE_LOGIN_PREFIX + vo.getPhone());
         if (redisCode != null) {
             //设定发送短信间隔时长1min
             long l = Long.parseLong(redisCode.substring(7));
@@ -61,13 +59,13 @@ public class LoginController {
             code.append(random.nextInt(10));
         }
         //调用第三方服务发送短信
-        JsonResult<Void> result = thirdpartyFeignService.sendCode(phone, String.valueOf(code));
+        JsonResult<Void> result = thirdpartyFeignService.sendCode(vo.getPhone(), String.valueOf(code));
         if (result.getState() != OK) {
             return result;
         }
         code.append("_").append(System.currentTimeMillis());
         //验证码有效期三分钟
-        redisTemplate.opsForValue().set(AuthConstant.SMS_CODE_CACHE_LOGIN_PREFIX + phone,
+        redisTemplate.opsForValue().set(AuthConstant.SMS_CODE_CACHE_LOGIN_PREFIX + vo.getPhone(),
                 String.valueOf(code), 3, TimeUnit.MINUTES);
         return result;
     }
@@ -75,14 +73,14 @@ public class LoginController {
     @Operation(summary = "根据手机号和密码登录")
     @ResponseBody
     @PostMapping("/login/password")
-    public JsonResult<UserRespVo> loginByPassword(PasswordLoginVo vo) {
+    public JsonResult<UserRespVo> loginByPassword(@RequestBody PasswordLoginVo vo) {
         return memberFeignService.loginByPassword(vo);
     }
 
     @Operation(summary = "根据手机号和验证码登录")
     @ResponseBody
     @PostMapping("/login/code")
-    public JsonResult<UserRespVo> loginByCode(CodeLoginVo vo) {
+    public JsonResult<UserRespVo> loginByCode(@RequestBody CodeLoginVo vo) {
         String code = vo.getCode();
         String redisCode = redisTemplate.opsForValue().get(AuthConstant.SMS_CODE_CACHE_LOGIN_PREFIX + vo.getPhone());
         if (!StringUtils.isEmpty(redisCode)) {

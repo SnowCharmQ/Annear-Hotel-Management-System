@@ -2,7 +2,15 @@ spring:
   cloud:
     gateway:
       routes:
+        - id: auth_route
+          uri: lb://hotel-auth-server
+          predicates:
+            - Path=/auth/**
+          filters:
+            - RewritePath=/auth(?<segment>/?.*), $\{segment}
         - id: member_route
           uri: lb://hotel-member
           predicates:
-            - Path=/*/member/**
+            - Path=/member/**
+          filters:
+            - RewritePath=/member(?<segment>/?.*), $\{segment}

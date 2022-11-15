@@ -13,20 +13,20 @@ class HotelThirdpartyApplicationTests {
 
     @Test
     void test() {
-        String host = "https://cxkjsms.market.alicloudapi.com";
+        String host = "https://gyytz.market.alicloudapi.com";
+        String path = "/sms/smsSend";
         String appcode = "ecfd6c0f2add43e59d9cec4e12a063e9";
-        String code = "123456";
-        String phone = "15305979533";
-        String path = "/chuangxinsms/dxjk";
-        Map<String, String> headers = new HashMap<>();
+        Map<String, String> headers = new HashMap<String, String>();
+        //最后在header中的格式(中间是英文空格)为Authorization:APPCODE 83359fd73fe94948385f570e3c139105
         headers.put("Authorization", "APPCODE " + appcode);
-        Map<String, String> queries = new HashMap<>();
-        String content = "【创信】你的验证码是：" + code + "，1分钟内有效！";
-        queries.put("content", content);
-        queries.put("mobile", phone);
-        Map<String, String> bodies = new HashMap<>();
+        Map<String, String> querys = new HashMap<String, String>();
+        querys.put("mobile", "22");
+        querys.put("param", "**code**:000000,**minute**:3");
+        querys.put("smsSignId", "2e65b1bb3d054466b82f0c9d125465e2");
+        querys.put("templateId", "908e94ccf08b4476ba6c876d13f084ad");
+        Map<String, String> bodies = new HashMap<String, String>();
         try {
-            HttpResponse response = HttpUtils.doPost(host, path, headers, queries, bodies);
+            HttpResponse response = HttpUtils.doPost(host, path, headers, querys, bodies);
             System.out.println(response.toString());
         } catch (Exception e) {
             e.printStackTrace();

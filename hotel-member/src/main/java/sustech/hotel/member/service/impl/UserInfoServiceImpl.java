@@ -71,7 +71,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encode = passwordEncoder.encode(vo.getPassword());
         entity.setPassword(encode);
-        BigDecimal balance = new BigDecimal('0');
+        BigDecimal balance = BigDecimal.ZERO;
         entity.setBalance(balance);
         //插入一条新的用户信息到数据库
         this.baseMapper.insert(entity);
@@ -125,7 +125,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         if (entity == null) {
             entity = new UserInfoEntity();
             entity.setPhone(phone);
-            entity.setBalance(new BigDecimal('0'));
+            entity.setBalance(BigDecimal.ZERO);
             this.baseMapper.insert(entity);
             //插进数据库会附上用户ID
             entity = this.baseMapper.selectOne(wrapper);

@@ -1,17 +1,18 @@
 package sustech.hotel.member.controller;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import sustech.hotel.common.utils.JwtHelper;
 import sustech.hotel.exception.BaseException;
+import sustech.hotel.exception.ExceptionCodeEnum;
+import sustech.hotel.exception.auth.NotFoundException;
 import sustech.hotel.member.entity.UserInfoEntity;
 import sustech.hotel.member.feign.OrderFeignService;
 import sustech.hotel.member.service.UserInfoService;
@@ -19,6 +20,7 @@ import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.model.vo.member.PasswordLoginVo;
+import sustech.hotel.model.vo.member.TokenVo;
 import sustech.hotel.model.vo.member.UserRegisterVo;
 import sustech.hotel.model.vo.member.UserRespVo;
 
@@ -39,6 +41,7 @@ public class UserInfoController {
     public JsonResult<UserRespVo> loginByCode(@RequestBody String phone) {
         try {
             UserRespVo userRespVo = userInfoService.loginByCode(phone);
+            userRespVo.setToken(JwtHelper.createToken(userRespVo.getUserId(), userRespVo.getUsername()));
             return new JsonResult<>(userRespVo);
         } catch (BaseException e) {
             return new JsonResult<>(e);
@@ -50,10 +53,27 @@ public class UserInfoController {
     public JsonResult<UserRespVo> loginByPassword(@RequestBody PasswordLoginVo vo) {
         try {
             UserRespVo userRespVo = userInfoService.loginByPassword(vo);
+            userRespVo.setToken(JwtHelper.createToken(userRespVo.getUserId(), userRespVo.getUsername()));
             return new JsonResult<>(userRespVo);
         } catch (BaseException e) {
             return new JsonResult<>(e);
         }
+    }
+
+    @ResponseBody
+    @GetMapping("/avatar")
+    public JsonResult<String> getAvatar(TokenVo vo) {
+        if (vo.getToken() == null || StringUtils.isEmpty(vo.getToken()) || Objects.equals(vo.getToken(), "null")) {
+            return new JsonResult<>(new NotFoundException(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(),
+                    ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage()));
+        }
+        Long userId = JwtHelper.getUserId(vo.getToken());
+        UserInfoEntity user = userInfoService.getById(userId);
+        if (user == null) {
+            return new JsonResult<>(new NotFoundException(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(),
+                    ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage()));
+        }
+        return new JsonResult<>(user.getAvatar());
     }
 
     /**
@@ -169,7 +189,7 @@ public class UserInfoController {
     }
 
     @RequestMapping("/alterUserInfo")
-    public JsonResult<Void> alterUserInfo(Long toEditId, String phone, String email, String avatar, Integer gender, Date birthday, String province, String city, String detailAddress, String job, Integer isBlocked, String socialName){
+    public JsonResult<Void> alterUserInfo(Long toEditId, String phone, String email, String avatar, Integer gender, Date birthday, String province, String city, String detailAddress, String job, Integer isBlocked, String socialName) {
         userInfoService.alterInfo(toEditId, phone, email, avatar, gender, birthday, province, city, detailAddress, job, isBlocked, socialName);
         return new JsonResult<>();
     }

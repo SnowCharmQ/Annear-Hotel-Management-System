@@ -1,4 +1,5 @@
 import Vue from 'vue'
+import cookie from "js-cookie";
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
@@ -28,10 +29,16 @@ const routes = [
             }, {
                 path: '/order',
                 name: 'order',
+                meta: {
+                    requireAuth: true
+                },
                 component: () => import('../pages/Order/order')
             }, {
                 path: '/login',
                 name: 'login',
+                meta: {
+                    isLogin: true
+                },
                 component: () => import('../pages/Login/login')
             }, {
                 path: '/register',
@@ -49,6 +56,31 @@ const routes = [
 let router = new VueRouter({
     mode: 'history',
     routes
+})
+
+router.beforeEach((to, from, next) => {
+    if (to.meta.isLogin) {
+        if (!cookie.get('token')) {
+            next();
+        } else {
+            next({
+                path: '/home'
+            })
+        }
+        return;
+    }
+    if (to.meta.requireAuth) {
+        if (cookie.get('token')) {
+            next();
+        } else {
+            next({
+                path: '/login',
+                query: {redirect: to.fullPath}
+            })
+        }
+    } else {
+        next();
+    }
 })
 
 export default router

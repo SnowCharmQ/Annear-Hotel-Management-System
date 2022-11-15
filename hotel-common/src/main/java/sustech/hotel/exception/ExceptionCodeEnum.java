@@ -13,9 +13,11 @@ public enum ExceptionCodeEnum {
     NOT_REGISTER_EXCEPTION(10004, "The phone number has not been registered"),
     PASSWORD_INCORRECT_EXCEPTION(10005, "The password is incorrect"),
     SMS_CODE_INCORRECT_EXCEPTION(10006, "The SMS code is incorrect"),
-    NOT_FOUND_EXCEPTION(10007, "The user does not exist");
+    NOT_FOUND_EXCEPTION(10007, "The user does not exist"),
 
     // 11001 - 11999 订单异常
+
+    ROOM_NOT_AVAILABLE_EXCEPTION(11001, "The room is not available in that time");
 
 
     private final int code;

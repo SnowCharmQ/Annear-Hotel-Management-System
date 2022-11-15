@@ -13,7 +13,6 @@ import lombok.Data;
 public class OrderCommentsEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
-
     private String orderId;
     private String comments;
     private Date commentTime;

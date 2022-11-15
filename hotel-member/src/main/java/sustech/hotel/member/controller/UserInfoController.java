@@ -24,7 +24,6 @@ import sustech.hotel.model.vo.member.TokenVo;
 import sustech.hotel.model.vo.member.UserRegisterVo;
 import sustech.hotel.model.vo.member.UserRespVo;
 
-@CrossOrigin
 @Api("用户信息控制类")
 @RestController
 @RequestMapping("member/userinfo")

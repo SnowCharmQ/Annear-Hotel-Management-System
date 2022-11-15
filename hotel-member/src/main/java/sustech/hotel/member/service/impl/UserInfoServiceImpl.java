@@ -78,6 +78,23 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
     }
 
     @Override
+    public void register(String userName, String password, String phone, String email, Integer gender, String province, String city, String detailedAdr,String name, Long brithday){
+        UserInfoEntity one
+                = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>()
+                .eq("username", userName));
+        System.out.println(userName);
+        System.out.println(one);
+        if (one != null) {
+            throw new UsernameExistedException(ExceptionCodeEnum.USERNAME_EXISTED_EXCEPTION.getCode(),
+                    ExceptionCodeEnum.USERNAME_EXISTED_EXCEPTION.getMessage());
+        }
+        Date birth_day = new Date(brithday);
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encode = passwordEncoder.encode(password);
+        this.userInfoDao.register(userName, encode ,phone, email, gender, province, city, detailedAdr, name, birth_day);
+    }
+
+    @Override
     public UserRespVo loginByPassword(PasswordLoginVo vo) throws BaseException {
         String phone = vo.getPhone();
         String password = vo.getPassword();

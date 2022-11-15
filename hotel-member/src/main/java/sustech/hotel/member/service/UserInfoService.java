@@ -21,6 +21,8 @@ public interface UserInfoService extends IService<UserInfoEntity> {
 
     void register(UserRegisterVo vo);
 
+    void register(String name, String password, String phone, String email, Integer gender, String province, String city, String detailedAdr, String socialName, Long birthday);
+
     UserRespVo loginByPassword(PasswordLoginVo vo) throws BaseException;
 
     UserRespVo loginByCode(String phone);

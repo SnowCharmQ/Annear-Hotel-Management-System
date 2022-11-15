@@ -22,6 +22,7 @@ import sustech.hotel.model.vo.member.PasswordLoginVo;
 import sustech.hotel.model.vo.member.UserRegisterVo;
 import sustech.hotel.model.vo.member.UserRespVo;
 
+@CrossOrigin
 @Api("用户信息控制类")
 @RestController
 @RequestMapping("member/userinfo")
@@ -70,6 +71,19 @@ public class UserInfoController {
         }
     }
 
+    /**
+     * register user by detailed information
+     */
+    @RequestMapping("/register_user")
+    public JsonResult<Void> register(String userName, String password, String phone, String email, Integer gender, String province, String city, String detailedAdr, String name, Long birthday) {
+        System.out.println("reached");
+        try {
+            userInfoService.register(userName, password, phone, email, gender, province, city,detailedAdr, name, birthday);
+            return new JsonResult<>();
+        } catch (BaseException e) {
+            return new JsonResult<>(e);
+        }
+    }
     /**
      * @param phone 手机号
      * @return 根据手机号查询是否已经注册过
@@ -133,7 +147,7 @@ public class UserInfoController {
      * query user info by id
      */
     @RequestMapping("/queryUserInfoById")
-    public JsonResult<UserInfoEntity> queryUserInfoById(@RequestBody Long userId) {
+    public JsonResult<UserInfoEntity> queryUserInfoById(Long userId) {
         return new JsonResult<>(userInfoService.queryUserInfoById(userId));
     }
 

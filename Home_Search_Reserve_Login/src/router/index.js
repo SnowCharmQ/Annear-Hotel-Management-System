@@ -33,6 +33,14 @@ const routes = [
                 path: '/login',
                 name: 'login',
                 component: () => import('../pages/Login/login')
+            }, {
+                path: '/register',
+                name: 'register',
+                component: () => import('../pages/Register/register')
+            }, {
+                path: '/userInfo',
+                name: 'userInfo',
+                component: () => import('../pages/UserInfo/UserInfo')
             }
         ]
     }

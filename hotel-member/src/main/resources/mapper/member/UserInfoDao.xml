@@ -37,6 +37,11 @@
         WHERE user_id  = #{toEditId}
     </update>
 
+    <insert id="register">
+        INSERT INTO chm_user_info (username, password, phone, email, gender, province, city, social_name, birthday, balance, detail_address)
+        VALUES (#{name}, #{password}, #{phone}, #{email}, #{gender}, #{province}, #{city}, #{social_name}, #{birthday}, 0, #{detailedAdr});
+    </insert>
+
     <update id="test">
         UPDATE chm_user_info
         SET username = #{name}

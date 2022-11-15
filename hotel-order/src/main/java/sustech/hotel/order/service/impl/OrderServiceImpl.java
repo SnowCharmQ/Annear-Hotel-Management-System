@@ -49,6 +49,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         return orderTos;
     }
 
+    @Override
     public void placeOrder(PlaceOrderVo request) {
         // TODO: 2022/11/15  check whether the request time is available to the room
 //        if(can not order the room)

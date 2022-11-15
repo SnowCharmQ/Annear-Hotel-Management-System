@@ -87,7 +87,12 @@ export default {
             let resp = data.data;
             if (resp && resp.state === 200) {
               cookie.set('token', resp.data.token, {expires: 1});
-              this.$router.push('home')
+              let url = this.$route.query.redirect;
+              if (url){
+                this.$router.push(url);
+              } else {
+                this.$router.push('home');
+              }
             } else if (resp && resp.state !== 200) {
               this.$message.error(resp.message);
             } else {

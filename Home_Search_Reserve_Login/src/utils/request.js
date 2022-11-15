@@ -54,11 +54,12 @@ http.adornUrl = (actionName) => {
  * @param contentType 数据格式
  */
 http.adornParams = (params = {}, openDefaultParams = true, contentType = 'json') => {
-    const defaults = {
-        't': new Date().getTime()
-    };
-    return openDefaultParams ? merge(defaults, params) : params
+    // const defaults = {
+    //     't': new Date().getTime()
+    // };
+    // return openDefaultParams ? merge(defaults, params) : params
     // return contentType === 'json' ? JSON.stringify(params) : qs.stringify(params)
+    return params;
 }
 
 /**

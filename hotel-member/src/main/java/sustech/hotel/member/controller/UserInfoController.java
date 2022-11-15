@@ -1,13 +1,11 @@
 package sustech.hotel.member.controller;
 
-import java.util.Arrays;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.annotations.Api;
 import io.swagger.v3.oas.annotations.Operation;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -64,6 +62,10 @@ public class UserInfoController {
     @ResponseBody
     @GetMapping("/avatar")
     public JsonResult<String> getAvatar(TokenVo vo) {
+        if (vo.getToken() == null || StringUtils.isEmpty(vo.getToken()) || Objects.equals(vo.getToken(), "null")) {
+            return new JsonResult<>(new NotFoundException(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(),
+                    ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage()));
+        }
         Long userId = JwtHelper.getUserId(vo.getToken());
         UserInfoEntity user = userInfoService.getById(userId);
         if (user == null) {

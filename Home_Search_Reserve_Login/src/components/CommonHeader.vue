@@ -124,32 +124,30 @@ export default {
         this.showLogin = !(this.$route.name === 'login') && !this.isLogin;
         this.showSearch = !(this.$route.name === 'search' || this.$route.name === 'login');
         this.showHome = (this.$route.name === 'search' || this.$route.name === 'login');
+        if (this.isLogin) {
+          this.$http({
+            url: this.$http.adornUrl('/member/member/userinfo/avatar'),
+            method: 'get',
+            params: this.$http.adornParams({
+              token: cookie.get('token')
+            })
+          }).then(data => {
+            let resp = data.data;
+            if (resp && resp.state === 200) {
+              this.avatar = resp.data;
+            } else {
+              this.$message.error(resp.message);
+            }
+          }).catch(err => {
+            this.$message.error("Network Error");
+          })
+        }
       },
       // 深度观察监听
       deep: true,
       immediate: true,
     }
   },
-  mounted() {
-    if (this.isLogin) {
-      this.$http({
-        url: this.$http.adornUrl('/member/member/userinfo/avatar'),
-        method: 'get',
-        params: this.$http.adornParams({
-          token: cookie.get('token')
-        })
-      }).then(data => {
-        let resp = data.data;
-        if (resp && resp.state === 200) {
-          this.avatar = resp.data;
-        } else {
-          this.$message.error(resp.message);
-        }
-      }).catch(err => {
-        this.$message.error("Network Error");
-      })
-    }
-  }
 }
 </script>
 

@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 
 import sustech.hotel.common.utils.JwtHelper;
 import sustech.hotel.exception.BaseException;
+import sustech.hotel.exception.ExceptionCodeEnum;
+import sustech.hotel.exception.auth.NotFoundException;
 import sustech.hotel.member.entity.UserInfoEntity;
 import sustech.hotel.member.feign.OrderFeignService;
 import sustech.hotel.member.service.UserInfoService;
@@ -20,6 +22,7 @@ import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.model.vo.member.PasswordLoginVo;
+import sustech.hotel.model.vo.member.TokenVo;
 import sustech.hotel.model.vo.member.UserRegisterVo;
 import sustech.hotel.model.vo.member.UserRespVo;
 
@@ -56,6 +59,18 @@ public class UserInfoController {
         } catch (BaseException e) {
             return new JsonResult<>(e);
         }
+    }
+
+    @ResponseBody
+    @GetMapping("/avatar")
+    public JsonResult<String> getAvatar(TokenVo vo) {
+        Long userId = JwtHelper.getUserId(vo.getToken());
+        UserInfoEntity user = userInfoService.getById(userId);
+        if (user == null) {
+            return new JsonResult<>(new NotFoundException(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(),
+                    ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage()));
+        }
+        return new JsonResult<>(user.getAvatar());
     }
 
     /**
@@ -158,7 +173,7 @@ public class UserInfoController {
     }
 
     @RequestMapping("/alterUserInfo")
-    public JsonResult<Void> alterUserInfo(Long toEditId, String phone, String email, String avatar, Integer gender, Date birthday, String province, String city, String detailAddress, String job, Integer isBlocked, String socialName){
+    public JsonResult<Void> alterUserInfo(Long toEditId, String phone, String email, String avatar, Integer gender, Date birthday, String province, String city, String detailAddress, String job, Integer isBlocked, String socialName) {
         userInfoService.alterInfo(toEditId, phone, email, avatar, gender, birthday, province, city, detailAddress, job, isBlocked, socialName);
         return new JsonResult<>();
     }

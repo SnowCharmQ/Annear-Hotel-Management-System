@@ -10,6 +10,7 @@
 
     <!--homepage右上角的两个按钮-->
     <div class="r-content">
+      <img :src="avatar" v-if="isLogin" id="avatar"/>
       <el-button type="text" @click="loginHandle" v-if="showLogin">Login</el-button>
       <el-button @click="toSearch" v-if="showSearch">Search</el-button>
       <el-button @click="toHome" v-if="showHome">Home</el-button>
@@ -53,11 +54,15 @@
 </template>
 
 <script>
+import cookie from "js-cookie";
+
 export default {
   name: 'CommonHeader',
   data() {
     return {
+      avatar: 'https://ooad-1312953997.cos.ap-guangzhou.myqcloud.com/img/user-filling.png',
       loginDialog: false,
+      isLogin: false,
       drawer: false,
       showLogin: true,
       showSearch: true,
@@ -115,7 +120,8 @@ export default {
     '$route': {
       handler: function () {
         this.show = !(this.$route.name === 'login');
-        this.showLogin = !(this.$route.name === 'login');
+        this.isLogin = cookie.get('token');
+        this.showLogin = !(this.$route.name === 'login') && !this.isLogin;
         this.showSearch = !(this.$route.name === 'search' || this.$route.name === 'login');
         this.showHome = (this.$route.name === 'search' || this.$route.name === 'login');
       },
@@ -123,11 +129,39 @@ export default {
       deep: true,
       immediate: true,
     }
+  },
+  mounted() {
+    if (this.isLogin) {
+      this.$http({
+        url: this.$http.adornUrl('/member/member/userinfo/avatar'),
+        method: 'get',
+        params: this.$http.adornParams({
+          token: cookie.get('token')
+        })
+      }).then(data => {
+        let resp = data.data;
+        if (resp && resp.state === 200) {
+          this.avatar = resp.data;
+        } else {
+          this.$message.error(resp.message);
+        }
+      }).catch(err => {
+        this.$message.error("Network Error");
+      })
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
+
+#avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  margin-right: 10px;
+}
+
 header {
   display: flex;
   flex-direction: row;

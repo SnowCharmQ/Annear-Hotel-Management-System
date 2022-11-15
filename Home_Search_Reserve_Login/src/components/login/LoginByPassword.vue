@@ -86,7 +86,7 @@ export default {
           }).then(data => {
             let resp = data.data;
             if (resp && resp.state === 200) {
-              cookie.set('token', resp.data.token);
+              cookie.set('token', resp.data.token, {expires: 1});
               this.$router.push('home')
             } else if (resp && resp.state !== 200) {
               this.$message.error(resp.message);

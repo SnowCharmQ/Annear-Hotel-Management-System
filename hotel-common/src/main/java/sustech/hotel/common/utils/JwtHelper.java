@@ -15,7 +15,7 @@ import java.util.Date;
 public class JwtHelper {
 
     // 过期时间
-    private static final long tokenExpiration = 30 * 60 * 1000;
+    private static final long tokenExpiration = 24 * 60 * 60 * 1000;
     // 签名密钥
     private static final String tokenSignKey = "OOAD";
 
@@ -47,8 +47,7 @@ public class JwtHelper {
         if (StringUtils.isEmpty(token)) return null;
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(tokenSignKey).parseClaimsJws(token);
         Claims claims = claimsJws.getBody();
-        Integer userId = (Integer) claims.get("userId");
-        return userId.longValue();
+        return (Long) claims.get("userId");
     }
 
     /**

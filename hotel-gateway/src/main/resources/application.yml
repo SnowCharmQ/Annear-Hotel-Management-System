@@ -8,3 +8,9 @@ spring:
             - Path=/auth/**
           filters:
             - RewritePath=/auth(?<segment>/?.*), $\{segment}
+        - id: member_route
+          uri: lb://hotel-member
+          predicates:
+            - Path=/member/**
+          filters:
+            - RewritePath=/member(?<segment>/?.*), $\{segment}

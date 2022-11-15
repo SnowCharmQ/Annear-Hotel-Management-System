@@ -51,12 +51,14 @@ http.adornUrl = (actionName) => {
  * get请求参数处理
  * @param {*} params 参数对象
  * @param {*} openDefaultParams 是否开启默认参数?
+ * @param contentType 数据格式
  */
-http.adornParams = (params = {}, openDefaultParams = true) => {
+http.adornParams = (params = {}, openDefaultParams = true, contentType = 'json') => {
     const defaults = {
         't': new Date().getTime()
     };
     return openDefaultParams ? merge(defaults, params) : params
+    // return contentType === 'json' ? JSON.stringify(params) : qs.stringify(params)
 }
 
 /**
@@ -72,7 +74,6 @@ http.adornData = (data = {}, openDefaultData = true, contentType = 'json') => {
     //     't': new Date().getTime()
     // };
     // data = openDefaultData ? merge(defaults, data) : data
-    console.log(data)
     return contentType === 'json' ? JSON.stringify(data) : qs.stringify(data)
 }
 

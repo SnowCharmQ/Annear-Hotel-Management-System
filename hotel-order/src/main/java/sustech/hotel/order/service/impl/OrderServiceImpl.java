@@ -5,8 +5,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -21,17 +19,14 @@ import sustech.hotel.common.utils.Query;
 
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.auth.NotFoundException;
-import sustech.hotel.exception.auth.RoomNotAvailableException;
-import sustech.hotel.exception.auth.RoomNotFoundException;
-import sustech.hotel.exception.auth.UserNotLoginException;
+import sustech.hotel.exception.room.RoomNotAvailableException;
+import sustech.hotel.exception.room.UserNotLoginException;
 import sustech.hotel.model.to.hotel.RoomTo;
 import sustech.hotel.model.to.hotel.RoomTypeTo;
 import sustech.hotel.model.to.member.UserTo;
 import sustech.hotel.model.to.order.OrderTo;
-import sustech.hotel.model.vo.order.PlaceOrderVo;
 import sustech.hotel.order.dao.OrderDao;
 import sustech.hotel.order.entity.OrderEntity;
-import sustech.hotel.order.entity.OrderInfoEntity;
 import sustech.hotel.order.feign.MemberFeignService;
 import sustech.hotel.order.feign.RoomFeignService;
 import sustech.hotel.order.service.OrderService;

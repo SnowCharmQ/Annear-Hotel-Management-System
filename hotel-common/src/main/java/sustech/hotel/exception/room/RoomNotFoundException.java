@@ -1,4 +1,4 @@
-package sustech.hotel.exception.auth;
+package sustech.hotel.exception.room;
 
 import sustech.hotel.exception.BaseException;
 

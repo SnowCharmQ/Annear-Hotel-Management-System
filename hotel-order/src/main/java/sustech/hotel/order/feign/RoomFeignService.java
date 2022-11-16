@@ -10,8 +10,8 @@ import sustech.hotel.model.to.hotel.RoomTypeTo;
 @FeignClient("hotel-room")
 public interface RoomFeignService {
     @RequestMapping("room/roomtype/info/{typeId}")
-    JsonResult<RoomTypeTo> getRoomTypeByID(@PathVariable("typeId") Integer typeId);
+    JsonResult<RoomTypeTo> getRoomTypeByID(@PathVariable("typeId") Long typeId);
 
     @RequestMapping("room/room/info/{roomId}")
-    JsonResult<RoomTo> getRoomByID(@PathVariable("roomId") Integer roomId);
+    JsonResult<RoomTo> getRoomByID(@PathVariable("roomId") Long roomId);
 }

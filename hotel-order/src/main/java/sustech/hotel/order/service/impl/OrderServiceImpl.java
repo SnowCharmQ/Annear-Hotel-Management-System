@@ -22,7 +22,10 @@ import sustech.hotel.common.utils.Query;
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.auth.NotFoundException;
 import sustech.hotel.exception.auth.RoomNotAvailableException;
+import sustech.hotel.exception.auth.RoomNotFoundException;
 import sustech.hotel.exception.auth.UserNotLoginException;
+import sustech.hotel.model.to.hotel.RoomTo;
+import sustech.hotel.model.to.hotel.RoomTypeTo;
 import sustech.hotel.model.to.member.UserTo;
 import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.model.vo.order.PlaceOrderVo;
@@ -73,9 +76,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             throw new RoomNotAvailableException(ExceptionCodeEnum.ROOM_NOT_AVAILABLE_EXCEPTION.getCode(), ExceptionCodeEnum.ROOM_NOT_AVAILABLE_EXCEPTION.getMessage());
         request.setOrderStatus(0);
         request.setOrderId(IdWorker.getTimeId());
-        // TODO: 2022/11/15 get the origin money and the after discount money.
-        request.setOriginMoney(new BigDecimal("100"));
-        request.setAfterDiscount(new BigDecimal("100"));
+        JsonResult<RoomTo> room = roomFeignService.getRoomByID(request.getRoomId());
+        JsonResult<RoomTypeTo> roomType = roomFeignService.getRoomTypeByID(room.getData().getTypeId());
+        request.setOriginMoney(roomType.getData().getPrice());
+        // TODO: 2022/11/16 Get the After Discount Money 
+        request.setAfterDiscount(request.getOriginMoney());
         this.baseMapper.insert(request);
     }
 

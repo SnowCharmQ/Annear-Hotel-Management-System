@@ -18,7 +18,8 @@ public enum ExceptionCodeEnum {
     // 11001 - 11999 订单异常
 
     ROOM_NOT_AVAILABLE_EXCEPTION(11001, "The room is not available in that time"),
-    USER_NOT_LOGIN_EXCEPTION(11002, "The user haven't login");
+    USER_NOT_LOGIN_EXCEPTION(11002, "The user haven't login"),
+    ROOM_NOT_FOUND_EXCEPTION(11003, "The room does not exist");
 
 
     private final int code;

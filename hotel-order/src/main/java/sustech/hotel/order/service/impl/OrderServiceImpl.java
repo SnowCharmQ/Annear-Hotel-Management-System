@@ -79,7 +79,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         JsonResult<RoomTo> room = roomFeignService.getRoomByID(request.getRoomId());
         JsonResult<RoomTypeTo> roomType = roomFeignService.getRoomTypeByID(room.getData().getTypeId());
         request.setOriginMoney(roomType.getData().getPrice());
-        // TODO: 2022/11/16 Get the After Discount Money 
+        // TODO: 2022/11/16 Get the After Discount Money
         request.setAfterDiscount(request.getOriginMoney());
         this.baseMapper.insert(request);
     }

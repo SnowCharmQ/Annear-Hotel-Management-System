@@ -16,12 +16,12 @@ public class RoomTypeEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId
-    private Integer typeId;
-    private Integer hotelId;
+    private Long typeId;
+    private Long hotelId;
     private BigDecimal price;
-    private Integer breakfast;
-    private Integer windows;
-    private Integer television;
-    private Integer bathtub;
-    private Integer thermos;
+    private Long breakfast;
+    private Long windows;
+    private Long television;
+    private Long bathtub;
+    private Long thermos;
 }

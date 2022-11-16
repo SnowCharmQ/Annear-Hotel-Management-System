@@ -5,8 +5,8 @@ CREATE TABLE cho_order
     user_id        bigint(20)     not null,
     room_id        bigint(20)     not null, -- room
     order_status   int            not null, -- 0 booking, 1 isPayed, 2 isCheckIn, 3 isLeaved, 4 isCancelled
-    start_time     date           not null,
-    end_time       date           not null,
+    start_date     date           not null,
+    end_date       date           not null,
     origin_money   decimal(18, 2) not null,
     after_discount decimal(18, 2) not null
 ) ENGINE = InnoDB

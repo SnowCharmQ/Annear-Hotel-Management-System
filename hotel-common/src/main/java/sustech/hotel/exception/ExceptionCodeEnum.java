@@ -9,11 +9,12 @@ public enum ExceptionCodeEnum {
     // 10001 - 10999 登录注册异常
     SMS_CODE_EXCEPTION(10001, "The exception occurs when sending the message"),
     SMS_CODE_HIGH_FREQUENCY_EXCEPTION(10002, "Too high frequency for SMS code"),
-    USERNAME_EXISTED_EXCEPTION(10003, "The username is existed"),
+    PHONE_NUMBER_EXISTED_EXCEPTION(10003, "The phone number is existed"),
     NOT_REGISTER_EXCEPTION(10004, "The phone number has not been registered"),
     PASSWORD_INCORRECT_EXCEPTION(10005, "The password is incorrect"),
     SMS_CODE_INCORRECT_EXCEPTION(10006, "The SMS code is incorrect"),
     NOT_FOUND_EXCEPTION(10007, "The user does not exist"),
+    INVALID_INPUT_EXCEPTION(10008, "The input is invalid"),
 
     // 11001 - 11999 订单异常
 

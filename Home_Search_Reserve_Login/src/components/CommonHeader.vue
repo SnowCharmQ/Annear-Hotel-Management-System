@@ -119,11 +119,11 @@ export default {
   watch: {
     '$route': {
       handler: function () {
-        this.show = !(this.$route.name === 'login');
+        this.show = !(this.$route.name === 'login') && !(this.$route.name === 'register');
         this.isLogin = cookie.get('token');
         this.showLogin = !(this.$route.name === 'login') && !this.isLogin;
-        this.showSearch = !(this.$route.name === 'search' || this.$route.name === 'login');
-        this.showHome = (this.$route.name === 'search' || this.$route.name === 'login');
+        this.showSearch = !(this.$route.name === 'search' || this.$route.name === 'login' || this.$route.name === 'register');
+        this.showHome = (this.$route.name === 'search' || this.$route.name === 'login' || this.$route.name === 'register');
         if (this.isLogin) {
           this.$http({
             url: this.$http.adornUrl('/member/member/userinfo/avatar'),

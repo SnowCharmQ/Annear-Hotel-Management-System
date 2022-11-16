@@ -19,8 +19,9 @@ import sustech.hotel.common.utils.Query;
 
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.auth.NotFoundException;
-import sustech.hotel.exception.room.RoomNotAvailableException;
-import sustech.hotel.exception.room.UserNotLoginException;
+import sustech.hotel.exception.order.RoomNotAvailableException;
+import sustech.hotel.exception.order.RoomNotFoundException;
+import sustech.hotel.exception.order.UserNotLoginException;
 import sustech.hotel.model.to.hotel.RoomTo;
 import sustech.hotel.model.to.hotel.RoomTypeTo;
 import sustech.hotel.model.to.member.UserTo;
@@ -65,13 +66,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     @Override
     public void placeOrder(OrderEntity request) {
         QueryWrapper<OrderEntity> wrapper = new QueryWrapper<>();
+        JsonResult<RoomTo> room = roomFeignService.getRoomByID(request.getRoomId());
+        if (room.getData() == null)
+            throw new RoomNotFoundException(ExceptionCodeEnum.ROOM_NOT_FOUND_EXCEPTION);
         wrapper.and(i -> i.eq("room_id", request.getRoomId()).gt("end_date", request.getStartDate()).lt("start_date", request.getEndDate()));
         List<OrderEntity> list = this.list(wrapper);
         if (!(list == null || list.isEmpty()))
-            throw new RoomNotAvailableException(ExceptionCodeEnum.ROOM_NOT_AVAILABLE_EXCEPTION.getCode(), ExceptionCodeEnum.ROOM_NOT_AVAILABLE_EXCEPTION.getMessage());
+            throw new RoomNotAvailableException(ExceptionCodeEnum.ROOM_NOT_AVAILABLE_EXCEPTION);
         request.setOrderStatus(0);
         request.setOrderId(IdWorker.getTimeId());
-        JsonResult<RoomTo> room = roomFeignService.getRoomByID(request.getRoomId());
+
         JsonResult<RoomTypeTo> roomType = roomFeignService.getRoomTypeByID(room.getData().getTypeId());
         request.setOriginMoney(roomType.getData().getPrice());
         // TODO: 2022/11/16 Get the After Discount Money
@@ -83,7 +87,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     public Long checkUserID(String token) {
         Long userid = JwtHelper.getUserId(token);
         if (userid == null)
-            throw new UserNotLoginException(ExceptionCodeEnum.USER_NOT_LOGIN_EXCEPTION.getCode(), ExceptionCodeEnum.USER_NOT_LOGIN_EXCEPTION.getMessage());
+            throw new UserNotLoginException(ExceptionCodeEnum.USER_NOT_LOGIN_EXCEPTION);
         JsonResult<UserTo> user = memberFeignService.getUser(userid);
         if (user == null)
             throw new NotFoundException(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(), ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage());

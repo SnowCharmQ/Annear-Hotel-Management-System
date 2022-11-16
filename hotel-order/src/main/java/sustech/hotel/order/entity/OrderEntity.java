@@ -21,8 +21,8 @@ public class OrderEntity implements Serializable {
     private Long userId;
     private Long roomId;
     private Integer orderStatus;
-    private Date startTime;
-    private Date endTime;
+    private Date startDate;
+    private Date endDate;
     private BigDecimal originMoney;
     private BigDecimal afterDiscount;
 }

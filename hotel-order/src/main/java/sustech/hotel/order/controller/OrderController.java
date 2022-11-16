@@ -77,4 +77,8 @@ public class OrderController {
         return new JsonResult<>(orderService.queryOrderByUser(userId));
     }
 
+    @RequestMapping("/test")
+    public String queryByUser(){
+        return orderService.queryOrderByUser((long)12012705).toString();
+    }
 }

@@ -55,7 +55,7 @@ public class RoomTypePictureController {
      * 批量删除数据库中的数据（根据主键删除）
      */
     @RequestMapping("/delete")
-    public JsonResult<Void> delete(@RequestBody Integer[] typeIds){
+    public JsonResult<Void> delete(@RequestBody Long[] typeIds){
 		roomTypePictureService.removeByIds(Arrays.asList(typeIds));
         return new JsonResult<>();
     }

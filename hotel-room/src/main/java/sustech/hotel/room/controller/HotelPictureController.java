@@ -55,7 +55,7 @@ public class HotelPictureController {
      * 批量删除数据库中的数据（根据主键删除）
      */
     @RequestMapping("/delete")
-    public JsonResult<Void> delete(@RequestBody Integer[] hotelIds){
+    public JsonResult<Void> delete(@RequestBody Long[] hotelIds){
 		hotelPictureService.removeByIds(Arrays.asList(hotelIds));
         return new JsonResult<>();
     }

@@ -8,9 +8,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoomTo {
-    private Integer roomId;
-    private Integer hotelId;
-    private Integer roomNumber;
-    private Integer typeId;
-    private Integer layoutId;
+    private Long roomId;
+    private Long hotelId;
+    private Long roomNumber;
+    private Long typeId;
+    private Long layoutId;
 }

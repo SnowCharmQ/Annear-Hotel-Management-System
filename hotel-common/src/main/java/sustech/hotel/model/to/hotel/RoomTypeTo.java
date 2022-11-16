@@ -10,12 +10,12 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 @AllArgsConstructor
 public class RoomTypeTo {
-    private Integer typeId;
-    private Integer hotelId;
+    private Long typeId;
+    private Long hotelId;
     private BigDecimal price;
-    private Integer breakfast;
-    private Integer windows;
-    private Integer television;
-    private Integer bathtub;
-    private Integer thermos;
+    private Long breakfast;
+    private Long windows;
+    private Long television;
+    private Long bathtub;
+    private Long thermos;
 }

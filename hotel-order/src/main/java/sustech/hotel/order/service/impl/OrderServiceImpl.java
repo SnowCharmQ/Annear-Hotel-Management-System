@@ -30,6 +30,7 @@ import sustech.hotel.order.dao.OrderDao;
 import sustech.hotel.order.entity.OrderEntity;
 import sustech.hotel.order.entity.OrderInfoEntity;
 import sustech.hotel.order.feign.MemberFeignService;
+import sustech.hotel.order.feign.RoomFeignService;
 import sustech.hotel.order.service.OrderService;
 
 
@@ -38,6 +39,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Autowired
     private MemberFeignService memberFeignService;
+
+    @Autowired
+    RoomFeignService roomFeignService;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {

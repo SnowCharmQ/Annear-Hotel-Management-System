@@ -16,6 +16,8 @@
       <br><br>
       <a class="forget-pwd" href="">Forget Password?</a>
       <br><br>
+      <a class="to-register" @click="toRegister()">Don't have an account yet? Click here to register</a>
+      <br><br>
       <el-form-item>
         <el-button @click="dataFormSubmit()" class="submit-btn" :disabled="disabled">Login In
         </el-button>
@@ -88,7 +90,7 @@ export default {
             if (resp && resp.state === 200) {
               cookie.set('token', resp.data.token, {expires: 1});
               let url = this.$route.query.redirect;
-              if (url){
+              if (url) {
                 this.$router.push(url);
               } else {
                 this.$router.push('home');
@@ -128,7 +130,9 @@ export default {
         }
       })
     },
-
+    toRegister() {
+      this.$router.push('register');
+    }
   }
 }
 </script>
@@ -155,6 +159,13 @@ export default {
   margin-left: 310px;
   text-decoration: underline;
   color: deepskyblue;
+}
+
+.to-register {
+  margin-left: 200px;
+  text-decoration: underline;
+  color: deepskyblue;
+  cursor: pointer;
 }
 
 .submit-btn {

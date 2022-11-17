@@ -15,7 +15,7 @@ public class UserRegisterVo {
     @Pattern(regexp = "^[1]([3-9])[0-9]{9}$", message = "The format of the phone number is invalid")
     String phone;
 
-    @Pattern(regexp = "^[a-z0-9A-Z]+[- |a-z0-9A-Z._]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\\\.)+[a-z]{2,}$", message = "The format of the email address is invalid")
+//    @Pattern(regexp = "^[a-z0-9A-Z]+[- |a-z0-9A-Z._]+@([a-z0-9A-Z]+(-[a-z0-9A-Z]+)?\\\\.)+[a-z]{2,}$", message = "The format of the email address is invalid")
     String email;
 
     Integer gender;

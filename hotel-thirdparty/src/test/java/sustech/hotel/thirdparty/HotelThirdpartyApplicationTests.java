@@ -1,10 +1,19 @@
 package sustech.hotel.thirdparty;
 
+import com.qcloud.cos.COSClient;
+import com.qcloud.cos.ClientConfig;
+import com.qcloud.cos.auth.BasicCOSCredentials;
+import com.qcloud.cos.auth.COSCredentials;
+import com.qcloud.cos.http.HttpProtocol;
+import com.qcloud.cos.model.PutObjectRequest;
+import com.qcloud.cos.model.PutObjectResult;
+import com.qcloud.cos.region.Region;
 import org.apache.http.HttpResponse;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import sustech.hotel.common.utils.HttpUtils;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -31,6 +40,25 @@ class HotelThirdpartyApplicationTests {
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    void uploadPicture() {
+        //文件绝对路径
+        File file = new File("D:\\1A\\Java lab\\OOAD-Project\\hotel-thirdparty\\src\\test\\java\\sustech\\hotel\\thirdparty\\img\\Vue.png");
+        //下面都不用改动
+        String secretId = "AKIDyAKJJI5nJcs298wZyDMN9jkhS0ttkbIC";
+        String secretKey = "1sZDnkVH2gAWjBg5VwGPSQFsHUVRND4q";
+        COSCredentials cred = new BasicCOSCredentials(secretId, secretKey);
+        Region region = new Region("ap-guangzhou");
+        ClientConfig config = new ClientConfig(region);
+        config.setHttpProtocol(HttpProtocol.https);
+        COSClient client = new COSClient(cred, config);
+        String bucketName = "ooad-1312953997";
+        String key = "img/" + file.getName();
+        PutObjectRequest request = new PutObjectRequest(bucketName, key, file);
+        PutObjectResult result = client.putObject(request);
+        System.out.println(client.getObjectUrl(bucketName, key));//输出的是图片对应的URL
     }
 
 }

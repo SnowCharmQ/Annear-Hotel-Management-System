@@ -13,6 +13,6 @@ public class HotelPictureEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Integer hotelId;
+    private Long hotelId;
     private String picturePath;
 }

@@ -19,9 +19,7 @@ import java.util.Map;
 public interface UserInfoService extends IService<UserInfoEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
-    void register(UserRegisterVo vo);
-
-    void register(String name, String password, String phone, String email, Integer gender, String province, String city, String detailedAdr, String socialName, Long birthday);
+    void register(UserRegisterVo vo) throws BaseException;
 
     UserRespVo loginByPassword(PasswordLoginVo vo) throws BaseException;
 

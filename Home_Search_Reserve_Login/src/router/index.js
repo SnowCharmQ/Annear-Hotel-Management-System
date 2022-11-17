@@ -43,6 +43,9 @@ const routes = [
             }, {
                 path: '/register',
                 name: 'register',
+                meta: {
+                    isLogin: true
+                },
                 component: () => import('../pages/Register/register')
             }, {
                 path: '/userInfo',

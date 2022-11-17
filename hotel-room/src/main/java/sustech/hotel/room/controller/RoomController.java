@@ -39,7 +39,7 @@ public class RoomController {
      * 查找数据表中的一条数据（根据主键查找）
      */
     @RequestMapping("/info/{roomId}")
-    public JsonResult<RoomEntity> info(@PathVariable("roomId") Integer roomId){
+    public JsonResult<RoomEntity> info(@PathVariable("roomId") Long roomId){
 		RoomEntity room = roomService.getById(roomId);
         return new JsonResult<>(room);
     }
@@ -66,7 +66,7 @@ public class RoomController {
      * 批量删除数据库中的数据（根据主键删除）
      */
     @RequestMapping("/delete")
-    public JsonResult<Void> delete(@RequestBody Integer[] roomIds){
+    public JsonResult<Void> delete(@RequestBody Long[] roomIds){
 		roomService.removeByIds(Arrays.asList(roomIds));
         return new JsonResult<>();
     }

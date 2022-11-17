@@ -15,8 +15,8 @@ public class LayoutEntity implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @TableId
-    private Integer layoutId;
-    private Integer hotelId;
-    private Integer floor;
+    private Long layoutId;
+    private Long hotelId;
+    private Long floor;
     private String planeGraphPath;
 }

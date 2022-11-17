@@ -6,7 +6,7 @@ import java.sql.Date;
 
 @Data
 public class PlaceOrderVo {
-    private Long userId;
+    private String token;
     private Long roomID;
     private Date startDate;
     private Date endDate;

@@ -93,7 +93,19 @@ export default {
               } else {
                 this.$router.push('home');
               }
-            } else if (resp && resp.state !== 200) {
+            } else if (resp && resp.state === 10008) {
+              let errors = resp.errors;
+              let msg = [];
+              if (errors['password']) {
+                msg.push(errors['password']);
+              }
+              if (errors['phone']) {
+                msg.push(errors['phone']);
+              }
+              this.$message.error({
+                message: msg.join("! ")
+              });
+            } else if (resp && resp.state !== 200 && resp.state !== 10008) {
               this.$message.error(resp.message);
             } else {
               this.$message.error("Network Error");

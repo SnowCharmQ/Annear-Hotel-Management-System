@@ -38,7 +38,7 @@ public class LayoutController {
      * 查找数据表中的一条数据（根据主键查找）
      */
     @RequestMapping("/info/{layoutId}")
-    public JsonResult<LayoutEntity> info(@PathVariable("layoutId") Integer layoutId){
+    public JsonResult<LayoutEntity> info(@PathVariable("layoutId") Long layoutId){
 		LayoutEntity layout = layoutService.getById(layoutId);
         return new JsonResult<>(layout);
     }
@@ -65,7 +65,7 @@ public class LayoutController {
      * 批量删除数据库中的数据（根据主键删除）
      */
     @RequestMapping("/delete")
-    public JsonResult<Void> delete(@RequestBody Integer[] layoutIds){
+    public JsonResult<Void> delete(@RequestBody Long[] layoutIds){
 		layoutService.removeByIds(Arrays.asList(layoutIds));
         return new JsonResult<>();
     }

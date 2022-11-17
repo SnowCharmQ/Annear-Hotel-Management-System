@@ -22,7 +22,7 @@ import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.auth.NotFoundException;
 import sustech.hotel.exception.auth.NotRegisterException;
 import sustech.hotel.exception.auth.PasswordIncorrectException;
-import sustech.hotel.exception.auth.UsernameExistedException;
+import sustech.hotel.exception.auth.PhoneNumberExistedException;
 import sustech.hotel.member.dao.UserInfoDao;
 import sustech.hotel.member.entity.UserInfoEntity;
 import sustech.hotel.member.feign.DiscountFeignService;
@@ -57,41 +57,28 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
 
     @Override
     public void register(UserRegisterVo vo) throws BaseException{
-        //判断手机号是否已经被注册
         UserInfoEntity one
                 = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>()
-                .eq("username", vo.getUsername()));
+                .eq("phone", vo.getPhone()));
         if (one != null) {
-            throw new UsernameExistedException(ExceptionCodeEnum.USERNAME_EXISTED_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.USERNAME_EXISTED_EXCEPTION.getMessage());
+            throw new PhoneNumberExistedException(ExceptionCodeEnum.PHONE_NUMBER_EXISTED_EXCEPTION.getCode(),
+                    ExceptionCodeEnum.PHONE_NUMBER_EXISTED_EXCEPTION.getMessage());
         }
-        UserInfoEntity entity = new UserInfoEntity();
-        entity.setUsername(vo.getUsername());
-        entity.setPhone(vo.getPhone());
+        Date birthday = new Date(vo.getBirthday());
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encode = passwordEncoder.encode(vo.getPassword());
+        UserInfoEntity entity = new UserInfoEntity();
+        entity.setUsername(vo.getUsername());
         entity.setPassword(encode);
-        BigDecimal balance = BigDecimal.ZERO;
-        entity.setBalance(balance);
-        //插入一条新的用户信息到数据库
+        entity.setPhone(vo.getPhone());
+        entity.setEmail(vo.getEmail());
+        entity.setGender(vo.getGender());
+        entity.setProvince(vo.getProvince());
+        entity.setCity(vo.getCity());
+        entity.setDetailAddress(vo.getAddress());
+        entity.setSocialName(vo.getSocialName());
+        entity.setBirthday(birthday);
         this.baseMapper.insert(entity);
-    }
-
-    @Override
-    public void register(String userName, String password, String phone, String email, Integer gender, String province, String city, String detailedAdr,String name, Long brithday){
-        UserInfoEntity one
-                = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>()
-                .eq("username", userName));
-        System.out.println(userName);
-        System.out.println(one);
-        if (one != null) {
-            throw new UsernameExistedException(ExceptionCodeEnum.USERNAME_EXISTED_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.USERNAME_EXISTED_EXCEPTION.getMessage());
-        }
-        Date birth_day = new Date(brithday);
-        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-        String encode = passwordEncoder.encode(password);
-        this.userInfoDao.register(userName, encode ,phone, email, gender, province, city, detailedAdr, name, birth_day);
     }
 
     @Override

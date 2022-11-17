@@ -39,6 +39,17 @@ export default {
         callback();
       }
     };
+    let checkCode = (rule, value, callback) => {
+      if (value === "") {
+        callback(new Error("The verification code can not be left empty"));
+      } else if (!Number.isInteger(value)) {
+        callback(new Error("The verification code can only be a number"));
+      } else if (value.length !== 6) {
+        callback(new Error("The length of the verification code must be 6"));
+      } else {
+        callback();
+      }
+    }
     return {
       countdown: 60,
       disabled: false,
@@ -50,6 +61,7 @@ export default {
       },
       dataRule: {
         phone: [{validator: checkPhone, trigger: 'blur'}],
+        code: [{validator: checkCode, trigger: 'blur'}]
       }
     }
   },
@@ -117,12 +129,24 @@ export default {
             if (resp && resp.state === 200) {
               cookie.set('token', resp.data.token, {expires: 1});
               let url = this.$route.query.redirect;
-              if (url){
+              if (url) {
                 this.$router.push(url);
               } else {
                 this.$router.push('home');
               }
-            } else if (resp && resp.state !== 200) {
+            } else if (resp && resp.state === 10008) {
+              let errors = resp.errors;
+              let msg = [];
+              if (errors['phone']) {
+                msg.push(errors['phone']);
+              }
+              if (errors['code']) {
+                msg.push(errors['code']);
+              }
+              this.$message.error({
+                message: msg.join("! ")
+              });
+            } else if (resp && resp.state !== 200 && resp.state !== 10008) {
               this.$message.error(resp.message);
             } else {
               this.$message.error("Network Error");

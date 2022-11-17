@@ -38,7 +38,7 @@ public class HotelController {
      * 查找数据表中的一条数据（根据主键查找）
      */
     @RequestMapping("/info/{hotelId}")
-    public JsonResult<HotelEntity> info(@PathVariable("hotelId") Integer hotelId){
+    public JsonResult<HotelEntity> info(@PathVariable("hotelId") Long hotelId){
 		HotelEntity hotel = hotelService.getById(hotelId);
         return new JsonResult<>(hotel);
     }
@@ -65,7 +65,7 @@ public class HotelController {
      * 批量删除数据库中的数据（根据主键删除）
      */
     @RequestMapping("/delete")
-    public JsonResult<Void> delete(@RequestBody Integer[] hotelIds){
+    public JsonResult<Void> delete(@RequestBody Long[] hotelIds){
 		hotelService.removeByIds(Arrays.asList(hotelIds));
         return new JsonResult<>();
     }

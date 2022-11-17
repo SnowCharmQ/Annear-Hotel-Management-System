@@ -76,28 +76,12 @@ public class UserInfoController {
     }
 
     /**
-     * @param vo 注册VO类
-     * @return 根据传入的用户名、密码、手机号完成用户注册
-     */
-    @Operation(summary = "注册（feign调用）")
-    @PostMapping("/register")
-    public JsonResult<Void> register(@RequestBody UserRegisterVo vo) {
-        try {
-            userInfoService.register(vo);
-            return new JsonResult<>();
-        } catch (BaseException e) {
-            return new JsonResult<>(e);
-        }
-    }
-
-    /**
      * register user by detailed information
      */
-    @RequestMapping("/register_user")
-    public JsonResult<Void> register(String userName, String password, String phone, String email, Integer gender, String province, String city, String detailedAdr, String name, Long birthday) {
-        System.out.println("reached");
+    @RequestMapping("/register")
+    public JsonResult<Void> register(UserRegisterVo vo) {
         try {
-            userInfoService.register(userName, password, phone, email, gender, province, city,detailedAdr, name, birthday);
+            userInfoService.register(vo);
             return new JsonResult<>();
         } catch (BaseException e) {
             return new JsonResult<>(e);

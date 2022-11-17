@@ -7,6 +7,8 @@ import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 import sustech.hotel.authserver.feign.MemberFeignService;
 import sustech.hotel.authserver.feign.ThirdpartyFeignService;
@@ -20,8 +22,12 @@ import sustech.hotel.model.vo.member.PasswordLoginVo;
 import sustech.hotel.model.vo.member.PhoneVo;
 import sustech.hotel.model.vo.member.UserRespVo;
 
+import javax.validation.Valid;
+import java.util.Map;
+import java.util.Optional;
 import java.util.Random;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 import static sustech.hotel.common.utils.Constant.OK;
 
@@ -73,7 +79,13 @@ public class LoginController {
     @Operation(summary = "根据手机号和密码登录")
     @ResponseBody
     @PostMapping("/login/password")
-    public JsonResult<UserRespVo> loginByPassword(@RequestBody PasswordLoginVo vo) {
+    public JsonResult<UserRespVo> loginByPassword(@RequestBody @Valid PasswordLoginVo vo, BindingResult result) {
+        if (result.hasErrors()) {
+            Map<String, String> errors = result.getFieldErrors().stream().collect(Collectors.toMap(FieldError::getField,
+                    o -> Optional.ofNullable(o.getDefaultMessage()).orElse("")));
+            return new JsonResult<>(ExceptionCodeEnum.INVALID_INPUT_EXCEPTION.getCode(),
+                    ExceptionCodeEnum.INVALID_INPUT_EXCEPTION.getMessage(), errors);
+        }
         return memberFeignService.loginByPassword(vo);
     }
 

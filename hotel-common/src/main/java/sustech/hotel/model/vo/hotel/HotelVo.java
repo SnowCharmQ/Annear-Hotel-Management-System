@@ -10,7 +10,7 @@ import java.math.BigDecimal;
 @Data
 @ApiModel("酒店信息")
 public class HotelVo {
-    private Integer hotelId;
+    private Long hotelId;
     private String province;
     private String city;
     private String district;
@@ -18,12 +18,12 @@ public class HotelVo {
     private BigDecimal longitude;
     private BigDecimal latitude;
     private String telephone;
-    private Integer swimmingPool;
-    private Integer gym;
-    private Integer diningRoom;
-    private Integer bar;
-    private Integer parking;
-    private Integer spa;
-    private Integer chessRoom;
-    private Integer starLevel;
+    private Long swimmingPool;
+    private Long gym;
+    private Long diningRoom;
+    private Long bar;
+    private Long parking;
+    private Long spa;
+    private Long chessRoom;
+    private Long starLevel;
 }

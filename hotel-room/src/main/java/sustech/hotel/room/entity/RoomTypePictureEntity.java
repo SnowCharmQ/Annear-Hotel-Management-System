@@ -13,6 +13,6 @@ public class RoomTypePictureEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
-    private Integer typeId;
+    private Long typeId;
     private String picturePath;
 }

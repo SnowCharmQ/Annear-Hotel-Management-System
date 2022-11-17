@@ -49,7 +49,7 @@ export default {
       } else {
         callback();
       }
-    }
+    };
     return {
       countdown: 60,
       disabled: false,
@@ -127,6 +127,7 @@ export default {
           }).then(data => {
             let resp = data.data;
             if (resp && resp.state === 200) {
+              this.$message.success("Successfully Login In");
               cookie.set('token', resp.data.token, {expires: 1});
               let url = this.$route.query.redirect;
               if (url) {

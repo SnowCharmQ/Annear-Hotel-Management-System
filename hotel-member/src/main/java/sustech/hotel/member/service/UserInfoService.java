@@ -7,11 +7,13 @@ import sustech.hotel.exception.BaseException;
 import sustech.hotel.member.entity.UserInfoEntity;
 import sustech.hotel.model.to.discount.DiscountTo;
 import sustech.hotel.model.to.order.OrderTo;
+import sustech.hotel.model.vo.member.ModifyPasswordVo;
 import sustech.hotel.model.vo.member.PasswordLoginVo;
 import sustech.hotel.model.vo.member.UserRegisterVo;
 import sustech.hotel.model.vo.member.UserRespVo;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +21,7 @@ import java.util.Map;
 public interface UserInfoService extends IService<UserInfoEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
-    void register(UserRegisterVo vo) throws BaseException;
+    void register(UserRegisterVo vo) throws BaseException, ParseException;
 
     UserRespVo loginByPassword(PasswordLoginVo vo) throws BaseException;
 
@@ -38,5 +40,7 @@ public interface UserInfoService extends IService<UserInfoEntity> {
     void collectHotel(Long userId, Integer hotelId);
 
     void updateTest(Long toEdit, String name);
+
+    void modifyPassword(ModifyPasswordVo vo) throws BaseException;
 }
 

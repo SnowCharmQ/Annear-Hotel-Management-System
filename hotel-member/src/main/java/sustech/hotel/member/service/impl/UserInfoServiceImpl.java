@@ -1,14 +1,18 @@
 package sustech.hotel.member.service.impl;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -19,10 +23,7 @@ import sustech.hotel.common.utils.Query;
 
 import sustech.hotel.exception.BaseException;
 import sustech.hotel.exception.ExceptionCodeEnum;
-import sustech.hotel.exception.auth.NotFoundException;
-import sustech.hotel.exception.auth.NotRegisterException;
-import sustech.hotel.exception.auth.PasswordIncorrectException;
-import sustech.hotel.exception.auth.PhoneNumberExistedException;
+import sustech.hotel.exception.auth.*;
 import sustech.hotel.member.dao.UserInfoDao;
 import sustech.hotel.member.entity.UserInfoEntity;
 import sustech.hotel.member.feign.DiscountFeignService;
@@ -30,6 +31,7 @@ import sustech.hotel.member.feign.OrderFeignService;
 import sustech.hotel.member.service.UserInfoService;
 import sustech.hotel.model.to.discount.DiscountTo;
 import sustech.hotel.model.to.order.OrderTo;
+import sustech.hotel.model.vo.member.ModifyPasswordVo;
 import sustech.hotel.model.vo.member.PasswordLoginVo;
 import sustech.hotel.model.vo.member.UserRegisterVo;
 import sustech.hotel.model.vo.member.UserRespVo;
@@ -56,7 +58,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
     }
 
     @Override
-    public void register(UserRegisterVo vo) throws BaseException{
+    public void register(UserRegisterVo vo) throws BaseException, ParseException {
         UserInfoEntity one
                 = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>()
                 .eq("phone", vo.getPhone()));
@@ -64,7 +66,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
             throw new PhoneNumberExistedException(ExceptionCodeEnum.PHONE_NUMBER_EXISTED_EXCEPTION.getCode(),
                     ExceptionCodeEnum.PHONE_NUMBER_EXISTED_EXCEPTION.getMessage());
         }
-        Date birthday = new Date(vo.getBirthday());
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date birthday = sdf.parse(vo.getBirthday());
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encode = passwordEncoder.encode(vo.getPassword());
         UserInfoEntity entity = new UserInfoEntity();
@@ -78,6 +81,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         entity.setDetailAddress(vo.getAddress());
         entity.setSocialName(vo.getSocialName());
         entity.setBirthday(birthday);
+        entity.setBalance(BigDecimal.ZERO);
         this.baseMapper.insert(entity);
     }
 
@@ -133,7 +137,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
     }
 
     @Override
-    public UserInfoEntity queryUserInfoByName(String username){
+    public UserInfoEntity queryUserInfoByName(String username) {
         UserInfoEntity entity = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>().eq("username", username));
         if (entity == null) {
             throw new NotFoundException(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(), ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage());
@@ -162,8 +166,35 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
     }
 
     @Override
-    public void updateTest(Long toEdit, String name){
+    public void updateTest(Long toEdit, String name) {
         this.userInfoDao.test(toEdit, name);
+    }
+
+    @Override
+    public void modifyPassword(ModifyPasswordVo vo) throws BaseException {
+        String phone = vo.getPhone();
+        if (StringUtils.isEmpty(phone)) {
+            throw new NotRegisterException(ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getCode(), ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getMessage());
+        }
+        UserInfoEntity entity = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>().eq("phone", vo.getPhone()));
+        if (entity == null) {
+            throw new NotRegisterException(ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getCode(), ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getMessage());
+        }
+        if (entity.getPassword() == null) {
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String encode = passwordEncoder.encode(vo.getPassword());
+            entity.setPassword(encode);
+        } else {
+            String oldPwd = entity.getPassword();
+            BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+            String newPwd = passwordEncoder.encode(vo.getPassword());
+            if (Objects.equals(oldPwd, newPwd)) {
+                throw new SamePasswordException(ExceptionCodeEnum.SAME_PASSWORD_EXCEPTION.getCode(), ExceptionCodeEnum.SAME_PASSWORD_EXCEPTION.getMessage());
+            } else {
+                entity.setPassword(newPwd);
+                this.baseMapper.updateById(entity);
+            }
+        }
     }
 
 }

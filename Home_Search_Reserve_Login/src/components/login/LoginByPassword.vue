@@ -14,7 +14,7 @@
       <br><br>
       <el-checkbox class="remember-me" v-model="checked">Remember me</el-checkbox>
       <br><br>
-      <a class="forget-pwd" href="">Forget Password?</a>
+      <a class="forget-pwd" @click="toPassword()">Forget Password?</a>
       <br><br>
       <a class="to-register" @click="toRegister()">Don't have an account yet? Click here to register</a>
       <br><br>
@@ -88,6 +88,7 @@ export default {
           }).then(data => {
             let resp = data.data;
             if (resp && resp.state === 200) {
+              this.$message.success("Successfully Login In");
               cookie.set('token', resp.data.token, {expires: 1});
               let url = this.$route.query.redirect;
               if (url) {
@@ -132,6 +133,9 @@ export default {
     },
     toRegister() {
       this.$router.push('register');
+    },
+    toPassword() {
+      this.$router.push('password');
     }
   }
 }
@@ -159,6 +163,7 @@ export default {
   margin-left: 310px;
   text-decoration: underline;
   color: deepskyblue;
+  cursor: pointer;
 }
 
 .to-register {

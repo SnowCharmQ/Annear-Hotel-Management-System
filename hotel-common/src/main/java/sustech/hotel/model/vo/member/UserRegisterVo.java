@@ -28,5 +28,5 @@ public class UserRegisterVo {
 
     String socialName;
 
-    Long birthday;
+    String birthday;
 }

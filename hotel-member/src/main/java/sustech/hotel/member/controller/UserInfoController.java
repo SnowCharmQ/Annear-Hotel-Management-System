@@ -1,5 +1,6 @@
 package sustech.hotel.member.controller;
 
+import java.text.ParseException;
 import java.util.*;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -19,10 +20,7 @@ import sustech.hotel.member.service.UserInfoService;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.model.to.order.OrderTo;
-import sustech.hotel.model.vo.member.PasswordLoginVo;
-import sustech.hotel.model.vo.member.TokenVo;
-import sustech.hotel.model.vo.member.UserRegisterVo;
-import sustech.hotel.model.vo.member.UserRespVo;
+import sustech.hotel.model.vo.member.*;
 
 @Api("用户信息控制类")
 @RestController
@@ -75,18 +73,32 @@ public class UserInfoController {
         return new JsonResult<>(user.getAvatar());
     }
 
+    @PostMapping("/modify/password")
+    public JsonResult<Void> modifyPassword(@RequestBody ModifyPasswordVo vo) {
+        try {
+            userInfoService.modifyPassword(vo);
+            return new JsonResult<>();
+        }catch (BaseException e) {
+            return new JsonResult<>(e);
+        }
+    }
+
     /**
      * register user by detailed information
      */
     @RequestMapping("/register")
-    public JsonResult<Void> register(UserRegisterVo vo) {
+    public JsonResult<Void> register(@RequestBody UserRegisterVo vo) {
+        System.out.println(vo);
         try {
             userInfoService.register(vo);
             return new JsonResult<>();
         } catch (BaseException e) {
             return new JsonResult<>(e);
+        } catch (ParseException e) {
+            return new JsonResult<>(new BaseException(e.getMessage()));
         }
     }
+
     /**
      * @param phone 手机号
      * @return 根据手机号查询是否已经注册过

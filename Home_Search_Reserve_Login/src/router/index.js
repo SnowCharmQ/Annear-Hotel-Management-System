@@ -48,9 +48,16 @@ const routes = [
                 },
                 component: () => import('../pages/Register/register')
             }, {
-                path: '/userInfo',
-                name: 'userInfo',
-                component: () => import('../pages/UserInfo/UserInfo')
+                path: '/userinfo',
+                name: 'userinfo',
+                meta: {
+                    requireAuth: true
+                },
+                component: () => import('../pages/UserInfo/userinfo')
+            }, {
+                path: '/password',
+                name: 'password',
+                component: () => import('../pages/Password/password')
             }
         ]
     }

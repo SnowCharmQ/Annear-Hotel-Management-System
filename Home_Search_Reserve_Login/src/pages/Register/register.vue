@@ -203,7 +203,7 @@ export default {
             url: this.$http.adornUrl('/auth/register'),
             method: 'post',
             data: this.$http.adornData({
-              'username': this.dataForm.firstName + this.dataForm.lastName,
+              'username': this.dataForm.firstName + " " + this.dataForm.lastName,
               'password': this.dataForm.password,
               'phone': this.dataForm.phone,
               'email': this.dataForm.email,
@@ -217,6 +217,7 @@ export default {
           }).then(data => {
             let resp = data.data;
             if (resp && resp.state === 200) {
+              this.$message.success("Successfully Register");
               this.$router.push("login");
             } else if (resp && resp.state === 10008) {
               let errors = resp.errors;
@@ -233,6 +234,10 @@ export default {
               this.$message.error({
                 message: msg.join("! ")
               });
+            } else if (resp && resp.state !== 200 && resp.state !== 10008) {
+              this.$message.error(resp.message);
+            } else {
+              this.$message.error("Network Error");
             }
           })
         } else {

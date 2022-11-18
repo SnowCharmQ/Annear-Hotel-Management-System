@@ -82,6 +82,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         entity.setSocialName(vo.getSocialName());
         entity.setBirthday(birthday);
         entity.setBalance(BigDecimal.ZERO);
+        entity.setAvatar("https://ooad-1312953997.cos.ap-guangzhou.myqcloud.com/img/user-filling.png");
         this.baseMapper.insert(entity);
     }
 
@@ -117,6 +118,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
             entity = new UserInfoEntity();
             entity.setPhone(phone);
             entity.setBalance(BigDecimal.ZERO);
+            entity.setAvatar("https://ooad-1312953997.cos.ap-guangzhou.myqcloud.com/img/user-filling.png");
             this.baseMapper.insert(entity);
             //插进数据库会附上用户ID
             entity = this.baseMapper.selectOne(wrapper);

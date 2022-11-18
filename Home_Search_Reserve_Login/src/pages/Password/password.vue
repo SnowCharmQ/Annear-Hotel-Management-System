@@ -124,8 +124,8 @@
 </style>
 
 <script>
-
-import {isMobile} from "../../utils/validate";
+import cookie from "js-cookie";
+import {isMobile, isNumber} from "../../utils/validate";
 
 export default {
   name: "password",
@@ -142,7 +142,7 @@ export default {
     let checkCode = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("The verification code can not be left empty"));
-      } else if (!Number.isInteger(value)) {
+      } else if (!isNumber(value)) {
         callback(new Error("The verification code can only be a number"));
       } else if (value.length !== 6) {
         callback(new Error("The length of the verification code must be 6"));
@@ -189,24 +189,25 @@ export default {
           }).then(data => {
             let resp = data.data;
             if (resp && resp.state === 200) {
-              //TODO delete cookie
+              this.$message("Successfully Modify the Password")
+              cookie.remove('token');
               this.$router.push("login");
             } else if (resp && resp.state === 10008) {
               let errors = resp.errors;
               let msg = [];
-              // if (errors['password']) {
-              //   msg.push(errors['password']);
-              // }
-              // if (errors['phone']) {
-              //   msg.push(errors['phone']);
-              // }
-              // if (errors['email']) {
-              //   msg.push(errors['email']);
-              // }
+              if (errors['password']) {
+                msg.push(errors['password']);
+              }
+              if (errors['phone']) {
+                msg.push(errors['phone']);
+              }
+              if (errors['code']) {
+                msg.push(errors['code']);
+              }
               this.$message.error({
                 message: msg.join("! ")
               });
-            }else if (resp && resp.state !== 200 && resp.state !== 10008) {
+            } else if (resp && resp.state !== 200 && resp.state !== 10008) {
               this.$message.error(resp.message);
             } else {
               this.$message.error("Network Error");

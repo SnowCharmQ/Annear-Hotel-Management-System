@@ -25,7 +25,7 @@
 
 <script>
 import cookie from 'js-cookie'
-import {isMobile} from "../../utils/validate";
+import {isMobile, isNumber} from "../../utils/validate";
 
 export default {
   name: "LoginByVerificationCode",
@@ -42,7 +42,7 @@ export default {
     let checkCode = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("The verification code can not be left empty"));
-      } else if (!Number.isInteger(value)) {
+      } else if (!isNumber(value)) {
         callback(new Error("The verification code can only be a number"));
       } else if (value.length !== 6) {
         callback(new Error("The length of the verification code must be 6"));

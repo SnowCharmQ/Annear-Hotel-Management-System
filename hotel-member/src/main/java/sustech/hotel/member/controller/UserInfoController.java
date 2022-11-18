@@ -88,7 +88,6 @@ public class UserInfoController {
      */
     @RequestMapping("/register")
     public JsonResult<Void> register(@RequestBody UserRegisterVo vo) {
-        System.out.println(vo);
         try {
             userInfoService.register(vo);
             return new JsonResult<>();

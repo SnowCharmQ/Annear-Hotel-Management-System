@@ -67,7 +67,8 @@ export default {
     let phone = localStorage.getItem("phone");
     if (phone) {
       this.dataForm.phone = phone;
-      this.dataForm.password = localStorage.getItem("pwd");
+      let pwd = localStorage.getItem("pwd");
+      this.dataForm.password = Base64.decode(pwd);
       this.checked = true;
     }
   },
@@ -119,6 +120,8 @@ export default {
           this.disabled = true;
           window.setTimeout(this.enableBtn, 3000);
           if (this.checked) {
+            localStorage.removeItem("phone");
+            localStorage.removeItem("pwd");
             let pwd = Base64.encode(this.dataForm.password);
             localStorage.setItem("phone", this.dataForm.phone);
             localStorage.setItem("pwd", pwd);

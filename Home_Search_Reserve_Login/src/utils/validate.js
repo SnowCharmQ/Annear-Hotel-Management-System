@@ -3,7 +3,7 @@
  * @param {*} s
  */
 export function isEmail (s) {
-    return /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(s)
+    return /^([a-zA-Z0-9_-])+@([a-zA-Z0-9_-])+((.[a-zA-Z0-9_-]{2,3}){1,2})$/.test(s);
 }
 
 /**
@@ -11,7 +11,7 @@ export function isEmail (s) {
  * @param {*} s
  */
 export function isMobile (s) {
-    return /^1[0-9]{10}$/.test(s)
+    return /^1[0-9]{10}$/.test(s);
 }
 
 /**
@@ -19,7 +19,7 @@ export function isMobile (s) {
  * @param {*} s
  */
 export function isPhone (s) {
-    return /^([0-9]{3,4}-)?[0-9]{7,8}$/.test(s)
+    return /^([0-9]{3,4}-)?[0-9]{7,8}$/.test(s);
 }
 
 /**
@@ -27,5 +27,13 @@ export function isPhone (s) {
  * @param {*} s
  */
 export function isURL (s) {
-    return /^http[s]?:\/\/.*/.test(s)
+    return /^http[s]?:\/\/.*/.test(s);
+}
+
+/**
+ * 数字
+ * @param {*} s
+ */
+export function isNumber (s) {
+    return /^[0-9]+.?[0-9]*/.test(s);
 }

@@ -10,6 +10,8 @@
 
     <!--homepage右上角的两个按钮-->
     <div class="r-content">
+      <el-button type="text" @click="logOut" v-if="isInfo" id="logout">Logout</el-button>
+      <img :src="avatar" @click="toInfo()" v-if="isLogin" id="avatar"/>
       <el-button type="text" @click="loginHandle" v-if="showLogin">Login</el-button>
       <el-button @click="toSearch" v-if="showSearch">Search</el-button>
       <el-button @click="toHome" v-if="showHome">Home</el-button>
@@ -53,11 +55,16 @@
 </template>
 
 <script>
+import cookie from "js-cookie";
+
 export default {
   name: 'CommonHeader',
   data() {
     return {
+      avatar: 'https://ooad-1312953997.cos.ap-guangzhou.myqcloud.com/img/user-filling.png',
       loginDialog: false,
+      isLogin: false,
+      isInfo: false,
       drawer: false,
       showLogin: true,
       showSearch: true,
@@ -100,13 +107,22 @@ export default {
     toHome() {
       this.$router.push('home')
     },
+    toInfo() {
+      if (this.$route.name !== "userinfo") {
+        this.$router.push('userinfo')
+      }
+    },
     // 登录
     loginHandle() {
       this.$router.push('login')
     },
+    logOut() {
+      cookie.remove('token');
+      this.$message.success("Successfully Logout")
+      this.$router.push('login');
+    },
     //点击菜单
     menuClick(curMenu) {
-      // console.log('当前路由：' + curMenu.name)
       this.$router.push(curMenu.name.split('-')[0])
       this.drawer = false
     }
@@ -114,20 +130,53 @@ export default {
   watch: {
     '$route': {
       handler: function () {
-        this.show = !(this.$route.name === 'login');
-        this.showLogin = !(this.$route.name === 'login');
-        this.showSearch = !(this.$route.name === 'search' || this.$route.name === 'login');
-        this.showHome = (this.$route.name === 'search' || this.$route.name === 'login');
+        this.show = !(this.$route.name === 'login') && !(this.$route.name === 'register');
+        this.isLogin = cookie.get('token');
+        this.isInfo = this.$route.name === 'userinfo';
+        this.showLogin = !(this.$route.name === 'login') && !this.isLogin;
+        this.showSearch = !(this.$route.name === 'search' || this.$route.name === 'login' || this.$route.name === 'register');
+        this.showHome = (this.$route.name === 'search' || this.$route.name === 'login' || this.$route.name === 'register');
+        if (this.isLogin) {
+          this.$http({
+            url: this.$http.adornUrl('/member/member/userinfo/avatar'),
+            method: 'get',
+            params: this.$http.adornParams({
+              token: cookie.get('token')
+            })
+          }).then(data => {
+            let resp = data.data;
+            if (resp && resp.state === 200) {
+              this.avatar = resp.data;
+            } else {
+              this.$message.error(resp.message);
+            }
+          }).catch(err => {
+            this.$message.error("Network Error");
+          })
+        }
       },
       // 深度观察监听
       deep: true,
       immediate: true,
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
+
+#logout{
+  margin-right: 10px;
+}
+
+#avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  margin-right: 10px;
+  cursor: pointer;
+}
+
 header {
   display: flex;
   flex-direction: row;

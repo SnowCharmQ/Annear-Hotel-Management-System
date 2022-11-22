@@ -550,7 +550,7 @@ export default {
       this.$router.push('reserve')
     },
     toOpen(index) {
-      if (index == 3 || index == 4 || index == 5) {
+      if (index === 3 || index === 4 || index === 5) {
         return;
       }
       this.curRow = this.list[index]

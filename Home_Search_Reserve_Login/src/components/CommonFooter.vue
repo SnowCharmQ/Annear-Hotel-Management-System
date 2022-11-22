@@ -164,7 +164,9 @@ export default {
   watch: {
     '$route': {
       handler: function () {
-        this.show = !(this.$route.name === 'search' || this.$route.name === 'reserve' || this.$route.name === 'order' || this.$route.name === 'login' || this.$route.name === 'floorPlan');
+        this.show = !(this.$route.name === 'search' || this.$route.name === 'reserve' ||
+            this.$route.name === 'order' || this.$route.name === 'login' || this.$route.name === 'register' ||
+            this.$route.name === 'password' || this.$route.name === 'floorPlan');
       },
       // 深度观察监听
       deep: true,

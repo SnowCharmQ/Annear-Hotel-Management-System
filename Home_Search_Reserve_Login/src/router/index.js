@@ -1,5 +1,4 @@
 import Vue from 'vue'
-import cookie from "js-cookie";
 import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
@@ -29,35 +28,15 @@ const routes = [
             }, {
                 path: '/order',
                 name: 'order',
-                meta: {
-                    requireAuth: true
-                },
                 component: () => import('../pages/Order/order')
             }, {
                 path: '/login',
                 name: 'login',
-                meta: {
-                    isLogin: true
-                },
                 component: () => import('../pages/Login/login')
             }, {
-                path: '/register',
-                name: 'register',
-                meta: {
-                    isLogin: true
-                },
-                component: () => import('../pages/Register/register')
-            }, {
-                path: '/userinfo',
-                name: 'userinfo',
-                meta: {
-                    requireAuth: true
-                },
-                component: () => import('../pages/UserInfo/userinfo')
-            }, {
-                path: '/password',
-                name: 'password',
-                component: () => import('../pages/Password/password')
+                path: '/floorPlan',
+                name: 'floorPlan',
+                component: () => import('../pages/FloorPlan/floorPlan')
             }
         ]
     }
@@ -66,31 +45,6 @@ const routes = [
 let router = new VueRouter({
     mode: 'history',
     routes
-})
-
-router.beforeEach((to, from, next) => {
-    if (to.meta.isLogin) {
-        if (!cookie.get('token')) {
-            next();
-        } else {
-            next({
-                path: '/home'
-            })
-        }
-        return;
-    }
-    if (to.meta.requireAuth) {
-        if (cookie.get('token')) {
-            next();
-        } else {
-            next({
-                path: '/login',
-                query: {redirect: to.fullPath}
-            })
-        }
-    } else {
-        next();
-    }
 })
 
 export default router

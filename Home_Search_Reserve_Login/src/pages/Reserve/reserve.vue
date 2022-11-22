@@ -186,6 +186,14 @@
 				<div style="background:#f3eee7;line-height:80px;padding-left:15px;font-size:22px">Select a Room</div>
 				<div class="hotel-select">
 					<div class="flex-row" style="margin-top:15px;">
+						<span class="el-dropdown-link">
+							<div class="flex-row" style="cursor: pointer;margin-right:20px;" @click="toFloorPlan">
+								<div>
+									<div>View</div>
+									<div class="row-label">Floor Plan</div>
+								</div>
+							</div>
+						</span>
 
             <!--view results by room下拉菜单-->
 						<el-dropdown>
@@ -524,6 +532,9 @@ export default {
     },
 	toCheckOut(){
 		this.$router.push('Order')
+	},
+	toFloorPlan(){
+		this.$router.push('floorPlan')
 	}
 
   }
@@ -540,7 +551,7 @@ export default {
   }
 
   .top-link {
-    width: 480px;
+    width: 500px;
     margin: 0 auto;
     text-align: center;
     display: flex;

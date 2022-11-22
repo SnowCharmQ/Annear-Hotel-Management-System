@@ -1,7 +1,6 @@
 <template>
   <el-col :span="24" class="form-row">
     <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" status-icon>
-      <br><br>
       <el-form-item prop="phone" class="form-item" label="Phone Number" label-width="200px">
         <!--        <el-col class="form-title">Phone Number</el-col>-->
         <el-input class="form-input" v-model="dataForm.phone" auto-complete="off"></el-input>
@@ -12,15 +11,11 @@
         <el-input class="form-input" v-model="dataForm.password" type="password" auto-complete="off"></el-input>
       </el-form-item>
       <br><br>
-      <el-checkbox class="remember-me" v-model="checked">Remember me</el-checkbox>
-      <br><br>
-      <a class="forget-pwd" @click="toPassword()">Forget Password?</a>
-      <br><br>
-      <a class="to-register" @click="toRegister()">Don't have an account yet? Click here to register</a>
-      <br><br>
+      <el-checkbox class="remember-me">Remember me</el-checkbox>
+      <br>
+      <br>
       <el-form-item>
-        <el-button @click="dataFormSubmit()" class="submit-btn" :disabled="disabled">Login In
-        </el-button>
+        <el-button @click="dataFormSubmit()" class="submit-btn">Login In</el-button>
       </el-form-item>
     </el-form>
   </el-col>
@@ -29,16 +24,14 @@
 <script>
 import cookie from 'js-cookie'
 import {isMobile} from "../../utils/validate";
-
-const Base64 = require("js-base64").Base64;
 export default {
   name: "LoginByPassword",
   data() {
     let checkPhone = (rule, value, callback) => {
       if (value === "") {
-        callback(new Error("The phone number can not be left empty"));
+        callback(new Error("The phone number can not be left empty!"));
       } else if (!isMobile(value)) {
-        callback(new Error("The phone number is invalid"));
+        callback(new Error("The phone number is invalid!"));
       } else {
         callback();
       }
@@ -51,8 +44,6 @@ export default {
       }
     };
     return {
-      checked: false,
-      disabled: false,
       dataForm: {
         phone: '',
         password: '',
@@ -62,20 +53,7 @@ export default {
         password: [{validator: checkPassword, trigger: 'blur'}]
       }
     }
-  },
-  mounted() {
-    let phone = localStorage.getItem("phone");
-    if (phone) {
-      this.dataForm.phone = phone;
-      let pwd = localStorage.getItem("pwd");
-      this.dataForm.password = Base64.decode(pwd);
-      this.checked = true;
-    }
-  },
-  methods: {
-    enableBtn() {
-      this.disabled = false;
-    },
+  }, methods: {
     dataFormSubmit() {
       this.$refs['dataForm'].validate((valid) => {
         if (valid) {
@@ -88,57 +66,17 @@ export default {
             })
           }).then(data => {
             let resp = data.data;
-            if (resp && resp.state === 200) {
-              this.$message.success("Successfully Login In");
-              cookie.set('token', resp.data.token, {expires: 1});
-              let url = this.$route.query.redirect;
-              if (url) {
-                this.$router.push(url);
-              } else {
-                this.$router.push('home');
+              if (resp && resp.code === 200){
+                cookie.set('token', resp.token);
+                this.$router.push('home')
+              } else if (resp && resp.code !== 200) {
+                this.$message.error(resp.message);
+              } else{
+                this.$message.error("Network Error")
               }
-            } else if (resp && resp.state === 10008) {
-              let errors = resp.errors;
-              let msg = [];
-              if (errors['password']) {
-                msg.push(errors['password']);
-              }
-              if (errors['phone']) {
-                msg.push(errors['phone']);
-              }
-              this.$message.error({
-                message: msg.join("! ")
-              });
-            } else if (resp && resp.state !== 200 && resp.state !== 10008) {
-              this.$message.error(resp.message);
-            } else {
-              this.$message.error("Network Error");
-            }
-          }).catch(err => {
-            this.$message.error("Network Error");
           })
-          this.disabled = true;
-          window.setTimeout(this.enableBtn, 3000);
-          if (this.checked) {
-            localStorage.removeItem("phone");
-            localStorage.removeItem("pwd");
-            let pwd = Base64.encode(this.dataForm.password);
-            localStorage.setItem("phone", this.dataForm.phone);
-            localStorage.setItem("pwd", pwd);
-          } else {
-            localStorage.removeItem("phone");
-            localStorage.removeItem("pwd");
-          }
-        } else {
-          this.$message.error("Invalid Input");
         }
       })
-    },
-    toRegister() {
-      this.$router.push('register');
-    },
-    toPassword() {
-      this.$router.push('password');
     }
   }
 }
@@ -160,20 +98,6 @@ export default {
 
 .remember-me {
   margin-left: 300px;
-}
-
-.forget-pwd {
-  margin-left: 310px;
-  text-decoration: underline;
-  color: deepskyblue;
-  cursor: pointer;
-}
-
-.to-register {
-  margin-left: 200px;
-  text-decoration: underline;
-  color: deepskyblue;
-  cursor: pointer;
 }
 
 .submit-btn {

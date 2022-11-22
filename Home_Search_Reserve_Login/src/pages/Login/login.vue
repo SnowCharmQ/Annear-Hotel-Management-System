@@ -1,7 +1,7 @@
 <template>
   <div class="page-main">
     <el-row class="card-search" :gutter="20" style="width:900px;margin:14px auto;">
-      <el-col :span="22" class="login-block">
+      <el-col :span="22" style="background:#fff; padding: 0 0;height: 600px">
         <el-col class="login-title">Login In</el-col>
         <el-col class="privacy-info">We are committed to protecting the privacy and security of your personal
           information. More information
@@ -10,7 +10,7 @@
         <el-col :span="24">
           <el-divider></el-divider>
         </el-col>
-        <component :is="curType" id="curType"></component>
+        <component :is="curType"></component>
         <div class="login-type">
           <a href="" :class="[curType==='LoginByPassword'?'active-type':'inactive-type']"
              @click.prevent="curType='LoginByPassword'">Password</a>
@@ -28,18 +28,6 @@
 </template>
 
 <style lang="scss" scoped>
-
-#curType{
-  height: 300px;
-}
-
-.login-block {
-  background: #fff;
-  padding: 0 0;
-  height: 600px;
-  overflow: hidden;
-}
-
 .page-main {
   background: #f3eee7;
 }

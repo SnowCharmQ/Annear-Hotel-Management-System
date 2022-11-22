@@ -310,7 +310,7 @@ export default {
   }
 
   .top-link {
-    width: 480px;
+    width: 500px;
     margin: 0 auto;
     text-align: center;
   }

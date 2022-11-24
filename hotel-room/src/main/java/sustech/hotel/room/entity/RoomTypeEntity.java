@@ -20,7 +20,7 @@ public class RoomTypeEntity implements Serializable {
     private Long hotelId;
     private Integer upperLimit;
     private BigDecimal price;
-    private Boolean breakfast;
+    private Integer breakfast;
     private Integer windows;
     private Integer television;
     private Integer bathtub;

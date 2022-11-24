@@ -20,4 +20,5 @@ public class RoomEntity implements Serializable {
     private Long roomNumber;
     private Long typeId;
     private Long layoutId;
+    private Long floorPlanId;
 }

@@ -16,4 +16,6 @@ public class OrderCommentsEntity implements Serializable {
     private String orderId;
     private String comments;
     private Date commentTime;
+    private String picture;
+    private String video;
 }

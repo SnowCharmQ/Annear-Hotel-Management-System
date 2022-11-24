@@ -1,8 +1,6 @@
 package sustech.hotel.model.vo.hotel;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
-import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 import java.math.BigDecimal;
@@ -18,12 +16,12 @@ public class HotelVo {
     private BigDecimal longitude;
     private BigDecimal latitude;
     private String telephone;
-    private Long swimmingPool;
-    private Long gym;
-    private Long diningRoom;
-    private Long bar;
-    private Long parking;
-    private Long spa;
-    private Long chessRoom;
+    private Integer swimmingPool;
+    private Integer gym;
+    private Integer diningRoom;
+    private Integer bar;
+    private Integer parking;
+    private Integer spa;
+    private Integer chessRoom;
     private Long starLevel;
 }

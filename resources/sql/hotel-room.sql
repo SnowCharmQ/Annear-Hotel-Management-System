@@ -16,7 +16,7 @@ create table chr_hotel
     parking       boolean                                                       not null,
     spa           boolean                                                       not null,
     chess_room    boolean                                                       not null,
-    star_level    bigint(20)                                                           not null
+    star_level    bigint(20) not null
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
@@ -26,14 +26,15 @@ create table chr_hotel
 drop table if exists chr_room_type;
 create table chr_room_type
 (
-    type_id    bigint(20) primary key AUTO_INCREMENT,
-    hotel_id   bigint(20)            not null,
-    price      decimal(18, 2) not null,
-    breakfast  boolean        not null,
-    windows    boolean        not null,
-    television boolean        not null,
-    bathtub    boolean        not null,
-    thermos    boolean        not null
+    type_id     bigint(20) primary key AUTO_INCREMENT,
+    hotel_id    bigint(20) not null,
+    price       decimal(18, 2) not null,
+    upper_limit integer        not null,
+    breakfast   boolean        not null,
+    windows     boolean        not null,
+    television  boolean        not null,
+    bathtub     boolean        not null,
+    thermos     boolean        not null
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
@@ -43,11 +44,12 @@ create table chr_room_type
 drop table if exists chr_room;
 create table chr_room
 (
-    room_id     bigint(20) primary key,
-    hotel_id    bigint(20) not null,
-    room_number bigint(20) not null,
-    type_id     bigint(20) not null,
-    layout_id   bigint(20) not null
+    room_id       bigint(20) primary key,
+    hotel_id      bigint(20) not null,
+    room_number   bigint(20) not null,
+    type_id       bigint(20) not null,
+    layout_id     bigint(20) not null,
+    floor_plan_id bigint(20) not null
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4

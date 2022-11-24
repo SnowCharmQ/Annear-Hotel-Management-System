@@ -13,9 +13,9 @@ public class RoomTypeTo {
     private Long typeId;
     private Long hotelId;
     private BigDecimal price;
-    private Long breakfast;
-    private Long windows;
-    private Long television;
-    private Long bathtub;
-    private Long thermos;
+    private Integer breakfast;
+    private Integer windows;
+    private Integer television;
+    private Integer bathtub;
+    private Integer thermos;
 }

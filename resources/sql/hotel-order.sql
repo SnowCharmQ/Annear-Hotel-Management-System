@@ -9,7 +9,7 @@ CREATE TABLE cho_order
     end_date       date           not null,
     origin_money   decimal(18, 2) not null,
     after_discount decimal(18, 2) not null,
-    additional     varchar,
+    additional     varchar(1000),
     score integer
 
 ) ENGINE = InnoDB
@@ -50,8 +50,8 @@ CREATE TABLE cho_order_comments
     order_id     varchar(30) not null,
     comments     text        not null,
     comment_time datetime    not null,
-    picture      varchar,
-    video        varchar
+    picture      varchar(1000),
+    video        varchar(1000)
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4

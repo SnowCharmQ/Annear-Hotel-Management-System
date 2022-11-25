@@ -13,4 +13,5 @@ public class RoomTo {
     private Long roomNumber;
     private Long typeId;
     private Long layoutId;
+    private Integer upperLimit;
 }

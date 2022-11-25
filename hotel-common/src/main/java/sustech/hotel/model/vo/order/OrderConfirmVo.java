@@ -6,8 +6,8 @@ import java.sql.Date;
 
 @Data
 public class OrderConfirmVo {
-    Date startDate;
-    Date endDate;
+    String startDate;
+    String endDate;
     String userToken;
     Long roomTypeId;
     Long roomId;

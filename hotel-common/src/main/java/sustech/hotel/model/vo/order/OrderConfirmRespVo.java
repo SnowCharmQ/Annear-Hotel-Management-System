@@ -12,7 +12,6 @@ public class OrderConfirmRespVo {
     private Long roomNumber;
     private Long typeId;
     private Long layoutId;
-    private Long floorPlanId;
     private Integer upperLimit;
     private BigDecimal unitPrice;
     private BigDecimal totalPrice;

@@ -7,6 +7,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -16,10 +17,7 @@ import java.util.concurrent.TimeUnit;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import sustech.hotel.common.utils.JsonResult;
-import sustech.hotel.common.utils.JwtHelper;
-import sustech.hotel.common.utils.PageUtils;
-import sustech.hotel.common.utils.Query;
+import sustech.hotel.common.utils.*;
 
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.auth.NotFoundException;
@@ -82,13 +80,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         BeanUtils.copyProperties(roomType.getData(), resp);
         BeanUtils.copyProperties(room.getData(), resp);
         resp.setUnitPrice(roomType.getData().getPrice());
-        long day = (request.getEndDate().getTime() - request.getStartDate().getTime()) / 86400000;
+        Date start = DateConverter.convertStringToDate(request.getStartDate());
+        Date end = DateConverter.convertStringToDate(request.getEndDate());
+        long day = (end.getTime() - start.getTime()) / 86400000;
         resp.setTotalPrice(new BigDecimal(day).multiply(roomType.getData().getPrice()));
-        resp.setStartDate(request.getStartDate());
-        resp.setEndDate(request.getEndDate());
-        String token = UUID.randomUUID().toString().replace("-", "");
-        redisTemplate.opsForValue().set(OrderConstant.USER_ORDER_TOKEN_PREFIX + userID, token, 15, TimeUnit.MINUTES);
-        resp.setToken(token);
+        resp.setStartDate(start);
+        resp.setEndDate(end);
+//        String token = UUID.randomUUID().toString().replace("-", "");
+//        redisTemplate.opsForValue().set(OrderConstant.USER_ORDER_TOKEN_PREFIX + userID, token, 15, TimeUnit.MINUTES);
+//        resp.setToken(token);
         // TODO: 2022/11/24 set after discount price
         resp.setFinalPrice(resp.getTotalPrice());
         return resp;

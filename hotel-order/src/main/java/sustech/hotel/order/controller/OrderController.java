@@ -77,7 +77,7 @@ public class OrderController {
         return new JsonResult<>(orderService.queryOrderByUser(userId));
     }
 
-    @PostMapping("/comfirmOrder")
+    @PostMapping("/confirmOrder")
     public JsonResult<OrderConfirmRespVo> confirmOrder(@RequestBody OrderConfirmVo orderConfirmVo) {
         OrderConfirmRespVo resp = new OrderConfirmRespVo();
         if (orderConfirmVo.getRoomId() != null)

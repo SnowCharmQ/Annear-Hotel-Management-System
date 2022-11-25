@@ -4,26 +4,25 @@
 
     <!--背景图和左下角的text part-->
     <el-carousel height="430px">
-      <el-carousel-item>
+      <el-carousel-item v-for="item in this.images" :key="item">
         <img
-            src="https://be-cms-api-p1.synxis.com/shs-bedesigner-services/assets/chain/16840/hotel/35050/fileStorage/image/BE_Aman%20New%20York%20New%20(1).png"
+            :src="item"
+            alt="Network Error"
             class="item-img">
-        <div class="carousel-box">
-          <div style="font-size:25px;">Aman New York</div>
-          <div style="display:flex;margin-top:10px;">
-            <div>
-              <div><i class="el-icon-school"></i></div>
-              <div style="margin-top:30px;"><i class="el-icon-phone"></i></div>
-              <div style="margin-top:20px;"><i class="el-icon-link"></i></div>
-            </div>
-            <div>
-              <div>730 Fifth Avenue, The Crown Building, New York, New York, United States, 10019</div>
-              <div style="margin-top:20px;">+1 212 970 2626</div>
-              <div style="margin-top:25px;">https://www.aman.com/hotels/aman-new-york</div>
-            </div>
+      </el-carousel-item>
+      <div class="carousel-box">
+        <div style="font-size:25px;">{{ this.hotelName }}</div>
+        <div style="display:flex;margin-top:10px;">
+          <div>
+            <div><i class="el-icon-school"></i></div>
+            <div style="margin-top:30px;"><i class="el-icon-phone"></i></div>
+          </div>
+          <div>
+            <div>{{ this.province }} {{ this.city }} <br> {{ this.district }} {{ this.detailAddress }}</div>
+            <div style="margin-top:20px;">{{ this.telephone }}</div>
           </div>
         </div>
-      </el-carousel-item>
+      </div>
     </el-carousel>
 
     <el-row class="card-search" :gutter="20" style="width:1250px;margin:20px auto;">
@@ -237,51 +236,55 @@
       </el-col>
 
       <!--右侧信息-->
-			<el-col :span="7" class="right-box">
-				<div style="font-size:20px;line-height:45px;">Your Stay at Aman New York</div>
-				<el-col :span="12" style="margin-top:20px;">
-					<div style="font-weight:600;">Check-in</div>
-					<div>After 3:00 PM</div>
-				</el-col>
-				<el-col :span="12" style="margin-top:20px;">
-					<div style="font-weight:600;">Check-out</div>
-					<div>Before 12:00 PM</div>
-				</el-col>
-				<el-col :span="24" style="padding-top:20px;">
-					<div>Sun, Oct 23, 2022 - Wed, Nov 30, 2022</div>
-					<div>2 Adults</div>
-				</el-col>
-				<el-col :span="24"><el-divider></el-divider></el-col>
-				<el-col :span="24" style="display:flex;justify-content: space-between;">
-					<div style="font-weight:600;">Total:</div>
-					<div style="font-weight:600;">A$0.00</div>
-				</el-col>
-				<el-col :span="24"><el-divider></el-divider></el-col>
-				<el-col :span="24">
-					<div style='font-size:20px;margin-bottom:20px;color:black;'>Book direct for peace of mind</div>
+      <el-col :span="7" class="right-box">
+        <div style="font-size:20px;line-height:45px;">Your Stay at Aman New York</div>
+        <el-col :span="12" style="margin-top:20px;">
+          <div style="font-weight:600;">Check-in</div>
+          <div>After 3:00 PM</div>
+        </el-col>
+        <el-col :span="12" style="margin-top:20px;">
+          <div style="font-weight:600;">Check-out</div>
+          <div>Before 12:00 PM</div>
+        </el-col>
+        <el-col :span="24" style="padding-top:20px;">
+          <div>Sun, Oct 23, 2022 - Wed, Nov 30, 2022</div>
+          <div>2 Adults</div>
+        </el-col>
+        <el-col :span="24">
+          <el-divider></el-divider>
+        </el-col>
+        <el-col :span="24" style="display:flex;justify-content: space-between;">
+          <div style="font-weight:600;">Total:</div>
+          <div style="font-weight:600;">A$0.00</div>
+        </el-col>
+        <el-col :span="24">
+          <el-divider></el-divider>
+        </el-col>
+        <el-col :span="24">
+          <div style='font-size:20px;margin-bottom:20px;color:black;'>Book direct for peace of mind</div>
 
-					<div>
-						<div class="right-flex">
-							<div class="icon-img"><img src="../../assets/images/1.jpg" /></div>
-							<div>24/7 Dedicated Global Reservation Team offering personalised service</div>
-						</div>
-						<div class="right-flex">
-							<div class="icon-img"><img src="../../assets/images/2.jpg" /></div>
-							<div style="margin-top:5px;">Exclusive offers with inspiring itineraries, only when booking direct</div>
-						</div>
-						<div class="right-flex">
-							<div class="icon-img"><img src="../../assets/images/3.jpg" /></div>
-							<div style="margin-top:5px;">A range of unique experiences to enbance your stay,</div>
-						</div>
-						<div class="right-flex">
-							<div class="icon-img"><img src="../../assets/images/4.jpg" /></div>
-							<div style="margin-top:5px;">Awe-inspiring locations with 34 resorts and hotels in 20 locations</div>
-						</div>
-					</div>
+          <div>
+            <div class="right-flex">
+              <div class="icon-img"><img src="../../assets/images/1.jpg"/></div>
+              <div>24/7 Dedicated Global Reservation Team offering personalised service</div>
+            </div>
+            <div class="right-flex">
+              <div class="icon-img"><img src="../../assets/images/2.jpg"/></div>
+              <div style="margin-top:5px;">Exclusive offers with inspiring itineraries, only when booking direct</div>
+            </div>
+            <div class="right-flex">
+              <div class="icon-img"><img src="../../assets/images/3.jpg"/></div>
+              <div style="margin-top:5px;">A range of unique experiences to enbance your stay,</div>
+            </div>
+            <div class="right-flex">
+              <div class="icon-img"><img src="../../assets/images/4.jpg"/></div>
+              <div style="margin-top:5px;">Awe-inspiring locations with 34 resorts and hotels in 20 locations</div>
+            </div>
+          </div>
 
-				</el-col>
-			</el-col>
-		</el-row>
+        </el-col>
+      </el-col>
+    </el-row>
 
   </div>
 </template>
@@ -295,8 +298,15 @@ export default {
       selCode: '1',
       value: [100, 10000],
       filterText: '',
+      hotelName: 'Annear Hotel',
+      province: '',
+      city: '',
+      district: '',
+      detailAddress: '',
+      telephone: '',
+      images: [],
       date1: new Date().toDateString(),
-      date2: new Date().toDateString(),
+      date2: this.generateTomorrow().toDateString(),
       date3: '',
       date4: '',
       showCheck: false,
@@ -402,34 +412,40 @@ export default {
     },
     updateDates() {
       if (this.date3 !== undefined && this.date3 !== "") {
-        let startDate = this.date3.toString();
-        let parts1 = startDate.split(" ");
-        let parts2 = []
-        for (let i = 0; i < 3; i++) {
-          parts2.push(parts1[i]);
-        }
-        this.date1 = parts2.join(" ");
+        this.date1 = this.date3.toDateString();
       }
       if (this.date4 !== undefined && this.date4 !== "") {
-        let startDate = this.date4.toString();
-        let parts1 = startDate.split(" ");
-        let parts2 = []
-        for (let i = 0; i < 3; i++) {
-          parts2.push(parts1[i]);
-        }
-        this.date2 = parts2.join(" ");
+        this.date2 = this.date4.toDateString();
       }
       //TODO: 搜索对应的日期
+    },
+    generateTomorrow() {
+      const today = new Date();
+      const current = today.getDate();
+      let finalDate = new Date();
+      finalDate.setDate(current + 1);
+      return finalDate;
     }
   },
   mounted() {
     let hotelId = this.$route.query.hotel;
-    let url = '/room/room/hotel/info/' + hotelId;
+    let url = '/room/room/hotel/initReserve';
     this.$http({
       url: this.$http.adornUrl(url),
-      method: 'get'
+      method: 'get',
+      params: this.$http.adornParams({
+        hotelId: hotelId,
+        today: new Date().toDateString()
+      })
     }).then(data => {
-      console.log(data);
+      let obj = data.data.data;
+      this.hotelName = obj.hotelName;
+      this.province = obj.province;
+      this.city = obj.city;
+      this.district = obj.district;
+      this.detailAddress = obj.detailAddress;
+      this.telephone = obj.telephone;
+      this.images = obj.images;
     }).catch(err => {
       this.$message.error("Network Error");
     })
@@ -550,7 +566,7 @@ export default {
   position: absolute;
   bottom: 0;
   left: 30px;
-  height: 180px;
+  height: 120px;
   width: 320px;
   color: #666;
   padding: 15px;

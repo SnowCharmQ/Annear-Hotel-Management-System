@@ -12,6 +12,7 @@ import java.math.BigDecimal;
 public class RoomTypeTo {
     private Long typeId;
     private Long hotelId;
+    private Integer upperLimit;
     private BigDecimal price;
     private Integer breakfast;
     private Integer windows;

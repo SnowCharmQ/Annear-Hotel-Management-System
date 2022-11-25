@@ -24,6 +24,8 @@ import sustech.hotel.exception.auth.UserNotFoundException;
 import sustech.hotel.exception.order.RoomNotAvailableException;
 import sustech.hotel.exception.order.RoomNotFoundException;
 import sustech.hotel.exception.order.UserNotLoginException;
+import sustech.hotel.exception.others.InvalidDateException;
+import sustech.hotel.model.to.hotel.HotelTo;
 import sustech.hotel.model.to.hotel.RoomTo;
 import sustech.hotel.model.to.hotel.RoomTypeTo;
 import sustech.hotel.model.to.member.UserTo;
@@ -76,12 +78,16 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         Long userID = checkUserID(request.getUserToken());
         JsonResult<RoomTo> room = roomFeignService.getRoomByID(request.getRoomId());
         JsonResult<RoomTypeTo> roomType = roomFeignService.getRoomTypeByID(room.getData().getTypeId());
+        JsonResult<HotelTo> hotel = roomFeignService.getHotelByID(room.getData().getHotelId());
         OrderConfirmRespVo resp = new OrderConfirmRespVo();
         BeanUtils.copyProperties(roomType.getData(), resp);
         BeanUtils.copyProperties(room.getData(), resp);
+        BeanUtils.copyProperties(hotel.getData(), resp);
         resp.setUnitPrice(roomType.getData().getPrice());
         Date start = DateConverter.convertStringToDate(request.getStartDate());
         Date end = DateConverter.convertStringToDate(request.getEndDate());
+        if (start.getTime() >= end.getTime())
+            throw new InvalidDateException(ExceptionCodeEnum.INVALID_DATE_EXCEPTION.getCode(), "Start date should before end date.");
         long day = (end.getTime() - start.getTime()) / 86400000;
         resp.setTotalPrice(new BigDecimal(day).multiply(roomType.getData().getPrice()));
         resp.setStartDate(start);
@@ -95,7 +101,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     }
 
     @Override
-    public void placeOrder(OrderEntity request) {
+    public void placeOrder(OrderEntity request, List<String> guestInfo, String orderToken) {
         QueryWrapper<OrderEntity> wrapper = new QueryWrapper<>();
         JsonResult<RoomTo> room = roomFeignService.getRoomByID(request.getRoomId());
         if (room.getData() == null)
@@ -106,7 +112,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             throw new RoomNotAvailableException(ExceptionCodeEnum.ROOM_NOT_AVAILABLE_EXCEPTION);
         request.setOrderStatus(0);
         request.setOrderId(IdWorker.getTimeId());
-
         JsonResult<RoomTypeTo> roomType = roomFeignService.getRoomTypeByID(room.getData().getTypeId());
         request.setOriginMoney(roomType.getData().getPrice());
         // TODO: 2022/11/16 Get the After Discount Money

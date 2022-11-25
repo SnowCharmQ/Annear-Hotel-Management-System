@@ -86,9 +86,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         resp.setTotalPrice(new BigDecimal(day).multiply(roomType.getData().getPrice()));
         resp.setStartDate(start);
         resp.setEndDate(end);
-//        String token = UUID.randomUUID().toString().replace("-", "");
-//        redisTemplate.opsForValue().set(OrderConstant.USER_ORDER_TOKEN_PREFIX + userID, token, 15, TimeUnit.MINUTES);
-//        resp.setToken(token);
+        String token = UUID.randomUUID().toString().replace("-", "");
+        redisTemplate.opsForValue().set(OrderConstant.USER_ORDER_TOKEN_PREFIX + userID, token, 15, TimeUnit.MINUTES);
+        resp.setToken(token);
         // TODO: 2022/11/24 set after discount price
         resp.setFinalPrice(resp.getTotalPrice());
         return resp;

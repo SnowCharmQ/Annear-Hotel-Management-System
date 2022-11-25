@@ -26,6 +26,7 @@ import sustech.hotel.exception.order.RoomNotFoundException;
 import sustech.hotel.exception.order.UserNotLoginException;
 import sustech.hotel.exception.others.InvalidDateException;
 import sustech.hotel.model.to.hotel.HotelTo;
+import sustech.hotel.model.to.hotel.RoomInfoTo;
 import sustech.hotel.model.to.hotel.RoomTo;
 import sustech.hotel.model.to.hotel.RoomTypeTo;
 import sustech.hotel.model.to.member.UserTo;
@@ -76,20 +77,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     @Override
     public OrderConfirmRespVo confirmOrder(OrderConfirmVo request) {
         Long userID = checkUserID(request.getUserToken());
-        JsonResult<RoomTo> room = roomFeignService.getRoomByID(request.getRoomId());
-        JsonResult<RoomTypeTo> roomType = roomFeignService.getRoomTypeByID(room.getData().getTypeId());
-        JsonResult<HotelTo> hotel = roomFeignService.getHotelByID(room.getData().getHotelId());
+        JsonResult<RoomInfoTo> roomInfo = roomFeignService.allInfo(request.getRoomId());
         OrderConfirmRespVo resp = new OrderConfirmRespVo();
-        BeanUtils.copyProperties(roomType.getData(), resp);
-        BeanUtils.copyProperties(room.getData(), resp);
-        BeanUtils.copyProperties(hotel.getData(), resp);
-        resp.setUnitPrice(roomType.getData().getPrice());
+        BeanUtils.copyProperties(roomInfo.getData(), resp);
+        BeanUtils.copyProperties(roomInfo.getData(), resp);
+        BeanUtils.copyProperties(roomInfo.getData(), resp);
+        resp.setUnitPrice(roomInfo.getData().getPrice());
         Date start = DateConverter.convertStringToDate(request.getStartDate());
         Date end = DateConverter.convertStringToDate(request.getEndDate());
         if (start.getTime() >= end.getTime())
             throw new InvalidDateException(ExceptionCodeEnum.INVALID_DATE_EXCEPTION.getCode(), "Start date should before end date.");
         long day = (end.getTime() - start.getTime()) / 86400000;
-        resp.setTotalPrice(new BigDecimal(day).multiply(roomType.getData().getPrice()));
+        resp.setTotalPrice(new BigDecimal(day).multiply(roomInfo.getData().getPrice()));
         resp.setStartDate(start);
         resp.setEndDate(end);
         String token = UUID.randomUUID().toString().replace("-", "");

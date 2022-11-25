@@ -4,6 +4,7 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
+
 const routes = [
     {
         path: '/',
@@ -62,6 +63,11 @@ const routes = [
                 path: '/floorPlan',
                 name: 'floorPlan',
                 component: () => import('../pages/FloorPlan/floorPlan')
+            }, {
+                path: '/404',
+                name: '404',
+                component: () => import('../pages/404'),
+                meta: {title: '404'}
             }
         ]
     }

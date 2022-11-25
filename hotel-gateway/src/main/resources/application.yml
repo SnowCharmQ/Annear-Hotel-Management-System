@@ -14,3 +14,9 @@ spring:
             - Path=/member/**
           filters:
             - RewritePath=/member(?<segment>/?.*), $\{segment}
+        - id: room_route
+          uri: lb://hotel-room
+          predicates:
+            - Path=/room/**
+          filters:
+            - RewritePath=/room(?<segment>/?.*), $\{segment}

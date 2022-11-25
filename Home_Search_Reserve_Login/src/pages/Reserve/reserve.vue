@@ -1,191 +1,97 @@
 <template>
-	<div class="page-main">
+  <div class="page-main">
 
-		<div class="item-img">
-			<el-divider></el-divider>
-			<div class="top-link">
-
-        <!--顶部的按键和电话号码-->
-				<el-link>Hotel Info</el-link>
-				<el-link>Find Reservations</el-link>
-				<el-link><i class="el-icon-phone-outline"></i>+1 212 970 2626</el-link>
-
-        <!--货币选择-->
-				<el-popover placement="bottom" width="885" trigger="click">
-						<div style="padding:0 15px;">
-							<div class="title-popover" style="font-size:18px;border: none;display: flex;">
-								<div>Top Currencies</div>
-								<div style="margin-left: 100px">All Currencies</div>
-							</div>
-
-							<el-col :span="6" class="top-select">
-								<div class="select-item">Property Currency</div>
-								<div class="select-item">AUD - Australian Dollars</div>
-								<div class="select-item">CAD - Canadian Dollars</div>
-								<div class="select-item">CNY - China Yuan Renminbi</div>
-								<div class="select-item">EUR - Euros</div>
-								<div class="select-item">GBP - British Pounds</div>
-								<div class="select-item">INR - Indian Rupees</div>
-								<div class="select-item">SGD - Singapore Dollars</div>
-								<div class="select-item">USD - US Dollars</div>
-                <br><br>
-							</el-col>
-
-							<el-col :span="18" style="margin-top: 0">
-								<el-input v-model="filterText" placeholder="Filter"></el-input>
-								<el-divider></el-divider>
-
-								<el-col :span="12" class="top-select">
-									<div class="select-item">AFN - Afghanistan Afghanis</div>
-									<div class="select-item">DZD - Algerian Dinar</div>
-									<div class="select-item">AED - Arab Emirate Dirham</div>
-									<div class="select-item">AMD - Armenia Drams</div>
-									<div class="select-item">AUD - Australian Dollars</div>
-									<div class="select-item">BSD - Bahamas Bahamian Dollar</div>
-									<div class="select-item">BDT - Bangladeshi Taka</div>
-									<div class="select-item">LSL - Basotho Loti</div>
-									<div class="select-item">BZD - Belize Dollar</div>
-									<div class="select-item">BTN - Bhutan Ngultrum</div>
-									<div class="select-item">BWP - Botswana Pula</div>
-									<div class="select-item">AMD - Armenia Drams</div>
-									<div class="select-item">AUD - Australian Dollars</div>
-                  <br><br>
-								</el-col>
-
-								<el-col :span="12" class="top-select">
-									<div class="select-item">ALL - Albania Leke</div>
-									<div class="select-item">AOA - Angola Kwanza</div>
-									<div class="select-item">ARS - Argentina Pesos</div>
-									<div class="select-item">AWG - Aruban Florin</div>
-									<div class="select-item">AZN - Azerbaijani New Manat</div>
-									<div class="select-item">BHD - Bahrain Dinar</div>
-									<div class="select-item">BBD - Barbadian Dollar</div>
-									<div class="select-item">BYN - Belarusian Ruble</div>
-									<div class="select-item">BMD - Bermudian Dollars</div>
-									<div class="select-item">BAM - Bosnian Convertible Marka</div>
-									<div class="select-item">BRL - Brazilian Reals</div>
-									<div class="select-item">BBD - Barbadian Dollar</div>
-									<div class="select-item">BYN - Belarusian Ruble</div>
-                  <br><br>
-								</el-col>
-
-							</el-col>
-						</div>
-
-						<div class="flex-row" slot="reference" >
-							<el-link>Sign In<i class="el-icon-arrow-down"></i></el-link>
-						</div>
-					</el-popover>
-
-			</div>
-		</div>
-		<el-divider></el-divider>
 
     <!--背景图和左下角的text part-->
-		<el-carousel height="430px">
-			<el-carousel-item >
-				<img src="https://be-cms-api-p1.synxis.com/shs-bedesigner-services/assets/chain/16840/hotel/35050/fileStorage/image/BE_Aman%20New%20York%20New%20(1).png" class="item-img">
-				<div class="carousel-box">
-					<div style="font-size:25px;">Aman New York</div>
-					<div style="display:flex;margin-top:10px;">
-						<div>
-							<div><i class="el-icon-school"></i></div>
-							<div style="margin-top:30px;"><i class="el-icon-phone"></i></div>
-							<div style="margin-top:20px;"><i class="el-icon-link"></i></div>
-						</div>
-						<div>
-							<div>730 Fifth Avenue, The Crown Building, New York, New York, United States, 10019</div>
-							<div style="margin-top:20px;">+1 212 970 2626</div>
-							<div style="margin-top:25px;">https://www.aman.com/hotels/aman-new-york</div>
-						</div>
-					</div>
-				</div>
-			</el-carousel-item>
-		</el-carousel>
+    <el-carousel height="430px">
+      <el-carousel-item>
+        <img
+            src="https://be-cms-api-p1.synxis.com/shs-bedesigner-services/assets/chain/16840/hotel/35050/fileStorage/image/BE_Aman%20New%20York%20New%20(1).png"
+            class="item-img">
+        <div class="carousel-box">
+          <div style="font-size:25px;">Aman New York</div>
+          <div style="display:flex;margin-top:10px;">
+            <div>
+              <div><i class="el-icon-school"></i></div>
+              <div style="margin-top:30px;"><i class="el-icon-phone"></i></div>
+              <div style="margin-top:20px;"><i class="el-icon-link"></i></div>
+            </div>
+            <div>
+              <div>730 Fifth Avenue, The Crown Building, New York, New York, United States, 10019</div>
+              <div style="margin-top:20px;">+1 212 970 2626</div>
+              <div style="margin-top:25px;">https://www.aman.com/hotels/aman-new-york</div>
+            </div>
+          </div>
+        </div>
+      </el-carousel-item>
+    </el-carousel>
 
-		<el-row class="card-search" :gutter="20" style="width:1250px;margin:20px auto;">
-			<el-col :span="17" style="background:#fff; padding: 0 0;">
+    <el-row class="card-search" :gutter="20" style="width:1250px;margin:20px auto;">
+      <el-col :span="17" style="background:#fff; padding: 0 0;">
 
         <!--选择客人数量-->
-				<el-col :span="8" class="btn-item">
-					<el-popover placement="bottom" width="320" trigger="click">
-							<div style="padding:0 15px;">
-								<div class="title-popover">Select Guests</div>
-								<div style="padding:15px 0;" class="add-form">
-									<el-form ref="form" label-width="80px">
-										<el-form-item label="Adults"><el-input-number v-model="count1" :min="0"></el-input-number></el-form-item>
-										<el-form-item label="Children"><el-input-number v-model="count2" :min="0"></el-input-number></el-form-item>
-										<div style="line-height:50px;border-top:1px solid #ddd;text-align:right;"><el-button type="info">Apply</el-button></div>
-									</el-form>
-								</div>
-							</div>
-							<div class="flex-row" slot="reference">
-								<i class="el-icon-user-solid user-icon"></i>
-								<div>
-									<div class="row-label">Guests</div>
-									<div>{{count1}}Adults,{{count2}}Children</div>
-								</div>
-							</div>
-					</el-popover>
-				</el-col>
+        <el-col :span="8" class="btn-item">
+          <el-popover placement="bottom" width="320" trigger="click">
+            <div style="padding:0 15px;">
+              <div class="title-popover">Select Guests</div>
+              <div style="padding:15px 0;" class="add-form">
+                <el-form ref="form" label-width="80px">
+                  <el-form-item label="Guests">
+                    <el-input-number v-model="count1" :min="0"></el-input-number>
+                  </el-form-item>
+                  <div style="line-height:50px;border-top:1px solid #ddd;text-align:right;">
+                    <el-button type="info" @click="updateGuests">Apply</el-button>
+                  </div>
+                </el-form>
+              </div>
+            </div>
+            <div class="flex-row" slot="reference">
+              <i class="el-icon-user-solid user-icon"></i>
+              <div>
+                <div class="row-label">Guests</div>
+                <div>{{ count2 }} Guests</div>
+              </div>
+            </div>
+          </el-popover>
+        </el-col>
 
         <!--check in按钮-->
-				<el-col :span="8" class="btn-item">
-					<div class="flex-row" @click="showDate">
-						<i class="el-icon-date user-icon"></i>
-						<div>
-							<div class="row-label">Check-In</div>
-							<div>{{date1}}</div>
-						</div>
-					</div>
-				</el-col>
+        <el-col :span="8" class="btn-item">
+          <div class="flex-row" @click="showDate">
+            <i class="el-icon-date user-icon"></i>
+            <div>
+              <div class="row-label">Check-In</div>
+              <div>{{ date1 }}</div>
+            </div>
+          </div>
+        </el-col>
 
         <!--check out按钮-->
-				<el-col :span="8" class="btn-item">
-					<div class="flex-row"  @click="showDate">
-						<i class="el-icon-date user-icon"></i>
-						<div>
-							<div class="row-label">Check-Out</div>
-							<div>{{date2}}</div>
-						</div>
-					</div>
-				</el-col>
-
-        <!--rate filter-->
-				<el-col :span="24" class="rate-sel">
-					<p @click="showSel = true">Special Codes or Rates<i class="el-icon-arrow-down"></i></p>
-				</el-col>
-				<el-col :span="24"  v-show="showSel" style=" background: #fff;">
-					<el-select v-model="selCode" placeholder="Promo Code">
-						<el-option label="Promo Code" value="1"></el-option>
-						<el-option label="Group Code" value="2"></el-option>
-					</el-select>
-					<el-input placeholder="Enter Code" v-model="input3" class="input-with-select" />
-					<div class="date-btn" style="margin-top:15px;">
-						<el-link class="date-item" @click="showSel=false">Cancel</el-link>
-						<el-button class="date-item" type="info" style="background:#fff;color:black;">Apply</el-button>
-					</div>
-				</el-col>
+        <el-col :span="8" class="btn-item">
+          <div class="flex-row" @click="showDate">
+            <i class="el-icon-date user-icon"></i>
+            <div>
+              <div class="row-label">Check-Out</div>
+              <div>{{ date2 }}</div>
+            </div>
+          </div>
+        </el-col>
 
         <!--日历控件-->
-				<el-col :span="24" v-show="showCheck">
-					<div class="flex-row1">
-						<el-calendar v-model="date3" />
-						<el-calendar v-model="date4" />
-					</div>
-					<div class="date-btn">
-						<div class="date-item">
-							<div style="font-weight:600;">From A$256,977 total for 38 nights</div>
-							<div style="font-size:12px;text-align: right;">Excluding Taxes & Fees</div>
-						</div>
-						<el-link class="date-item" @click="showCheck = false;">Cancel</el-link>
-						<el-button class="date-item" type="info" style="background:#333;">Search</el-button>
-					</div>
-				</el-col>
+        <el-col :span="24" v-show="showCheck">
+          <div class="flex-row1">
+            <el-calendar v-model="date3"/>
+            <el-calendar v-model="date4"/>
+          </div>
+          <div class="date-btn">
+            <el-link class="date-item" @click="showCheck = false;">Cancel</el-link>
+            <el-button class="date-item" type="info" style="background:#333;" @click="updateDates">Search</el-button>
+          </div>
+        </el-col>
 
-				<div style="background:#f3eee7;line-height:80px;padding-left:15px;font-size:22px">Select a Room</div>
-				<div class="hotel-select">
-					<div class="flex-row" style="margin-top:15px;">
+        <div style="background:#f3eee7;line-height:80px;padding-left:15px;font-size:22px">Select a Room</div>
+        <div class="hotel-select">
+          <div class="flex-row" style="margin-top:15px;">
 						<span class="el-dropdown-link">
 							<div class="flex-row" style="cursor: pointer;margin-right:20px;" @click="toFloorPlan">
 								<div>
@@ -195,185 +101,140 @@
 							</div>
 						</span>
 
-            <!--view results by room下拉菜单-->
-						<el-dropdown>
-							<span class="el-dropdown-link">
-								<div class="flex-row" style="cursor: pointer;margin-right:15px;">
-									<div>
-										<div>View Results By</div>
-										<div class="row-label">Rooms</div>
-									</div>
-									<i class="el-icon-caret-bottom el-icon--right" style="font-size:18px;"></i>
-								</div>
-							</span>
-							<el-dropdown-menu slot="dropdown">
-								<el-dropdown-item>Relevance</el-dropdown-item>
-								<el-dropdown-item>Hotel Name (A-Z)</el-dropdown-item>
-							</el-dropdown-menu>
-						</el-dropdown>
-
-            <!--sort by relevance 下拉菜单-->
-						<el-dropdown>
-							<span class="el-dropdown-link">
-								<div class="flex-row" style="cursor: pointer;">
-									<div>
-										<div>Sort By</div>
-										<div class="row-label">Relevance</div>
-									</div>
-									<i class="el-icon-caret-bottom el-icon--right" style="font-size:18px;"></i>
-								</div>
-							</span>
-							<el-dropdown-menu slot="dropdown">
-								<el-dropdown-item>Relevance</el-dropdown-item>
-								<el-dropdown-item>Hotel Name (A-Z)</el-dropdown-item>
-							</el-dropdown-menu>
-						</el-dropdown>
 
             <!--filters-->
-						<el-popover placement="top-end" width="800" trigger="click">
-								<div style="padding:0 15px;">
-									<div class="title-popover" style="font-size:18px;">Filters</div>
+            <el-popover placement="top-end" width="800" trigger="click" style="cursor: pointer">
+              <div style="padding:0 15px;">
+                <div class="title-popover" style="font-size:18px;">Filters</div>
 
-									<el-col :span="12" style="border-right:1px solid #ddd;">
-										<div style="display:flex;justify-content: space-between;font-size: 18px;line-height: 50px;;"><div>Display</div></div>
-										<div style="line-height:30px;">
-											<div><el-radio v-model="checked1">View By Rooms</el-radio></div>
-											<div><el-radio v-model="checked2">View By Rates</el-radio></div>
-										</div>
-									</el-col>
-
-									<el-col :span="12" >
-										<div style="display:flex;justify-content: space-between;font-size: 18px;line-height: 50px;;"><div>Sort By</div></div>
-										<div style="line-height:30px;">
-											<div><el-radio v-model="checked1">Recommended</el-radio></div>
-											<div><el-radio v-model="checked2">Lowest Price</el-radio></div>
-											<div><el-radio v-model="checked2">Highest Price</el-radio></div>
-										</div>
-									</el-col>
-
-									<el-col :span="24"><el-divider></el-divider></el-col>
-
-                  <el-col :span="12" style="border-right:1px solid #ddd;">
-										<div style="display:flex;justify-content: space-between;font-size: 18px;line-height: 50px;;">
-											<div>View</div>
-											<el-link style="font-size:13px;">Clear</el-link>
-										</div>
-										<div style="line-height:30px;">
-											<div><el-checkbox v-model="checked3">57th Street</el-checkbox></div>
-											<div><el-checkbox v-model="checked4">Fifth Avenue</el-checkbox></div>
-										</div>
+                <el-col :span="12">
+                  <div style="display:flex;justify-content: space-between;font-size: 18px;line-height: 50px;;">
+                    <div>Sort By</div>
+                  </div>
+                  <div style="line-height:30px;">
+                    <div>
+                      <el-radio v-model="checked1" label="score">Score</el-radio>
+                      <br>
+                      <el-radio v-model="checked1" label="price">Price</el-radio>
+                      <br>
+                      <el-radio v-model="checked1" label="booking-number">Booking Number</el-radio>
+                    </div>
                     <br>
-									</el-col>
+                    <div>
+                      <el-radio v-model="checked2" label="hl">From Highest to Lowest</el-radio>
+                      <el-radio v-model="checked2" label="lh">From Lowest to Highest</el-radio>
+                    </div>
+                  </div>
+                </el-col>
 
-									<el-col :span="12">
-										<div style="display:flex;justify-content: space-between;font-size: 18px;line-height: 50px;;">
-											<div>Rate Type</div>
-											<div style="font-size:13px;">Clear</div>
-										</div>
-										<div style="line-height:30px;">
-											<div><el-checkbox v-model="checked5">Breakfast in Manhattan</el-checkbox></div>
-											<div><el-checkbox v-model="checked6">Standard Daily Rate</el-checkbox></div>
-										</div>
+                <el-col :span="12">
+                  <div style="display:flex;justify-content: space-between;font-size: 18px;line-height: 50px;;">
+                    <div>Price</div>
+                  </div>
+                  <div style="padding:15px;justify-content: space-between;">
+                    <el-slider v-model="value" range show-stops :min="100" :max="10000"/>
                     <br>
-									</el-col>
+                    <div style="display: flex;">
+                      <div class="price-box">
+                        <div>Price range from</div>
+                        <div>{{ value[0] }}</div>
+                      </div>
+                      <div style="width:20px;">---</div>
+                      <div class="price-box">
+                        <div>Price range from</div>
+                        <div>{{ value[1] }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  <br>
+                </el-col>
 
-									<el-col :span="24"><el-divider></el-divider></el-col>
+                <el-col :span="24">
+                  <el-divider></el-divider>
+                </el-col>
 
-									<el-col :span="12" style="border-right:1px solid #ddd;">
-										<div style="display:flex;justify-content: space-between;font-size: 18px;line-height: 50px;;">
-											<div>Room Category</div>
-											<el-link>Clear</el-link>
-										</div>
-										<div style="line-height:30px;">
-											<div><el-checkbox v-model="checked7">Grand Suite on 57th</el-checkbox></div>
-											<div><el-checkbox v-model="checked8">Fifth Avenue Suite</el-checkbox></div>
-											<div><el-checkbox v-model="checked9">Premier Suite on 57th Sanctuary</el-checkbox></div>
-											<div><el-checkbox v-model="checked9">Premier Suite on 57th</el-checkbox></div>
-										</div>
-									</el-col>
+                <el-col :span="24">
+                  <div style="display:flex;justify-content: space-between;font-size: 18px;line-height: 50px;;">
+                    <div>Related Supporting Infrastructure</div>
+                  </div>
+                  <div style="line-height:30px;">
+                    <div>
+                      <el-checkbox v-model="checked3">Breakfast</el-checkbox>
+                      <el-checkbox v-model="checked4">Windows</el-checkbox>
+                      <el-checkbox v-model="checked5">Television</el-checkbox>
+                      <el-checkbox v-model="checked6">Bathtub</el-checkbox>
+                      <el-checkbox v-model="checked7">Thermos</el-checkbox>
+                    </div>
+                  </div>
+                  <br>
+                </el-col>
 
-									<el-col :span="12" >
-										<div style="display:flex;justify-content: space-between;font-size: 18px;line-height: 50px;;">
-											<div>Price (avg./night)</div>
-											<el-link>Reset</el-link>
-										</div>
-										<div style="padding:15px;justify-content: space-between;">
-											<el-slider v-model="value" range show-stops :min="6763" :max="11637" />
-											<div style="display: flex;">
-												<div class="price-box">
-													<div>Price range from</div>
-													<div>{{value[0]}}</div>
-												</div>
-												<div style="width:20px;">-</div>
-												<div class="price-box">
-													<div>Price range from</div>
-													<div>{{value[1]}}</div>
-												</div>
-											</div>
-										</div>
-                    <br>
-									</el-col>
+                <el-col :span="24" style="line-height:50px;border-top:1px solid #ddd;text-align:right;">
+                  <el-button type="info" style="background:#333;">Apply</el-button>
+                </el-col>
 
-									<el-col :span="24" style="line-height:50px;border-top:1px solid #ddd;text-align:right;">
-										<span style="margin-right:50px;">6 matching rooms</span>
-										<el-button type="info" style="background:#333;">Apply</el-button>
-									</el-col>
+              </div><!--filters end-->
 
-								</div><!--filters end-->
+              <div class="flex-row" slot="reference"
+                   style="margin-left:20px;background: #82847f;margin-right: 20px;padding:8px 2px;color: #fff;">
+                <div>
+                  <div class="row-label">Hide Filters</div>
+                </div>
+                <i class="el-icon-caret-bottom user-icon" style="font-size:18px;"></i>
+              </div>
 
-								<div class="flex-row" slot="reference" style="margin-left:20px;background: #82847f;margin-right: 20px;padding:8px 2px;color: #fff;">
-									<div><div class="row-label">Hide Filters</div></div>
-									<i class="el-icon-caret-bottom user-icon" style="font-size:18px;"></i>
-								</div>
-
-						</el-popover>
-					</div>
-				</div>
+            </el-popover>
+          </div>
+        </div>
 
         <!--每个酒店的具体信息--> <!------------>
-				<div style="clear:both;">
-					<el-col :span="24" v-for="item in imgList" :key="item.name" class="room-list">
-						<img :src="item.img" class="image">
-						<div class="room-right">
-							<div class="card-name">{{item.name}}</div>
-							<div style="font-weight:600;">King</div>
-							<el-breadcrumb separator="|" style="margin:10px 0;">
-								<el-breadcrumb-item>1King</el-breadcrumb-item>
-								<el-breadcrumb-item>815ft</el-breadcrumb-item>
-							</el-breadcrumb>
-							<div>A contemporary retreat for a restful night’s sleep</div>
-							<el-link>Room details</el-link>
-							<el-divider></el-divider>
+        <div style="clear:both;">
+          <el-col :span="24" v-for="item in imgList" :key="item.name" class="room-list">
+            <img :src="item.img" class="image">
+            <div class="room-right">
+              <div class="card-name">{{ item.name }}</div>
+              <div style="font-weight:600;">King</div>
+              <el-breadcrumb separator="|" style="margin:10px 0;">
+                <el-breadcrumb-item>1King</el-breadcrumb-item>
+                <el-breadcrumb-item>815ft</el-breadcrumb-item>
+              </el-breadcrumb>
+              <div>A contemporary retreat for a restful night’s sleep</div>
+              <el-link>Room details</el-link>
+              <el-divider></el-divider>
 
-							<div class="flex-row2" style="margin-top:-10px;">
-								<div>Standard Daily Rate</div>
-								<div style="font-weight:600;">A${{item.price}}</div>
-							</div>
-							<div class="flex-row2" style="font-size:13px;color: #666;">
-								<div>{{item.detail}}</div>
-								<div>Per Night</div>
-							</div>
-							<div style="text-align:right;font-size:12px;margin-top: -10px;">{{item.detail1}}</div>
-							<div style="text-align:right;"><el-button type="info" style="background:black;color:#fff;" @click="toCheckOut">Book Now</el-button></div>
-							<el-divider></el-divider>
+              <div class="flex-row2" style="margin-top:-10px;">
+                <div>Standard Daily Rate</div>
+                <div style="font-weight:600;">A${{ item.price }}</div>
+              </div>
+              <div class="flex-row2" style="font-size:13px;color: #666;">
+                <div>{{ item.detail }}</div>
+                <div>Per Night</div>
+              </div>
+              <div style="text-align:right;font-size:12px;margin-top: -10px;">{{ item.detail1 }}</div>
+              <div style="text-align:right;">
+                <el-button type="info" style="background:black;color:#fff;" @click="toCheckOut">Book Now</el-button>
+              </div>
+              <el-divider></el-divider>
 
-							<div class="flex-row2" style="margin-top:-10px;">
-								<div>{{item.detail4}}</div>
-								<div style="font-weight:600;">A${{item.price}}</div>
-							</div>
-							<div class="flex-row2" style="font-size:13px;color: #666;">
-								<div>The stay includes</div>
-								<div>{{item.detail3}}</div>
-							</div>
-							<div style="text-align:right;font-size:12px;margin-top: -10px;">{{item.detail1}}</div>
-							<div style="display:flex;width:560px;justify-content: space-between;">
-								<div style="width:380px;">{{item.detail2}}</div>
-								<div style="text-align:right;"><el-button type="info" style="background:black;color:#fff;" @click="toCheckOut">Book Now</el-button></div>
-							</div>
-						</div>
+              <div class="flex-row2" style="margin-top:-10px;">
+                <div>{{ item.detail4 }}</div>
+                <div style="font-weight:600;">A${{ item.price }}</div>
+              </div>
+              <div class="flex-row2" style="font-size:13px;color: #666;">
+                <div>The stay includes</div>
+                <div>{{ item.detail3 }}</div>
+              </div>
+              <div style="text-align:right;font-size:12px;margin-top: -10px;">{{ item.detail1 }}</div>
+              <div style="display:flex;width:560px;justify-content: space-between;">
+                <div style="width:380px;">{{ item.detail2 }}</div>
+                <div style="text-align:right;">
+                  <el-button type="info" style="background:black;color:#fff;" @click="toCheckOut">Book Now</el-button>
+                </div>
+              </div>
+            </div>
           </el-col>
-				</div>
-			</el-col>
+        </div>
+      </el-col>
 
       <!--右侧信息-->
 			<el-col :span="7" class="right-box">
@@ -422,7 +283,7 @@
 			</el-col>
 		</el-row>
 
-	</div>
+  </div>
 </template>
 
 <script>
@@ -430,29 +291,28 @@ export default {
   name: "home",
   data() {
     return {
-		showSel:false,
-		input3:'',
-		selCode:'1',
-		value: [6763, 11637],
-		filterText:'',
-		date1: new Date().toDateString(),
-		date2: new Date().toDateString(),
-		date3:'',
-		date4:'',
-		showCheck: false,
-		checked1:false,
-		checked2:false,
-		checked3:false,
-		checked4:false,
-		checked5:false,
-		checked6:false,
-		checked7:false,
-		checked8:false,
-		checked9:false,
-		checked10:false,
-		checked11:false,
-		count1: 0,
-		count2: 0,
+      input3: '',
+      selCode: '1',
+      value: [100, 10000],
+      filterText: '',
+      date1: new Date().toDateString(),
+      date2: new Date().toDateString(),
+      date3: '',
+      date4: '',
+      showCheck: false,
+      checked1: 'score',
+      checked2: 'hl',
+      checked3: true,
+      checked4: true,
+      checked5: true,
+      checked6: false,
+      checked7: false,
+      checked8: false,
+      checked9: false,
+      checked10: false,
+      checked11: false,
+      count1: 0,
+      count2: 0,
       imgList: [
         {
           price1: '2560',
@@ -520,23 +380,59 @@ export default {
           detail4: 'Breakfast in Manhattan 5'
         },
       ]
-	};
+    };
   },
-  methods:{
-	// 显示日历
-	showDate(){
-		this.showCheck = true;
-	},
-    toMore(){
-        this.$message.info('more')
+  methods: {
+    // 显示日历
+    showDate() {
+      this.showCheck = true;
     },
-	toCheckOut(){
-		this.$router.push('Order')
-	},
-	toFloorPlan(){
-		this.$router.push('floorPlan')
-	}
-
+    toMore() {
+      this.$message.info('more')
+    },
+    toCheckOut() {
+      this.$router.push('Order')
+    },
+    toFloorPlan() {
+      this.$router.push('floorPlan')
+    },
+    updateGuests() {
+      this.count2 = this.count1;
+      // TODO: 搜索对应的房间
+    },
+    updateDates() {
+      if (this.date3 !== undefined && this.date3 !== "") {
+        let startDate = this.date3.toString();
+        let parts1 = startDate.split(" ");
+        let parts2 = []
+        for (let i = 0; i < 3; i++) {
+          parts2.push(parts1[i]);
+        }
+        this.date1 = parts2.join(" ");
+      }
+      if (this.date4 !== undefined && this.date4 !== "") {
+        let startDate = this.date4.toString();
+        let parts1 = startDate.split(" ");
+        let parts2 = []
+        for (let i = 0; i < 3; i++) {
+          parts2.push(parts1[i]);
+        }
+        this.date2 = parts2.join(" ");
+      }
+      //TODO: 搜索对应的日期
+    }
+  },
+  mounted() {
+    let hotelId = this.$route.query.hotel;
+    let url = '/room/room/hotel/info/' + hotelId;
+    this.$http({
+      url: this.$http.adornUrl(url),
+      method: 'get'
+    }).then(data => {
+      console.log(data);
+    }).catch(err => {
+      this.$message.error("Network Error");
+    })
   }
 };
 </script>

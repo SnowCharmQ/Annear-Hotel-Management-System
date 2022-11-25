@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import sustech.hotel.room.entity.HotelEntity;
 import sustech.hotel.room.service.HotelService;
-import sustech.hotel.common.utils.Constant;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
 

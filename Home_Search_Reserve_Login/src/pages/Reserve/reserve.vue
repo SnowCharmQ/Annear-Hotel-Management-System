@@ -429,26 +429,30 @@ export default {
   },
   mounted() {
     let hotelId = this.$route.query.hotel;
-    let url = '/room/room/hotel/initReserve';
-    this.$http({
-      url: this.$http.adornUrl(url),
-      method: 'get',
-      params: this.$http.adornParams({
-        hotelId: hotelId,
-        today: new Date().toDateString()
+    if (hotelId === undefined || hotelId === '') {
+      this.$router.push('404');
+    } else {
+      let url = '/room/room/hotel/initReserve';
+      this.$http({
+        url: this.$http.adornUrl(url),
+        method: 'get',
+        params: this.$http.adornParams({
+          hotelId: hotelId,
+          today: new Date().toDateString()
+        })
+      }).then(data => {
+        let obj = data.data.data;
+        this.hotelName = obj.hotelName;
+        this.province = obj.province;
+        this.city = obj.city;
+        this.district = obj.district;
+        this.detailAddress = obj.detailAddress;
+        this.telephone = obj.telephone;
+        this.images = obj.images;
+      }).catch(err => {
+        this.$message.error("Network Error");
       })
-    }).then(data => {
-      let obj = data.data.data;
-      this.hotelName = obj.hotelName;
-      this.province = obj.province;
-      this.city = obj.city;
-      this.district = obj.district;
-      this.detailAddress = obj.detailAddress;
-      this.telephone = obj.telephone;
-      this.images = obj.images;
-    }).catch(err => {
-      this.$message.error("Network Error");
-    })
+    }
   }
 };
 </script>

@@ -19,4 +19,5 @@ public class BookingEntity implements Serializable {
     private Long roomId;
     private Date startTime;
     private Date endTime;
+    private Integer orderState;
 }

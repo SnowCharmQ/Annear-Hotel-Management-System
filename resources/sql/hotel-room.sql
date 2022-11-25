@@ -61,7 +61,8 @@ drop table if exists chr_hotel_picture;
 create table chr_hotel_picture
 (
     hotel_id     bigint(20) not null,
-    picture_path varchar(200)
+    picture_path varchar(200) not null ,
+    cover boolean
 );
 
 drop table if exists chr_room_type_picture;

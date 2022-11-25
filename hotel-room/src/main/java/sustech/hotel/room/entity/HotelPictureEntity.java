@@ -15,4 +15,5 @@ public class HotelPictureEntity implements Serializable {
 
     private Long hotelId;
     private String picturePath;
+    private Integer cover;
 }

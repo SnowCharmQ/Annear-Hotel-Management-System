@@ -23,7 +23,7 @@ public enum ExceptionCodeEnum {
     USER_NOT_LOGIN_EXCEPTION(11002, "The user has not login in"),
     ROOM_NOT_FOUND_EXCEPTION(11003, "The room does not exist"),
 
-    INVALID_DATE_EXCEPTION(20000, "");
+    INVALID_DATE_EXCEPTION(20000, "The date is invalid");
 
     private final int code;
     private final String message;

@@ -1,7 +1,7 @@
 package sustech.hotel.common.utils;
 
 import sustech.hotel.exception.ExceptionCodeEnum;
-import sustech.hotel.exception.InvalidDateException;
+import sustech.hotel.exception.others.InvalidDateException;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

@@ -14,7 +14,7 @@ public class DateConverter {
             java.util.Date temp = simpleDateFormat.parse(date);
             return new java.sql.Date(temp.getTime());
         } catch (ParseException e) {
-            throw new InvalidDateException(ExceptionCodeEnum.INVALID_DATE_EXCEPTION.getCode(), e.getMessage());
+            throw new InvalidDateException(ExceptionCodeEnum.INVALID_DATE_EXCEPTION);
         }
     }
 }

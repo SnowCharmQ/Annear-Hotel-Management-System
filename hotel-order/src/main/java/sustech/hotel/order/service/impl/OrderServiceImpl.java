@@ -20,7 +20,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import sustech.hotel.common.utils.*;
 
 import sustech.hotel.exception.ExceptionCodeEnum;
-import sustech.hotel.exception.auth.NotFoundException;
+import sustech.hotel.exception.auth.UserNotFoundException;
 import sustech.hotel.exception.order.RoomNotAvailableException;
 import sustech.hotel.exception.order.RoomNotFoundException;
 import sustech.hotel.exception.order.UserNotLoginException;
@@ -121,7 +121,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             throw new UserNotLoginException(ExceptionCodeEnum.USER_NOT_LOGIN_EXCEPTION);
         JsonResult<UserTo> user = memberFeignService.getUser(userid);
         if (user == null)
-            throw new NotFoundException(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(), ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage());
+            throw new UserNotFoundException(ExceptionCodeEnum.USER_NOT_FOUND_EXCEPTION);
         return user.getData().getUserId();
     }
 

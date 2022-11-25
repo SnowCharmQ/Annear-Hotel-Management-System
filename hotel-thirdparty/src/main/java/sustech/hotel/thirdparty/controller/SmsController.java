@@ -39,8 +39,7 @@ public class SmsController {
         try {
             smsComponent.sendSmsCode(phone, code);
         } catch (Exception e) {
-            return new JsonResult<>(new SmsCodeException(ExceptionCodeEnum.SMS_CODE_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.SMS_CODE_EXCEPTION.getMessage()));
+            return new JsonResult<>(new SmsCodeException(ExceptionCodeEnum.SMS_CODE_EXCEPTION));
         }
         return new JsonResult<>();
     }

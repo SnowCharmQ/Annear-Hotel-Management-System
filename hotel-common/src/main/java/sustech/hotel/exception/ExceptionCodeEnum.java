@@ -13,7 +13,7 @@ public enum ExceptionCodeEnum {
     NOT_REGISTER_EXCEPTION(10004, "The phone number has not been registered"),
     PASSWORD_INCORRECT_EXCEPTION(10005, "The password is incorrect"),
     SMS_CODE_INCORRECT_EXCEPTION(10006, "The SMS code is incorrect"),
-    NOT_FOUND_EXCEPTION(10007, "The user does not exist"),
+    USER_NOT_FOUND_EXCEPTION(10007, "The user does not exist"),
     INVALID_INPUT_EXCEPTION(10008, "The input is invalid"),
     SAME_PASSWORD_EXCEPTION(10009, "The new password can not be same as the old password"),
 

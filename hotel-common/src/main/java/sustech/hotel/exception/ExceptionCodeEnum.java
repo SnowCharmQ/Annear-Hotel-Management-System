@@ -21,8 +21,9 @@ public enum ExceptionCodeEnum {
 
     ROOM_NOT_AVAILABLE_EXCEPTION(11001, "The room is not available in that time"),
     USER_NOT_LOGIN_EXCEPTION(11002, "The user has not login in"),
-    ROOM_NOT_FOUND_EXCEPTION(11003, "The room does not exist");
+    ROOM_NOT_FOUND_EXCEPTION(11003, "The room does not exist"),
 
+    INVALID_DATE_EXCEPTION(20000, "");
 
     private final int code;
     private final String message;

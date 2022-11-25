@@ -5,14 +5,12 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import sustech.hotel.exception.BaseException;
 import sustech.hotel.model.to.order.OrderTo;
+import sustech.hotel.model.vo.order.OrderConfirmRespVo;
+import sustech.hotel.model.vo.order.OrderConfirmVo;
 import sustech.hotel.model.vo.order.PlaceOrderVo;
 import sustech.hotel.order.entity.OrderEntity;
 import sustech.hotel.order.service.OrderService;
@@ -79,6 +77,17 @@ public class OrderController {
         return new JsonResult<>(orderService.queryOrderByUser(userId));
     }
 
+    @PostMapping("/comfirmOrder")
+    public JsonResult<OrderConfirmRespVo> confirmOrder(@RequestBody OrderConfirmVo orderConfirmVo) {
+        OrderConfirmRespVo resp = new OrderConfirmRespVo();
+        if (orderConfirmVo.getRoomId() != null)
+            resp = orderService.confirmOrder(orderConfirmVo);
+        else {
+            // TODO: 2022/11/24  Randomly assign a room.
+        }
+        return new JsonResult<>(resp);
+    }
+
     @RequestMapping("/generateOrder")
     public JsonResult<Void> generateOrder(@RequestBody PlaceOrderVo request) {
         try {
@@ -95,4 +104,6 @@ public class OrderController {
             return new JsonResult<>(e);
         }
     }
+
+
 }

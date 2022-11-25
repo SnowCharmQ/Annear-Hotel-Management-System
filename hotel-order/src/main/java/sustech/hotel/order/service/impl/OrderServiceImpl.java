@@ -3,11 +3,15 @@ package sustech.hotel.order.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
@@ -26,6 +30,9 @@ import sustech.hotel.model.to.hotel.RoomTo;
 import sustech.hotel.model.to.hotel.RoomTypeTo;
 import sustech.hotel.model.to.member.UserTo;
 import sustech.hotel.model.to.order.OrderTo;
+import sustech.hotel.model.vo.order.OrderConfirmRespVo;
+import sustech.hotel.constant.OrderConstant;
+import sustech.hotel.model.vo.order.OrderConfirmVo;
 import sustech.hotel.order.dao.OrderDao;
 import sustech.hotel.order.entity.OrderEntity;
 import sustech.hotel.order.feign.MemberFeignService;
@@ -41,6 +48,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Autowired
     RoomFeignService roomFeignService;
+
+    @Autowired
+    StringRedisTemplate redisTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -61,6 +71,27 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             orderTos.add(to);
         }
         return orderTos;
+    }
+
+    @Override
+    public OrderConfirmRespVo confirmOrder(OrderConfirmVo request) {
+        Long userID = checkUserID(request.getUserToken());
+        JsonResult<RoomTo> room = roomFeignService.getRoomByID(request.getRoomId());
+        JsonResult<RoomTypeTo> roomType = roomFeignService.getRoomTypeByID(room.getData().getTypeId());
+        OrderConfirmRespVo resp = new OrderConfirmRespVo();
+        BeanUtils.copyProperties(roomType.getData(), resp);
+        BeanUtils.copyProperties(room.getData(), resp);
+        resp.setUnitPrice(roomType.getData().getPrice());
+        long day = (request.getEndDate().getTime() - request.getStartDate().getTime()) / 86400000;
+        resp.setTotalPrice(new BigDecimal(day).multiply(roomType.getData().getPrice()));
+        resp.setStartDate(request.getStartDate());
+        resp.setEndDate(request.getEndDate());
+        String token = UUID.randomUUID().toString().replace("-", "");
+        redisTemplate.opsForValue().set(OrderConstant.USER_ORDER_TOKEN_PREFIX + userID, token, 15, TimeUnit.MINUTES);
+        resp.setToken(token);
+        // TODO: 2022/11/24 set after discount price
+        resp.setFinalPrice(resp.getTotalPrice());
+        return resp;
     }
 
     @Override

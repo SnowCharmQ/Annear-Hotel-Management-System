@@ -23,9 +23,10 @@
             <div class="title-popover">Select Guests</div>
             <div style="padding:15px 0;" class="add-form">
               <el-form ref="form" label-width="80px">
-                <el-form-item label="Adults"><el-input-number v-model="count1" :min="0"></el-input-number></el-form-item>
-                <el-form-item label="Children"><el-input-number v-model="count2" :min="0"></el-input-number></el-form-item>
-                <div style="line-height:50px;border-top:1px solid #ddd;text-align:right;"><el-button type="info">Apply</el-button></div>
+                <el-form-item label="Guests"><el-input-number v-model="count1" :min="0"></el-input-number></el-form-item>
+                <div style="line-height:50px;border-top:1px solid #ddd;text-align:right;">
+                  <el-button type="info" @click="updateGuest">Apply</el-button>
+                </div>
               </el-form>
             </div>
           </div>
@@ -34,7 +35,7 @@
             <i class="el-icon-user-solid user-icon"></i>
             <div>
               <div class="row-label">Guests</div>
-              <div>{{ count1 }}Adults,{{ count2 }}Children</div>
+              <div>{{ count2 }} Guests</div>
             </div>
           </div>
 
@@ -67,7 +68,7 @@
         <el-dropdown>
 
 					<span class="el-dropdown-link">
-						<div class="flex-row"><i class="el-icon-date user-icon"></i>
+						<div class="flex-row"><i class="el-icon-location user-icon"></i>
               <div>
 								<div class="row-label">Location</div>
 								<div>{{ curSel }}</div>
@@ -76,25 +77,9 @@
 					</span>
 
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="handleSel('Amangiri')">
-              <div class="title-name">Amangiri</div>
-              <div class="desc-name">CANYON POINT,UTAH,USA</div>
-            </el-dropdown-item>
-            <el-dropdown-item @click.native="handleSel('Amanera')">
-              <div class="title-name">Amanera</div>
-              <div class="desc-name">PALYA GRADE,DOMINICAN REPUBLIC</div>
-            </el-dropdown-item>
-            <el-dropdown-item @click.native="handleSel('Amangani')">
-              <div class="title-name">Amangani</div>
-              <div class="desc-name">ICKSON HOLE,USA</div>
-            </el-dropdown-item>
-            <el-dropdown-item @click.native="handleSel('Amanyara')">
-              <div class="title-name">Amanyara</div>
-              <div class="desc-name">PROVIDENCIALES,TURKS AND CAICONS</div>
-            </el-dropdown-item>
-            <el-dropdown-item @click.native="handleSel('Aman New York')">
-              <div class="title-name">Aman New York</div>
-              <div class="desc-name">NEW YORK,USA</div>
+            <el-dropdown-item v-for="item in this.locations" @click.native="handleSel(item)">
+              <div class="title-name">{{item.province}}</div>
+              <div class="desc-name">{{item.city}}</div>
             </el-dropdown-item>
           </el-dropdown-menu>
 
@@ -109,7 +94,8 @@
         </div>
         <div class="date-btn" style="background:#fff;line-height:60px;text-align:right;">
           <el-link class="date-item" @click="showCheck = false;">Cancel</el-link>
-          <el-button class="date-item" type="info" style="background:#333;margin:0 15px;" @click="toReserve">Search
+          <el-button class="date-item" type="info" style="background:#333;margin:0 15px;">
+            Search
           </el-button>
         </div>
       </el-col>
@@ -119,24 +105,6 @@
       <!--hotel选择部分-->
       <div class="hotel-select">
         <div class="flex-row" style="margin-top:15px;">
-
-          <!--下拉菜单 sort by relevance-->
-          <el-dropdown>
-						<span class="el-dropdown-link">
-							<div class="flex-row" style="cursor: pointer;">
-								<div>
-									<div>Sort By</div>
-									<div class="row-label">Relevance</div>
-								</div>
-								<i class="el-icon-caret-bottom el-icon--right" style="font-size:18px;"></i>
-							</div>
-						</span>
-            <!--两个选项-->
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>Relevance</el-dropdown-item>
-              <el-dropdown-item>Hotel Name (A-Z)</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
 
           <!--下拉菜单hide filters的弹出框-->
           <el-popover placement="bottom" width="1300" trigger="click">
@@ -171,21 +139,19 @@
 
       <!--每个酒店的展示部分-->
       <div style="clear:both;">
-        <el-col :span="8" v-for="item in imgList" :key="item.name">
+        <el-col :span="8" v-for="item in hotels" :key="item.hotelName">
           <el-card :body-style="{ padding: '15px' }">
-            <img :src="item.img" class="image">
+            <img :src="item.hotelPicture" class="image">
             <div style="padding: 14px;">
-              <div class="card-name">{{ item.name }}</div>
-              <div class="card-addr">{{ item.addr }}</div>
+              <div class="card-name">{{ item.hotelName }}</div>
+              <div class="card-addr">{{item.province}}, {{item.city}}, {{item.district}}, {{item.detailAddress}}</div>
               <div class="card-detail">Detail</div>
               <el-divider></el-divider>
               <div style="text-align:center;color:#666;">
-                <div>Form <span style="font-weight:700;font-size:17px;">${{ item.price }}</span></div>
+                <div>Average <span style="font-weight:700;font-size:17px;">￥{{ item.averagePrice }}</span></div>
                 <div>Per Night</div>
-                <div>Excluding Taxes & Fees</div>
               </div>
-              <div v-if="item.btn === 'Dates Unavailable'" class="v-btn1">{{ item.btn }}</div>
-              <div v-if="item.btn === 'View rates'" class="v-btn2">{{ item.btn }}</div>
+              <div class="v-btn2" @click="toHotel(item.hotelId)">View Hotel</div>
             </div>
           </el-card>
         </el-col>
@@ -202,7 +168,7 @@ export default {
   data() {
     return {
       date1: new Date().toDateString(),
-      date2: new Date().toDateString(),
+      date2: this.generateTomorrow().toDateString(),
       date3: '',
       date4: '',
       showCheck: false,
@@ -213,72 +179,9 @@ export default {
       checked5: false,
       count1: 0,
       count2: 0,
-      curSel: 'Amangiri',
-      imgList: [
-        {
-          btn: 'View rates',
-          name: 'Aman Kyoto',
-          addr: 'Kyoto, Japan',
-          price: '230',
-          img: require('../../assets/images/hotel/1.jpeg')
-        },
-        {
-          btn: 'Dates Unavailable',
-          name: 'Amantaka',
-          addr: "Luang Prabang, Lao People's Dem Republic",
-          price: '980',
-          img: require('../../assets/images/hotel/2.jpeg')
-        },
-        {
-          btn: 'Dates Unavailable',
-          name: 'Amanwella',
-          addr: 'Tangalle, Sri Lanka',
-          price: '560',
-          img: require('../../assets/images/hotel/3.jpeg')
-        },
-        {
-          btn: 'Dates Unavailable',
-          name: 'Amanera',
-          addr: 'Rio San Juan, Dominican Republic',
-          price: '460',
-          img: require('../../assets/images/hotel/4.jpeg')
-        },
-        {
-          btn: 'View rates',
-          name: 'Aman Tokyo',
-          addr: 'Chiyoda-ku, Japan',
-          price: '390',
-          img: require('../../assets/images/hotel/5.jpeg')
-        },
-        {
-          btn: 'View rates',
-          name: 'Amankila',
-          addr: 'Bali, Indonesia',
-          price: '280',
-          img: require('../../assets/images/hotel/6.jpeg')
-        },
-        {
-          btn: 'View rates',
-          name: 'Amanjena',
-          addr: 'Marrakech, Morocco',
-          price: '350',
-          img: require('../../assets/images/hotel/7.jpeg')
-        },
-        {
-          btn: 'Dates Unavailable',
-          name: 'Amanemu',
-          addr: 'Shima-shi, Japan',
-          price: '690',
-          img: require('../../assets/images/hotel/8.jpeg')
-        },
-        {
-          btn: 'View rates',
-          name: 'Amanfayun',
-          addr: 'Hangzhou 33, China',
-          price: '880',
-          img: require('../../assets/images/hotel/9.jpeg')
-        },
-      ]
+      locations: [],
+      curSel: 'Choose The Location',
+      hotels: [],
     };
   },
   methods: {
@@ -290,12 +193,33 @@ export default {
       this.$message.info('more')
     },
     handleSel(val) {
-      this.curSel = val;
+      this.curSel = val.province + " " + val.city;
     },
-    toReserve() {
-      this.$router.push('reserve')
+    updateGuest() {
+      this.count2 = this.count1;
+    },
+    generateTomorrow() {
+      const today = new Date();
+      const current = today.getDate();
+      let finalDate = new Date();
+      finalDate.setDate(current + 1);
+      return finalDate;
+    },
+    toHotel(hotelId) {
+      this.$router.push('reserve?hotel=' + hotelId);
     }
-
+  },
+  created() {
+    this.$http({
+      url: this.$http.adornUrl('/room/room/hotel/initSearch'),
+      method: 'get'
+    }).then(data => {
+      let obj = data.data.data;
+      this.locations = obj.locations;
+      this.hotels = obj.hotels;
+    }).catch(err => {
+      this.$message.error("Network Error");
+    })
   }
 };
 </script>

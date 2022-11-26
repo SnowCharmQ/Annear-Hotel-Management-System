@@ -15,10 +15,7 @@ import org.springframework.web.bind.annotation.*;
 
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.order.HotelNotFoundException;
-import sustech.hotel.model.vo.hotel.HotelVo;
-import sustech.hotel.model.vo.hotel.ReserveReqVo;
-import sustech.hotel.model.vo.hotel.ReserveRespVo;
-import sustech.hotel.model.vo.hotel.SearchRespVo;
+import sustech.hotel.model.vo.hotel.*;
 import sustech.hotel.room.dao.HotelDao;
 import sustech.hotel.room.dao.RoomTypeDao;
 import sustech.hotel.room.entity.HotelEntity;
@@ -52,7 +49,7 @@ public class HotelController {
     @GetMapping("/initSearch")
     public JsonResult<SearchRespVo> initSearch() {
         SearchRespVo respVo = new SearchRespVo();
-        List<String> provinces = hotelDao.selectAllProvince();
+        List<LocationVo> locations = hotelDao.selectAllLocations();
         List<HotelEntity> hotelEntities = hotelService.list();
         List<HotelVo> hotelVos = hotelEntities.stream().map(o -> {
             HotelVo hotelVo = new HotelVo();
@@ -74,7 +71,7 @@ public class HotelController {
             return hotelVo;
         }).toList();
         respVo.setHotels(hotelVos);
-        respVo.setProvinces(provinces);
+        respVo.setLocations(locations);
         return new JsonResult<>(respVo);
     }
 

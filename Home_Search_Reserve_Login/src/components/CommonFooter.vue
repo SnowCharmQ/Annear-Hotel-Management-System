@@ -96,7 +96,7 @@
       <br><br><br><br> <br>
 
       <!--homepage底部的selection bar-->
-      <div class="flex-row fixedbox">
+      <div class="flex-row fixedbox" v-if="!isSearch">
         <div style="margin-top:15px;color:#666;">Book your stay ></div>
 
         <div>
@@ -130,7 +130,7 @@
         </div>
 
         <div>
-          <el-button style="margin-top:10px;">Check availatity</el-button>
+          <el-button style="margin-top:10px;">Check Availability</el-button>
         </div>
 
       </div>
@@ -158,6 +158,7 @@ export default {
       value3: 'Check a',
       date1: '',
       date2: '',
+      isSearch: false,
       show: true
     }
   },
@@ -168,6 +169,7 @@ export default {
             this.$route.name === 'order' || this.$route.name === 'login' || this.$route.name === 'register' ||
             this.$route.name === 'password' || this.$route.name === 'floorPlan');
         this.show = !(this.$route.name === '404');
+        this.isSearch = this.$route.name === 'search';
       },
       // 深度观察监听
       deep: true,

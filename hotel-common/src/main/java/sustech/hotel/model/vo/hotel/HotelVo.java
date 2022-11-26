@@ -13,6 +13,7 @@ public class HotelVo {
     private String city;
     private String district;
     private String hotelName;
+    private String detailAddress;
     private BigDecimal longitude;
     private BigDecimal latitude;
     private String telephone;

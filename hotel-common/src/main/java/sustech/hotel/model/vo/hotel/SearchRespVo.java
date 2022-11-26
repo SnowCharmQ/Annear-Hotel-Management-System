@@ -6,6 +6,6 @@ import java.util.List;
 
 @Data
 public class SearchRespVo {
-    List<String> provinces;
+    List<LocationVo> locations;
     List<HotelVo> hotels;
 }

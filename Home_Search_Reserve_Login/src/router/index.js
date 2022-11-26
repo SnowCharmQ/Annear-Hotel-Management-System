@@ -68,6 +68,9 @@ const routes = [
                 name: '404',
                 component: () => import('../pages/404'),
                 meta: {title: '404'}
+            }, {
+                path: '*',
+                redirect: '/404'
             }
         ]
     }

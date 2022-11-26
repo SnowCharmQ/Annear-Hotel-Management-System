@@ -1,4 +1,4 @@
-package sustech.hotel.member;
+package sustech.hotel.member.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

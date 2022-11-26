@@ -1,5 +1,6 @@
 package sustech.hotel.booking.service.impl;
 
+import com.alibaba.fastjson2.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,7 +21,6 @@ import sustech.hotel.common.utils.Query;
 import sustech.hotel.booking.entity.BookingEntity;
 import sustech.hotel.booking.service.BookingService;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
-import sustech.hotel.model.to.hotel.ConflictTypeTo;
 
 
 @Service("bookingService")
@@ -42,11 +42,8 @@ public class BookingServiceImpl extends ServiceImpl<BookingDao, BookingEntity> i
 
     @Override
     public JsonResult<List<AvailableRoomTypeTo>> findByTimeIntervalAndHotel(Date startDate, Date endDate, Long hotelId) {
-        ConflictTypeTo to = new ConflictTypeTo();
         List<Long> conflictList = bookingDao.selectConflictRoomByTimeIntervalAndHotel(startDate, endDate, hotelId);
-        to.setHotelId(hotelId);
-        to.setConflictList(conflictList);
-        return roomFeignService.getAvailableRoomType(to);
+        String json = JSON.toJSONString(conflictList);
+        return roomFeignService.getAvailableRoomType(hotelId, json);
     }
-
 }

@@ -5,11 +5,11 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson2.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
-import sustech.hotel.model.to.hotel.ConflictTypeTo;
 import sustech.hotel.room.dao.RoomTypeDao;
 import sustech.hotel.room.entity.RoomTypeEntity;
 import sustech.hotel.room.service.RoomTypeService;
@@ -73,15 +73,13 @@ public class RoomTypeController {
         return new JsonResult<>();
     }
 
-    @ResponseBody
     @GetMapping("/availableRoomType")
-    public JsonResult<List<AvailableRoomTypeTo>> getAvailableRoomType(@RequestBody ConflictTypeTo to) {
-        List<Long> conflictList = to.getConflictList();
+    public JsonResult<List<AvailableRoomTypeTo>> getAvailableRoomType(@RequestParam("hotelId") Long hotelId, @RequestParam("json") String json) {
+        List<Long> conflictList = JSON.parseArray(json, Long.class);
         if (conflictList == null || conflictList.isEmpty()) {
             conflictList = new ArrayList<>();
             conflictList.add(-1L);
         }
-        Long hotelId = to.getHotelId();
         List<AvailableRoomTypeTo> res = roomTypeDao.selectAvailableRoomTypeByConflictListAndHotel(conflictList, hotelId);
         return new JsonResult<>(res);
     }

@@ -103,10 +103,13 @@ export default {
       this.content += html;
     },
     initDialog(username) {
-        this.chatUser = username
-        let message = {text: 'loadDialog'}
-        socket.send(JSON.stringify(message));
-        console.log(this.chatUser)
+        if (this.chatUser != username) {
+          this.content = ''
+          this.chatUser = username
+          let message = {text: 'loadDialog'}
+          socket.send(JSON.stringify(message));
+          console.log(this.chatUser)
+        }
     },
     init() {
       let _this = this;

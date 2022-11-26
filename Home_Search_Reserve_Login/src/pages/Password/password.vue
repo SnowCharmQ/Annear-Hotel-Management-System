@@ -125,7 +125,7 @@
 
 <script>
 import cookie from "js-cookie";
-import {isMobile, isNumber} from "../../utils/validate";
+import {isMobile, isNumber} from "@/utils/validate";
 
 export default {
   name: "password",

@@ -62,6 +62,14 @@ const routes = [
                 path: '/floorPlan',
                 name: 'floorPlan',
                 component: () => import('../pages/FloorPlan/floorPlan')
+            }, {
+                path: '/chat',
+                name: 'chat',
+                component: () => import('../pages/Chat/chat')
+            }, {
+                path: '/graph',
+                name: 'graph',
+                component: () => import('../pages/ManagerPages/graphs')
             }
         ]
     }

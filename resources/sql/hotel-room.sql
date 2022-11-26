@@ -7,6 +7,8 @@ create table chr_hotel
     district       varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  not null,
     detail_address varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci not null,
     hotel_name     varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  not null,
+    email          varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  not null,
+    description    varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci not null,
     longitude      decimal(10, 6)                                                 not null,
     latitude       decimal(10, 6)                                                 not null,
     telephone      varchar(100),
@@ -60,9 +62,9 @@ create table chr_room
 drop table if exists chr_hotel_picture;
 create table chr_hotel_picture
 (
-    hotel_id     bigint(20) not null,
-    picture_path varchar(200) not null ,
-    cover boolean
+    hotel_id     bigint(20)   not null,
+    picture_path varchar(200) not null,
+    cover        boolean
 );
 
 drop table if exists chr_room_type_picture;

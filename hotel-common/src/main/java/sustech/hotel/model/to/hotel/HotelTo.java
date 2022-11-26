@@ -12,6 +12,8 @@ public class HotelTo {
     private String district;
     private String hotelName;
     private String detailAddress;
+    private String email;
+    private String description;
     private BigDecimal longitude;
     private BigDecimal latitude;
     private String telephone;

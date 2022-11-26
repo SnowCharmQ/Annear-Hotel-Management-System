@@ -5,10 +5,9 @@
     <div class="item-img">
       <el-divider></el-divider>
       <div class="top-link">
-        <el-link>Hotel Info</el-link>
+        <el-link>Hotel Information</el-link>
         <el-link>Find Reservations</el-link>
         <el-link>Property Currency</el-link>
-        <el-link><i class="el-icon-user"></i>Sign In</el-link>
       </div>
     </div>
 
@@ -23,7 +22,9 @@
             <div class="title-popover">Select Guests</div>
             <div style="padding:15px 0;" class="add-form">
               <el-form ref="form" label-width="80px">
-                <el-form-item label="Guests"><el-input-number v-model="count1" :min="0"></el-input-number></el-form-item>
+                <el-form-item label="Guests">
+                  <el-input-number v-model="count1" :min="0"></el-input-number>
+                </el-form-item>
                 <div style="line-height:50px;border-top:1px solid #ddd;text-align:right;">
                   <el-button type="info" @click="updateGuest">Apply</el-button>
                 </div>
@@ -46,7 +47,7 @@
       <el-col :span="6" class="btn-item">
         <div class="flex-row" @click="showDate"><i class="el-icon-date user-icon"></i>
           <div>
-          <div class="row-label">Check-In</div>
+            <div class="row-label">Check-In</div>
             <div>{{ date1 }}</div>
           </div>
         </div>
@@ -78,8 +79,8 @@
 
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item v-for="item in this.locations" @click.native="handleSel(item)">
-              <div class="title-name">{{item.province}}</div>
-              <div class="desc-name">{{item.city}}</div>
+              <div class="title-name">{{ item.province }}</div>
+              <div class="desc-name">{{ item.city }}</div>
             </el-dropdown-item>
           </el-dropdown-menu>
 
@@ -107,29 +108,82 @@
         <div class="flex-row" style="margin-top:15px;">
 
           <!--下拉菜单hide filters的弹出框-->
-          <el-popover placement="bottom" width="1300" trigger="click">
+          <el-popover placement="bottom" width="800" trigger="click" style="cursor: pointer">
             <div style="padding:0 15px;">
               <div class="title-popover" style="font-size:18px;">Filters</div>
-              <el-col :span="12" style="border-right:1px solid #ddd;">
+              <el-col :span="12">
                 <div style="display:flex;justify-content: space-between;font-size: 18px;line-height: 50px;;">
-                  <div>Destinations</div>
-                  <el-link>Clear</el-link>
+                  <div>Sort By</div>
                 </div>
                 <div style="line-height:30px;">
-                  <div><el-checkbox v-model="checked1">IndoChina</el-checkbox></div>
-                  <div><el-checkbox v-model="checked2">China</el-checkbox></div>
-                  <div><el-checkbox v-model="checked3">Japan</el-checkbox></div>
-                  <div><el-checkbox v-model="checked4">Europe</el-checkbox></div>
-                  <div><el-checkbox v-model="checked5">USA & Caribbean</el-checkbox></div>
+                  <div>
+                    <el-radio v-model="checked1" label="default">Default</el-radio>
+                    <br>
+                    <el-radio v-model="checked1" label="score">Name</el-radio>
+                    <br>
+                    <el-radio v-model="checked1" label="price">Average Price</el-radio>
+                    <br>
+                    <el-radio v-model="checked1" label="collection">Collection Number</el-radio>
+                  </div>
+                  <br>
+                  <div>
+                    <el-radio v-model="checked2" label="hl">From Highest to Lowest</el-radio>
+                    <el-radio v-model="checked2" label="lh">From Lowest to Highest</el-radio>
+                  </div>
                 </div>
-                <el-link>Show All Destinations</el-link>
-                <br>
               </el-col>
-              <el-col :span="24" style="line-height:50px;border-top:1px solid #ddd;text-align:right;"><el-button type="info" style="background:#333;">Apply</el-button></el-col>
             </div>
+            <el-col :span="12">
+              <div style="display:flex;justify-content: space-between;font-size: 18px;line-height: 50px;;">
+                <div>Price</div>
+              </div>
+              <div style="padding:15px;justify-content: space-between;">
+                <el-slider v-model="value" range show-stops :min="100" :max="10000"/>
+                <br>
+                <div style="display: flex;">
+                  <div class="price-box">
+                    <div>Price range from</div>
+                    <div>{{ value[0] }}</div>
+                  </div>
+                  <div style="width:20px;">---</div>
+                  <div class="price-box">
+                    <div>Price range from</div>
+                    <div>{{ value[1] }}</div>
+                  </div>
+                </div>
+              </div>
+              <br>
+            </el-col>
+
+            <el-col :span="24">
+              <el-divider></el-divider>
+            </el-col>
+
+            <el-col :span="24">
+              <div style="display:flex;justify-content: space-between;font-size: 18px;line-height: 50px;;">
+                <div>Related Supporting Infrastructure</div>
+              </div>
+              <div style="line-height:30px;">
+                <div>
+                  <el-checkbox v-model="checked3">Dining Room</el-checkbox>
+                  <el-checkbox v-model="checked4">Parking Lot</el-checkbox>
+                  <br>
+                  <el-checkbox v-model="checked5">Spa</el-checkbox>
+                  <el-checkbox v-model="checked6">Bar</el-checkbox>
+                  <el-checkbox v-model="checked7">Gym</el-checkbox>
+                  <el-checkbox v-model="checked8">Chess Room</el-checkbox>
+                  <el-checkbox v-model="checked9">Swimming Pool</el-checkbox>
+                </div>
+              </div>
+              <br>
+            </el-col>
+
             <!--下拉菜单hide filters-->
-            <div class="flex-row" slot="reference" style="margin-left:20px;background: #82847f;margin-right: 20px;padding:8px 2px;color: #fff;">
-              <div><div class="row-label">Hide Filters</div></div>
+            <div class="flex-row" slot="reference"
+                 style="margin-left:20px;background: #82847f;margin-right: 20px;padding:8px 2px;color: #fff;">
+              <div>
+                <div class="row-label">Hide Filters</div>
+              </div>
               <i class="el-icon-caret-bottom user-icon" style="font-size:18px;"></i>
             </div>
           </el-popover>
@@ -141,11 +195,25 @@
       <div style="clear:both;">
         <el-col :span="8" v-for="item in hotels" :key="item.hotelName">
           <el-card :body-style="{ padding: '15px' }">
-            <img :src="item.hotelPicture" class="image">
+            <el-image :src="item.hotelPicture"
+                      :preview-src-list="[item.hotelPicture]"
+                      class="image"></el-image>
             <div style="padding: 14px;">
               <div class="card-name">{{ item.hotelName }}</div>
-              <div class="card-addr">{{item.province}}, {{item.city}}, {{item.district}}, {{item.detailAddress}}</div>
-              <div class="card-detail">Detail</div>
+              <div class="card-addr">{{ item.province }}, {{ item.city }}, {{ item.district }},
+                {{ item.detailAddress }}
+              </div>
+              <br>
+              <div class="card-detail" @click="openDialog(item)" style="font-size: 16px">Detail</div>
+              &ensp;
+              <el-image
+                  @click="collectHotel(item.hotelId)"
+                  v-if="isLogin"
+                  :style="iconStyleOuter"
+                  :src="require('../../assets/images/heart.png')"
+              ></el-image>
+              &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+              <i class="el-icon-star-on" style="display: inline" v-for="_ in item.starLevel"></i>
               <el-divider></el-divider>
               <div style="text-align:center;color:#666;">
                 <div>Average <span style="font-weight:700;font-size:17px;">￥{{ item.averagePrice }}</span></div>
@@ -157,12 +225,72 @@
         </el-col>
       </div>
 
+      <el-dialog :visible.sync="dialogVisible" width="700px">
+        <template slot="title" style="margin-top: 10px">
+          <div style="font-size: 28px;font-family: 'Times New Roman',serif;">{{ curHotel.hotelName }}</div>
+          <i class="el-icon-star-on" style="width: 20px;height: 20px" v-for="_ in curHotel.starLevel"></i>
+        </template>
+        <el-image
+            style="width: 660px; height: 400px"
+            :src="curHotel.hotelPicture"
+            :preview-src-list="[curHotel.hotelPicture]">
+        </el-image>
+        <div style="margin:10px 0;font-size: 20px;font-family: 'Times New Roman',serif">
+          <span>{{ curHotel.province }}</span>
+          <span> | </span>
+          <span>{{ curHotel.city }}</span>
+          <span> | </span>
+          <span>{{ curHotel.district }}</span>
+          <span> | </span>
+          <span>{{ curHotel.detailAddress }}</span>
+        </div>
+        <br>
+        <div style="font-size: 18px;font-family: 'Times New Roman',serif">
+          <i class="el-icon-phone">&ensp;{{ curHotel.telephone }}</i>
+          <br>
+          <i class="el-icon-message">&ensp;{{ curHotel.email }}</i>
+        </div>
+        <br>
+        <div style="font-size: 18px;font-family: 'Times New Roman',serif">
+          {{ curHotel.description }}
+        </div>
+        <el-divider style="height: 5px"></el-divider>
+        <div style="margin:10px 0;font-size: 20px;font-family: 'Times New Roman',serif">
+          <span>Dining Room: <i v-if="curHotel.diningRoom===1" class="el-icon-check"></i></span>
+          <span> | </span>
+          <span>Parking Lot: <i v-if="curHotel.parking===1" class="el-icon-check"></i></span>
+        </div>
+        <div style="margin:10px 0;font-size: 20px;font-family: 'Times New Roman',serif">
+          <span>Spa: <i v-if="curHotel.spa===1" class="el-icon-check"></i><i v-if="curHotel.spa!==1"
+                                                                             class="el-icon-close"></i></span>
+          <span> | </span>
+          <span>Bar: <i v-if="curHotel.bar===1" class="el-icon-check"></i><i v-if="curHotel.bar!==1"
+                                                                             class="el-icon-close"></i></span>
+          <span> | </span>
+          <span>Gym: <i v-if="curHotel.gym===1" class="el-icon-check"></i><i v-if="curHotel.gym!==1"
+                                                                             class="el-icon-close"></i></span>
+          <span> | </span>
+          <span>Chess Room: <i v-if="curHotel.chessRoom===1" class="el-icon-check"></i><i v-if="curHotel.chessRoom!==1"
+                                                                                          class="el-icon-close"></i></span>
+          <span> | </span>
+          <span>Swimming Pool: <i v-if="curHotel.swimmingPool===1" class="el-icon-check"></i><i
+              v-if="curHotel.swimmingPool!==1" class="el-icon-close"></i></span>
+        </div>
+        <el-divider style="height: 5px"></el-divider>
+        <el-image v-if="dialogVisible&&isLogin"
+                  :style="iconStyleInner"
+                  :src="require('../../assets/images/heart.png')"
+                  @click="collectHotel(curHotel.hotelId)"></el-image>
+      </el-dialog>
+
     </el-row>
 
   </div>
 </template>
 
 <script>
+import cookie from "js-cookie";
+
 export default {
   name: "home",
   data() {
@@ -172,16 +300,35 @@ export default {
       date3: '',
       date4: '',
       showCheck: false,
-      checked1: false,
-      checked2: false,
-      checked3: false,
-      checked4: false,
-      checked5: false,
+      checked1: 'default',
+      checked2: 'hl',
+      checked3: true,
+      checked4: true,
+      checked5: true,
+      checked6: true,
+      checked7: true,
+      checked8: true,
+      checked9: true,
       count1: 0,
       count2: 0,
       locations: [],
+      value: [100, 10000],
       curSel: 'Choose The Location',
       hotels: [],
+      curHotel: {},
+      dialogVisible: false,
+      isLogin: false,
+      iconStyleOuter: {
+        'width': '30px',
+        'height': '30px',
+        'cursor': 'pointer'
+      },
+      iconStyleInner: {
+        'margin-left': '600px',
+        'width': '30px',
+        'height': '30px',
+        'cursor': 'pointer'
+      },
     };
   },
   methods: {
@@ -207,12 +354,23 @@ export default {
     },
     toHotel(hotelId) {
       this.$router.push('reserve?hotel=' + hotelId);
+    },
+    openDialog(item) {
+      this.curHotel = item;
+      this.dialogVisible = true;
+    },
+    collectHotel(hotelId) {
+
     }
   },
   created() {
+    let token = cookie.get('token');
+    if (token === undefined || token === '') {
+      token = '';
+    }
     this.$http({
       url: this.$http.adornUrl('/room/room/hotel/initSearch'),
-      method: 'get'
+      method: 'get',
     }).then(data => {
       let obj = data.data.data;
       this.locations = obj.locations;
@@ -225,6 +383,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+color-icon {
+  background: #d21919;
+}
+
 .page-main {
   background: #f3eee7;
 
@@ -288,6 +450,8 @@ export default {
   .card-detail {
     margin-top: 25px;
     cursor: pointer;
+    width: 20px;
+    display: inline;
   }
 
   .hotel-select {
@@ -315,7 +479,4 @@ export default {
     cursor: pointer;
   }
 }
-</style>
-<style>
-
 </style>

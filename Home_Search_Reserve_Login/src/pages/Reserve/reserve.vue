@@ -102,7 +102,7 @@
 
 
             <!--filters-->
-            <el-popover placement="top-end" width="800" trigger="click" style="cursor: pointer">
+            <el-popover placement="top-end" width="800" trigger="click" style="cursor: pointer;z-index: 10">
               <div style="padding:0 15px;">
                 <div class="title-popover" style="font-size:18px;">Filters</div>
 
@@ -566,7 +566,7 @@ export default {
 }
 
 .carousel-box {
-  z-index: 10000;
+  z-index: 5;
   position: absolute;
   bottom: 0;
   left: 30px;

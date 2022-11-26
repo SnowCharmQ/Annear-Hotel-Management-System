@@ -24,4 +24,6 @@ public class HotelVo {
     private Integer spa;
     private Integer chessRoom;
     private Long starLevel;
+    private String hotelPicture;
+    private BigDecimal averagePrice;
 }

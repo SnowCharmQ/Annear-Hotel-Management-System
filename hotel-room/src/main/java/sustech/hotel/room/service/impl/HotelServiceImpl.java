@@ -27,15 +27,4 @@ public class HotelServiceImpl extends ServiceImpl<HotelDao, HotelEntity> impleme
         return new PageUtils(page);
     }
 
-    public HotelEntity convertHotelRequest(HotelVo hotelVo){
-        HotelEntity entity = new HotelEntity();
-        BeanUtils.copyProperties(hotelVo, entity);
-        return entity;
-    }
-    public HotelVo convertHotel(HotelEntity hotelEntity){
-        HotelVo hotelVo = new HotelVo();
-        BeanUtils.copyProperties(hotelEntity, hotelVo);
-        return hotelVo;
-    }
-
 }

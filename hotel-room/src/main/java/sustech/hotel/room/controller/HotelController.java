@@ -1,8 +1,12 @@
 package sustech.hotel.room.controller;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.BeanUtils;
@@ -11,8 +15,12 @@ import org.springframework.web.bind.annotation.*;
 
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.order.HotelNotFoundException;
+import sustech.hotel.model.vo.hotel.HotelVo;
 import sustech.hotel.model.vo.hotel.ReserveReqVo;
 import sustech.hotel.model.vo.hotel.ReserveRespVo;
+import sustech.hotel.model.vo.hotel.SearchRespVo;
+import sustech.hotel.room.dao.HotelDao;
+import sustech.hotel.room.dao.RoomTypeDao;
 import sustech.hotel.room.entity.HotelEntity;
 import sustech.hotel.room.entity.HotelPictureEntity;
 import sustech.hotel.room.service.HotelPictureService;
@@ -26,10 +34,49 @@ import sustech.hotel.common.utils.JsonResult;
 public class HotelController {
 
     @Autowired
+    private HotelDao hotelDao;
+
+    @Autowired
+    private RoomTypeDao roomTypeDao;
+
+    @Autowired
     private HotelService hotelService;
 
     @Autowired
     private HotelPictureService hotelPictureService;
+
+    @Autowired
+    private ThreadPoolExecutor executor;
+
+    @ResponseBody
+    @GetMapping("/initSearch")
+    public JsonResult<SearchRespVo> initSearch() {
+        SearchRespVo respVo = new SearchRespVo();
+        List<String> provinces = hotelDao.selectAllProvince();
+        List<HotelEntity> hotelEntities = hotelService.list();
+        List<HotelVo> hotelVos = hotelEntities.stream().map(o -> {
+            HotelVo hotelVo = new HotelVo();
+            BeanUtils.copyProperties(o, hotelVo);
+            CompletableFuture<Void> task1 = CompletableFuture.runAsync(() -> {
+                BigDecimal avgPrice = roomTypeDao.selectAvgPriceByHotelId(o.getHotelId());
+                hotelVo.setAveragePrice(avgPrice);
+            }, executor);
+            CompletableFuture<Void> task2 = CompletableFuture.runAsync(() -> {
+                String picturePath = hotelPictureService.getOne(new QueryWrapper<HotelPictureEntity>()
+                        .and(i -> i.eq("hotel_id", o.getHotelId()).eq("cover", 1))).getPicturePath();
+                hotelVo.setHotelPicture(picturePath);
+            }, executor);
+            try {
+                CompletableFuture.allOf(task1, task2).get();
+            } catch (InterruptedException | ExecutionException e) {
+                throw new RuntimeException(e);
+            }
+            return hotelVo;
+        }).toList();
+        respVo.setHotels(hotelVos);
+        respVo.setProvinces(provinces);
+        return new JsonResult<>(respVo);
+    }
 
     @ResponseBody
     @GetMapping("/initReserve")

@@ -21,6 +21,6 @@ public interface RoomFeignService {
     @RequestMapping("room/hotel/info/{hotelId}")
     JsonResult<HotelTo> getHotelByID(@PathVariable("hotelId") Long hotelId);
 
-    @GetMapping("room/room/allInfo/{roomId}")
+    @RequestMapping("room/room/allInfo/{roomId}")
     JsonResult<RoomInfoTo> allInfo(@PathVariable("roomId") Long roomId);
 }

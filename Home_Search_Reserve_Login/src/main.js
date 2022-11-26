@@ -10,6 +10,8 @@ import lang from 'element-ui/lib/locale/lang/en'
 import locale from 'element-ui/lib/locale'
 import axios from "axios";
 import request from "./utils/request";
+import * as echarts from "echarts"
+Vue.prototype.$echarts = echarts
 // 设置语言
 locale.use(lang)
 

@@ -4,7 +4,6 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-
 const routes = [
     {
         path: '/',
@@ -64,6 +63,14 @@ const routes = [
                 name: 'floorPlan',
                 component: () => import('../pages/FloorPlan/floorPlan')
             }, {
+                path: '/chat',
+                name: 'chat',
+                component: () => import('../pages/Chat/chat')
+            }, {
+                path: '/graph',
+                name: 'graph',
+                component: () => import('../pages/ManagerPages/graphs')
+            },  {
                 path: '/404',
                 name: '404',
                 component: () => import('../pages/404'),

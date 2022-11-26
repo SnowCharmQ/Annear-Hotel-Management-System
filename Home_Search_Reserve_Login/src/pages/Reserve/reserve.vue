@@ -427,7 +427,7 @@ export default {
       return finalDate;
     }
   },
-  mounted() {
+  created() {
     let hotelId = this.$route.query.hotel;
     if (hotelId === undefined || hotelId === '') {
       this.$router.push('404');

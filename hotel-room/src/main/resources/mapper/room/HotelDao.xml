@@ -21,6 +21,11 @@
         <result property="chessRoom" column="chess_room"/>
         <result property="starLevel" column="star_level"/>
     </resultMap>
+    <select id="selectAllProvince" resultType="java.lang.String">
+        select province
+        from chr_hotel
+        group by province;
+    </select>
 
 
 </mapper>

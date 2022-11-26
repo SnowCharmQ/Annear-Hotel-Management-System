@@ -1,15 +1,15 @@
-package sustech.hotel.exception.auth;
+package sustech.hotel.exception.others;
 
 import sustech.hotel.exception.BaseException;
 import sustech.hotel.exception.ExceptionCodeEnum;
 
-public class NotRegisterException extends BaseException {
-    public NotRegisterException(int state, String message) {
+public class InvalidDateException extends BaseException {
+    public InvalidDateException(int state, String message) {
         super(message);
         this.state = state;
     }
 
-    public NotRegisterException(ExceptionCodeEnum exceptionCodeEnum) {
+    public InvalidDateException(ExceptionCodeEnum exceptionCodeEnum) {
         super(exceptionCodeEnum.getMessage());
         this.state = exceptionCodeEnum.getCode();
     }

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import sustech.hotel.common.utils.JwtHelper;
 import sustech.hotel.exception.BaseException;
 import sustech.hotel.exception.ExceptionCodeEnum;
-import sustech.hotel.exception.auth.NotFoundException;
+import sustech.hotel.exception.auth.UserNotFoundException;
 import sustech.hotel.member.entity.UserInfoEntity;
 import sustech.hotel.member.feign.OrderFeignService;
 import sustech.hotel.member.service.UserInfoService;
@@ -61,14 +61,12 @@ public class UserInfoController {
     @GetMapping("/avatar")
     public JsonResult<String> getAvatar(TokenVo vo) {
         if (vo.getToken() == null || StringUtils.isEmpty(vo.getToken()) || Objects.equals(vo.getToken(), "null")) {
-            return new JsonResult<>(new NotFoundException(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage()));
+            return new JsonResult<>(new UserNotFoundException(ExceptionCodeEnum.USER_NOT_FOUND_EXCEPTION));
         }
         Long userId = JwtHelper.getUserId(vo.getToken());
         UserInfoEntity user = userInfoService.getById(userId);
         if (user == null) {
-            return new JsonResult<>(new NotFoundException(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage()));
+            return new JsonResult<>(new UserNotFoundException(ExceptionCodeEnum.USER_NOT_FOUND_EXCEPTION));
         }
         return new JsonResult<>(user.getAvatar());
     }

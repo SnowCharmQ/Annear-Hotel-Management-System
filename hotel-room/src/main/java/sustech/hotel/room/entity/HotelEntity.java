@@ -21,15 +21,16 @@ public class HotelEntity implements Serializable {
     private String city;
     private String district;
     private String hotelName;
+    private String detailAddress;
     private BigDecimal longitude;
     private BigDecimal latitude;
     private String telephone;
-    private Long swimmingPool;
-    private Long gym;
-    private Long diningRoom;
-    private Long bar;
-    private Long parking;
-    private Long spa;
-    private Long chessRoom;
+    private Integer swimmingPool;
+    private Integer gym;
+    private Integer diningRoom;
+    private Integer bar;
+    private Integer parking;
+    private Integer spa;
+    private Integer chessRoom;
     private Long starLevel;
 }

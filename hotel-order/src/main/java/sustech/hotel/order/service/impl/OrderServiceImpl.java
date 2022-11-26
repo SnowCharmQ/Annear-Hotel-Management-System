@@ -3,29 +3,37 @@ package sustech.hotel.order.service.impl;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import sustech.hotel.common.utils.JsonResult;
-import sustech.hotel.common.utils.JwtHelper;
-import sustech.hotel.common.utils.PageUtils;
-import sustech.hotel.common.utils.Query;
+import sustech.hotel.common.utils.*;
 
 import sustech.hotel.exception.ExceptionCodeEnum;
-import sustech.hotel.exception.auth.NotFoundException;
+import sustech.hotel.exception.auth.UserNotFoundException;
 import sustech.hotel.exception.order.RoomNotAvailableException;
 import sustech.hotel.exception.order.RoomNotFoundException;
 import sustech.hotel.exception.order.UserNotLoginException;
+import sustech.hotel.exception.others.InvalidDateException;
+import sustech.hotel.model.to.hotel.HotelTo;
+import sustech.hotel.model.to.hotel.RoomInfoTo;
 import sustech.hotel.model.to.hotel.RoomTo;
 import sustech.hotel.model.to.hotel.RoomTypeTo;
 import sustech.hotel.model.to.member.UserTo;
 import sustech.hotel.model.to.order.OrderTo;
+import sustech.hotel.model.vo.order.OrderConfirmRespVo;
+import sustech.hotel.constant.OrderConstant;
+import sustech.hotel.model.vo.order.OrderConfirmVo;
 import sustech.hotel.order.dao.OrderDao;
 import sustech.hotel.order.entity.OrderEntity;
 import sustech.hotel.order.feign.MemberFeignService;
@@ -41,6 +49,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Autowired
     RoomFeignService roomFeignService;
+
+    @Autowired
+    StringRedisTemplate redisTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -64,7 +75,32 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     }
 
     @Override
-    public void placeOrder(OrderEntity request) {
+    public OrderConfirmRespVo confirmOrder(OrderConfirmVo request) {
+        Long userID = checkUserID(request.getUserToken());
+        JsonResult<RoomInfoTo> roomInfo = roomFeignService.allInfo(request.getRoomId());
+        OrderConfirmRespVo resp = new OrderConfirmRespVo();
+        BeanUtils.copyProperties(roomInfo.getData(), resp);
+        BeanUtils.copyProperties(roomInfo.getData(), resp);
+        BeanUtils.copyProperties(roomInfo.getData(), resp);
+        resp.setUnitPrice(roomInfo.getData().getPrice());
+        Date start = DateConverter.convertStringToDate(request.getStartDate());
+        Date end = DateConverter.convertStringToDate(request.getEndDate());
+        if (start.getTime() >= end.getTime())
+            throw new InvalidDateException(ExceptionCodeEnum.INVALID_DATE_EXCEPTION.getCode(), "Start date should before end date.");
+        long day = (end.getTime() - start.getTime()) / 86400000;
+        resp.setTotalPrice(new BigDecimal(day).multiply(roomInfo.getData().getPrice()));
+        resp.setStartDate(start);
+        resp.setEndDate(end);
+        String token = UUID.randomUUID().toString().replace("-", "");
+        redisTemplate.opsForValue().set(OrderConstant.USER_ORDER_TOKEN_PREFIX + userID, token, 15, TimeUnit.MINUTES);
+        resp.setToken(token);
+        // TODO: 2022/11/24 set after discount price
+        resp.setFinalPrice(resp.getTotalPrice());
+        return resp;
+    }
+
+    @Override
+    public void placeOrder(OrderEntity request, List<String> guestInfo, String orderToken) {
         QueryWrapper<OrderEntity> wrapper = new QueryWrapper<>();
         JsonResult<RoomTo> room = roomFeignService.getRoomByID(request.getRoomId());
         if (room.getData() == null)
@@ -75,7 +111,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             throw new RoomNotAvailableException(ExceptionCodeEnum.ROOM_NOT_AVAILABLE_EXCEPTION);
         request.setOrderStatus(0);
         request.setOrderId(IdWorker.getTimeId());
-
         JsonResult<RoomTypeTo> roomType = roomFeignService.getRoomTypeByID(room.getData().getTypeId());
         request.setOriginMoney(roomType.getData().getPrice());
         // TODO: 2022/11/16 Get the After Discount Money
@@ -90,7 +125,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             throw new UserNotLoginException(ExceptionCodeEnum.USER_NOT_LOGIN_EXCEPTION);
         JsonResult<UserTo> user = memberFeignService.getUser(userid);
         if (user == null)
-            throw new NotFoundException(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(), ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage());
+            throw new UserNotFoundException(ExceptionCodeEnum.USER_NOT_FOUND_EXCEPTION);
         return user.getData().getUserId();
     }
 

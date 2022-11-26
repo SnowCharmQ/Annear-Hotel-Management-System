@@ -76,7 +76,6 @@ public class PasswordController {
                 return memberFeignService.modifyPassword(vo);
             }
         }
-        return new JsonResult<>(new SmsCodeIncorrectException(ExceptionCodeEnum.SMS_CODE_INCORRECT_EXCEPTION.getCode(),
-                ExceptionCodeEnum.SMS_CODE_INCORRECT_EXCEPTION.getMessage()));
+        return new JsonResult<>(new SmsCodeIncorrectException(ExceptionCodeEnum.SMS_CODE_INCORRECT_EXCEPTION));
     }
 }

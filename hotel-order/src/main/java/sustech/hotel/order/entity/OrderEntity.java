@@ -25,4 +25,6 @@ public class OrderEntity implements Serializable {
     private Date endDate;
     private BigDecimal originMoney;
     private BigDecimal afterDiscount;
+    private String additional;
+    private Integer score;
 }

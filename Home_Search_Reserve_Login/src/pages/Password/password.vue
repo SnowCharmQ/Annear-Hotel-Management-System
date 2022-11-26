@@ -1,9 +1,9 @@
 <template>
-  <div className="page-main">
-    <el-row className="card-search" :gutter="20" style="width:900px;margin:14px auto;">
+  <div class="page-main">
+    <el-row class="card-search" :gutter="20" style="width:900px;margin:14px auto;">
       <el-col :span="22" class="login-block">
-        <el-col className="login-title">Modify Your Password</el-col>
-        <el-col className="privacy-info">We are committed to protecting the privacy and security of your personal
+        <el-col class="login-title">Modify Your Password</el-col>
+        <el-col class="privacy-info">We are committed to protecting the privacy and security of your personal
           information. More information
           about how we use and protect your data is provided in our Privacy Notice.
         </el-col>
@@ -12,20 +12,20 @@
         </el-col>
         <el-form :model="dataForm" :rules="dataRule" ref="dataForm" @keyup.enter.native="dataFormSubmit()" status-icon>
           <br><br>
-          <el-form-item prop="phone" className="form-item" label="Phone Number" label-width="200px">
+          <el-form-item prop="phone" class="form-item" label="Phone Number" label-width="200px">
             <!--        <el-col class="form-title">Phone Number</el-col>-->
-            <el-input className="form-input" v-model="dataForm.phone" auto-complete="off"></el-input>
+            <el-input class="form-input" v-model="dataForm.phone" auto-complete="off"></el-input>
           </el-form-item>
           <br><br>
-          <el-form-item prop="code" className="form-item" label="Verification Code" label-width="200px">
+          <el-form-item prop="code" class="form-item" label="Verification Code" label-width="200px">
             <!--        <el-col class="form-title">Password</el-col>-->
-            <el-input className="code-input" v-model="dataForm.code" auto-complete="off"></el-input>
-            <el-button className="send-btn" @click="sendMsg()" :disabled="isSend">{{ sendInfo }}</el-button>
+            <el-input class="code-input" v-model="dataForm.code" auto-complete="off"></el-input>
+            <el-button class="send-btn" @click="sendMsg()" :disabled="isSend">{{ sendInfo }}</el-button>
           </el-form-item>
           <br><br>
-          <el-form-item prop="password" className="form-item" label="New Password" label-width="200px">
+          <el-form-item prop="password" class="form-item" label="New Password" label-width="200px">
             <!--        <el-col class="form-title">Password</el-col>-->
-            <el-input className="form-input" v-model="dataForm.password" type="password" auto-complete="off"></el-input>
+            <el-input class="form-input" v-model="dataForm.password" type="password" auto-complete="off"></el-input>
           </el-form-item>
           <br>
 

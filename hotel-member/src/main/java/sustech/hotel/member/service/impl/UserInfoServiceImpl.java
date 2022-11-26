@@ -63,8 +63,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
                 = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>()
                 .eq("phone", vo.getPhone()));
         if (one != null) {
-            throw new PhoneNumberExistedException(ExceptionCodeEnum.PHONE_NUMBER_EXISTED_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.PHONE_NUMBER_EXISTED_EXCEPTION.getMessage());
+            throw new PhoneNumberExistedException(ExceptionCodeEnum.PHONE_NUMBER_EXISTED_EXCEPTION);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         Date birthday = sdf.parse(vo.getBirthday());
@@ -93,8 +92,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         //判断是否有这个手机号注册的用户
         UserInfoEntity entity = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>().eq("phone", phone));
         if (entity == null) {
-            throw new NotRegisterException(ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getMessage());
+            throw new NotRegisterException(ExceptionCodeEnum.NOT_REGISTER_EXCEPTION);
         }
         //判断密码是否正确
         String pwdDb = entity.getPassword();
@@ -105,8 +103,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
             BeanUtils.copyProperties(entity, resp);
             return resp;
         } else {
-            throw new PasswordIncorrectException(ExceptionCodeEnum.PASSWORD_INCORRECT_EXCEPTION.getCode(),
-                    ExceptionCodeEnum.PASSWORD_INCORRECT_EXCEPTION.getMessage());
+            throw new PasswordIncorrectException(ExceptionCodeEnum.PASSWORD_INCORRECT_EXCEPTION);
         }
     }
 
@@ -133,7 +130,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
     public UserInfoEntity queryUserInfoById(Long userId) {
         UserInfoEntity entity = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>().eq("user_id", userId));
         if (entity == null) {
-            throw new NotFoundException(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(), ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage());
+            throw new UserNotFoundException(ExceptionCodeEnum.USER_NOT_FOUND_EXCEPTION);
         }
         return entity;
     }
@@ -142,7 +139,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
     public UserInfoEntity queryUserInfoByName(String username) {
         UserInfoEntity entity = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>().eq("username", username));
         if (entity == null) {
-            throw new NotFoundException(ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getCode(), ExceptionCodeEnum.NOT_FOUND_EXCEPTION.getMessage());
+            throw new UserNotFoundException(ExceptionCodeEnum.USER_NOT_FOUND_EXCEPTION);
         }
         return entity;
     }
@@ -176,11 +173,11 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
     public void modifyPassword(ModifyPasswordVo vo) throws BaseException {
         String phone = vo.getPhone();
         if (StringUtils.isEmpty(phone)) {
-            throw new NotRegisterException(ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getCode(), ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getMessage());
+            throw new NotRegisterException(ExceptionCodeEnum.NOT_REGISTER_EXCEPTION);
         }
         UserInfoEntity entity = this.baseMapper.selectOne(new QueryWrapper<UserInfoEntity>().eq("phone", vo.getPhone()));
         if (entity == null) {
-            throw new NotRegisterException(ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getCode(), ExceptionCodeEnum.NOT_REGISTER_EXCEPTION.getMessage());
+            throw new NotRegisterException(ExceptionCodeEnum.NOT_REGISTER_EXCEPTION);
         }
         if (entity.getPassword() == null) {
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
@@ -191,7 +188,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String newPwd = passwordEncoder.encode(vo.getPassword());
             if (Objects.equals(oldPwd, newPwd)) {
-                throw new SamePasswordException(ExceptionCodeEnum.SAME_PASSWORD_EXCEPTION.getCode(), ExceptionCodeEnum.SAME_PASSWORD_EXCEPTION.getMessage());
+                throw new SamePasswordException(ExceptionCodeEnum.SAME_PASSWORD_EXCEPTION);
             } else {
                 entity.setPassword(newPwd);
                 this.baseMapper.updateById(entity);

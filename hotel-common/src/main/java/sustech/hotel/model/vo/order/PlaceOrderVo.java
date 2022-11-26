@@ -3,11 +3,14 @@ package sustech.hotel.model.vo.order;
 import lombok.Data;
 
 import java.sql.Date;
+import java.util.List;
 
 @Data
 public class PlaceOrderVo {
-    private String token;
+    private String userToken;
+    private String orderToken;
     private Long roomID;
-    private Date startDate;
-    private Date endDate;
+    private String startDate;
+    private String endDate;
+    private List<String> guestInfo;
 }

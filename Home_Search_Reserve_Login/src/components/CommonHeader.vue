@@ -61,6 +61,7 @@ export default {
   name: 'CommonHeader',
   data() {
     return {
+      is404: false,
       avatar: 'https://ooad-1312953997.cos.ap-guangzhou.myqcloud.com/img/user-filling.png',
       loginDialog: false,
       isLogin: false,
@@ -130,6 +131,15 @@ export default {
   watch: {
     '$route': {
       handler: function () {
+        this.is404 = (this.$route.name === '404');
+        if (this.is404) {
+          this.show = false;
+          this.isLogin = false;
+          this.showLogin = false;
+          this.showHome = false;
+          this.showSearch = false;
+          return;
+        }
         this.show = !(this.$route.name === 'login') && !(this.$route.name === 'register');
         this.isLogin = cookie.get('token');
         this.isInfo = this.$route.name === 'userinfo';

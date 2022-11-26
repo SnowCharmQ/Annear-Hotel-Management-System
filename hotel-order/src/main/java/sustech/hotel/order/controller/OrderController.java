@@ -5,14 +5,13 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import sustech.hotel.common.utils.DateConverter;
 import sustech.hotel.exception.BaseException;
 import sustech.hotel.model.to.order.OrderTo;
+import sustech.hotel.model.vo.order.OrderConfirmRespVo;
+import sustech.hotel.model.vo.order.OrderConfirmVo;
 import sustech.hotel.model.vo.order.PlaceOrderVo;
 import sustech.hotel.order.entity.OrderEntity;
 import sustech.hotel.order.service.OrderService;
@@ -79,20 +78,38 @@ public class OrderController {
         return new JsonResult<>(orderService.queryOrderByUser(userId));
     }
 
+    @PostMapping("/confirmOrder")
+    public JsonResult<OrderConfirmRespVo> confirmOrder(@RequestBody OrderConfirmVo orderConfirmVo) {
+        try {
+            OrderConfirmRespVo resp = new OrderConfirmRespVo();
+            if (orderConfirmVo.getRoomId() != null)
+                resp = orderService.confirmOrder(orderConfirmVo);
+            else {
+                // TODO: 2022/11/24  Randomly assign a room.
+            }
+            return new JsonResult<>(resp);
+        } catch (BaseException e) {
+            return new JsonResult<>(e);
+        }
+
+    }
+
     @RequestMapping("/generateOrder")
     public JsonResult<Void> generateOrder(@RequestBody PlaceOrderVo request) {
         try {
-            String token = request.getToken();
-            Long userid = orderService.checkUserID(token);
+            Long userid = orderService.checkUserID(request.getUserToken());
+            String orderToken = request.getOrderToken();
             OrderEntity order = new OrderEntity();
             order.setUserId(userid);
-            order.setStartDate(request.getStartDate());
-            order.setEndDate(request.getEndDate());
+            order.setStartDate(DateConverter.convertStringToDate(request.getStartDate()));
+            order.setEndDate(DateConverter.convertStringToDate(request.getEndDate()));
             order.setRoomId(request.getRoomID());
-            orderService.placeOrder(order);
+            orderService.placeOrder(order, request.getGuestInfo(), orderToken);
             return new JsonResult<>();
         } catch (BaseException e) {
             return new JsonResult<>(e);
         }
     }
+
+
 }

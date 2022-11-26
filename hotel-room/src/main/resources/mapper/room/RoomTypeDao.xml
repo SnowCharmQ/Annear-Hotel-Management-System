@@ -13,6 +13,9 @@
         <result property="bathtub" column="bathtub"/>
         <result property="thermos" column="thermos"/>
     </resultMap>
-
-
+    <select id="selectAvgPriceByHotelId" resultType="java.math.BigDecimal">
+        select avg(price) as sum_price
+        from chr_room_type
+        where hotel_id = #{hotel_id};
+    </select>
 </mapper>

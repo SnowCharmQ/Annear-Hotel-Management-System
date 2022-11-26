@@ -5,7 +5,8 @@ CREATE TABLE chb_booking
     order_id   varchar(30) not null,
     room_id    bigint(20)  not null, -- room_id
     start_time date        not null,
-    end_time   date        not null
+    end_time   date        not null,
+    order_state boolean not null
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4

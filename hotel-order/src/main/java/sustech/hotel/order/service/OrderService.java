@@ -3,6 +3,8 @@ package sustech.hotel.order.service;
 import com.baomidou.mybatisplus.extension.service.IService;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.model.to.order.OrderTo;
+import sustech.hotel.model.vo.order.OrderConfirmRespVo;
+import sustech.hotel.model.vo.order.OrderConfirmVo;
 import sustech.hotel.model.vo.order.PlaceOrderVo;
 import sustech.hotel.order.entity.OrderEntity;
 
@@ -14,7 +16,9 @@ public interface OrderService extends IService<OrderEntity> {
 
     List<OrderTo> queryOrderByUser(Long userId);
 
-    void placeOrder(OrderEntity request);
+    void placeOrder(OrderEntity request, List<String> guestInfo, String orderToken);
 
     Long checkUserID(String token);
+
+    OrderConfirmRespVo confirmOrder(OrderConfirmVo request);
 }

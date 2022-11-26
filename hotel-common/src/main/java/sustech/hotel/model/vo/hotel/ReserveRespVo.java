@@ -1,13 +1,12 @@
 package sustech.hotel.model.vo.hotel;
 
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 @Data
-@ApiModel("酒店信息")
-public class HotelVo {
+public class ReserveRespVo {
     private Long hotelId;
     private String province;
     private String city;
@@ -24,6 +23,6 @@ public class HotelVo {
     private Integer spa;
     private Integer chessRoom;
     private Long starLevel;
-    private String hotelPicture;
-    private BigDecimal averagePrice;
+    private List<String> images;
+    private List<RoomTypeVo> roomTypes;
 }

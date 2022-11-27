@@ -119,11 +119,9 @@
                   <div>
                     <el-radio v-model="checked1" label="default">Default</el-radio>
                     <br>
-                    <el-radio v-model="checked1" label="score">Name</el-radio>
+                    <el-radio v-model="checked1" label="name">Name</el-radio>
                     <br>
                     <el-radio v-model="checked1" label="price">Average Price</el-radio>
-                    <br>
-                    <el-radio v-model="checked1" label="collection">Collection Number</el-radio>
                   </div>
                   <br>
                   <div>
@@ -178,6 +176,10 @@
               <br>
             </el-col>
 
+            <el-col :span="24" style="line-height:50px;border-top:1px solid #ddd;text-align:right;">
+              <el-button type="info" style="background:#333;" @click="search">Apply</el-button>
+            </el-col>
+
             <!--下拉菜单hide filters-->
             <div class="flex-row" slot="reference"
                  style="margin-left:20px;background: #82847f;margin-right: 20px;padding:8px 2px;color: #fff;">
@@ -214,7 +216,7 @@
               ></el-image>
               &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
               <i class="el-icon-star-on" style="display: inline" v-for="_ in item.starLevel"></i>
-              <el-divider></el-divider>
+              <el-divider ></el-divider>
               <div style="text-align:center;color:#666;">
                 <div>Average <span style="font-weight:700;font-size:17px;">￥{{ item.averagePrice }}</span></div>
                 <div>Per Night</div>
@@ -400,6 +402,37 @@ export default {
           this.$message.error("Network Error");
         })
       }
+    },
+    search() {
+      let token = cookie.get('token');
+      if (token === undefined || token === '') {
+        token = '';
+      }
+      this.$http({
+        url: this.$http.adornUrl('/room/room/hotel/search/hotel'),
+        method: 'get',
+        params: this.$http.adornParams({
+          token: token,
+          sortBy: this.checked1,
+          reversed: this.checked2 === 'hl',
+          diningRoom: this.checked3,
+          parking: this.checked4,
+          spa: this.checked5,
+          bar: this.checked6,
+          gym: this.checked7,
+          chessRoom: this.checked8,
+          swimmingPool: this.checked9,
+          lowest: this.value[0],
+          highest: this.value[1]
+        })
+      }).then(data => {
+        let obj = data.data.data;
+        this.isLogin = obj.isLogin;
+        this.locations = obj.locations;
+        this.hotels = obj.hotels;
+      }).catch(err => {
+        this.$message.error("Network Error")
+      })
     }
   },
   created() {

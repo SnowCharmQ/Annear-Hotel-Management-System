@@ -32,6 +32,17 @@ public class HotelController {
     private HotelPictureService hotelPictureService;
 
     @ResponseBody
+    @GetMapping("/getHotels")
+    public JsonResult<List<HotelVo>> getHotels() {
+        List<HotelVo> vos = hotelService.list().stream().map(o -> {
+            HotelVo vo = new HotelVo();
+            BeanUtils.copyProperties(o, vo);
+            return vo;
+        }).toList();
+        return new JsonResult<>(vos);
+    }
+
+    @ResponseBody
     @GetMapping("/search/hotel")
     public JsonResult<SearchRespVo> searchHotel(@RequestParam("token") String token, @RequestParam("sortBy") String sortBy,
                                                 @RequestParam("reversed") Boolean reversed, @RequestParam("diningRoom") Boolean diningRoom,

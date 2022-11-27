@@ -31,6 +31,9 @@
 
 <meta charset=​"UTF-8">​
 <script>
+
+let baseUrl = 'http://localhost:88';
+
 import {strToMd5} from '@/utils/md5'
 import {start} from '@/assets/js/login';
 
@@ -75,6 +78,7 @@ export default {
           {validator: validateLoginPwd, trigger: 'blur'}
         ]
       },
+      options: []
     };
   },
   methods: {
@@ -83,7 +87,7 @@ export default {
         if (valid) {
           // 对密码进行加密
           this.ruleForm.loginPwd = strToMd5(this.ruleForm.loginPwd);
-          let {message, success} = await this.$get('Admin/Login', this.ruleForm);
+          let {message, success} = await this.$get(baseUrl + '/', this.ruleForm);
           if (success) {
             // 服务器会返回令牌，保存身份信息，通过 token 去控制权限
             // 所以需要保存该token 信息，通常保存在浏览器的缓存空间当中
@@ -93,13 +97,24 @@ export default {
             this.$setToken()
             // 要跳转到后台管理 push
             await this.$router.push('/layout')
-
           }
         } else {
           return false;
         }
       });
     },
+  },
+  created() {
+    this.$get(baseUrl + '/room/room/hotel/getHotels').then(data => {
+      if (data.state === 200) {
+        data = data.data
+        this.options = [];
+        for (let l = 0; l < data.length;l++) {
+          let hotel = data[l];
+          this.options.push({'label':hotel.hotelName, 'value':hotel.hotelId})
+        }
+      }
+    });
   }
 }
 </script>

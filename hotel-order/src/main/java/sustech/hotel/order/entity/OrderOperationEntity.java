@@ -4,8 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 
 import java.io.Serial;
 import java.io.Serializable;
-import java.sql.Time;
-import java.util.Date;
+import java.sql.Timestamp;
 
 import lombok.Data;
 
@@ -17,5 +16,5 @@ public class OrderOperationEntity implements Serializable {
 
     private String orderId;
     private Integer operation;
-    private Time operationTime;
+    private Timestamp operationTime;
 }

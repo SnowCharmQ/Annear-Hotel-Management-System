@@ -104,6 +104,7 @@ public class OrderController {
             order.setStartDate(DateConverter.convertStringToDate(request.getStartDate()));
             order.setEndDate(DateConverter.convertStringToDate(request.getEndDate()));
             order.setRoomId(request.getRoomID());
+            order.setAdditional(request.getAdditional());
             orderService.placeOrder(order, request.getGuestInfo(), orderToken);
             return new JsonResult<>();
         } catch (BaseException e) {

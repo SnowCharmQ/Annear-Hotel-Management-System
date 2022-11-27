@@ -15,5 +15,7 @@ public interface BookingService extends IService<BookingEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     JsonResult<List<AvailableRoomTypeTo>> findByTimeIntervalAndHotel(Date startDate, Date endDate, Long hotelId);
+
+    void checkAvailable(Long roomId, Date startDate, Date endDate);
 }
 

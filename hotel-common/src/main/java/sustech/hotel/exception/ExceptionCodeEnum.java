@@ -25,6 +25,7 @@ public enum ExceptionCodeEnum {
 
     HOTEL_NOT_FOUND_EXCEPTION(11004, "The hotel does not exist"),
     DUPLICATE_ORDER_SUBMISSION_EXCEPTION(11005, "Orders have been submitted."),
+    GUEST_NUMBER_EXCEED_LIMIT_EXCEPTION(11006, "The number of guest number exceed the limit of the room."),
     // 20000 ~ others
 
     INVALID_DATE_EXCEPTION(20000, "The date is invalid");

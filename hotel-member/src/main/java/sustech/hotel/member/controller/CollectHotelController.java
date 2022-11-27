@@ -61,19 +61,19 @@ public class CollectHotelController {
     }
 
     @RequestMapping("/collectHotel")
-    public JsonResult<Void> collectHotelByUser(long userId, int hotelId){
+    public JsonResult<Void> collectHotelByUser(Long userId, Long hotelId){
         collectHotelService.collectHotelByUser(userId, hotelId);
         return new JsonResult<>();
     }
 
     @RequestMapping("/cancelCollectHotel")
-    public JsonResult<Void> cancelCollectHotelByUser(long userId, int hotelId){
+    public JsonResult<Void> cancelCollectHotelByUser(Long userId, Long hotelId){
         collectHotelService.cancelCollectHotel(userId, hotelId);
         return new JsonResult<>();
     }
 
     @RequestMapping("/showCollectedHotel")
-    public JsonResult<List<Integer>> showCollectedHotel(long userId){
+    public JsonResult<List<Long>> showCollectedHotel(Long userId){
         return new JsonResult<>(collectHotelService.showCollectedHotel(userId));
     }
 }

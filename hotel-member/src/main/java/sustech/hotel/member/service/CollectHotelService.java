@@ -10,10 +10,10 @@ import java.util.Map;
 public interface CollectHotelService extends IService<CollectHotelEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
-    void collectHotelByUser(long userId, int hotelId);
+    void collectHotelByUser(Long userId, Long hotelId);
 
-    void cancelCollectHotel(long userId, int hotelId);
+    void cancelCollectHotel(Long userId, Long hotelId);
 
-    List<Integer> showCollectedHotel(long userId);
+    List<Long> showCollectedHotel(Long userId);
 }
 

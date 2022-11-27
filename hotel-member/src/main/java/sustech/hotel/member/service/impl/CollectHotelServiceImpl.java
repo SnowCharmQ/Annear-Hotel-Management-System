@@ -31,17 +31,17 @@ public class CollectHotelServiceImpl extends ServiceImpl<CollectHotelDao, Collec
     }
 
     @Override
-    public void collectHotelByUser(long userId, int hotelId) {
+    public void collectHotelByUser(Long userId, Long hotelId) {
         collectHotelDao.collectHotelByUser(userId, hotelId);
     }
 
     @Override
-    public void cancelCollectHotel(long userId, int hotelId) {
+    public void cancelCollectHotel(Long userId, Long hotelId) {
         collectHotelDao.cancelCollectHotel(userId, hotelId);
     }
 
     @Override
-    public List<Integer> showCollectedHotel(long userId) {
+    public List<Long> showCollectedHotel(Long userId) {
         return collectHotelDao.showCollectedHotels(userId);
     }
 

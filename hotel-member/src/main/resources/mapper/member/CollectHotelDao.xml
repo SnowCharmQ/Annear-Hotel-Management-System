@@ -19,7 +19,7 @@
         AND hotel_id = #{hotelId};
     </delete>
 
-    <select id="showCollectedHotels" resultType="java.lang.Integer">
+    <select id="showCollectedHotels" resultType="java.lang.Long">
         SELECT hotel_id FROM chm_collect_hotel
         WHERE user_id = #{userId};
     </select>

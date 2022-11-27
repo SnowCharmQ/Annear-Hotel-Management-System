@@ -16,7 +16,7 @@
           </el-form-item>
           <el-form-item style="margin-left: 80px" label="Password" prop="loginPwd">
             <el-input type="password" v-model="ruleForm.loginPwd" autocomplete="off"
-            style="width: 200px;margin-left: 20px"></el-input>
+                      style="width: 200px;margin-left: 20px"></el-input>
           </el-form-item>
           <el-form-item class="item_button" style="margin-left: 140px;margin-top: 30px">
             <el-button type="primary" @click="submitForm('ruleForm')">登录</el-button>
@@ -83,21 +83,22 @@ export default {
   },
   methods: {
     submitForm(formName) {
-      this.$refs[formName].validate(async (valid) => {
+      this.$refs[formName].validate((valid) => {
         if (valid) {
           // 对密码进行加密
-          this.ruleForm.loginPwd = strToMd5(this.ruleForm.loginPwd);
-          let {message, success} = await this.$get(baseUrl + '/', this.ruleForm);
-          if (success) {
-            // 服务器会返回令牌，保存身份信息，通过 token 去控制权限
-            // 所以需要保存该token 信息，通常保存在浏览器的缓存空间当中
-            // 浏览器的缓存空间有两种，local-storage 保存的数据会一直存在，session-storage 保存的数据随着浏览器的关闭而自动清空
-            sessionStorage.setItem('token', success);
-            // 将token 信息放到请求当中
-            this.$setToken()
-            // 要跳转到后台管理 push
-            await this.$router.push('/layout')
-          }
+          let loginPwd = strToMd5(this.ruleForm.loginPwd);
+          let params = {'hotelId': this.ruleForm.loginId[0], 'pwd': loginPwd};
+          this.$get(baseUrl + '/room/room/admin/login', params).then(data => {
+            if (data.state === 200) {
+              data = data.data;
+              sessionStorage.setItem('token', data);
+              this.$setToken();
+            } else {
+              this.$message.error(data.message);
+            }
+          }).catch(err => {
+            this.$message.error("Network Error")
+          })
         } else {
           return false;
         }
@@ -109,9 +110,9 @@ export default {
       if (data.state === 200) {
         data = data.data
         this.options = [];
-        for (let l = 0; l < data.length;l++) {
+        for (let l = 0; l < data.length; l++) {
           let hotel = data[l];
-          this.options.push({'label':hotel.hotelName, 'value':hotel.hotelId})
+          this.options.push({'label': hotel.hotelName, 'value': hotel.hotelId})
         }
       }
     });

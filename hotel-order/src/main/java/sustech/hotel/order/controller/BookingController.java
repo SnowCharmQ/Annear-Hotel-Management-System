@@ -1,4 +1,4 @@
-package sustech.hotel.booking.controller;
+package sustech.hotel.order.controller;
 
 import java.sql.Date;
 import java.util.Arrays;
@@ -8,13 +8,13 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import sustech.hotel.booking.entity.BookingEntity;
-import sustech.hotel.booking.service.BookingService;
 import sustech.hotel.common.utils.Constant;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.model.vo.hotel.AvailableRoomTypeVo;
+import sustech.hotel.order.entity.BookingEntity;
+import sustech.hotel.order.service.BookingService;
 
 
 @RestController

@@ -1,4 +1,4 @@
-package sustech.hotel.booking.entity;
+package sustech.hotel.order.entity;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 

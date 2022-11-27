@@ -1,4 +1,4 @@
-package sustech.hotel.booking.service.impl;
+package sustech.hotel.order.service.impl;
 
 import com.alibaba.fastjson2.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,16 +11,16 @@ import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import sustech.hotel.booking.dao.BookingDao;
-import sustech.hotel.booking.feign.RoomFeignService;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.Query;
 
 
-import sustech.hotel.booking.entity.BookingEntity;
-import sustech.hotel.booking.service.BookingService;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
+import sustech.hotel.order.dao.BookingDao;
+import sustech.hotel.order.entity.BookingEntity;
+import sustech.hotel.order.feign.RoomFeignService;
+import sustech.hotel.order.service.BookingService;
 
 
 @Service("bookingService")

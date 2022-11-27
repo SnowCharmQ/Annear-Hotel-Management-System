@@ -90,3 +90,14 @@ create table chr_layout
   CHARACTER SET = utf8mb4
   COLLATE = utf8mb4_general_ci
   ROW_FORMAT = DYNAMIC;
+
+drop table if exists chr_admin;
+create table chr_admin
+(
+    hotel_id bigint       not null,
+    password varchar(100) not null
+) ENGINE = InnoDB
+  AUTO_INCREMENT = 1
+  CHARACTER SET = utf8mb4
+  COLLATE = utf8mb4_general_ci
+  ROW_FORMAT = DYNAMIC;

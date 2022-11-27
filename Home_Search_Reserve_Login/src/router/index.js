@@ -65,6 +65,9 @@ const routes = [
             }, {
                 path: '/chat',
                 name: 'chat',
+                meta: {
+                    requireAuth: true
+                },
                 component: () => import('../pages/Chat/chat')
             }, {
                 path: '/graph',

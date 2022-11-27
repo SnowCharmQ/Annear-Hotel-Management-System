@@ -4,7 +4,7 @@
       <div class="site-content">
         <h2 class="not-found-title">404</h2>
         <p class="not-found-desc">Sorry！The Page Doesn't Exist</p>
-        <el-button @click="$router.go(-1)">返回上一页</el-button>
+        <el-button @click="back()">返回上一页</el-button>
         <el-button type="primary" class="not-found-btn-gohome" @click="$router.push({ name: 'home' })">Jump To The Home Page</el-button>
       </div>
     </div>
@@ -12,7 +12,22 @@
 </template>
 
 <script>
+let fromPath = '';
 export default {
+  methods: {
+    back() {
+      if (fromPath === '/reserve') {
+        this.$router.go(-2);
+      }
+    }
+  },
+  beforeRouteEnter(to, from, next) {
+    next((vm) => {
+      // 通过 `vm` 访问组件实例,将值传入fromPath
+      vm.fromPath = from.path;
+      fromPath = from.path;
+    });
+  }
 }
 </script>
 

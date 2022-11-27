@@ -1,24 +1,24 @@
 package sustech.hotel.room.controller;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
+import sustech.hotel.common.utils.JsonResult;
+import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.order.HotelNotFoundException;
+import sustech.hotel.model.vo.hotel.HotelVo;
 import sustech.hotel.model.vo.hotel.ReserveReqVo;
 import sustech.hotel.model.vo.hotel.ReserveRespVo;
+import sustech.hotel.model.vo.hotel.SearchRespVo;
 import sustech.hotel.room.entity.HotelEntity;
 import sustech.hotel.room.entity.HotelPictureEntity;
 import sustech.hotel.room.service.HotelPictureService;
 import sustech.hotel.room.service.HotelService;
-import sustech.hotel.common.utils.PageUtils;
-import sustech.hotel.common.utils.JsonResult;
+
+import java.math.BigDecimal;
+import java.util.*;
 
 
 @RestController
@@ -30,6 +30,25 @@ public class HotelController {
 
     @Autowired
     private HotelPictureService hotelPictureService;
+
+    @ResponseBody
+    @GetMapping("/search/hotel")
+    public JsonResult<SearchRespVo> searchHotel(@RequestParam("token") String token, @RequestParam("sortBy") String sortBy,
+                                                @RequestParam("reversed") Boolean reversed, @RequestParam("diningRoom") Boolean diningRoom,
+                                                @RequestParam("parking") Boolean parking, @RequestParam("spa") Boolean spa,
+                                                @RequestParam("bar") Boolean bar, @RequestParam("gym") Boolean gym,
+                                                @RequestParam("chessRoom") Boolean chessRoom, @RequestParam("swimmingPool") Boolean swimmingPool,
+                                                @RequestParam("lowest") BigDecimal lowest, @RequestParam("highest") BigDecimal highest) {
+        SearchRespVo vo = hotelService.searchHotel(token, sortBy, reversed, diningRoom, parking, spa, bar, gym, chessRoom, swimmingPool, lowest, highest);
+        return new JsonResult<>(vo);
+    }
+
+    @ResponseBody
+    @GetMapping("/initSearch")
+    public JsonResult<SearchRespVo> initSearch(@RequestParam("token") String token) {
+        SearchRespVo respVo = hotelService.initSearch(token);
+        return new JsonResult<>(respVo);
+    }
 
     @ResponseBody
     @GetMapping("/initReserve")

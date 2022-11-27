@@ -42,5 +42,7 @@ public interface UserInfoService extends IService<UserInfoEntity> {
     void updateTest(Long toEdit, String name);
 
     void modifyPassword(ModifyPasswordVo vo) throws BaseException;
+
+    Long getUserId(String token);
 }
 

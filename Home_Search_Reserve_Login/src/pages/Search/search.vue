@@ -5,10 +5,9 @@
     <div class="item-img">
       <el-divider></el-divider>
       <div class="top-link">
-        <el-link>Hotel Info</el-link>
+        <el-link>Hotel Information</el-link>
         <el-link>Find Reservations</el-link>
         <el-link>Property Currency</el-link>
-        <el-link><i class="el-icon-user"></i>Sign In</el-link>
       </div>
     </div>
 
@@ -23,9 +22,12 @@
             <div class="title-popover">Select Guests</div>
             <div style="padding:15px 0;" class="add-form">
               <el-form ref="form" label-width="80px">
-                <el-form-item label="Adults"><el-input-number v-model="count1" :min="0"></el-input-number></el-form-item>
-                <el-form-item label="Children"><el-input-number v-model="count2" :min="0"></el-input-number></el-form-item>
-                <div style="line-height:50px;border-top:1px solid #ddd;text-align:right;"><el-button type="info">Apply</el-button></div>
+                <el-form-item label="Guests">
+                  <el-input-number v-model="count1" :min="0"></el-input-number>
+                </el-form-item>
+                <div style="line-height:50px;border-top:1px solid #ddd;text-align:right;">
+                  <el-button type="info" @click="updateGuest">Apply</el-button>
+                </div>
               </el-form>
             </div>
           </div>
@@ -34,7 +36,7 @@
             <i class="el-icon-user-solid user-icon"></i>
             <div>
               <div class="row-label">Guests</div>
-              <div>{{ count1 }}Adults,{{ count2 }}Children</div>
+              <div>{{ count2 }} Guests</div>
             </div>
           </div>
 
@@ -45,7 +47,7 @@
       <el-col :span="6" class="btn-item">
         <div class="flex-row" @click="showDate"><i class="el-icon-date user-icon"></i>
           <div>
-          <div class="row-label">Check-In</div>
+            <div class="row-label">Check-In</div>
             <div>{{ date1 }}</div>
           </div>
         </div>
@@ -67,7 +69,7 @@
         <el-dropdown>
 
 					<span class="el-dropdown-link">
-						<div class="flex-row"><i class="el-icon-date user-icon"></i>
+						<div class="flex-row"><i class="el-icon-location user-icon"></i>
               <div>
 								<div class="row-label">Location</div>
 								<div>{{ curSel }}</div>
@@ -76,25 +78,9 @@
 					</span>
 
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item @click.native="handleSel('Amangiri')">
-              <div class="title-name">Amangiri</div>
-              <div class="desc-name">CANYON POINT,UTAH,USA</div>
-            </el-dropdown-item>
-            <el-dropdown-item @click.native="handleSel('Amanera')">
-              <div class="title-name">Amanera</div>
-              <div class="desc-name">PALYA GRADE,DOMINICAN REPUBLIC</div>
-            </el-dropdown-item>
-            <el-dropdown-item @click.native="handleSel('Amangani')">
-              <div class="title-name">Amangani</div>
-              <div class="desc-name">ICKSON HOLE,USA</div>
-            </el-dropdown-item>
-            <el-dropdown-item @click.native="handleSel('Amanyara')">
-              <div class="title-name">Amanyara</div>
-              <div class="desc-name">PROVIDENCIALES,TURKS AND CAICONS</div>
-            </el-dropdown-item>
-            <el-dropdown-item @click.native="handleSel('Aman New York')">
-              <div class="title-name">Aman New York</div>
-              <div class="desc-name">NEW YORK,USA</div>
+            <el-dropdown-item v-for="item in this.locations" @click.native="handleSel(item)">
+              <div class="title-name">{{ item.province }}</div>
+              <div class="desc-name">{{ item.city }}</div>
             </el-dropdown-item>
           </el-dropdown-menu>
 
@@ -109,7 +95,8 @@
         </div>
         <div class="date-btn" style="background:#fff;line-height:60px;text-align:right;">
           <el-link class="date-item" @click="showCheck = false;">Cancel</el-link>
-          <el-button class="date-item" type="info" style="background:#333;margin:0 15px;" @click="toReserve">Search
+          <el-button class="date-item" type="info" style="background:#333;margin:0 15px;">
+            Search
           </el-button>
         </div>
       </el-col>
@@ -120,48 +107,85 @@
       <div class="hotel-select">
         <div class="flex-row" style="margin-top:15px;">
 
-          <!--下拉菜单 sort by relevance-->
-          <el-dropdown>
-						<span class="el-dropdown-link">
-							<div class="flex-row" style="cursor: pointer;">
-								<div>
-									<div>Sort By</div>
-									<div class="row-label">Relevance</div>
-								</div>
-								<i class="el-icon-caret-bottom el-icon--right" style="font-size:18px;"></i>
-							</div>
-						</span>
-            <!--两个选项-->
-            <el-dropdown-menu slot="dropdown">
-              <el-dropdown-item>Relevance</el-dropdown-item>
-              <el-dropdown-item>Hotel Name (A-Z)</el-dropdown-item>
-            </el-dropdown-menu>
-          </el-dropdown>
-
           <!--下拉菜单hide filters的弹出框-->
-          <el-popover placement="bottom" width="1300" trigger="click">
+          <el-popover placement="bottom" width="800" trigger="click" style="cursor: pointer">
             <div style="padding:0 15px;">
               <div class="title-popover" style="font-size:18px;">Filters</div>
-              <el-col :span="12" style="border-right:1px solid #ddd;">
+              <el-col :span="12">
                 <div style="display:flex;justify-content: space-between;font-size: 18px;line-height: 50px;;">
-                  <div>Destinations</div>
-                  <el-link>Clear</el-link>
+                  <div>Sort By</div>
                 </div>
                 <div style="line-height:30px;">
-                  <div><el-checkbox v-model="checked1">IndoChina</el-checkbox></div>
-                  <div><el-checkbox v-model="checked2">China</el-checkbox></div>
-                  <div><el-checkbox v-model="checked3">Japan</el-checkbox></div>
-                  <div><el-checkbox v-model="checked4">Europe</el-checkbox></div>
-                  <div><el-checkbox v-model="checked5">USA & Caribbean</el-checkbox></div>
+                  <div>
+                    <el-radio v-model="checked1" label="default">Default</el-radio>
+                    <br>
+                    <el-radio v-model="checked1" label="name">Name</el-radio>
+                    <br>
+                    <el-radio v-model="checked1" label="price">Average Price</el-radio>
+                  </div>
+                  <br>
+                  <div>
+                    <el-radio v-model="checked2" label="hl">From Highest to Lowest</el-radio>
+                    <el-radio v-model="checked2" label="lh">From Lowest to Highest</el-radio>
+                  </div>
                 </div>
-                <el-link>Show All Destinations</el-link>
-                <br>
               </el-col>
-              <el-col :span="24" style="line-height:50px;border-top:1px solid #ddd;text-align:right;"><el-button type="info" style="background:#333;">Apply</el-button></el-col>
             </div>
+            <el-col :span="12">
+              <div style="display:flex;justify-content: space-between;font-size: 18px;line-height: 50px;;">
+                <div>Price</div>
+              </div>
+              <div style="padding:15px;justify-content: space-between;">
+                <el-slider v-model="value" range show-stops :min="100" :max="10000"/>
+                <br>
+                <div style="display: flex;">
+                  <div class="price-box">
+                    <div>Price range from</div>
+                    <div>{{ value[0] }}</div>
+                  </div>
+                  <div style="width:20px;">---</div>
+                  <div class="price-box">
+                    <div>Price range from</div>
+                    <div>{{ value[1] }}</div>
+                  </div>
+                </div>
+              </div>
+              <br>
+            </el-col>
+
+            <el-col :span="24">
+              <el-divider></el-divider>
+            </el-col>
+
+            <el-col :span="24">
+              <div style="display:flex;justify-content: space-between;font-size: 18px;line-height: 50px;;">
+                <div>Related Supporting Infrastructure</div>
+              </div>
+              <div style="line-height:30px;">
+                <div>
+                  <el-checkbox v-model="checked3">Dining Room</el-checkbox>
+                  <el-checkbox v-model="checked4">Parking Lot</el-checkbox>
+                  <br>
+                  <el-checkbox v-model="checked5">Spa</el-checkbox>
+                  <el-checkbox v-model="checked6">Bar</el-checkbox>
+                  <el-checkbox v-model="checked7">Gym</el-checkbox>
+                  <el-checkbox v-model="checked8">Chess Room</el-checkbox>
+                  <el-checkbox v-model="checked9">Swimming Pool</el-checkbox>
+                </div>
+              </div>
+              <br>
+            </el-col>
+
+            <el-col :span="24" style="line-height:50px;border-top:1px solid #ddd;text-align:right;">
+              <el-button type="info" style="background:#333;" @click="search">Apply</el-button>
+            </el-col>
+
             <!--下拉菜单hide filters-->
-            <div class="flex-row" slot="reference" style="margin-left:20px;background: #82847f;margin-right: 20px;padding:8px 2px;color: #fff;">
-              <div><div class="row-label">Hide Filters</div></div>
+            <div class="flex-row" slot="reference"
+                 style="margin-left:20px;background: #82847f;margin-right: 20px;padding:8px 2px;color: #fff;">
+              <div>
+                <div class="row-label">Hide Filters</div>
+              </div>
               <i class="el-icon-caret-bottom user-icon" style="font-size:18px;"></i>
             </div>
           </el-popover>
@@ -171,25 +195,95 @@
 
       <!--每个酒店的展示部分-->
       <div style="clear:both;">
-        <el-col :span="8" v-for="item in imgList" :key="item.name">
+        <el-col :span="8" v-for="item in hotels" :key="item.hotelName">
           <el-card :body-style="{ padding: '15px' }">
-            <img :src="item.img" class="image">
+            <el-image :src="item.hotelPicture"
+                      :preview-src-list="[item.hotelPicture]"
+                      class="image"></el-image>
             <div style="padding: 14px;">
-              <div class="card-name">{{ item.name }}</div>
-              <div class="card-addr">{{ item.addr }}</div>
-              <div class="card-detail">Detail</div>
-              <el-divider></el-divider>
-              <div style="text-align:center;color:#666;">
-                <div>Form <span style="font-weight:700;font-size:17px;">${{ item.price }}</span></div>
-                <div>Per Night</div>
-                <div>Excluding Taxes & Fees</div>
+              <div class="card-name">{{ item.hotelName }}</div>
+              <div class="card-addr">{{ item.province }}, {{ item.city }}, {{ item.district }},
+                {{ item.detailAddress }}
               </div>
-              <div v-if="item.btn === 'Dates Unavailable'" class="v-btn1">{{ item.btn }}</div>
-              <div v-if="item.btn === 'View rates'" class="v-btn2">{{ item.btn }}</div>
+              <br>
+              <div class="card-detail" @click="openDialog(item)" style="font-size: 16px">Detail</div>
+              &ensp;
+              <el-image
+                  @click="collectHotel(item.hotelId, item.isCollect)"
+                  v-if="isLogin"
+                  style="width:30px;height:30px;cursor:pointer;"
+                  :src="item.isCollect?require('../../assets/images/red-heart.png'):require('../../assets/images/heart.png')"
+              ></el-image>
+              &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
+              <i class="el-icon-star-on" style="display: inline" v-for="_ in item.starLevel"></i>
+              <el-divider ></el-divider>
+              <div style="text-align:center;color:#666;">
+                <div>Average <span style="font-weight:700;font-size:17px;">￥{{ item.averagePrice }}</span></div>
+                <div>Per Night</div>
+              </div>
+              <div class="v-btn2" @click="toHotel(item.hotelId)">View Hotel</div>
             </div>
           </el-card>
         </el-col>
       </div>
+
+      <el-dialog :visible.sync="dialogVisible" width="700px">
+        <template slot="title" style="margin-top: 10px">
+          <div style="font-size: 28px;font-family: 'Times New Roman',serif;">{{ curHotel.hotelName }}</div>
+          <i class="el-icon-star-on" style="width: 20px;height: 20px" v-for="_ in curHotel.starLevel"></i>
+        </template>
+        <el-image
+            style="width: 660px; height: 400px"
+            :src="curHotel.hotelPicture"
+            :preview-src-list="[curHotel.hotelPicture]">
+        </el-image>
+        <div style="margin:10px 0;font-size: 20px;font-family: 'Times New Roman',serif">
+          <span>{{ curHotel.province }}</span>
+          <span> | </span>
+          <span>{{ curHotel.city }}</span>
+          <span> | </span>
+          <span>{{ curHotel.district }}</span>
+          <span> | </span>
+          <span>{{ curHotel.detailAddress }}</span>
+        </div>
+        <br>
+        <div style="font-size: 18px;font-family: 'Times New Roman',serif">
+          <i class="el-icon-phone">&ensp;{{ curHotel.telephone }}</i>
+          <br>
+          <i class="el-icon-message">&ensp;{{ curHotel.email }}</i>
+        </div>
+        <br>
+        <div style="font-size: 18px;font-family: 'Times New Roman',serif">
+          {{ curHotel.description }}
+        </div>
+        <el-divider style="height: 5px"></el-divider>
+        <div style="margin:10px 0;font-size: 20px;font-family: 'Times New Roman',serif">
+          <span>Dining Room: <i v-if="curHotel.diningRoom===1" class="el-icon-check"></i></span>
+          <span> | </span>
+          <span>Parking Lot: <i v-if="curHotel.parking===1" class="el-icon-check"></i></span>
+        </div>
+        <div style="margin:10px 0;font-size: 20px;font-family: 'Times New Roman',serif">
+          <span>Spa: <i v-if="curHotel.spa===1" class="el-icon-check"></i><i v-if="curHotel.spa!==1"
+                                                                             class="el-icon-close"></i></span>
+          <span> | </span>
+          <span>Bar: <i v-if="curHotel.bar===1" class="el-icon-check"></i><i v-if="curHotel.bar!==1"
+                                                                             class="el-icon-close"></i></span>
+          <span> | </span>
+          <span>Gym: <i v-if="curHotel.gym===1" class="el-icon-check"></i><i v-if="curHotel.gym!==1"
+                                                                             class="el-icon-close"></i></span>
+          <span> | </span>
+          <span>Chess Room: <i v-if="curHotel.chessRoom===1" class="el-icon-check"></i><i v-if="curHotel.chessRoom!==1"
+                                                                                          class="el-icon-close"></i></span>
+          <span> | </span>
+          <span>Swimming Pool: <i v-if="curHotel.swimmingPool===1" class="el-icon-check"></i><i
+              v-if="curHotel.swimmingPool!==1" class="el-icon-close"></i></span>
+        </div>
+        <el-divider style="height: 5px"></el-divider>
+        <el-image v-if="dialogVisible&&isLogin"
+                  style="width:50px;height:50px;cursor:pointer;margin-left:600px"
+                  :src="curHotel.isCollect?require('../../assets/images/red-heart.png'):require('../../assets/images/heart.png')"
+                  @click="collectHotel(curHotel.hotelId, curHotel.isCollect)"></el-image>
+      </el-dialog>
 
     </el-row>
 
@@ -197,88 +291,35 @@
 </template>
 
 <script>
+import cookie from "js-cookie";
+
 export default {
   name: "home",
   data() {
     return {
       date1: new Date().toDateString(),
-      date2: new Date().toDateString(),
+      date2: this.generateTomorrow().toDateString(),
       date3: '',
       date4: '',
       showCheck: false,
-      checked1: false,
-      checked2: false,
-      checked3: false,
-      checked4: false,
-      checked5: false,
+      checked1: 'default',
+      checked2: 'hl',
+      checked3: true,
+      checked4: true,
+      checked5: true,
+      checked6: true,
+      checked7: true,
+      checked8: true,
+      checked9: true,
       count1: 0,
       count2: 0,
-      curSel: 'Amangiri',
-      imgList: [
-        {
-          btn: 'View rates',
-          name: 'Aman Kyoto',
-          addr: 'Kyoto, Japan',
-          price: '230',
-          img: require('../../assets/images/hotel/1.jpeg')
-        },
-        {
-          btn: 'Dates Unavailable',
-          name: 'Amantaka',
-          addr: "Luang Prabang, Lao People's Dem Republic",
-          price: '980',
-          img: require('../../assets/images/hotel/2.jpeg')
-        },
-        {
-          btn: 'Dates Unavailable',
-          name: 'Amanwella',
-          addr: 'Tangalle, Sri Lanka',
-          price: '560',
-          img: require('../../assets/images/hotel/3.jpeg')
-        },
-        {
-          btn: 'Dates Unavailable',
-          name: 'Amanera',
-          addr: 'Rio San Juan, Dominican Republic',
-          price: '460',
-          img: require('../../assets/images/hotel/4.jpeg')
-        },
-        {
-          btn: 'View rates',
-          name: 'Aman Tokyo',
-          addr: 'Chiyoda-ku, Japan',
-          price: '390',
-          img: require('../../assets/images/hotel/5.jpeg')
-        },
-        {
-          btn: 'View rates',
-          name: 'Amankila',
-          addr: 'Bali, Indonesia',
-          price: '280',
-          img: require('../../assets/images/hotel/6.jpeg')
-        },
-        {
-          btn: 'View rates',
-          name: 'Amanjena',
-          addr: 'Marrakech, Morocco',
-          price: '350',
-          img: require('../../assets/images/hotel/7.jpeg')
-        },
-        {
-          btn: 'Dates Unavailable',
-          name: 'Amanemu',
-          addr: 'Shima-shi, Japan',
-          price: '690',
-          img: require('../../assets/images/hotel/8.jpeg')
-        },
-        {
-          btn: 'View rates',
-          name: 'Amanfayun',
-          addr: 'Hangzhou 33, China',
-          price: '880',
-          img: require('../../assets/images/hotel/9.jpeg')
-        },
-      ]
+      locations: [],
+      value: [100, 10000],
+      curSel: 'Choose The Location',
+      hotels: [],
+      curHotel: {},
+      dialogVisible: false,
+      isLogin: false,
     };
   },
   methods: {
@@ -290,17 +331,138 @@ export default {
       this.$message.info('more')
     },
     handleSel(val) {
-      this.curSel = val;
+      this.curSel = val.province + " " + val.city;
     },
-    toReserve() {
-      this.$router.push('reserve')
+    updateGuest() {
+      this.count2 = this.count1;
+    },
+    generateTomorrow() {
+      const today = new Date();
+      const current = today.getDate();
+      let finalDate = new Date();
+      finalDate.setDate(current + 1);
+      return finalDate;
+    },
+    toHotel(hotelId) {
+      this.$router.push('reserve?hotel=' + hotelId);
+    },
+    openDialog(item) {
+      this.curHotel = item;
+      this.dialogVisible = true;
+    },
+    collectHotel(hotelId, isCollect) {
+      if (!isCollect) {
+        this.$http({
+          url: this.$http.adornUrl('/member/member/collecthotel/collectHotel'),
+          method: 'get',
+          params: this.$http.adornParams({
+            token: cookie.get('token'),
+            hotelId: hotelId
+          })
+        }).then(data => {
+          let state = data.data.state;
+          if (state === 200) {
+            this.curHotel.isCollect = true;
+            for (let i = 0; i < this.hotels.length; i++) {
+              let hotel = this.hotels[i];
+              if (hotel.hotelId === hotelId) {
+                hotel.isCollect = true;
+              }
+            }
+            this.$message.success("Successfully Collect!")
+          } else {
+            this.$message.error(data.data.message);
+          }
+        }).catch(err => {
+          this.$message.error("Network Error");
+        })
+      } else {
+        this.$http({
+          url: this.$http.adornUrl('/member/member/collecthotel/cancelCollectHotel'),
+          method: 'get',
+          params: this.$http.adornParams({
+            token: cookie.get('token'),
+            hotelId: hotelId
+          })
+        }).then(data => {
+          let state = data.data.state;
+          if (state === 200) {
+            this.curHotel.isCollect = false;
+            for (let i = 0; i < this.hotels.length; i++) {
+              let hotel = this.hotels[i];
+              if (hotel.hotelId === hotelId) {
+                hotel.isCollect = false;
+              }
+            }
+            this.$message.success("Successfully Cancel!")
+          }else {
+            this.$message.error(data.data.message);
+          }
+        }).catch(err => {
+          this.$message.error("Network Error");
+        })
+      }
+    },
+    search() {
+      let token = cookie.get('token');
+      if (token === undefined || token === '') {
+        token = '';
+      }
+      this.$http({
+        url: this.$http.adornUrl('/room/room/hotel/search/hotel'),
+        method: 'get',
+        params: this.$http.adornParams({
+          token: token,
+          sortBy: this.checked1,
+          reversed: this.checked2 === 'hl',
+          diningRoom: this.checked3,
+          parking: this.checked4,
+          spa: this.checked5,
+          bar: this.checked6,
+          gym: this.checked7,
+          chessRoom: this.checked8,
+          swimmingPool: this.checked9,
+          lowest: this.value[0],
+          highest: this.value[1]
+        })
+      }).then(data => {
+        let obj = data.data.data;
+        this.isLogin = obj.isLogin;
+        this.locations = obj.locations;
+        this.hotels = obj.hotels;
+      }).catch(err => {
+        this.$message.error("Network Error")
+      })
     }
-
+  },
+  created() {
+    let token = cookie.get('token');
+    if (token === undefined || token === '') {
+      token = '';
+    }
+    this.$http({
+      url: this.$http.adornUrl('/room/room/hotel/initSearch'),
+      method: 'get',
+      params: this.$http.adornParams({
+        token: token
+      })
+    }).then(data => {
+      let obj = data.data.data;
+      this.isLogin = obj.isLogin;
+      this.locations = obj.locations;
+      this.hotels = obj.hotels;
+    }).catch(err => {
+      this.$message.error("Network Error");
+    })
   }
 };
 </script>
 
 <style lang="scss" scoped>
+color-icon {
+  background: #d21919;
+}
+
 .page-main {
   background: #f3eee7;
 
@@ -364,6 +526,8 @@ export default {
   .card-detail {
     margin-top: 25px;
     cursor: pointer;
+    width: 20px;
+    display: inline;
   }
 
   .hotel-select {
@@ -391,7 +555,4 @@ export default {
     cursor: pointer;
   }
 }
-</style>
-<style>
-
 </style>

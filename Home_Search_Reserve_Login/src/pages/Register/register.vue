@@ -134,7 +134,7 @@
 </style>
 
 <script>
-import {isEmail, isMobile} from "../../utils/validate";
+import {isEmail, isMobile} from "@/utils/validate";
 
 export default {
   name: "register",

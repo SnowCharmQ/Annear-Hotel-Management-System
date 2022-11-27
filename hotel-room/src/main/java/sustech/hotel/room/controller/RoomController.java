@@ -34,7 +34,7 @@ public class RoomController {
     @Autowired
     private HotelService hotelService;
 
-    @GetMapping("/allInfo/{roomId}")
+    @RequestMapping("/allInfo/{roomId}")
     public JsonResult<RoomInfoTo> allInfo(@PathVariable("roomId") Long roomId) {
         RoomInfoTo roomInfoTo = new RoomInfoTo();
         RoomEntity room = roomService.getById(roomId);

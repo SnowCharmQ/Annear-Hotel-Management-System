@@ -8,9 +8,9 @@ import java.util.List;
 
 @Mapper
 public interface CollectHotelDao extends BaseMapper<CollectHotelEntity> {
-    void collectHotelByUser(long userId, int hotelId);
+    void collectHotelByUser(Long userId, Long hotelId);
 
-    void cancelCollectHotel(long userId, int hotelId);
+    void cancelCollectHotel(Long userId, Long hotelId);
 
-    List<Integer> showCollectedHotels(long userId);
+    List<Long> showCollectedHotels(Long userId);
 }

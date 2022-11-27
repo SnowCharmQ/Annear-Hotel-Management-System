@@ -21,6 +21,11 @@
         <result property="chessRoom" column="chess_room"/>
         <result property="starLevel" column="star_level"/>
     </resultMap>
+    <select id="selectAllLocations" resultType="sustech.hotel.model.vo.hotel.LocationVo">
+        select province, city
+        from chr_hotel
+        group by province, city;
+    </select>
 
 
 </mapper>

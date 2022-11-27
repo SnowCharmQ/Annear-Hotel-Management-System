@@ -13,6 +13,27 @@
         <result property="bathtub" column="bathtub"/>
         <result property="thermos" column="thermos"/>
     </resultMap>
+    <select id="selectAvgPriceByHotelId" resultType="java.math.BigDecimal">
+        select avg(price) as sum_price
+        from chr_room_type
+        where hotel_id = #{hotel_id};
+    </select>
 
 
+    <select id="selectAvailableRoomTypeByConflictListAndHotel"
+            resultType="sustech.hotel.model.to.hotel.AvailableRoomTypeTo">
+        select chr_room_type.*, t.num
+        from chr_room_type
+        right join
+        (select crt.type_id, count(*) as num
+        from chr_room
+        join chr_room_type crt on chr_room.type_id = crt.type_id
+        where room_id not in
+        <foreach collection="conflict_list" item="item" separator="," open="(" close=")">
+            #{item}
+        </foreach>
+        and crt.hotel_id = #{hotel_id}
+        group by crt.type_id) as t on chr_room_type.type_id = t.type_id;
+
+    </select>
 </mapper>

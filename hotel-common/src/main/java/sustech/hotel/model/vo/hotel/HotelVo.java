@@ -13,6 +13,9 @@ public class HotelVo {
     private String city;
     private String district;
     private String hotelName;
+    private String detailAddress;
+    private String email;
+    private String description;
     private BigDecimal longitude;
     private BigDecimal latitude;
     private String telephone;
@@ -24,4 +27,7 @@ public class HotelVo {
     private Integer spa;
     private Integer chessRoom;
     private Long starLevel;
+    private String hotelPicture;
+    private BigDecimal averagePrice;
+    private Boolean isCollect;
 }

@@ -1,11 +1,11 @@
-package sustech.hotel.booking.service;
+package sustech.hotel.order.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.common.utils.PageUtils;
-import sustech.hotel.booking.entity.BookingEntity;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.model.to.hotel.RoomTypeTo;
+import sustech.hotel.order.entity.BookingEntity;
 
 import java.sql.Date;
 import java.util.List;

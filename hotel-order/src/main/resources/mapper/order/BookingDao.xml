@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="sustech.hotel.booking.dao.BookingDao">
+<mapper namespace="sustech.hotel.order.dao.BookingDao">
 
-    <resultMap type="sustech.hotel.booking.entity.BookingEntity" id="bookingMap">
+    <resultMap type="sustech.hotel.order.entity.BookingEntity" id="bookingMap">
         <result property="userId" column="user_id"/>
         <result property="orderId" column="order_id"/>
         <result property="hotelId" column="hotel_id"/>
@@ -16,7 +16,7 @@
 
     <select id="selectConflictRoomByTimeIntervalAndHotel" resultType="java.lang.Long">
         select room_id
-        from chb_booking
+        from cho_booking
         where start_date &gt;= #{start_date}
           and end_date &lt;= #{end_date}
           and hotel_id = #{hotel_id}

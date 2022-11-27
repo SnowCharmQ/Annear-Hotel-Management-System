@@ -1,9 +1,9 @@
-package sustech.hotel.booking.dao;
+package sustech.hotel.order.dao;
 
-import org.apache.ibatis.annotations.Param;
-import sustech.hotel.booking.entity.BookingEntity;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Mapper;
+import sustech.hotel.order.entity.BookingEntity;
 
 import java.sql.Date;
 import java.util.List;

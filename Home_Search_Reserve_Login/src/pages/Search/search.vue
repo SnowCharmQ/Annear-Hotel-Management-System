@@ -207,10 +207,10 @@
               <div class="card-detail" @click="openDialog(item)" style="font-size: 16px">Detail</div>
               &ensp;
               <el-image
-                  @click="collectHotel(item.hotelId)"
+                  @click="collectHotel(item.hotelId, item.isCollect)"
                   v-if="isLogin"
-                  :style="iconStyleOuter"
-                  :src="require('../../assets/images/heart.png')"
+                  style="width:30px;height:30px;cursor:pointer;"
+                  :src="item.isCollect?require('../../assets/images/red-heart.png'):require('../../assets/images/heart.png')"
               ></el-image>
               &ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;&ensp;
               <i class="el-icon-star-on" style="display: inline" v-for="_ in item.starLevel"></i>
@@ -278,9 +278,9 @@
         </div>
         <el-divider style="height: 5px"></el-divider>
         <el-image v-if="dialogVisible&&isLogin"
-                  :style="iconStyleInner"
-                  :src="require('../../assets/images/heart.png')"
-                  @click="collectHotel(curHotel.hotelId)"></el-image>
+                  style="width:50px;height:50px;cursor:pointer;margin-left:600px"
+                  :src="curHotel.isCollect?require('../../assets/images/red-heart.png'):require('../../assets/images/heart.png')"
+                  @click="collectHotel(curHotel.hotelId, curHotel.isCollect)"></el-image>
       </el-dialog>
 
     </el-row>
@@ -318,17 +318,6 @@ export default {
       curHotel: {},
       dialogVisible: false,
       isLogin: false,
-      iconStyleOuter: {
-        'width': '30px',
-        'height': '30px',
-        'cursor': 'pointer'
-      },
-      iconStyleInner: {
-        'margin-left': '600px',
-        'width': '30px',
-        'height': '30px',
-        'cursor': 'pointer'
-      },
     };
   },
   methods: {
@@ -359,8 +348,58 @@ export default {
       this.curHotel = item;
       this.dialogVisible = true;
     },
-    collectHotel(hotelId) {
-
+    collectHotel(hotelId, isCollect) {
+      if (!isCollect) {
+        this.$http({
+          url: this.$http.adornUrl('/member/member/collecthotel/collectHotel'),
+          method: 'get',
+          params: this.$http.adornParams({
+            token: cookie.get('token'),
+            hotelId: hotelId
+          })
+        }).then(data => {
+          let state = data.data.state;
+          if (state === 200) {
+            this.curHotel.isCollect = true;
+            for (let i = 0; i < this.hotels.length; i++) {
+              let hotel = this.hotels[i];
+              if (hotel.hotelId === hotelId) {
+                hotel.isCollect = true;
+              }
+            }
+            this.$message.success("Successfully Collect!")
+          } else {
+            this.$message.error(data.data.message);
+          }
+        }).catch(err => {
+          this.$message.error("Network Error");
+        })
+      } else {
+        this.$http({
+          url: this.$http.adornUrl('/member/member/collecthotel/cancelCollectHotel'),
+          method: 'get',
+          params: this.$http.adornParams({
+            token: cookie.get('token'),
+            hotelId: hotelId
+          })
+        }).then(data => {
+          let state = data.data.state;
+          if (state === 200) {
+            this.curHotel.isCollect = false;
+            for (let i = 0; i < this.hotels.length; i++) {
+              let hotel = this.hotels[i];
+              if (hotel.hotelId === hotelId) {
+                hotel.isCollect = false;
+              }
+            }
+            this.$message.success("Successfully Cancel!")
+          }else {
+            this.$message.error(data.data.message);
+          }
+        }).catch(err => {
+          this.$message.error("Network Error");
+        })
+      }
     }
   },
   created() {
@@ -371,8 +410,12 @@ export default {
     this.$http({
       url: this.$http.adornUrl('/room/room/hotel/initSearch'),
       method: 'get',
+      params: this.$http.adornParams({
+        token: token
+      })
     }).then(data => {
       let obj = data.data.data;
+      this.isLogin = obj.isLogin;
       this.locations = obj.locations;
       this.hotels = obj.hotels;
     }).catch(err => {

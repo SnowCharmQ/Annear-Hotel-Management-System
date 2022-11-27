@@ -18,12 +18,14 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import sustech.hotel.common.utils.JsonResult;
+import sustech.hotel.common.utils.JwtHelper;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.Query;
 
 import sustech.hotel.exception.BaseException;
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.auth.*;
+import sustech.hotel.exception.order.UserNotLoginException;
 import sustech.hotel.member.dao.UserInfoDao;
 import sustech.hotel.member.entity.UserInfoEntity;
 import sustech.hotel.member.feign.DiscountFeignService;
@@ -198,4 +200,19 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
         }
     }
 
+    @Override
+    public Long getUserId(String token) {
+        if (StringUtils.isEmpty(token)) {
+            throw new UserNotLoginException(ExceptionCodeEnum.USER_NOT_LOGIN_EXCEPTION);
+        }
+        Long userId = JwtHelper.getUserId(token);
+        if (userId == null) {
+            throw new UserNotLoginException(ExceptionCodeEnum.USER_NOT_LOGIN_EXCEPTION);
+        }
+        UserInfoEntity byId = this.getById(userId);
+        if (byId == null) {
+            throw new UserNotLoginException(ExceptionCodeEnum.USER_NOT_LOGIN_EXCEPTION);
+        }
+        return userId;
+    }
 }

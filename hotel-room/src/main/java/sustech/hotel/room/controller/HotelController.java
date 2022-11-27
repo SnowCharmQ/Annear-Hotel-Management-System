@@ -1,6 +1,7 @@
 package sustech.hotel.room.controller;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -13,13 +14,16 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import sustech.hotel.common.utils.JwtHelper;
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.order.HotelNotFoundException;
+import sustech.hotel.model.to.member.UserTo;
 import sustech.hotel.model.vo.hotel.*;
 import sustech.hotel.room.dao.HotelDao;
 import sustech.hotel.room.dao.RoomTypeDao;
 import sustech.hotel.room.entity.HotelEntity;
 import sustech.hotel.room.entity.HotelPictureEntity;
+import sustech.hotel.room.feign.MemberFeignService;
 import sustech.hotel.room.service.HotelPictureService;
 import sustech.hotel.room.service.HotelService;
 import sustech.hotel.common.utils.PageUtils;
@@ -43,14 +47,36 @@ public class HotelController {
     private HotelPictureService hotelPictureService;
 
     @Autowired
+    private MemberFeignService memberFeignService;
+
+    @Autowired
     private ThreadPoolExecutor executor;
 
     @ResponseBody
     @GetMapping("/initSearch")
-    public JsonResult<SearchRespVo> initSearch() {
+    public JsonResult<SearchRespVo> initSearch(@RequestParam("token") String token) {
         SearchRespVo respVo = new SearchRespVo();
+        Long userId = JwtHelper.getUserId(token);
+        List<Long> collectHotels = new ArrayList<>();
+        if (userId == null) {
+            respVo.setIsLogin(false);
+        } else {
+            CompletableFuture<Void> task1 = CompletableFuture.runAsync(() -> {
+                JsonResult<UserTo> user = memberFeignService.getUser(userId);
+                respVo.setIsLogin(user != null && user.getData() != null);
+            }, executor);
+            CompletableFuture<List<Long>> task2 = CompletableFuture.supplyAsync(() -> {
+                JsonResult<List<Long>> result = memberFeignService.showCollectedHotel(userId);
+                return result.getData();
+            }, executor);
+            CompletableFuture.allOf(task1, task2).join();
+            if (respVo.getIsLogin()) {
+                collectHotels = task2.join();
+            }
+        }
         List<LocationVo> locations = hotelDao.selectAllLocations();
         List<HotelEntity> hotelEntities = hotelService.list();
+        List<Long> finalCollectHotels = collectHotels;
         List<HotelVo> hotelVos = hotelEntities.stream().map(o -> {
             HotelVo hotelVo = new HotelVo();
             BeanUtils.copyProperties(o, hotelVo);
@@ -63,11 +89,10 @@ public class HotelController {
                         .and(i -> i.eq("hotel_id", o.getHotelId()).eq("cover", 1))).getPicturePath();
                 hotelVo.setHotelPicture(picturePath);
             }, executor);
-            try {
-                CompletableFuture.allOf(task1, task2).get();
-            } catch (InterruptedException | ExecutionException e) {
-                throw new RuntimeException(e);
-            }
+            CompletableFuture<Void> task3 = CompletableFuture.runAsync(() -> {
+                hotelVo.setIsCollect(finalCollectHotels.contains(o.getHotelId()));
+            }, executor);
+            CompletableFuture.allOf(task1, task2, task3).join();
             return hotelVo;
         }).toList();
         respVo.setHotels(hotelVos);

@@ -124,7 +124,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         if (userid == null)
             throw new UserNotLoginException(ExceptionCodeEnum.USER_NOT_LOGIN_EXCEPTION);
         JsonResult<UserTo> user = memberFeignService.getUser(userid);
-        if (user == null)
+        if (user == null || user.getData() == null)
             throw new UserNotFoundException(ExceptionCodeEnum.USER_NOT_FOUND_EXCEPTION);
         return user.getData().getUserId();
     }

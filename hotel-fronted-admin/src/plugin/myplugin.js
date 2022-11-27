@@ -1,5 +1,5 @@
 // 开发一个插件
-import {get, post, setToken} from '../util/request'
+import {get, post, setToken} from '../utils/request'
 
 export default{
     // 插件中必须包含一个 install 方法

@@ -16,6 +16,8 @@ import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.Query;
 
 
+import sustech.hotel.exception.ExceptionCodeEnum;
+import sustech.hotel.exception.order.RoomNotAvailableException;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.order.dao.BookingDao;
 import sustech.hotel.order.entity.BookingEntity;
@@ -45,5 +47,14 @@ public class BookingServiceImpl extends ServiceImpl<BookingDao, BookingEntity> i
         List<Long> conflictList = bookingDao.selectConflictRoomByTimeIntervalAndHotel(startDate, endDate, hotelId);
         String json = JSON.toJSONString(conflictList);
         return roomFeignService.getAvailableRoomType(hotelId, json);
+    }
+
+    @Override
+    public void checkAvailable(Long roomId, Date startDate, Date endDate) {
+        QueryWrapper<BookingEntity> wrapper = new QueryWrapper<>();
+        wrapper.and(i -> i.eq("room_id", roomId).gt("end_date", startDate).lt("start_date", endDate));
+        List<BookingEntity> list = this.list(wrapper);
+        if (!(list == null || list.isEmpty()))
+            throw new RoomNotAvailableException(ExceptionCodeEnum.ROOM_NOT_AVAILABLE_EXCEPTION);
     }
 }

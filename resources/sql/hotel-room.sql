@@ -39,7 +39,7 @@ create table chr_room_type
     television  boolean                                                        not null,
     bathtub     boolean                                                        not null,
     thermos     boolean                                                        not null,
-    typeName    varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  not null,
+    type_name    varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  not null,
     description varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci not null,
     area        bigint(20)                                                     not null
 ) ENGINE = InnoDB

@@ -31,14 +31,17 @@ drop table if exists chr_room_type;
 create table chr_room_type
 (
     type_id     bigint(20) primary key AUTO_INCREMENT,
-    hotel_id    bigint(20)     not null,
-    price       decimal(18, 2) not null,
-    upper_limit integer        not null,
-    breakfast   boolean        not null,
-    windows     boolean        not null,
-    television  boolean        not null,
-    bathtub     boolean        not null,
-    thermos     boolean        not null
+    hotel_id    bigint(20)                                                     not null,
+    price       decimal(18, 2)                                                 not null,
+    upper_limit integer                                                        not null,
+    breakfast   boolean                                                        not null,
+    windows     boolean                                                        not null,
+    television  boolean                                                        not null,
+    bathtub     boolean                                                        not null,
+    thermos     boolean                                                        not null,
+    typeName    varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci  not null,
+    description varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci not null,
+    area        bigint(20)                                                     not null
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4

@@ -15,4 +15,5 @@ public class RoomTypePictureEntity implements Serializable {
 
     private Long typeId;
     private String picturePath;
+    private Integer cover;
 }

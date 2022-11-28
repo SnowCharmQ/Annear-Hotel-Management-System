@@ -71,8 +71,9 @@ create table chr_hotel_picture
 drop table if exists chr_room_type_picture;
 create table chr_room_type_picture
 (
-    type_id      bigint(20) not null,
-    picture_path varchar(200)
+    type_id      bigint(20)   not null,
+    picture_path varchar(200) not null,
+    cover        boolean
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4

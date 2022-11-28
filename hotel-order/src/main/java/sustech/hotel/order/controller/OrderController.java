@@ -4,18 +4,22 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson2.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import sustech.hotel.common.utils.DateConverter;
 import sustech.hotel.exception.BaseException;
+import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.model.to.order.OrderTo;
+import sustech.hotel.model.vo.hotel.AvailableRoomTypeVo;
 import sustech.hotel.model.vo.order.OrderConfirmRespVo;
 import sustech.hotel.model.vo.order.OrderConfirmVo;
 import sustech.hotel.model.vo.order.PlaceOrderVo;
 import sustech.hotel.order.entity.OrderEntity;
 import sustech.hotel.order.service.OrderService;
-import sustech.hotel.common.utils.Constant;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
 
@@ -112,5 +116,22 @@ public class OrderController {
         }
     }
 
-
+    @ResponseBody
+    @RequestMapping("/getRoomTypeAverageScore")
+    public JsonResult<String> getAverageScore(@RequestParam("toList") String toList) {
+        List<AvailableRoomTypeTo> tos = JSON.parseArray(toList, AvailableRoomTypeTo.class);
+        List<AvailableRoomTypeVo> vos = tos.stream().map(o -> {
+            AvailableRoomTypeVo vo = new AvailableRoomTypeVo();
+            BeanUtils.copyProperties(o, vo);
+            List<OrderEntity> orders = orderService.list(new QueryWrapper<OrderEntity>().eq("type_id", o.getTypeId()));
+            if (orders == null || orders.isEmpty()) {
+                vo.setAverageScore(5.0);
+            } else {
+                int sum = orders.stream().mapToInt(OrderEntity::getScore).sum();
+                vo.setAverageScore((double) sum / (double) orders.size());
+            }
+            return vo;
+        }).toList();
+        return new JsonResult<>(JSON.toJSONString(vos));
+    }
 }

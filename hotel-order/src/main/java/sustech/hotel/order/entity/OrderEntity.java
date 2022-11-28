@@ -19,6 +19,7 @@ public class OrderEntity implements Serializable {
     @TableId
     private String orderId;
     private Long userId;
+    private Long typeId;
     private Long roomId;
     private Integer orderStatus;
     private Date startDate;

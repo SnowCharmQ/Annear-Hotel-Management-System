@@ -3,6 +3,7 @@ CREATE TABLE cho_order
 (
     order_id       varchar(30) primary key,
     user_id        bigint(20)     not null,
+    type_id        bigint(20)     not null,
     room_id        bigint(20)     not null, -- room
     order_status   integer        not null, -- 0 booking, 1 isPayed, 2 isCheckIn, 3 isLeaved, 4 isCancelled
     start_date     date           not null,
@@ -72,15 +73,15 @@ CREATE TABLE cho_income_refund
 
 drop table if exists chb_booking;
 CREATE TABLE cho_booking
-(                                    -- this table will be updated every day, if end_time passed, the item will be deleted
-    user_id    bigint(20)  not null,
-    order_id   varchar(30) not null,
-    hotel_id bigint(20) not null,
-    type_id bigint(20) not null,
-    room_id    bigint(20)  not null, -- room_id
-    start_date date        not null,
-    end_date   date        not null,
-    order_state boolean not null
+(                                     -- this table will be updated every day, if end_time passed, the item will be deleted
+    user_id     bigint(20)  not null,
+    order_id    varchar(30) not null,
+    hotel_id    bigint(20)  not null,
+    type_id     bigint(20)  not null,
+    room_id     bigint(20)  not null, -- room_id
+    start_date  date        not null,
+    end_date    date        not null,
+    order_state boolean     not null
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4

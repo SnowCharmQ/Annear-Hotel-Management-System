@@ -174,7 +174,9 @@ public class HotelServiceImpl extends ServiceImpl<HotelDao, HotelEntity> impleme
                 List<String> paths = pictures.stream().map(RoomTypePictureEntity::getPicturePath).toList();
                 map.put(typeId, paths);
             }
-            resp.setRoomTypes(availableRoomTypes);
+            String toStr = orderFeignService.getAverageScore(JSON.toJSONString(availableRoomTypes)).getData();
+            List<AvailableRoomTypeVo> vos = JSON.parseArray(toStr, AvailableRoomTypeVo.class);
+            resp.setRoomTypes(vos);
             resp.setRoomTypeImages(map);
         }, executor);
         CompletableFuture<Void> task2 = CompletableFuture.runAsync(() -> {

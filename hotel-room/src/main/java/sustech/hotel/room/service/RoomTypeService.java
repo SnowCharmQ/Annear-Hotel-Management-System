@@ -15,5 +15,5 @@ public interface RoomTypeService extends IService<RoomTypeEntity> {
 
     List<AvailableRoomTypeTo> getAvailableRoomType(Long hotelId, List<Long> conflictList);
 
-    RoomTypeSearchVo search(Long hotelId, String startDate, String endDate, String sortBy, Boolean reversed, BigDecimal lowest, BigDecimal highest, Boolean breakfast, Boolean windows, Boolean television, Boolean bathtub, Boolean thermos);
+    RoomTypeSearchVo search(Long hotelId, Integer guests, String startDate, String endDate, String sortBy, Boolean reversed, BigDecimal lowest, BigDecimal highest, Boolean breakfast, Boolean windows, Boolean television, Boolean bathtub, Boolean thermos);
 }

@@ -25,13 +25,14 @@ public class RoomTypeController {
     private RoomTypeService roomTypeService;
 
     @GetMapping("/search")
-    public JsonResult<RoomTypeSearchVo> search(@RequestParam("hotelId") Long hotelId, @RequestParam("startDate") String startDate,
-                                               @RequestParam("endDate") String endDate, @RequestParam("sortBy") String sortBy,
-                                               @RequestParam("reversed") Boolean reversed, @RequestParam("lowest")BigDecimal lowest,
-                                               @RequestParam("highest") BigDecimal highest, @RequestParam("breakfast") Boolean breakfast,
-                                               @RequestParam("windows") Boolean windows, @RequestParam("television") Boolean television,
-                                               @RequestParam("bathtub") Boolean bathtub, @RequestParam("thermos") Boolean thermos) {
-        RoomTypeSearchVo vo = roomTypeService.search(hotelId, startDate, endDate, sortBy, reversed, lowest, highest, breakfast, windows, television, bathtub, thermos);
+    public JsonResult<RoomTypeSearchVo> search(@RequestParam("hotelId") Long hotelId, @RequestParam("guests") Integer guests,
+                                               @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate,
+                                               @RequestParam("sortBy") String sortBy, @RequestParam("reversed") Boolean reversed,
+                                               @RequestParam("lowest") BigDecimal lowest, @RequestParam("highest") BigDecimal highest,
+                                               @RequestParam("breakfast") Boolean breakfast, @RequestParam("windows") Boolean windows,
+                                               @RequestParam("television") Boolean television, @RequestParam("bathtub") Boolean bathtub,
+                                               @RequestParam("thermos") Boolean thermos) {
+        RoomTypeSearchVo vo = roomTypeService.search(hotelId, guests, startDate, endDate, sortBy, reversed, lowest, highest, breakfast, windows, television, bathtub, thermos);
         return new JsonResult<>(vo);
     }
 

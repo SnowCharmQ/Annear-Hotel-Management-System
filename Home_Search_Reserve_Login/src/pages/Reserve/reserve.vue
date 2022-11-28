@@ -112,11 +112,11 @@
                   </div>
                   <div style="line-height:30px;">
                     <div>
+                      <el-radio v-model="checked1" label="default">Default</el-radio>
+                      <br>
                       <el-radio v-model="checked1" label="score">Score</el-radio>
                       <br>
                       <el-radio v-model="checked1" label="price">Price</el-radio>
-                      <br>
-                      <el-radio v-model="checked1" label="booking-number">Booking Number</el-radio>
                     </div>
                     <br>
                     <div>
@@ -169,7 +169,7 @@
                 </el-col>
 
                 <el-col :span="24" style="line-height:50px;border-top:1px solid #ddd;text-align:right;">
-                  <el-button type="info" style="background:#333;">Apply</el-button>
+                  <el-button type="info" style="background:#333;" @click="search">Apply</el-button>
                 </el-col>
 
               </div><!--filters end-->
@@ -196,6 +196,7 @@
               <el-breadcrumb separator="|" style="margin:10px 0;">
                 <el-breadcrumb-item>{{item.upperLimit}} Guests Max</el-breadcrumb-item>
                 <el-breadcrumb-item style="margin-top: -3px">{{item.area}} m<sup>2</sup></el-breadcrumb-item>
+                <el-breadcrumb-item>Score: {{parseFloat(item.averageScore).toFixed(1)}}</el-breadcrumb-item>
               </el-breadcrumb>
               <div>{{item.description}}</div>
               <el-link>Room details</el-link>
@@ -295,7 +296,7 @@ export default {
       date3: '',
       date4: '',
       showCheck: false,
-      checked1: 'score',
+      checked1: 'default',
       checked2: 'hl',
       checked3: false,
       checked4: false,
@@ -343,7 +344,7 @@ export default {
     },
     updateGuests() {
       this.count2 = this.count1;
-      // TODO: 搜索对应的房间
+      this.search();
     },
     updateDates() {
       if (this.date3 !== undefined && this.date3 !== "") {
@@ -352,7 +353,7 @@ export default {
       if (this.date4 !== undefined && this.date4 !== "") {
         this.date2 = this.date4;
       }
-      //TODO: 搜索对应的日期
+      this.search();
     },
     generateTomorrow() {
       const today = new Date();
@@ -368,10 +369,11 @@ export default {
         method: 'get',
         params: {
           hotelId: hotelId,
+          guests: this.count2,
           startDate: this.date1,
           endDate: this.date2,
           sortBy: this.checked1,
-          reversed: this.checked2,
+          reversed: this.checked2 === 'hl',
           lowest: this.value[0],
           highest: this.value[1],
           breakfast: this.checked3,
@@ -380,6 +382,12 @@ export default {
           bathtub: this.checked6,
           thermos: this.checked7
         }
+      }).then(data => {
+        let obj = data.data.data;
+        this.roomTypes = obj.roomTypes;
+        this.roomTypeImages = obj.roomTypeImages;
+      }).catch(err => {
+        this.$message.error("Network Error");
       })
     }
   },
@@ -399,7 +407,6 @@ export default {
         })
       }).then(data => {
         let obj = data.data.data;
-        console.log(obj)
         this.hotelName = obj.hotelName;
         this.province = obj.province;
         this.city = obj.city;
@@ -409,9 +416,7 @@ export default {
         this.images = obj.images;
         this.roomTypes = obj.roomTypes;
         this.roomTypeImages = obj.roomTypeImages;
-        console.log(this.roomTypeImages[1][0])
       }).catch(err => {
-        console.log(err)
         this.$message.error("Network Error");
       })
     }

@@ -9,4 +9,7 @@ import sustech.hotel.common.utils.JsonResult;
 public interface OrderFeignService {
     @GetMapping("/order/booking/getConflictList")
     JsonResult<String> getConflictList(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, @RequestParam("hotelId") Long hotelId);
+
+    @GetMapping("/order/order/getRoomTypeAverageScore")
+    JsonResult<String> getAverageScore(@RequestParam("toList") String toList);
 }

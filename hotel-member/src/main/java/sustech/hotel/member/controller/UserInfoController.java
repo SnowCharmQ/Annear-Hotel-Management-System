@@ -158,7 +158,7 @@ public class UserInfoController {
     /**
      * query user info by id
      */
-    @RequestMapping("/queryUserInfoById")
+    @GetMapping("/queryUserInfoById")
     public JsonResult<UserInfoEntity> queryUserInfoById(Long userId) {
         return new JsonResult<>(userInfoService.queryUserInfoById(userId));
     }
@@ -166,8 +166,9 @@ public class UserInfoController {
     /**
      * query user info by name
      */
-    @RequestMapping("/queryUserInfoByName")
-    public JsonResult<UserInfoEntity> queryUserInfoById(@RequestBody String userName) {
+    @ResponseBody
+    @GetMapping("/queryUserInfoByName")
+    public JsonResult<UserInfoEntity> queryUserInfoById(String userName) {
         return new JsonResult<>(userInfoService.queryUserInfoByName(userName));
     }
 
@@ -175,14 +176,16 @@ public class UserInfoController {
     /**
      * query user's order by id
      */
-    @RequestMapping("/queryOrdersByUserId")
+    @GetMapping("/queryOrdersByUserId")
     public JsonResult<List<OrderTo>> queryOrdersByUserId(Long userId) {
         return orderFeignService.queryOrderByUser(userId);
     }
 
-    @RequestMapping("/alterUserInfo")
-    public JsonResult<Void> alterUserInfo(Long toEditId, String phone, String email, String avatar, Integer gender, Date birthday, String province, String city, String detailAddress, String job, Integer isBlocked, String socialName) {
-        userInfoService.alterInfo(toEditId, phone, email, avatar, gender, birthday, province, city, detailAddress, job, isBlocked, socialName);
-        return new JsonResult<>();
-    }
+//    @GetMapping("/alterUserInfo")
+//    public JsonResult<Void> alterUserInfo(Long toEditId, String phone, String email, Integer gender, Date birthday, String province, String city, String detailAddress,String socialName) {
+//        System.out.println(toEditId);
+//        System.out.println(phone);
+//        userInfoService.alterInfo(toEditId, phone, email, gender, birthday, province, city, detailAddress, socialName);
+//        return new JsonResult<>();
+//    }
 }

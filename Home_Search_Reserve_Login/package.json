@@ -18,7 +18,9 @@
     "vue": "^2.6.11",
     "vue-echarts": "^6.2.3",
     "vue-router": "^3.2.0",
-    "vuex": "^3.6.2"
+    "vuex": "^3.6.2",
+    "vue-amap": "^0.5.10",
+    "@amap/amap-jsapi-loader": "^1.0.1"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.8",

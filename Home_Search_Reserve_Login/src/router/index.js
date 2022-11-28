@@ -73,7 +73,11 @@ const routes = [
                 path: '/graph',
                 name: 'graph',
                 component: () => import('../pages/ManagerPages/graphs')
-            },  {
+            }, {
+                path: '/map',
+                name: 'map',
+                component: () => import('../pages/Map/index')
+            }, {
                 path: '/404',
                 name: '404',
                 component: () => import('../pages/404'),

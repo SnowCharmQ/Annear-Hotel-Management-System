@@ -150,12 +150,22 @@
           <br><br>
           <el-upload
               class="upload-demo"
+              action="https://jsonplaceholder.typicode.com/posts/"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
               :http-request="uploadPicture"
               :file-list="fileList"
               list-type="picture">
             <el-button size="small" type="primary">Upload Picture</el-button>
+          </el-upload>
+          <br>
+          <el-upload
+              class="upload-demo"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :http-request="uploadVideo"
+              :file-list="videoList">
+            <el-button size="small" type="primary">Upload Video</el-button>
+<!--            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
           </el-upload>
         </el-form>
       </div>
@@ -318,6 +328,7 @@ export default {
       star: '',
       comment: '',
       fileList: [],
+      videoList: [],
       tempUrl: '',
       selectedOrderId: ''
 
@@ -358,6 +369,21 @@ export default {
         let pictureUrl = data.data.data
         console.log(pictureUrl)
         this.fileList.push({name: picture.name, url: pictureUrl})
+      });
+    },
+    uploadVideo(file) {
+      let video = file.file
+      let formData = new FormData();
+      formData.append('file', video)
+      formData.append('orderId', this.selectedOrderId)
+      let url = this.$http.adornUrl('/auth/uploadVideo')
+
+      axios.post(url, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }).then(data => {
+        let videoUrl = data.data.data
+        console.log(videoUrl)
+        this.videoList.push({name: video.name, url: videoUrl})
       });
     }
   }

@@ -18,7 +18,7 @@ import java.io.*;
 public class UploadPictureController {
     @ResponseBody
     @RequestMapping("/uploadPicture")
-    public JsonResult<String> getUsernameByToken(@RequestParam("file") MultipartFile file, @RequestParam("orderId") String orderId) throws IOException {
+    public JsonResult<String> uploadPicture(@RequestParam("file") MultipartFile file, @RequestParam("orderId") String orderId) throws IOException {
         System.out.println(file.getSize());
         System.out.println(file.getName());
         System.out.println(file.getContentType());
@@ -36,6 +36,32 @@ public class UploadPictureController {
         COSClient client = new COSClient(cred, config);
         String bucketName = "ooad-1312953997";
         String key = orderId + "/img/" + f.getName();
+        PutObjectRequest request = new PutObjectRequest(bucketName, key, f);
+        PutObjectResult result = client.putObject(request);
+        System.out.println(client.getObjectUrl(bucketName, key));//输出的是图片对应的URL
+        return new JsonResult<String>(client.getObjectUrl(bucketName, key).toString());
+    }
+
+    @ResponseBody
+    @RequestMapping("/uploadVideo")
+    public JsonResult<String> uploadVideo(@RequestParam("file") MultipartFile file, @RequestParam("orderId") String orderId) throws IOException {
+        System.out.println(file.getSize());
+        System.out.println(file.getName());
+        System.out.println(file.getContentType());
+        System.out.println(orderId);
+        File f = null;
+        InputStream ins = file.getInputStream();
+        f = new File(file.getOriginalFilename());
+        inputStreamToFile(ins, f);
+        String secretId = "AKIDyAKJJI5nJcs298wZyDMN9jkhS0ttkbIC";
+        String secretKey = "1sZDnkVH2gAWjBg5VwGPSQFsHUVRND4q";
+        COSCredentials cred = new BasicCOSCredentials(secretId, secretKey);
+        Region region = new Region("ap-guangzhou");
+        ClientConfig config = new ClientConfig(region);
+        config.setHttpProtocol(HttpProtocol.https);
+        COSClient client = new COSClient(cred, config);
+        String bucketName = "ooad-1312953997";
+        String key = orderId + "/video/" + f.getName();
         PutObjectRequest request = new PutObjectRequest(bucketName, key, f);
         PutObjectResult result = client.putObject(request);
         System.out.println(client.getObjectUrl(bucketName, key));//输出的是图片对应的URL

@@ -323,6 +323,8 @@ export default {
       checked11: false,
       count1: 0,
       count2: 0,
+      roomTypes: [],
+      roomTypeImages: [],
       imgList: [
         {
           price1: '2560',
@@ -336,61 +338,9 @@ export default {
           detail: 'Rates are on room only basis 1',
           detail3: 'Per Night 1',
           detail4: 'Breakfast in Manhattan 1'
-        },
-        {
-          price1: '1780',
-          btn: 'Dates Unavailable',
-          name: 'Amanwella',
-          detail1: 'Excluding Taxes & Fees 2',
-          detail2: 'Daily American breakfast in Arva or via in-room dining up to two people 2',
-          addr: 'Tangalle, Sri Lanka',
-          price: '1560',
-          img: require('../../assets/images/hotel/3.jpeg'),
-          detail: 'Rates are on room only basis 2',
-          detail3: 'Per Night 2',
-          detail4: 'Breakfast in Manhattan 2'
-        },
-        {
-          price1: '5860',
-          btn: 'Dates Unavailable',
-          name: 'Amanera',
-          detail1: 'Excluding Taxes & Fees 3',
-          detail2: 'Daily American breakfast in Arva or via in-room dining up to two people 3',
-          addr: 'Rio San Juan, Dominican Republic',
-          price: '4060',
-          img: require('../../assets/images/hotel/4.jpeg'),
-          detail: 'Rates are on room only basis 3',
-          detail3: 'Per Night 3',
-          detail4: 'Breakfast in Manhattan 3'
-        },
-        {
-          price1: '1809',
-          btn: 'View rates',
-          name: 'Aman Tokyo',
-          detail1: 'Excluding Taxes & Fees 4',
-          detail2: 'Daily American breakfast in Arva or via in-room dining up to two people 4',
-          addr: 'Chiyoda-ku, Japan',
-          price: '1390',
-          img: require('../../assets/images/hotel/5.jpeg'),
-          detail: 'Rates are on room only basis 4',
-          detail3: 'Per Night1 4',
-          detail4: 'Breakfast in Manhattan 4'
-        },
-        {
-          price1: '2230',
-          btn: 'View rates',
-          name: 'Amanfayun',
-          detail1: 'Excluding Taxes & Fees 5',
-          detail2: 'Daily American breakfast in Arva or via in-room dining up to two people 5',
-          addr: 'Hangzhou 33, China',
-          price: '1880',
-          img: require('../../assets/images/hotel/9.jpeg'),
-          detail: 'Rates are on room only basis 5',
-          detail3: 'Per Night 5',
-          detail4: 'Breakfast in Manhattan 5'
-        },
+        }
       ]
-    };
+    }
   },
   methods: {
     // 显示日历
@@ -451,6 +401,8 @@ export default {
         this.detailAddress = obj.detailAddress;
         this.telephone = obj.telephone;
         this.images = obj.images;
+        this.roomTypes = obj.roomTypes;
+        this.roomTypeImages = obj.roomTypeImages;
       }).catch(err => {
         this.$message.error("Network Error");
       })

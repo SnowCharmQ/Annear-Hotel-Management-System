@@ -5,6 +5,7 @@ import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Data
 public class ReserveRespVo {
@@ -26,4 +27,5 @@ public class ReserveRespVo {
     private Long starLevel;
     private List<String> images;
     private List<AvailableRoomTypeTo> roomTypes;
+    private Map<Long, List<String>> roomTypeImages;
 }

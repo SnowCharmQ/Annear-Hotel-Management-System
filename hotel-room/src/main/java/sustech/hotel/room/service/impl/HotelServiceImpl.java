@@ -25,10 +25,12 @@ import sustech.hotel.room.dao.HotelDao;
 import sustech.hotel.room.dao.RoomTypeDao;
 import sustech.hotel.room.entity.HotelEntity;
 import sustech.hotel.room.entity.HotelPictureEntity;
+import sustech.hotel.room.entity.RoomTypePictureEntity;
 import sustech.hotel.room.feign.MemberFeignService;
 import sustech.hotel.room.feign.OrderFeignService;
 import sustech.hotel.room.service.HotelPictureService;
 import sustech.hotel.room.service.HotelService;
+import sustech.hotel.room.service.RoomTypePictureService;
 import sustech.hotel.room.service.RoomTypeService;
 
 
@@ -46,6 +48,9 @@ public class HotelServiceImpl extends ServiceImpl<HotelDao, HotelEntity> impleme
 
     @Autowired
     private RoomTypeService roomTypeService;
+
+    @Autowired
+    private RoomTypePictureService roomTypePictureService;
 
     @Autowired
     private MemberFeignService memberFeignService;
@@ -162,7 +167,15 @@ public class HotelServiceImpl extends ServiceImpl<HotelDao, HotelEntity> impleme
             String data = orderFeignService.getConflictList(today, tomorrow, vo.getHotelId()).getData();
             List<Long> conflictList = JSON.parseArray(data, Long.class);
             List<AvailableRoomTypeTo> availableRoomTypes = roomTypeService.getAvailableRoomType(vo.getHotelId(), conflictList);
+            Map<Long, List<String>> map = new HashMap<>();
+            for (AvailableRoomTypeTo to : availableRoomTypes) {
+                Long typeId = to.getTypeId();
+                List<RoomTypePictureEntity> pictures = roomTypePictureService.list(new QueryWrapper<RoomTypePictureEntity>().eq("type_id", typeId));
+                List<String> paths = pictures.stream().map(RoomTypePictureEntity::getPicturePath).toList();
+                map.put(typeId, paths);
+            }
             resp.setRoomTypes(availableRoomTypes);
+            resp.setRoomTypeImages(map);
         }, executor);
         CompletableFuture<Void> task2 = CompletableFuture.runAsync(() -> {
             List<HotelPictureEntity> pictures

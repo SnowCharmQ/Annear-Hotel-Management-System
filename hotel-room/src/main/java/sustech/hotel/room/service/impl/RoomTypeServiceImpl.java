@@ -31,8 +31,7 @@ public class RoomTypeServiceImpl extends ServiceImpl<RoomTypeDao, RoomTypeEntity
     }
 
     @Override
-    public List<AvailableRoomTypeTo> getAvailableRoomType(Long hotelId, String json) {
-        List<Long> conflictList = JSON.parseArray(json, Long.class);
+    public List<AvailableRoomTypeTo> getAvailableRoomType(Long hotelId, List<Long> conflictList) {
         if (conflictList == null || conflictList.isEmpty()) {
             conflictList = new ArrayList<>();
             conflictList.add(-1L);

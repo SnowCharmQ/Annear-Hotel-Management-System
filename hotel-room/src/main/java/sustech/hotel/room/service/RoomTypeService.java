@@ -11,5 +11,5 @@ import java.util.Map;
 public interface RoomTypeService extends IService<RoomTypeEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
-    List<AvailableRoomTypeTo> getAvailableRoomType(Long hotelId, String json);
+    List<AvailableRoomTypeTo> getAvailableRoomType(Long hotelId, List<Long> conflictList);
 }

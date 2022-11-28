@@ -75,7 +75,8 @@ public class RoomTypeController {
 
     @GetMapping("/availableRoomType")
     public JsonResult<List<AvailableRoomTypeTo>> getAvailableRoomType(@RequestParam("hotelId") Long hotelId, @RequestParam("json") String json) {
-        List<AvailableRoomTypeTo> list = roomTypeService.getAvailableRoomType(hotelId, json);
+        List<Long> conflictList = JSON.parseArray(json, Long.class);
+        List<AvailableRoomTypeTo> list = roomTypeService.getAvailableRoomType(hotelId, conflictList);
         return new JsonResult<>(list);
     }
 }

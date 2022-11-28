@@ -1,5 +1,6 @@
 package sustech.hotel.room.service.impl;
 
+import com.alibaba.fastjson2.JSON;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -159,7 +160,8 @@ public class HotelServiceImpl extends ServiceImpl<HotelDao, HotelEntity> impleme
             String today = vo.getToday();
             String tomorrow = vo.getTomorrow();
             String data = orderFeignService.getConflictList(today, tomorrow, vo.getHotelId()).getData();
-            List<AvailableRoomTypeTo> availableRoomTypes = roomTypeService.getAvailableRoomType(vo.getHotelId(), data);
+            List<Long> conflictList = JSON.parseArray(data, Long.class);
+            List<AvailableRoomTypeTo> availableRoomTypes = roomTypeService.getAvailableRoomType(vo.getHotelId(), conflictList);
             resp.setRoomTypes(availableRoomTypes);
         }, executor);
         CompletableFuture<Void> task2 = CompletableFuture.runAsync(() -> {

@@ -10,13 +10,10 @@
         <el-col :span="24">
           <el-divider></el-divider>
         </el-col>
-        <component :is="curType"></component>
+        <component :is="curType" style="height: 360px"></component>
         <div class="login-type">
           <a href="" :class="[curType==='LoginByPassword'?'active-type':'inactive-type']"
              @click.prevent="curType='LoginByPassword'">Password</a>
-          &ensp;/&ensp;
-          <a href="" :class="[curType==='LoginByQRCode'?'active-type':'inactive-type']"
-             @click.prevent="curType='LoginByQRCode'">QR Code</a>
           &ensp;/&ensp;
           <a href="" :class="[curType==='LoginByVerificationCode'?'active-type':'inactive-type']"
              @click.prevent="curType='LoginByVerificationCode'">Phone
@@ -50,11 +47,11 @@
 }
 
 .login-type {
-  margin-left: 270px;
+  margin-left: 300px;
   text-align: center;
   font-family: "Times New Roman", serif;
   display: inline-flex;
-  margin-top: 100px;
+  margin-top: 20px;
 }
 
 .active-type {
@@ -70,12 +67,11 @@
 
 <script>
 import LoginByPassword from "../../components/login/LoginByPassword";
-import LoginByQRCode from "../../components/login/LoginByQRCode";
 import LoginByVerificationCode from "../../components/login/LoginByVerificationCode";
 
 export default {
   name: "login",
-  components: {LoginByPassword, LoginByQRCode, LoginByVerificationCode},
+  components: {LoginByPassword, LoginByVerificationCode},
   data() {
     return {
       curType: 'LoginByPassword',

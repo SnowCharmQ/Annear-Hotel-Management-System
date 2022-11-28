@@ -4,26 +4,25 @@ import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import org.springframework.transaction.annotation.Transactional;
 import sustech.hotel.common.utils.*;
 
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.auth.UserNotFoundException;
-import sustech.hotel.exception.order.RoomNotAvailableException;
-import sustech.hotel.exception.order.RoomNotFoundException;
-import sustech.hotel.exception.order.UserNotLoginException;
+import sustech.hotel.exception.order.*;
 import sustech.hotel.exception.others.InvalidDateException;
 import sustech.hotel.model.to.hotel.HotelTo;
 import sustech.hotel.model.to.hotel.RoomInfoTo;
@@ -35,9 +34,15 @@ import sustech.hotel.model.vo.order.OrderConfirmRespVo;
 import sustech.hotel.constant.OrderConstant;
 import sustech.hotel.model.vo.order.OrderConfirmVo;
 import sustech.hotel.order.dao.OrderDao;
+import sustech.hotel.order.entity.BookingEntity;
 import sustech.hotel.order.entity.OrderEntity;
+import sustech.hotel.order.entity.OrderInfoEntity;
+import sustech.hotel.order.entity.OrderOperationEntity;
 import sustech.hotel.order.feign.MemberFeignService;
 import sustech.hotel.order.feign.RoomFeignService;
+import sustech.hotel.order.service.BookingService;
+import sustech.hotel.order.service.OrderInfoService;
+import sustech.hotel.order.service.OrderOperationService;
 import sustech.hotel.order.service.OrderService;
 
 
@@ -49,6 +54,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Autowired
     RoomFeignService roomFeignService;
+
+    @Autowired
+    BookingService bookingService;
+
+    @Autowired
+    OrderInfoService orderInfoService;
+
+    @Autowired
+    OrderOperationService orderOperationService;
 
     @Autowired
     StringRedisTemplate redisTemplate;
@@ -99,32 +113,68 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         return resp;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public void placeOrder(OrderEntity request, List<String> guestInfo, String orderToken) {
-        QueryWrapper<OrderEntity> wrapper = new QueryWrapper<>();
+        String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+        Long result = redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class),
+                Arrays.asList(OrderConstant.USER_ORDER_TOKEN_PREFIX + request.getUserId()),
+                orderToken);
+        if (result == 0L)
+            //fail
+            throw new DuplicateOrderSubmissionException(ExceptionCodeEnum.DUPLICATE_ORDER_SUBMISSION_EXCEPTION);
+        //success
+        Date currentDate = DateConverter.currentDate();
+        if (request.getStartDate().getTime() < currentDate.getTime())
+            throw new InvalidDateException(ExceptionCodeEnum.INVALID_DATE_EXCEPTION.getCode(), "Start date should at least be today.");
+        if (request.getStartDate().getTime() >= request.getEndDate().getTime())
+            throw new InvalidDateException(ExceptionCodeEnum.INVALID_DATE_EXCEPTION.getCode(), "Start Date should before end Date");
         JsonResult<RoomTo> room = roomFeignService.getRoomByID(request.getRoomId());
         if (room.getData() == null)
             throw new RoomNotFoundException(ExceptionCodeEnum.ROOM_NOT_FOUND_EXCEPTION);
-        wrapper.and(i -> i.eq("room_id", request.getRoomId()).gt("end_date", request.getStartDate()).lt("start_date", request.getEndDate()));
-        List<OrderEntity> list = this.list(wrapper);
-        if (!(list == null || list.isEmpty()))
-            throw new RoomNotAvailableException(ExceptionCodeEnum.ROOM_NOT_AVAILABLE_EXCEPTION);
+        bookingService.checkAvailable(request.getRoomId(), request.getStartDate(), request.getEndDate());
         request.setOrderStatus(0);
         request.setOrderId(IdWorker.getTimeId());
         JsonResult<RoomTypeTo> roomType = roomFeignService.getRoomTypeByID(room.getData().getTypeId());
+        if (guestInfo.size() > roomType.getData().getUpperLimit())
+            throw new GuestNumberExceedLimitException(ExceptionCodeEnum.GUEST_NUMBER_EXCEED_LIMIT_EXCEPTION);
         request.setOriginMoney(roomType.getData().getPrice());
-        // TODO: 2022/11/16 Get the After Discount Money
+        // TODO: 2022/11/27 Get the After Discount Money
         request.setAfterDiscount(request.getOriginMoney());
         this.baseMapper.insert(request);
+        BookingEntity bookingEntity = new BookingEntity();
+        BeanUtils.copyProperties(request, bookingEntity);
+        bookingEntity.setHotelId(roomType.getData().getHotelId());
+        bookingEntity.setTypeId(roomType.getData().getTypeId());
+        bookingService.save(bookingEntity);
+        for (String s : guestInfo) {
+            String[] info = s.split(",");
+            OrderInfoEntity orderInfoEntity = new OrderInfoEntity();
+            orderInfoEntity.setOrderId(request.getOrderId());
+            orderInfoEntity.setTenantName(info[0]);
+            orderInfoEntity.setIdentityCard(info[1]);
+            orderInfoEntity.setTelephone(info[2]);
+            orderInfoService.save(orderInfoEntity);
+        }
+        OrderOperationEntity orderOperationEntity = new OrderOperationEntity();
+        orderOperationEntity.setOperation(0);
+        orderOperationEntity.setOperationTime(new Timestamp(System.currentTimeMillis()));
+        orderOperationEntity.setOrderId(request.getOrderId());
+        orderOperationService.save(orderOperationEntity);
     }
 
     @Override
     public Long checkUserID(String token) {
-        Long userid = JwtHelper.getUserId(token);
-        if (userid == null)
+        Long userid;
+        try {
+            userid = JwtHelper.getUserId(token);
+            if (userid == null)
+                throw new UserNotLoginException(ExceptionCodeEnum.USER_NOT_LOGIN_EXCEPTION);
+        } catch (Exception e) {
             throw new UserNotLoginException(ExceptionCodeEnum.USER_NOT_LOGIN_EXCEPTION);
+        }
         JsonResult<UserTo> user = memberFeignService.getUser(userid);
-        if (user == null)
+        if (user == null || user.getData() == null)
             throw new UserNotFoundException(ExceptionCodeEnum.USER_NOT_FOUND_EXCEPTION);
         return user.getData().getUserId();
     }

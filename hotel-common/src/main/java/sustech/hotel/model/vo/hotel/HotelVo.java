@@ -29,4 +29,5 @@ public class HotelVo {
     private Long starLevel;
     private String hotelPicture;
     private BigDecimal averagePrice;
+    private Boolean isCollect;
 }

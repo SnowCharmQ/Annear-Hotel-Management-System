@@ -25,4 +25,7 @@ public class RoomTypeEntity implements Serializable {
     private Integer television;
     private Integer bathtub;
     private Integer thermos;
+    private String typeName;
+    private String description;
+    private BigDecimal area;
 }

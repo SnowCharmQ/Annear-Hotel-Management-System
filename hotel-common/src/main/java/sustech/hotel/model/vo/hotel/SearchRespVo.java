@@ -6,6 +6,7 @@ import java.util.List;
 
 @Data
 public class SearchRespVo {
-    List<LocationVo> locations;
-    List<HotelVo> hotels;
+    private List<LocationVo> locations;
+    private List<HotelVo> hotels;
+    private Boolean isLogin;
 }

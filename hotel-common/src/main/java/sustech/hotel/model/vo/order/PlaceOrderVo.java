@@ -12,5 +12,6 @@ public class PlaceOrderVo {
     private Long roomID;
     private String startDate;
     private String endDate;
+    private String additional;
     private List<String> guestInfo;
 }

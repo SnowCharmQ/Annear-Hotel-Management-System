@@ -14,7 +14,6 @@
         <module>hotel-discount</module>
         <module>hotel-order</module>
         <module>hotel-room</module>
-        <module>hotel-booking</module>
         <module>hotel-gateway</module>
         <module>hotel-auth-server</module>
         <module>hotel-thirdparty</module>

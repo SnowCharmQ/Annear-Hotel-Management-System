@@ -53,7 +53,7 @@ public class WebSocketServer {
     @OnClose
     public void onClose(Session session, @PathParam("username") String username) {
         sessionMap.remove(username);
-        System.out.println("one leave");
+//        System.out.println("one leave");
         log.info("有一连接关闭，移除username={}的用户session, 当前在线人数为：{}", username, sessionMap.size());
     }
     /**
@@ -74,8 +74,8 @@ public class WebSocketServer {
         }
         String toUsername = obj.getStr("to"); // to表示发送给哪个用户，比如 admin
         String text = obj.getStr("text"); // 发送的消息文本  hello
-        System.out.println(toUsername);
-        System.out.println(text);
+//        System.out.println(toUsername);
+//        System.out.println(text);
         // {"to": "admin", "text": "聊天文本"}
         Session toSession = sessionMap.get(toUsername); // 根据 to用户名来获取 session，再通过session发送消息文本
         if (toSession != null) {

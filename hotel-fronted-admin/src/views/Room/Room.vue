@@ -1,8 +1,8 @@
 <template>
     <div>
         <!-- 添加区域 -->
-        <div class="addType">
-            <el-button type="primary" size="mini" class="addTypeButton" @click="addClick">Add Type</el-button>
+        <div class="addRoom">
+            <el-button type="primary" size="mini" class="addRoomButton" @click="addClick">Add Room</el-button>
         </div>
         <!-- 表格区域 -->
         <el-table :data="tableData" style="width: 98%; min-width: 1000px"
@@ -10,35 +10,46 @@
             :row-style="setRowStyle" border-collapse:collapse stripe fit highlight-current-row border
             empty-text="No Room Added">
 
-            <el-table-column label="Name" width="180">
+            <el-table-column label="Room No" width="180">
                 <template slot-scope="scope">
                     <el-popover trigger="hover" placement="top">
-                        <p>Name: {{ scope.row.type_name }}</p>
+                        <p>Name: {{ scope.row.room_num }}</p>
 
                         <div slot="reference" class="name-wrapper">
-                            <el-tag size="medium">{{ scope.row.type_name }}</el-tag>
+                            <el-tag size="medium">{{ scope.row.room_num }}</el-tag>
                         </div>
                     </el-popover>
                 </template>
             </el-table-column>
 
-            <el-table-column label="Price" width="180">
+            <el-table-column label="Type" width="180">
                 <template slot-scope="scope">
                     <el-popover trigger="hover" placement="top">
-                        <p>Price: {{ scope.row.price }}</p>
+                        <p>Type: {{ scope.row.room_type }}</p>
                         <div slot="reference" class="name-wrapper">
-                            <el-tag size="medium">{{ scope.row.price }}</el-tag>
+                            <el-tag size="medium">{{ scope.row.room_type }}</el-tag>
                         </div>
                     </el-popover>
                 </template>
             </el-table-column>
-            <el-table-column label="Photo" width="180">
+            <el-table-column label="Floor" width="180">
                 <template slot-scope="scope">
                     <el-popover trigger="hover" placement="top">
-                        <p>Name: {{ scope.row.photo }}</p>
+                        <p>Floor: {{ scope.row.floor }}</p>
 
                         <div slot="reference" class="name-wrapper">
-                            <el-tag size="medium">{{ scope.row.photo }}</el-tag>
+                            <el-tag size="medium">{{ scope.row.floor }}</el-tag>
+                        </div>
+                    </el-popover>
+                </template>
+            </el-table-column>
+            <el-table-column label="Floor Plan" width="180">
+                <template slot-scope="scope">
+                    <el-popover trigger="hover" placement="top">
+                        <p>Floor Plan: {{ scope.row.floor_plan }}</p>
+
+                        <div slot="reference" class="name-wrapper">
+                            <el-tag size="medium">{{ scope.row.floor_plan }}</el-tag>
                         </div>
                     </el-popover>
                 </template>
@@ -57,27 +68,28 @@
             <el-form ref="form2" :model="form2" :rules="rules" label-width="100px">
                 <el-form-item>
                     <div class="form_header">
-                        <h1><b>Edit Room Type</b></h1>
+                        <h1><b>Edit Room</b></h1>
                     </div>
                 </el-form-item>
-                <el-form-item label="Type Name" prop="type_name">
-                    <el-input v-model="form2.type_name"></el-input>
+                <el-form-item label="Room No" prop="room_num">
+                    <el-input v-model="form2.room_num"></el-input>
                 </el-form-item>
-                <el-form-item label="Price" prop="price">
-                    <el-input v-model="form2.price"></el-input>
+                <el-form-item label="Room Type" prop="room_type">
+                    <el-input v-model="form2.room_type"></el-input>
                 </el-form-item>
 
-                <el-form-item label="Photo" prop="photo">
-                    <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/"
-                        :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
+                <el-form-item label="Room Floor" prop="floor">
+                    <el-input v-model="form2.floor"></el-input>
                 </el-form-item>
+
+                <el-form-item label="Floor Plan" prop="floor_plan">
+                    <el-input v-model="form2.floor_plan"></el-input>
+                </el-form-item>
+
                 <el-form-item>
                     <div class="button_div">
                         <el-button type="primary" size="small" @click="editForm('form2')">Edit</el-button>
-                        <el-button size="small" class="normal_button" @click="resetForm('form2')">Cancel
+                        <el-button size="small" class="normal_button" @click="resetForm2('form2')">Cancel
                         </el-button>
                     </div>
                 </el-form-item>
@@ -93,25 +105,30 @@
         </div>
 
         <!-- 抽屉区域 -->
-        <el-drawer title="Add a Room Type" text-align="center" :visible.sync="drawer" direction="rtl"
+        <el-drawer title="Add a Room No" text-align="center" :visible.sync="drawer" direction="rtl"
             :before-close="handleDrawerClose" class="drawerStyle" size="50%">
             <!-- 表单 -->
 
             <el-form ref="form" :model="form" :rules="rules" label-width="100px">
-                <el-form-item label="Photo">
-                    <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/"
-                        :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
-                        <img v-if="imageUrl" :src="imageUrl" class="avatar">
-                        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-                    </el-upload>
+
+
+                <el-form-item label="Room No" prop="room_num">
+                    <el-input v-model="form.room_num"></el-input>
                 </el-form-item>
 
-                <el-form-item label="Room Type" prop="type_name">
-                    <el-input v-model="form.type_name"></el-input>
+                <el-form-item label="Type" prop="type">
+                    <el-input v-model="form.room_type"></el-input>
                 </el-form-item>
-
-                <el-form-item label="Price" prop="price">
-                    <el-input v-model="form.price"></el-input>
+                <el-form-item label="Floor" prop="floor">
+                    <el-select v-model="form.floor" placeholder="The 1st floor">
+                        <el-option label="The 1st floor" value="1"></el-option>
+                        <el-option label="The 2nd floor" value="2"></el-option>
+                        <el-option label="The 3rd floor" value="3"></el-option>
+                        <el-option label="The 4th floor" value="4"></el-option>
+                    </el-select>
+                </el-form-item>
+                <el-form-item label="Floor Plan" prop="floor">
+                    <el-input v-model="form.floor_plan"></el-input>
                 </el-form-item>
                 <el-form-item>
                     <div class="button_div">
@@ -120,7 +137,7 @@
                         </el-button>
                     </div>
                 </el-form-item>
-                
+
             </el-form>
         </el-drawer>
     </div>
@@ -131,72 +148,111 @@
 
 export default {
     data() {
-        var validateTypeName = (rule, value, callback) => {
+        var validateRoomNum = (rule, value, callback) => {
 
             if (value === '') {
-                callback(new Error('Please enter Room Type.'));
-            } else {
-                let validName = /^[a-z A-Z.]+$/.test(value)
-                if (!validName) {
-                    callback(new Error('Room Type must be a combination of letters'));
-                }
-                else {
-                    callback();
-                }
-            }
-        };
-
-        var validatePrice = (rule, value, callback) => {
-
-            if (value === '') {
-                callback(new Error('Please enter the price.'));
+                callback(new Error('Please enter Room Number.'));
             } else {
                 let validName = /^[0-9.]+$/.test(value)
                 if (!validName) {
-                    callback(new Error('Room Price must be a combination of digits'));
+                    callback(new Error('Room Number must be a combination of digits'));
                 }
                 else {
                     callback();
                 }
             }
         };
+
+        var validateRoomType = (rule, value, callback) => {
+
+            if (value === '') {
+                callback(new Error('Please enter the type.'));
+            } else {
+                let validName = /^[0-9a-zA-Z .]+$/.test(value)
+                if (!validName) {
+                    callback(new Error('Room type must be a combination of digits or letters'));
+                }
+                else {
+                    callback();
+                }
+            }
+        };
+
+        var validateFloor = (rule, value, callback) => {
+
+            if (value === '') {
+                callback(new Error('Please enter the floor.'));
+            } else {
+                let validName = /^[+-]?[0-9.]+$/.test(value)
+                if (!validName) {
+                    callback(new Error('Room floor must be number'));
+                }
+                else {
+                    callback();
+                }
+            }
+        };
+        var validateFloorPlan = (rule, value, callback) => {
+
+            if (value === '') {
+                callback(new Error('Please enter the floor plan.'));
+            } else {
+                let validName = /^[0-9.]+$/.test(value)
+                console.log(parseInt(value))
+                if (!validName) {
+                    callback(new Error('Room floor plan must be a combination of digits'));
+                }
+                else if(parseInt(value) < 1 || parseInt(value) > 16){
+                    
+                    callback(new Error('Room floor plan number must be within 1 and 16'));
+                }else{
+                callback();
+            }
+            }
+        };
+
 
         return {
             // 表格数据
             tableData: [{
-                photo: '',
-                type_name: 'Standard Room',
-
-                price: 100,
-
+                room_num: '114514',
+                room_type: 'presidential suite',
+                floor: -1,
+                floor_plan: 2,
 
             }],
-            num:'',
+            num: '',
             count: 5,
             imageUrl: '',
             dialogFormVisible: false,
             form: {
-
-                type_name: '',
-
-                price: '',
-                photo: ''
+                room_num: '',
+                room_type: '',
+                floor: '',
+                floor_plan: '',
             },
             form2: {
-                type_name: '',
-                price: '',
-                photo: '',
+                room_num: '',
+                room_type: '',
+                floor: -1,
+                floor_plan: 2,
                 index: -1
             },
             rules: {
 
-                type_name: [
-                    { validator: validateTypeName, trigger: 'blur' },
+                room_num: [
+                    { validator: validateRoomNum, trigger: 'blur' },
 
                 ],
-                price: [
-                    { validator: validatePrice, trigger: 'blur' },
-                ]
+                room_type: [
+                    { validator: validateRoomType, trigger: 'blur' },
+                ],
+                floor: [
+                    { validator: validateFloor, trigger: 'blur' },
+                ],
+                floor_plan: [
+                    { validator: validateFloorPlan, trigger: 'blur' }
+                ],
 
             },
             // 是否打开抽屉
@@ -217,9 +273,11 @@ export default {
             this.drawer = true;
         },
         editClass(index) {
-            this.form2.type_name = this.tableData[index].type_name
-            this.form2.price = this.tableData[index].price
-            this.form2.photo = this.tableData[index].photo
+            
+            this.form2.room_num = this.tableData[index].room_num
+            this.form2.room_type = this.tableData[index].room_type
+            this.form2.floor = this.tableData[index].floor
+            this.form2.floor_plan = this.tableData[index].floor_plan
 
             this.form2.index = index
 
@@ -235,7 +293,7 @@ export default {
         editForm(formName) {
             this.$refs[formName].validate(async (valid) => {
                 if (valid) {
-                    
+
                     this.tableData[this.form2.index] = JSON.parse(JSON.stringify(this.form2))
                     console.log(this.tableData[this.form2.index])
                     // 为了更新表单
@@ -310,7 +368,7 @@ export default {
 }
 </script>
 <style scoped lang="scss">
-.addTypeButton {
+.addRoomButton {
     font-family: 'nano';
     font-size: medium;
     color: black;

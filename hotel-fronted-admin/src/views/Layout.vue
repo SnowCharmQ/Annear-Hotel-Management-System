@@ -25,7 +25,7 @@
                     </template>
                     <el-menu-item-group>
                         <el-menu-item index="/layout/type">Type</el-menu-item>
-                        <el-menu-item index="2-2">Room</el-menu-item>
+                        <el-menu-item index="/layout/room">Room</el-menu-item>
                     </el-menu-item-group>
 
                 </el-submenu>

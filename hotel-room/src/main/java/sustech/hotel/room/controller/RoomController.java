@@ -1,8 +1,10 @@
 package sustech.hotel.room.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson2.JSON;
 import io.swagger.annotations.Api;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -91,5 +93,12 @@ public class RoomController {
     public JsonResult<Void> delete(@RequestBody Long[] roomIds) {
         roomService.removeByIds(Arrays.asList(roomIds));
         return new JsonResult<>();
+    }
+
+    @GetMapping("/availableRoom")
+    public JsonResult<List<Long>> getAvailableRoom(@RequestParam("hotel_id") Long hotelId, @RequestParam("type_id") Long typeId, @RequestParam("json") String json) {
+        List<Long> conflictList = JSON.parseArray(json, Long.class);
+        List<Long> list = roomService.getAvailableRoom(hotelId, typeId, conflictList);
+        return new JsonResult<>(list);
     }
 }

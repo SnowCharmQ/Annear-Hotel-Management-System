@@ -21,4 +21,12 @@
           and end_date &lt;= #{end_date}
           and hotel_id = #{hotel_id}
     </select>
+    <select id="selectConflictRoomByTimeIntervalHotelAndTypeId" resultType="java.lang.Long">
+        select room_id
+        from cho_booking
+        where start_date &gt;= #{start_date}
+          and end_date &lt;= #{end_date}
+          and hotel_id = #{hotel_id} and type_id = #{type_id}
+    </select>
+
 </mapper>

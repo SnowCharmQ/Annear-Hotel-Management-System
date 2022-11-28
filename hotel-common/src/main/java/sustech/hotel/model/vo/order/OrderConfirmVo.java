@@ -11,4 +11,5 @@ public class OrderConfirmVo {
     String userToken;
     Long roomTypeId;
     Long roomId;
+    Long hotelId;
 }

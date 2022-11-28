@@ -1,19 +1,26 @@
 package sustech.hotel.order.controller;
 
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
+import com.alibaba.fastjson2.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import sustech.hotel.common.utils.DateConverter;
 import sustech.hotel.exception.BaseException;
+import sustech.hotel.exception.ExceptionCodeEnum;
+import sustech.hotel.exception.order.NoAvailableRoomException;
 import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.model.vo.order.OrderConfirmRespVo;
 import sustech.hotel.model.vo.order.OrderConfirmVo;
 import sustech.hotel.model.vo.order.PlaceOrderVo;
+import sustech.hotel.order.dao.BookingDao;
 import sustech.hotel.order.entity.OrderEntity;
+import sustech.hotel.order.feign.RoomFeignService;
 import sustech.hotel.order.service.OrderService;
 import sustech.hotel.common.utils.Constant;
 import sustech.hotel.common.utils.PageUtils;
@@ -23,9 +30,16 @@ import sustech.hotel.common.utils.JsonResult;
 @RestController
 @RequestMapping("order/order")
 public class OrderController {
+    private static Random random = new Random();
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private BookingDao bookingDao;
+
+    @Autowired
+    private RoomFeignService roomFeignService;
 
     /**
      * 根据传入的参数map进行分页查询
@@ -81,17 +95,21 @@ public class OrderController {
     @PostMapping("/confirmOrder")
     public JsonResult<OrderConfirmRespVo> confirmOrder(@RequestBody OrderConfirmVo orderConfirmVo) {
         try {
-            OrderConfirmRespVo resp = new OrderConfirmRespVo();
-            if (orderConfirmVo.getRoomId() != null)
-                resp = orderService.confirmOrder(orderConfirmVo);
-            else {
-                // TODO: 2022/11/24  Randomly assign a room.
+            OrderConfirmRespVo resp;
+            if (orderConfirmVo.getRoomId() == null) {
+                Date startDate = DateConverter.convertStringToDate(orderConfirmVo.getStartDate());
+                Date endDate = DateConverter.convertStringToDate(orderConfirmVo.getEndDate());
+                List<Long> conflictList = bookingDao.selectConflictRoomByTimeIntervalHotelAndTypeId(startDate, endDate, orderConfirmVo.getHotelId(), orderConfirmVo.getRoomTypeId());
+                List<Long> roomIdList = roomFeignService.getAvailableRoom(orderConfirmVo.getHotelId(), orderConfirmVo.getRoomTypeId(), JSON.toJSONString(conflictList)).getData();
+                if (roomIdList == null || roomIdList.isEmpty())
+                    throw new NoAvailableRoomException(ExceptionCodeEnum.NO_AVAILABLE_ROOM_EXCEPTION);
+                orderConfirmVo.setRoomId(roomIdList.get(random.nextInt(roomIdList.size())));
             }
+            resp = orderService.confirmOrder(orderConfirmVo);
             return new JsonResult<>(resp);
         } catch (BaseException e) {
             return new JsonResult<>(e);
         }
-
     }
 
     @RequestMapping("/generateOrder")

@@ -33,6 +33,7 @@ import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.model.vo.order.OrderConfirmRespVo;
 import sustech.hotel.constant.OrderConstant;
 import sustech.hotel.model.vo.order.OrderConfirmVo;
+import sustech.hotel.model.vo.order.PayVo;
 import sustech.hotel.order.dao.OrderDao;
 import sustech.hotel.order.entity.BookingEntity;
 import sustech.hotel.order.entity.OrderEntity;
@@ -111,6 +112,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         // TODO: 2022/11/24 set after discount price
         resp.setFinalPrice(resp.getTotalPrice());
         return resp;
+    }
+
+    @Override
+    public PayVo getOrderPay(String orderId) {
+        PayVo payVo = new PayVo();
+        OrderEntity order = this.baseMapper.selectById(orderId);
+        BigDecimal bigDecimal = order.getAfterDiscount().setScale(2, BigDecimal.ROUND_UP);
+        payVo.setTotal_amount(bigDecimal.toString());
+        payVo.setOut_trade_no(orderId);
+        payVo.setSubject("Annear Hotel Payment");
+        payVo.setBody("");
+        return payVo;
     }
 
     @Transactional(rollbackFor = Exception.class)

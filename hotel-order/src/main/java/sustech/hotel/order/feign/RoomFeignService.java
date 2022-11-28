@@ -27,4 +27,6 @@ public interface RoomFeignService {
     @GetMapping("/room/roomtype/availableRoomType")
     JsonResult<List<AvailableRoomTypeTo>> getAvailableRoomType(@RequestParam("hotelId") Long hotelId, @RequestParam("json") String json);
 
+    @GetMapping("/room/room/availableRoom")
+    JsonResult<List<Long>> getAvailableRoom(@RequestParam("hotel_id") Long hotelId, @RequestParam("type_id") Long typeId, @RequestParam("json") String json);
 }

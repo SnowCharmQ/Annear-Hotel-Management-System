@@ -188,48 +188,33 @@
 
         <!--每个酒店的具体信息--> <!------------>
         <div style="clear:both;">
-          <el-col :span="24" v-for="item in imgList" :key="item.name" class="room-list">
-            <img :src="item.img" class="image">
+          <el-col :span="24" v-for="item in roomTypes" :key="item.typeId" class="room-list">
+            <img :src="roomTypeImages[item.typeId][0]" class="image">
             <div class="room-right">
-              <div class="card-name">{{ item.name }}</div>
-              <div style="font-weight:600;">King</div>
+              <div class="card-name" style="font-size: 22px">{{ hotelName }}</div>
+              <div style="font-weight:600;font-size: 20px">{{item.typeName}}</div>
               <el-breadcrumb separator="|" style="margin:10px 0;">
-                <el-breadcrumb-item>1King</el-breadcrumb-item>
-                <el-breadcrumb-item>815ft</el-breadcrumb-item>
+                <el-breadcrumb-item>{{item.upperLimit}} Guests Max</el-breadcrumb-item>
+                <el-breadcrumb-item style="margin-top: -3px">{{item.area}} m<sup>2</sup></el-breadcrumb-item>
               </el-breadcrumb>
-              <div>A contemporary retreat for a restful night’s sleep</div>
+              <div>{{item.description}}</div>
               <el-link>Room details</el-link>
-              <el-divider></el-divider>
+              <div style="width: 560px">
+                <el-divider></el-divider>
 
-              <div class="flex-row2" style="margin-top:-10px;">
-                <div>Standard Daily Rate</div>
-                <div style="font-weight:600;">A${{ item.price }}</div>
-              </div>
-              <div class="flex-row2" style="font-size:13px;color: #666;">
-                <div>{{ item.detail }}</div>
-                <div>Per Night</div>
-              </div>
-              <div style="text-align:right;font-size:12px;margin-top: -10px;">{{ item.detail1 }}</div>
-              <div style="text-align:right;">
-                <el-button type="info" style="background:black;color:#fff;" @click="toCheckOut">Book Now</el-button>
-              </div>
-              <el-divider></el-divider>
-
-              <div class="flex-row2" style="margin-top:-10px;">
-                <div>{{ item.detail4 }}</div>
-                <div style="font-weight:600;">A${{ item.price }}</div>
-              </div>
-              <div class="flex-row2" style="font-size:13px;color: #666;">
-                <div>The stay includes</div>
-                <div>{{ item.detail3 }}</div>
-              </div>
-              <div style="text-align:right;font-size:12px;margin-top: -10px;">{{ item.detail1 }}</div>
-              <div style="display:flex;width:560px;justify-content: space-between;">
-                <div style="width:380px;">{{ item.detail2 }}</div>
+                <div class="flex-row2" style="margin-top:-10px;">
+                  <div style="font-size: 14px">Standard Daily Rate</div>
+                  <div style="font-weight:600;font-size: 18px">￥{{ item.price }}</div>
+                </div>
+                <div class="flex-row2" style="font-size:15px;color: #666;">
+                  <div>{{ item.detail }}</div>
+                  <div>Per Night</div>
+                </div>
                 <div style="text-align:right;">
-                  <el-button type="info" style="background:black;color:#fff;" @click="toCheckOut">Book Now</el-button>
+                  <el-button type="info" style="background:black;color:#fff;margin-right: -5px" @click="toCheckOut">Book Now</el-button>
                 </div>
               </div>
+
             </div>
           </el-col>
         </div>
@@ -323,23 +308,23 @@ export default {
       checked11: false,
       count1: 0,
       count2: 0,
-      roomTypes: [],
+      roomTypes: {},
       roomTypeImages: [],
-      imgList: [
-        {
-          price1: '2560',
-          btn: 'Dates Unavailable',
-          name: 'Amantaka',
-          detail1: 'Excluding Taxes & Fees 1',
-          detail2: 'Daily American breakfast in Arva or via in-room dining up to two people 1',
-          addr: "Luang Prabang, Lao People's Dem Republic",
-          price: '1980',
-          img: require('../../assets/images/hotel/2.jpeg'),
-          detail: 'Rates are on room only basis 1',
-          detail3: 'Per Night 1',
-          detail4: 'Breakfast in Manhattan 1'
-        }
-      ]
+      // imgList: [
+      //   {
+      //     price1: '2560',
+      //     btn: 'Dates Unavailable',
+      //     name: 'Amantaka',
+      //     detail1: 'Excluding Taxes & Fees 1',
+      //     detail2: 'Daily American breakfast in Arva or via in-room dining up to two people 1',
+      //     addr: "Luang Prabang, Lao People's Dem Republic",
+      //     price: '1980',
+      //     img: require('../../assets/images/hotel/2.jpeg'),
+      //     detail: 'Rates are on room only basis 1',
+      //     detail3: 'Per Night 1',
+      //     detail4: 'Breakfast in Manhattan 1'
+      //   }
+      // ]
     }
   },
   methods: {
@@ -403,7 +388,9 @@ export default {
         this.images = obj.images;
         this.roomTypes = obj.roomTypes;
         this.roomTypeImages = obj.roomTypeImages;
+        console.log(this.roomTypeImages[1][0])
       }).catch(err => {
+        console.log(err)
         this.$message.error("Network Error");
       })
     }

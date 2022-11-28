@@ -3,6 +3,7 @@ package sustech.hotel.room.service.impl;
 import com.alibaba.fastjson2.JSON;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.Query;
 
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
+import sustech.hotel.model.vo.hotel.RoomTypeSearchVo;
 import sustech.hotel.room.dao.RoomTypeDao;
 import sustech.hotel.room.entity.RoomTypeEntity;
 import sustech.hotel.room.service.RoomTypeService;
@@ -37,6 +39,11 @@ public class RoomTypeServiceImpl extends ServiceImpl<RoomTypeDao, RoomTypeEntity
             conflictList.add(-1L);
         }
         return this.baseMapper.selectAvailableRoomTypeByConflictListAndHotel(conflictList, hotelId);
+    }
+
+    @Override
+    public RoomTypeSearchVo search(Long hotelId, String startDate, String endDate, String sortBy, Boolean reversed, BigDecimal lowest, BigDecimal highest, Boolean breakfast, Boolean windows, Boolean television, Boolean bathtub, Boolean thermos) {
+        return null;
     }
 
 }

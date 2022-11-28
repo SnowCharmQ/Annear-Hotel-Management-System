@@ -60,7 +60,7 @@
             <i class="el-icon-date user-icon"></i>
             <div>
               <div class="row-label">Check-In</div>
-              <div>{{ date1 }}</div>
+              <div>{{ date1.toDateString() }}</div>
             </div>
           </div>
         </el-col>
@@ -71,7 +71,7 @@
             <i class="el-icon-date user-icon"></i>
             <div>
               <div class="row-label">Check-Out</div>
-              <div>{{ date2 }}</div>
+              <div>{{ date2.toDateString() }}</div>
             </div>
           </div>
         </el-col>
@@ -290,16 +290,16 @@ export default {
       detailAddress: '',
       telephone: '',
       images: [],
-      date1: new Date().toDateString(),
-      date2: this.generateTomorrow().toDateString(),
+      date1: new Date(),
+      date2: this.generateTomorrow(),
       date3: '',
       date4: '',
       showCheck: false,
       checked1: 'score',
       checked2: 'hl',
-      checked3: true,
-      checked4: true,
-      checked5: true,
+      checked3: false,
+      checked4: false,
+      checked5: false,
       checked6: false,
       checked7: false,
       checked8: false,
@@ -347,10 +347,10 @@ export default {
     },
     updateDates() {
       if (this.date3 !== undefined && this.date3 !== "") {
-        this.date1 = this.date3.toDateString();
+        this.date1 = this.date3;
       }
       if (this.date4 !== undefined && this.date4 !== "") {
-        this.date2 = this.date4.toDateString();
+        this.date2 = this.date4;
       }
       //TODO: 搜索对应的日期
     },
@@ -360,6 +360,27 @@ export default {
       let finalDate = new Date();
       finalDate.setDate(current + 1);
       return finalDate;
+    },
+    search() {
+      let hotelId = this.$route.query.hotel;
+      this.$http({
+        url: this.$http.adornUrl('/room/room/roomtype/search'),
+        method: 'get',
+        params: {
+          hotelId: hotelId,
+          startDate: this.date1,
+          endDate: this.date2,
+          sortBy: this.checked1,
+          reversed: this.checked2,
+          lowest: this.value[0],
+          highest: this.value[1],
+          breakfast: this.checked3,
+          windows: this.checked4,
+          television: this.checked5,
+          bathtub: this.checked6,
+          thermos: this.checked7
+        }
+      })
     }
   },
   created() {

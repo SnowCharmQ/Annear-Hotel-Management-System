@@ -74,13 +74,6 @@
         <el-col :span="11" class="form-row">
           <el-input placeholder="Address" v-model="address"/>
         </el-col>
-        <!-- <el-col :span="24" class="form-title">Your Password</el-col>
-        <el-col :span="12" class="form-row">
-          <el-input :rules="dataRule" placeholder="Password" v-model="dataForm.password" show-password  @keyup.enter.native="dataFormSubmit()"/>
-        </el-col>
-        <el-col :span="12" class="form-row">
-          <el-input placeholder="Repeated" v-model="dataForm.re_password" show-password/>
-        </el-col> -->
         <el-button @click="alter_info()" class="submit-btn">Alter Info</el-button>
       </el-col>
 
@@ -100,7 +93,6 @@
               <div>A contemporary retreat for a restful night’s sleep</div>
               <div style="font-weight:600;">Average price: ${{ item.price }}</div>
               <el-link>Room details</el-link>
-              <!-- <el-divider></el-divider> -->
             </div>
           </el-col>
         </div>
@@ -124,8 +116,8 @@
                 <el-breadcrumb-item>Origin Money: ${{ item.originMoney }}</el-breadcrumb-item>
                 <el-breadcrumb-item>After Discount: ${{ item.afterDiscount }}</el-breadcrumb-item>
               </el-breadcrumb>
-              <el-link>Give Comments</el-link>
-              <!-- <el-divider></el-divider> -->
+              <el-button v-if="item.comments === ''" type="text" @click="show_comments_page">Given Comments</el-button>
+              <div v-if="item.comments">Comments: {{ item.comments }}</div>
             </div>
           </el-col>
         </div>
@@ -133,7 +125,45 @@
 
 
     </el-collapse>
-
+    <el-dialog :visible.sync="dialogVisible" center width="50%">
+      <div style="font-size: 18px;line-height: 28px;color: #333;">Give your comments</div>
+      <div style="margin:10px 0">
+        <span> Thanks for sharing your experience staying in Annear</span>
+      </div>
+      <div style="display: flex;flex-direction: column;align-items: center;justify-content: center;">
+        <br>
+        <el-form :inline="true">
+          <el-select v-model="star" placeholder="Star" style="width: 80px">
+            <el-option label="1" value="1"></el-option>
+            <el-option label="2" value="2"></el-option>
+            <el-option label="3" value="3"></el-option>
+            <el-option label="4" value="4"></el-option>
+            <el-option label="5" value="5"></el-option>
+          </el-select>
+          <br><br>
+          <el-input v-model="comment"
+                    style="width: 500px"
+                    maxlength="50"
+                    show-word-limit
+                    placeholder="your comments">
+          </el-input>
+          <br><br>
+          <el-upload
+              class="upload-demo"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :http-request="uploadPicture"
+              :file-list="fileList"
+              list-type="picture">
+            <el-button size="small" type="primary">Upload Picture</el-button>
+          </el-upload>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="submit_comments(star, comment)">Submit</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -271,39 +301,64 @@ export default {
         // }
       ],
       orderList: [
-        // {
-        //   orderId: '0000098',
-        //   hotel: 'Amantaka',
-        //   room: 'Two bed rooms',
-        //   orderStatus: 'Finish',
-        //   startTime: '2022-10-1',
-        //   endTime: '2022-10-3',
-        //   originMoney: '330',
-        //   afterDiscount: '270',
-        //   img: require('../../assets/images/hotel/2.jpeg'),
-        // }
-      ]
+        {
+          orderId: '0000098',
+          hotel: 'Amantaka',
+          room: 'Two bed rooms',
+          orderStatus: 'Finish',
+          startTime: '2022-10-1',
+          endTime: '2022-10-3',
+          originMoney: '330',
+          afterDiscount: '270',
+          img: require('../../assets/images/hotel/2.jpeg'),
+          comments: ''
+        }
+      ],
+      dialogVisible: false,
+      star: '',
+      comment: '',
+      fileList: [],
+      tempUrl: '',
+      selectedOrderId: ''
+
     }
   }, methods: {
     alter_info() {
       //TODO: use the API to alter user info
-    }, info_init() {
+    },
+    info_init() {
       //TODO get the API to get the info and init the page
-      axios.get('http://localhost:11000/member/userinfo/queryUserInfoById', {
-        params: {
-          userId: 12012705
-        }
-      })
-          .then(function (response) {
-            console.log(response.data.data.phone);
-            let result = response.data.data
-            console.log(result.phone)
-            console.log(this.email)
-            // this.phone//= result.phone
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+    },
+    show_comments_page() {
+      this.dialogVisible = true
+    },
+    submit_comments(star, comment) {
+      this.dialogVisible = false
+      this.$message({
+        type: 'success',
+        message: 'upload comments done'
+      });
+    },
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    },
+    handlePreview(file) {
+      console.log(file);
+    },
+    uploadPicture(file) {
+      let picture = file.file
+      let formData = new FormData();
+      formData.append('file', picture)
+      formData.append('orderId', this.selectedOrderId)
+      let url = this.$http.adornUrl('/auth/uploadPicture')
+
+      axios.post(url, formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      }).then(data => {
+        let pictureUrl = data.data.data
+        console.log(pictureUrl)
+        this.fileList.push({name: picture.name, url: pictureUrl})
+      });
     }
   }
 }

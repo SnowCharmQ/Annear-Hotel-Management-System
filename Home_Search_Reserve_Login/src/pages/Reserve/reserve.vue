@@ -60,7 +60,7 @@
             <i class="el-icon-date user-icon"></i>
             <div>
               <div class="row-label">Check-In</div>
-              <div>{{ date1 }}</div>
+              <div>{{ date1.toDateString() }}</div>
             </div>
           </div>
         </el-col>
@@ -71,7 +71,7 @@
             <i class="el-icon-date user-icon"></i>
             <div>
               <div class="row-label">Check-Out</div>
-              <div>{{ date2 }}</div>
+              <div>{{ date2.toDateString() }}</div>
             </div>
           </div>
         </el-col>
@@ -112,11 +112,11 @@
                   </div>
                   <div style="line-height:30px;">
                     <div>
+                      <el-radio v-model="checked1" label="default">Default</el-radio>
+                      <br>
                       <el-radio v-model="checked1" label="score">Score</el-radio>
                       <br>
                       <el-radio v-model="checked1" label="price">Price</el-radio>
-                      <br>
-                      <el-radio v-model="checked1" label="booking-number">Booking Number</el-radio>
                     </div>
                     <br>
                     <div>
@@ -169,7 +169,7 @@
                 </el-col>
 
                 <el-col :span="24" style="line-height:50px;border-top:1px solid #ddd;text-align:right;">
-                  <el-button type="info" style="background:#333;">Apply</el-button>
+                  <el-button type="info" style="background:#333;" @click="search">Apply</el-button>
                 </el-col>
 
               </div><!--filters end-->
@@ -192,13 +192,14 @@
             <img :src="roomTypeImages[item.typeId][0]" class="image">
             <div class="room-right">
               <div class="card-name" style="font-size: 22px">{{ hotelName }}</div>
-              <div style="font-weight:600;font-size: 20px">{{item.typeName}}</div>
+              <div style="font-weight:600;font-size: 20px">{{ item.typeName }}</div>
               <el-breadcrumb separator="|" style="margin:10px 0;">
-                <el-breadcrumb-item>{{item.upperLimit}} Guests Max</el-breadcrumb-item>
-                <el-breadcrumb-item style="margin-top: -3px">{{item.area}} m<sup>2</sup></el-breadcrumb-item>
+                <el-breadcrumb-item>{{ item.upperLimit }} Guests Max</el-breadcrumb-item>
+                <el-breadcrumb-item style="margin-top: -3px">{{ item.area }} m<sup>2</sup></el-breadcrumb-item>
+                <el-breadcrumb-item>Score: {{ parseFloat(item.averageScore).toFixed(1) }}</el-breadcrumb-item>
               </el-breadcrumb>
-              <div>{{item.description}}</div>
-              <el-link>Room details</el-link>
+              <div>{{ item.description }}</div>
+              <el-link @click="openDialog(item)">Room details</el-link>
               <div style="width: 560px">
                 <el-divider></el-divider>
 
@@ -211,64 +212,77 @@
                   <div>Per Night</div>
                 </div>
                 <div style="text-align:right;">
-                  <el-button type="info" style="background:black;color:#fff;margin-right: -5px" @click="toCheckOut">Book Now</el-button>
+                  <el-button type="info" style="background:black;color:#fff;margin-right: -5px" @click="toCheckOut">Book
+                    Now
+                  </el-button>
                 </div>
               </div>
 
             </div>
           </el-col>
         </div>
+
+        <!--详细信息弹窗-->
+        <el-dialog :visible.sync="dialogVisible" width="700px" title="Room Details">
+          <span slot="title" class="dialog-footer" style="height: 50px;font-size: 32px;font-family: 'Times New Roman',serif;margin-top: 5px">
+              <span style="margin-top: 10px">Room Details</span>
+          </span>
+          <div class="view-room">
+            <div>
+              <div class="room-title" style="font-size: 22px">{{ curRoomType.typeName }}</div>
+              <el-breadcrumb separator="|" style="margin:10px 0;">
+                <el-breadcrumb-item>{{ curRoomType.upperLimit }} Guests Max</el-breadcrumb-item>
+                <el-breadcrumb-item style="margin-top: -3px">{{ curRoomType.area }} m<sup>2</sup></el-breadcrumb-item>
+                <el-breadcrumb-item>Score: {{ parseFloat(curRoomType.averageScore).toFixed(1) }}</el-breadcrumb-item>
+              </el-breadcrumb>
+              <div>{{curRoomType.description}}</div>
+            </div>
+            <br>
+            <div>
+              <el-image
+                  style="width: 260px; height: 180px"
+                  :src="updatePicturePath()"
+                  :preview-src-list="this.roomTypeImages[this.curRoomType.typeId]">
+              </el-image>
+            </div>
+          </div>
+          <el-divider></el-divider>
+          <div style="margin:10px 0;font-size: 20px;font-family: 'Times New Roman',serif">
+          <span>Breakfast: <i v-if="curRoomType.breakfast===1" class="el-icon-check"></i><i v-if="curRoomType.breakfast!==1"
+                                                                             class="el-icon-close"></i></span>
+            <span> | </span>
+            <span>Windows: <i v-if="curRoomType.windows===1" class="el-icon-check"></i><i v-if="curRoomType.windows!==1"
+                                                                               class="el-icon-close"></i></span>
+            <span> | </span>
+            <span>Television: <i v-if="curRoomType.television===1" class="el-icon-check"></i><i v-if="curRoomType.television!==1"
+                                                                               class="el-icon-close"></i></span>
+            <span> | </span>
+            <span>Bathtub: <i v-if="curRoomType.bathtub===1" class="el-icon-check"></i><i v-if="curRoomType.bathtub!==1"
+                                                                                            class="el-icon-close"></i></span>
+            <span> | </span>
+            <span>Thermos: <i v-if="curRoomType.thermos===1" class="el-icon-check"></i><i
+                v-if="curRoomType.thermos!==1" class="el-icon-close"></i></span>
+          </div>
+
+          <el-divider></el-divider>
+
+          <!--用户评论区-->
+<!--          <div>-->
+<!--            <div class="detail">User Comment</div>-->
+<!--            <div class="comment-flex" v-for="(item,index) in commentList" :key="index">-->
+<!--              <div class="comment-user">{{ item.name }}：</div>-->
+<!--              <div class="comment-des">-->
+<!--                <div class="comment-content">{{ item.content }}</div>-->
+<!--                <div class="time">{{ item.ctime }}</div>-->
+<!--              </div>-->
+<!--            </div>-->
+<!--          </div>-->
+          <span slot="footer" class="dialog-footer"><el-button type="primary" @click="dialogVisible"
+                                                               class="v-btn2">Book Now</el-button></span>
+        </el-dialog>
       </el-col>
 
       <!--右侧信息-->
-      <el-col :span="7" class="right-box">
-        <div style="font-size:20px;line-height:45px;">Your Stay at Aman New York</div>
-        <el-col :span="12" style="margin-top:20px;">
-          <div style="font-weight:600;">Check-in</div>
-          <div>After 3:00 PM</div>
-        </el-col>
-        <el-col :span="12" style="margin-top:20px;">
-          <div style="font-weight:600;">Check-out</div>
-          <div>Before 12:00 PM</div>
-        </el-col>
-        <el-col :span="24" style="padding-top:20px;">
-          <div>Sun, Oct 23, 2022 - Wed, Nov 30, 2022</div>
-          <div>2 Adults</div>
-        </el-col>
-        <el-col :span="24">
-          <el-divider></el-divider>
-        </el-col>
-        <el-col :span="24" style="display:flex;justify-content: space-between;">
-          <div style="font-weight:600;">Total:</div>
-          <div style="font-weight:600;">A$0.00</div>
-        </el-col>
-        <el-col :span="24">
-          <el-divider></el-divider>
-        </el-col>
-        <el-col :span="24">
-          <div style='font-size:20px;margin-bottom:20px;color:black;'>Book direct for peace of mind</div>
-
-          <div>
-            <div class="right-flex">
-              <div class="icon-img"><img src="../../assets/images/1.jpg"/></div>
-              <div>24/7 Dedicated Global Reservation Team offering personalised service</div>
-            </div>
-            <div class="right-flex">
-              <div class="icon-img"><img src="../../assets/images/2.jpg"/></div>
-              <div style="margin-top:5px;">Exclusive offers with inspiring itineraries, only when booking direct</div>
-            </div>
-            <div class="right-flex">
-              <div class="icon-img"><img src="../../assets/images/3.jpg"/></div>
-              <div style="margin-top:5px;">A range of unique experiences to enbance your stay,</div>
-            </div>
-            <div class="right-flex">
-              <div class="icon-img"><img src="../../assets/images/4.jpg"/></div>
-              <div style="margin-top:5px;">Awe-inspiring locations with 34 resorts and hotels in 20 locations</div>
-            </div>
-          </div>
-
-        </el-col>
-      </el-col>
     </el-row>
 
   </div>
@@ -290,16 +304,16 @@ export default {
       detailAddress: '',
       telephone: '',
       images: [],
-      date1: new Date().toDateString(),
-      date2: this.generateTomorrow().toDateString(),
+      date1: new Date(),
+      date2: this.generateTomorrow(),
       date3: '',
       date4: '',
       showCheck: false,
-      checked1: 'score',
+      checked1: 'default',
       checked2: 'hl',
-      checked3: true,
-      checked4: true,
-      checked5: true,
+      checked3: false,
+      checked4: false,
+      checked5: false,
       checked6: false,
       checked7: false,
       checked8: false,
@@ -310,21 +324,8 @@ export default {
       count2: 0,
       roomTypes: {},
       roomTypeImages: [],
-      // imgList: [
-      //   {
-      //     price1: '2560',
-      //     btn: 'Dates Unavailable',
-      //     name: 'Amantaka',
-      //     detail1: 'Excluding Taxes & Fees 1',
-      //     detail2: 'Daily American breakfast in Arva or via in-room dining up to two people 1',
-      //     addr: "Luang Prabang, Lao People's Dem Republic",
-      //     price: '1980',
-      //     img: require('../../assets/images/hotel/2.jpeg'),
-      //     detail: 'Rates are on room only basis 1',
-      //     detail3: 'Per Night 1',
-      //     detail4: 'Breakfast in Manhattan 1'
-      //   }
-      // ]
+      curRoomType: {},
+      dialogVisible: false,
     }
   },
   methods: {
@@ -343,16 +344,16 @@ export default {
     },
     updateGuests() {
       this.count2 = this.count1;
-      // TODO: 搜索对应的房间
+      this.search();
     },
     updateDates() {
       if (this.date3 !== undefined && this.date3 !== "") {
-        this.date1 = this.date3.toDateString();
+        this.date1 = this.date3;
       }
       if (this.date4 !== undefined && this.date4 !== "") {
-        this.date2 = this.date4.toDateString();
+        this.date2 = this.date4;
       }
-      //TODO: 搜索对应的日期
+      this.search();
     },
     generateTomorrow() {
       const today = new Date();
@@ -360,7 +361,46 @@ export default {
       let finalDate = new Date();
       finalDate.setDate(current + 1);
       return finalDate;
+    },
+    search() {
+      let hotelId = this.$route.query.hotel;
+      this.$http({
+        url: this.$http.adornUrl('/room/room/roomtype/search'),
+        method: 'get',
+        params: {
+          hotelId: hotelId,
+          guests: this.count2,
+          startDate: this.date1,
+          endDate: this.date2,
+          sortBy: this.checked1,
+          reversed: this.checked2 === 'hl',
+          lowest: this.value[0],
+          highest: this.value[1],
+          breakfast: this.checked3,
+          windows: this.checked4,
+          television: this.checked5,
+          bathtub: this.checked6,
+          thermos: this.checked7
+        }
+      }).then(data => {
+        let obj = data.data.data;
+        this.roomTypes = obj.roomTypes;
+        this.roomTypeImages = obj.roomTypeImages;
+      }).catch(err => {
+        this.$message.error("Network Error");
+      })
+    },
+    openDialog(item) {
+      this.curRoomType = item;
+      this.dialogVisible = true;
+    },
+    updatePicturePath() {
+      let paths = this.roomTypeImages[this.curRoomType.typeId];
+      for (let p in paths) {
+        return paths[p];
+      }
     }
+
   },
   created() {
     let hotelId = this.$route.query.hotel;
@@ -378,7 +418,6 @@ export default {
         })
       }).then(data => {
         let obj = data.data.data;
-        console.log(obj)
         this.hotelName = obj.hotelName;
         this.province = obj.province;
         this.city = obj.city;
@@ -388,9 +427,7 @@ export default {
         this.images = obj.images;
         this.roomTypes = obj.roomTypes;
         this.roomTypeImages = obj.roomTypeImages;
-        console.log(this.roomTypeImages[1][0])
       }).catch(err => {
-        console.log(err)
         this.$message.error("Network Error");
       })
     }

@@ -52,6 +52,11 @@
             <artifactId>alipay-sdk-java</artifactId>
             <version>4.34.0.ALL</version>
         </dependency>
+        <dependency>
+            <groupId>com.qcloud</groupId>
+            <artifactId>cos_api</artifactId>
+            <version>5.6.89</version>
+        </dependency>
     </dependencies>
     <dependencyManagement>
         <dependencies>

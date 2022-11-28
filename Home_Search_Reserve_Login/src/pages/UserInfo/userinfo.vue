@@ -10,7 +10,7 @@
         <!--Contact Info-->
         <el-col :span="24" class="form-title">Contact Info</el-col>
         <el-col :span="6" class="form-row">
-          <el-input placeholder="First Name" v-model="first_name" class="input-with-select">
+          <el-input placeholder="First Name" v-model="name" class="input-with-select">
             <el-select v-model="name_begin" slot="prepend" placeholder="Prefix">
               <el-option label="Mr." value="1"></el-option>
               <el-option label="Ms." value="2"></el-option>
@@ -22,9 +22,6 @@
               <el-option label="Professor" value="8"></el-option> -->
             </el-select>
           </el-input>
-        </el-col>
-        <el-col :span="5.5" class="form-row">
-          <el-input placeholder="Last Name" v-model="last_name"/>
         </el-col>
         <el-col :span="5.5" class="form-row">
           <el-input placeholder="UserName" v-model="user_name"/>
@@ -74,13 +71,6 @@
         <el-col :span="11" class="form-row">
           <el-input placeholder="Address" v-model="address"/>
         </el-col>
-        <!-- <el-col :span="24" class="form-title">Your Password</el-col>
-        <el-col :span="12" class="form-row">
-          <el-input :rules="dataRule" placeholder="Password" v-model="dataForm.password" show-password  @keyup.enter.native="dataFormSubmit()"/>
-        </el-col>
-        <el-col :span="12" class="form-row">
-          <el-input placeholder="Repeated" v-model="dataForm.re_password" show-password/>
-        </el-col> -->
         <el-button @click="alter_info()" class="submit-btn">Alter Info</el-button>
       </el-col>
 
@@ -100,7 +90,6 @@
               <div>A contemporary retreat for a restful night’s sleep</div>
               <div style="font-weight:600;">Average price: ${{ item.price }}</div>
               <el-link>Room details</el-link>
-              <!-- <el-divider></el-divider> -->
             </div>
           </el-col>
         </div>
@@ -124,8 +113,8 @@
                 <el-breadcrumb-item>Origin Money: ${{ item.originMoney }}</el-breadcrumb-item>
                 <el-breadcrumb-item>After Discount: ${{ item.afterDiscount }}</el-breadcrumb-item>
               </el-breadcrumb>
-              <el-link>Give Comments</el-link>
-              <!-- <el-divider></el-divider> -->
+              <el-button v-if="item.comments === ''" type="text" @click="show_comments_page">Given Comments</el-button>
+              <div v-if="item.comments">Comments: {{ item.comments }}</div>
             </div>
           </el-col>
         </div>
@@ -133,7 +122,58 @@
 
 
     </el-collapse>
-
+    <el-dialog :visible.sync="dialogVisible" center width="50%">
+      <div style="font-size: 18px;line-height: 28px;color: #333;">Give your comments</div>
+      <div style="margin:10px 0">
+        <span> Thanks for sharing your experience staying in Annear</span>
+      </div>
+      <div style="display: flex;flex-direction: column;align-items: center;justify-content: center;">
+        <br>
+        <el-form :inline="true">
+          <el-select v-model="star" placeholder="Star" style="width: 80px">
+            <el-option label="1" value="1"></el-option>
+            <el-option label="2" value="2"></el-option>
+            <el-option label="3" value="3"></el-option>
+            <el-option label="4" value="4"></el-option>
+            <el-option label="5" value="5"></el-option>
+          </el-select>
+          <br><br>
+          <el-input v-model="comment"
+                    style="width: 500px"
+                    maxlength="50"
+                    show-word-limit
+                    placeholder="your comments">
+          </el-input>
+          <br><br>
+          <el-upload
+              class="upload-demo"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :on-preview="handlePreview"
+              :on-remove="handleRemove"
+              :http-request="uploadPicture"
+              :file-list="fileList"
+              :limit=1
+              list-type="picture">
+            <el-button size="small" type="primary">Upload Picture</el-button>
+            <div slot="tip" class="el-upload__tip">please upload .one jpg/png file</div>
+          </el-upload>
+          <br>
+          <el-upload
+              class="upload-demo"
+              action="https://jsonplaceholder.typicode.com/posts/"
+              :http-request="uploadVideo"
+              :limit=1
+              :file-list="videoList">
+            <el-button size="small" type="primary">Upload Video</el-button>
+            <div slot="tip" class="el-upload__tip">please upload one .mp4 file</div>
+          </el-upload>
+        </el-form>
+      </div>
+      <span slot="footer" class="dialog-footer">
+        <el-button @click="dialogVisible = false">Cancel</el-button>
+        <el-button type="primary" @click="submit_comments(star, comment)">Submit</el-button>
+      </span>
+    </el-dialog>
   </div>
 </template>
 
@@ -220,6 +260,7 @@
 
 <script>
 import axios from 'axios'
+import cookie from "js-cookie";
 
 export default {
   name: "register",
@@ -241,15 +282,14 @@ export default {
       }
     }
     return {
-      first_name: '',
+      user_id: '',
       name_begin: '',
-      last_name: '',
+      name: '',
       user_name: '',
       email: '',
       province: '',
       address: '',
       city: '',
-      zip_code: '',
       birthday: '',
       growth: 'growth: ' + 0,
       balance: 'balance: ' + 0,
@@ -271,40 +311,147 @@ export default {
         // }
       ],
       orderList: [
-        // {
-        //   orderId: '0000098',
-        //   hotel: 'Amantaka',
-        //   room: 'Two bed rooms',
-        //   orderStatus: 'Finish',
-        //   startTime: '2022-10-1',
-        //   endTime: '2022-10-3',
-        //   originMoney: '330',
-        //   afterDiscount: '270',
-        //   img: require('../../assets/images/hotel/2.jpeg'),
-        // }
-      ]
+        {
+          orderId: '0000098',
+          hotel: 'Amantaka',
+          room: 'Two bed rooms',
+          orderStatus: 'Finish',
+          startTime: '2022-10-1',
+          endTime: '2022-10-3',
+          originMoney: '330',
+          afterDiscount: '270',
+          img: require('../../assets/images/hotel/2.jpeg'),
+          comments: ''
+        }
+      ],
+      dialogVisible: false,
+      star: '',
+      comment: '',
+      fileList: [],
+      videoList: [],
+      tempUrl: '',
+      selectedOrderId: ''
+
     }
   }, methods: {
     alter_info() {
-      //TODO: use the API to alter user info
-    }, info_init() {
-      //TODO get the API to get the info and init the page
-      axios.get('http://localhost:11000/member/userinfo/queryUserInfoById', {
-        params: {
-          userId: 12012705
-        }
-      })
-          .then(function (response) {
-            console.log(response.data.data.phone);
-            let result = response.data.data
-            console.log(result.phone)
-            console.log(this.email)
-            // this.phone//= result.phone
-          })
-          .catch(function (error) {
-            console.log(error);
-          });
+      // console.log(this.user_id)
+      // //TODO: use the API to alter user info
+      // this.$http({
+      //   url: this.$http.adornUrl('/member/member/userinfo/alterUserInfo'),
+      //   method: 'get',
+      //   params: this.$http.adornParams({
+      //     toEditId: this.user_id,
+      //     phone: this.dataForm.phone,
+      //     email: this.email,
+      //     gender: 0,
+      //     birthday: new Date(this.birthday).getTime(),
+      //     province: this.province,
+      //     city: this.city,
+      //     detailAddress: this.detailAddress,
+      //     socialName: this.name
+      //   })
+      // }).then(data => {
+      //   console.log(data)
+      //   this.$message({
+      //     type: 'success',
+      //     message: 'alter info done'
+      //   });
+      // })
     }
+    ,
+    init() {
+      console.log('hi1')
+      //TODO get the API to get the info and init the page
+      this.$http({
+        url: this.$http.adornUrl('/auth/getUsernameByToken'),
+        method: 'get',
+        params: this.$http.adornParams({
+          token: cookie.get('token')
+        })
+      }).then(data => {
+            console.log('hi')
+            let resp = data.data.data;
+            console.log(resp)
+            this.$http({
+              url: this.$http.adornUrl('/member/member/userinfo/queryUserInfoByName'),
+              method: 'get',
+              params: this.$http.adornParams({
+                userName: resp
+              })
+            }).then(data => {
+              let info = data.data.data
+              this.user_id = info.userId
+              this.name = info.socialName
+              this.name_begin = info.gender === 0 ? 'Mr.' : 'Mis.'
+              this.user_name = info.username
+              this.email = info.email
+              this.province = info.province
+              this.address = info.detailAddress
+              this.city = info.city
+              this.birthday = info.birthday
+              this.growth = 'growth: ' + info.growth
+              this.balance = 'balance: ' + info.balance
+              this.dataForm.phone = info.phone
+            })
+          }
+      )
+    }
+    ,
+    show_comments_page() {
+      this.dialogVisible = true
+    }
+    ,
+    submit_comments(star, comment) {
+      this.dialogVisible = false
+      this.$message({
+        type: 'success',
+        message: 'upload comments done'
+      });
+    }
+    ,
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    }
+    ,
+    handlePreview(file) {
+      console.log(file);
+    }
+    ,
+    uploadPicture(file) {
+      let picture = file.file
+      let formData = new FormData();
+      formData.append('file', picture)
+      formData.append('orderId', this.selectedOrderId)
+      let url = this.$http.adornUrl('/auth/uploadPicture')
+
+      axios.post(url, formData, {
+        headers: {'Content-Type': 'multipart/form-data'}
+      }).then(data => {
+        let pictureUrl = data.data.data
+        console.log(pictureUrl)
+        this.fileList.push({name: picture.name, url: pictureUrl})
+      });
+    }
+    ,
+    uploadVideo(file) {
+      let video = file.file
+      let formData = new FormData();
+      formData.append('file', video)
+      formData.append('orderId', this.selectedOrderId)
+      let url = this.$http.adornUrl('/auth/uploadVideo')
+
+      axios.post(url, formData, {
+        headers: {'Content-Type': 'multipart/form-data'}
+      }).then(data => {
+        let videoUrl = data.data.data
+        console.log(videoUrl)
+        this.videoList.push({name: video.name, url: videoUrl})
+      });
+    }
+  },
+  mounted() {
+    this.init()
   }
 }
 

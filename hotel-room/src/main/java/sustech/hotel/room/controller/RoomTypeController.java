@@ -1,6 +1,6 @@
 package sustech.hotel.room.controller;
 
-import java.util.ArrayList;
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
-import sustech.hotel.room.dao.RoomTypeDao;
+import sustech.hotel.model.vo.hotel.RoomTypeSearchVo;
 import sustech.hotel.room.entity.RoomTypeEntity;
 import sustech.hotel.room.service.RoomTypeService;
 import sustech.hotel.common.utils.PageUtils;
@@ -24,8 +24,17 @@ public class RoomTypeController {
     @Autowired
     private RoomTypeService roomTypeService;
 
-    @Autowired
-    private RoomTypeDao roomTypeDao;
+    @GetMapping("/search")
+    public JsonResult<RoomTypeSearchVo> search(@RequestParam("hotelId") Long hotelId, @RequestParam("guests") Integer guests,
+                                               @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate,
+                                               @RequestParam("sortBy") String sortBy, @RequestParam("reversed") Boolean reversed,
+                                               @RequestParam("lowest") BigDecimal lowest, @RequestParam("highest") BigDecimal highest,
+                                               @RequestParam("breakfast") Boolean breakfast, @RequestParam("windows") Boolean windows,
+                                               @RequestParam("television") Boolean television, @RequestParam("bathtub") Boolean bathtub,
+                                               @RequestParam("thermos") Boolean thermos) {
+        RoomTypeSearchVo vo = roomTypeService.search(hotelId, guests, startDate, endDate, sortBy, reversed, lowest, highest, breakfast, windows, television, bathtub, thermos);
+        return new JsonResult<>(vo);
+    }
 
     /**
      * 根据传入的参数map进行分页查询

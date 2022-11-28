@@ -1,20 +1,22 @@
 package sustech.hotel.room.controller;
 
+import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import sustech.hotel.common.utils.DateConverter;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.common.utils.PageUtils;
+import sustech.hotel.exception.BaseException;
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.order.HotelNotFoundException;
+import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.model.vo.hotel.HotelVo;
 import sustech.hotel.model.vo.hotel.ReserveReqVo;
 import sustech.hotel.model.vo.hotel.ReserveRespVo;
 import sustech.hotel.model.vo.hotel.SearchRespVo;
 import sustech.hotel.room.entity.HotelEntity;
-import sustech.hotel.room.entity.HotelPictureEntity;
-import sustech.hotel.room.service.HotelPictureService;
 import sustech.hotel.room.service.HotelService;
 
 import java.math.BigDecimal;
@@ -28,8 +30,6 @@ public class HotelController {
     @Autowired
     private HotelService hotelService;
 
-    @Autowired
-    private HotelPictureService hotelPictureService;
 
     @ResponseBody
     @GetMapping("/getHotels")
@@ -64,17 +64,12 @@ public class HotelController {
     @ResponseBody
     @GetMapping("/initReserve")
     public JsonResult<ReserveRespVo> initReserve(ReserveReqVo vo) {
-        ReserveRespVo resp = new ReserveRespVo();
-        HotelEntity entity = hotelService.getById(vo.getHotelId());
-        if (entity == null) {
-            return new JsonResult<>(new HotelNotFoundException(ExceptionCodeEnum.HOTEL_NOT_FOUND_EXCEPTION));
+        try {
+            ReserveRespVo resp = hotelService.initReserve(vo);
+            return new JsonResult<>(resp);
+        } catch (BaseException e) {
+            return new JsonResult<>(e);
         }
-        List<HotelPictureEntity> pictures
-                = hotelPictureService.list(new QueryWrapper<HotelPictureEntity>().eq("hotel_id", vo.getHotelId()));
-        List<String> images = pictures.stream().map(HotelPictureEntity::getPicturePath).toList();
-        resp.setImages(images);
-        BeanUtils.copyProperties(entity, resp);
-        return new JsonResult<>(resp);
     }
 
     /**

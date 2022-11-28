@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -12,22 +13,22 @@ import java.util.concurrent.ThreadPoolExecutor;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import sustech.hotel.common.utils.JsonResult;
-import sustech.hotel.common.utils.JwtHelper;
-import sustech.hotel.common.utils.PageUtils;
-import sustech.hotel.common.utils.Query;
+import sustech.hotel.common.utils.*;
 
+import sustech.hotel.exception.ExceptionCodeEnum;
+import sustech.hotel.exception.order.HotelNotFoundException;
+import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.model.to.member.UserTo;
-import sustech.hotel.model.vo.hotel.HotelVo;
-import sustech.hotel.model.vo.hotel.LocationVo;
-import sustech.hotel.model.vo.hotel.SearchRespVo;
+import sustech.hotel.model.vo.hotel.*;
 import sustech.hotel.room.dao.HotelDao;
 import sustech.hotel.room.dao.RoomTypeDao;
 import sustech.hotel.room.entity.HotelEntity;
 import sustech.hotel.room.entity.HotelPictureEntity;
 import sustech.hotel.room.feign.MemberFeignService;
+import sustech.hotel.room.feign.OrderFeignService;
 import sustech.hotel.room.service.HotelPictureService;
 import sustech.hotel.room.service.HotelService;
+import sustech.hotel.room.service.RoomTypeService;
 
 
 @Service("hotelService")
@@ -43,7 +44,13 @@ public class HotelServiceImpl extends ServiceImpl<HotelDao, HotelEntity> impleme
     private HotelPictureService hotelPictureService;
 
     @Autowired
+    private RoomTypeService roomTypeService;
+
+    @Autowired
     private MemberFeignService memberFeignService;
+
+    @Autowired
+    private OrderFeignService orderFeignService;
 
     @Autowired
     private ThreadPoolExecutor executor;
@@ -141,4 +148,28 @@ public class HotelServiceImpl extends ServiceImpl<HotelDao, HotelEntity> impleme
         return respVo;
     }
 
+    @Override
+    public ReserveRespVo initReserve(ReserveReqVo vo) {
+        ReserveRespVo resp = new ReserveRespVo();
+        HotelEntity entity = this.getById(vo.getHotelId());
+        if (entity == null) {
+            throw new HotelNotFoundException(ExceptionCodeEnum.HOTEL_NOT_FOUND_EXCEPTION);
+        }
+        CompletableFuture<Void> task1 = CompletableFuture.runAsync(() -> {
+            String today = vo.getToday();
+            String tomorrow = vo.getTomorrow();
+            String data = orderFeignService.getConflictList(today, tomorrow, vo.getHotelId()).getData();
+            List<AvailableRoomTypeTo> availableRoomTypes = roomTypeService.getAvailableRoomType(vo.getHotelId(), data);
+            resp.setRoomTypes(availableRoomTypes);
+        }, executor);
+        CompletableFuture<Void> task2 = CompletableFuture.runAsync(() -> {
+            List<HotelPictureEntity> pictures
+                    = hotelPictureService.list(new QueryWrapper<HotelPictureEntity>().eq("hotel_id", vo.getHotelId()));
+            List<String> images = pictures.stream().map(HotelPictureEntity::getPicturePath).toList();
+            resp.setImages(images);
+            BeanUtils.copyProperties(entity, resp);
+        }, executor);
+        CompletableFuture.allOf(task1, task2).join();
+        return resp;
+    }
 }

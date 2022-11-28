@@ -6,4 +6,5 @@ import lombok.Data;
 public class ReserveReqVo {
     private Long hotelId;
     private String today;
+    private String tomorrow;
 }

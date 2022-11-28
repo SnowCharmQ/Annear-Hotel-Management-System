@@ -438,10 +438,12 @@ export default {
         method: 'get',
         params: this.$http.adornParams({
           hotelId: hotelId,
-          today: new Date().toDateString()
+          today: new Date(),
+          tomorrow: this.generateTomorrow()
         })
       }).then(data => {
         let obj = data.data.data;
+        console.log(obj)
         this.hotelName = obj.hotelName;
         this.province = obj.province;
         this.city = obj.city;

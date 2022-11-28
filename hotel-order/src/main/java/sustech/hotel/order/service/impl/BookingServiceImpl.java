@@ -43,10 +43,10 @@ public class BookingServiceImpl extends ServiceImpl<BookingDao, BookingEntity> i
     }
 
     @Override
-    public JsonResult<List<AvailableRoomTypeTo>> findByTimeIntervalAndHotel(Date startDate, Date endDate, Long hotelId) {
+    public List<AvailableRoomTypeTo> findByTimeIntervalAndHotel(Date startDate, Date endDate, Long hotelId) {
         List<Long> conflictList = bookingDao.selectConflictRoomByTimeIntervalAndHotel(startDate, endDate, hotelId);
         String json = JSON.toJSONString(conflictList);
-        return roomFeignService.getAvailableRoomType(hotelId, json);
+        return roomFeignService.getAvailableRoomType(hotelId, json).getData();
     }
 
     @Override

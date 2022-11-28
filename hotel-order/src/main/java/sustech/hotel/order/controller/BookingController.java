@@ -5,21 +5,25 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson2.JSON;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import sustech.hotel.common.utils.Constant;
+import sustech.hotel.common.utils.DateConverter;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
-import sustech.hotel.model.vo.hotel.AvailableRoomTypeVo;
+import sustech.hotel.order.dao.BookingDao;
 import sustech.hotel.order.entity.BookingEntity;
 import sustech.hotel.order.service.BookingService;
 
 
 @RestController
-@RequestMapping("booking/booking")
+@RequestMapping("order/booking")
 public class BookingController {
+
+    @Autowired
+    private BookingDao bookingDao;
 
     @Autowired
     private BookingService bookingService;
@@ -71,7 +75,15 @@ public class BookingController {
     }
 
     @GetMapping("/availableRoomType")
-    public JsonResult<List<AvailableRoomTypeTo>> getAvailableRoomType(AvailableRoomTypeVo availableRoomTypeVo) {
-        return bookingService.findByTimeIntervalAndHotel(availableRoomTypeVo.getStartDate(), availableRoomTypeVo.getEndDate(), availableRoomTypeVo.getHotelId());
+    public JsonResult<List<AvailableRoomTypeTo>> getAvailableRoomType(@RequestParam("startDate") Date startDate, @RequestParam("endDate") Date endDate, @RequestParam("hotelId") Long hotelId) {
+        return new JsonResult<>(bookingService.findByTimeIntervalAndHotel(startDate, endDate, hotelId));
+    }
+
+    @ResponseBody
+    @GetMapping("/getConflictList")
+    public JsonResult<String> getConflictList(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, @RequestParam("hotelId") Long hotelId) {
+        List<Long> conflictList = bookingDao.selectConflictRoomByTimeIntervalAndHotel(DateConverter.convertStringToDate(startDate), DateConverter.convertStringToDate(endDate), hotelId);
+        String json = JSON.toJSONString(conflictList);
+        return new JsonResult<>(json);
     }
 }

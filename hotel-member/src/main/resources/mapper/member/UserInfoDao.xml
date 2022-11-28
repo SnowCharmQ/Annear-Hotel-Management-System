@@ -33,7 +33,7 @@
 
     <update id="updateInfo">
         UPDATE chm_user_info
-        SET phone = #{phone}, email = #{email}, avatar = #{avatar}, gender = #{gender}, birthday = #{birthday}, province = #{province}, city = #{city}, detail_address = #{detailAddress}, job = #{job}, is_blocked = #{isBlocked}, social_name = #{socialName}
+        SET phone = #{phone}, email = #{email}, gender = #{gender}, birthday = #{birthday}, province = #{province}, city = #{city}, detail_address = #{detailAddress}, social_name = #{socialName}
         WHERE user_id  = #{toEditId}
     </update>
 

@@ -155,17 +155,20 @@
               :on-remove="handleRemove"
               :http-request="uploadPicture"
               :file-list="fileList"
+              :limit= 1
               list-type="picture">
             <el-button size="small" type="primary">Upload Picture</el-button>
+            <div slot="tip" class="el-upload__tip">please upload .one jpg/png file</div>
           </el-upload>
           <br>
           <el-upload
               class="upload-demo"
               action="https://jsonplaceholder.typicode.com/posts/"
               :http-request="uploadVideo"
+              :limit= 1
               :file-list="videoList">
             <el-button size="small" type="primary">Upload Video</el-button>
-<!--            <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>-->
+            <div slot="tip" class="el-upload__tip">please upload one .mp4 file</div>
           </el-upload>
         </el-form>
       </div>

@@ -19,7 +19,8 @@ create table chr_hotel
     parking        boolean                                                        not null,
     spa            boolean                                                        not null,
     chess_room     boolean                                                        not null,
-    star_level     bigint(20)                                                     not null
+    star_level     bigint(20)                                                     not null,
+    floors         integer                                                        not null
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4

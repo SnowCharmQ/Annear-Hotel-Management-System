@@ -35,4 +35,5 @@ public class HotelEntity implements Serializable {
     private Integer spa;
     private Integer chessRoom;
     private Long starLevel;
+    private Integer floors;
 }

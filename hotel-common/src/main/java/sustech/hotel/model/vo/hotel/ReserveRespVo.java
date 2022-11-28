@@ -1,6 +1,7 @@
 package sustech.hotel.model.vo.hotel;
 
 import lombok.Data;
+import sustech.hotel.model.vo.order.CommentVo;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -27,4 +28,5 @@ public class ReserveRespVo {
     private List<String> images;
     private List<AvailableRoomTypeVo> roomTypes;
     private Map<Long, List<String>> roomTypeImages;
+    private Map<Long, List<CommentVo>> comments;
 }

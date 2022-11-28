@@ -1,20 +1,21 @@
 package sustech.hotel.order.controller;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
+import com.alibaba.fastjson2.JSON;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import sustech.hotel.model.vo.order.CommentVo;
 import sustech.hotel.order.entity.OrderCommentsEntity;
+import sustech.hotel.order.entity.OrderEntity;
 import sustech.hotel.order.service.OrderCommentsService;
-import sustech.hotel.common.utils.Constant;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
+import sustech.hotel.order.service.OrderService;
 
 
 @RestController
@@ -22,7 +23,26 @@ import sustech.hotel.common.utils.JsonResult;
 public class OrderCommentsController {
 
     @Autowired
+    private OrderService orderService;
+
+    @Autowired
     private OrderCommentsService orderCommentsService;
+
+    @GetMapping("/getCommentsByRoomType")
+
+    @ResponseBody
+    @RequestMapping("/getAllComments")
+    public JsonResult<String> getAllComments() {
+        List<OrderCommentsEntity> entities = orderCommentsService.list();
+        List<CommentVo> vos = entities.stream().map(o -> {
+            CommentVo vo = new CommentVo();
+            OrderEntity byId = orderService.getById(o.getOrderId());
+            vo.setTypeId(byId.getTypeId());
+            BeanUtils.copyProperties(o, vo);
+            return vo;
+        }).toList();
+        return new JsonResult<>(JSON.toJSONString(vos));
+    }
 
     /**
      * 根据传入的参数map进行分页查询

@@ -18,6 +18,7 @@ import sustech.hotel.common.utils.Query;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.model.vo.hotel.AvailableRoomTypeVo;
 import sustech.hotel.model.vo.hotel.RoomTypeSearchVo;
+import sustech.hotel.model.vo.order.CommentVo;
 import sustech.hotel.room.dao.RoomTypeDao;
 import sustech.hotel.room.entity.RoomTypeEntity;
 import sustech.hotel.room.entity.RoomTypePictureEntity;
@@ -105,8 +106,24 @@ public class RoomTypeServiceImpl extends ServiceImpl<RoomTypeDao, RoomTypeEntity
             }
             resp.setRoomTypeImages(map);
         }, executor);
-        CompletableFuture.allOf(task1, task2).join();
+        CompletableFuture<Void> task3 = CompletableFuture.runAsync(() -> {
+            String s = orderFeignService.getAllComments().getData();
+            List<CommentVo> comments = JSON.parseArray(s, CommentVo.class);
+            Map<Long, List<CommentVo>> map = new HashMap<>();
+            for (CommentVo comment : comments) {
+                Long typeId = comment.getTypeId();
+                if (!map.containsKey(typeId)) {
+                    List<CommentVo> vos = map.get(typeId);
+                    vos.add(comment);
+                } else {
+                    List<CommentVo> vos = new ArrayList<>();
+                    vos.add(comment);
+                    map.put(typeId, vos);
+                }
+            }
+            resp.setComments(map);
+        }, executor);
+        CompletableFuture.allOf(task1, task2, task3).join();
         return resp;
     }
-
 }

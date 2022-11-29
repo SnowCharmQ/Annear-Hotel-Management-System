@@ -28,6 +28,9 @@ public enum ExceptionCodeEnum {
     GUEST_NUMBER_EXCEED_LIMIT_EXCEPTION(11006, "The number of guest number exceed the limit of the room."),
 
     NO_AVAILABLE_ROOM_EXCEPTION(11007, "No available room."),
+
+    ORDER_NOT_EXIST_EXCEPTION(11008, "The order does not exist."),
+    ORDER_CLOSED_EXCEPTION(11009, "The order has been closed."),
     // 20000 ~ others
 
     INVALID_DATE_EXCEPTION(20000, "The date is invalid");

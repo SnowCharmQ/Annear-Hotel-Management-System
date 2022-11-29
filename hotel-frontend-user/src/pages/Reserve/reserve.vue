@@ -413,6 +413,7 @@ export default {
       if (this.date4 !== undefined && this.date4 !== "") {
         this.date2 = this.date4;
       }
+      this.showCheck = false;
       this.search();
     },
     generateTomorrow() {

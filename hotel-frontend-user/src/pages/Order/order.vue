@@ -61,7 +61,9 @@
                     <el-col style="margin-top: 7px;font-size: 16px;color: cornflowerblue">Added</el-col>
                   </el-col>
                   <el-col :span="3" class="form-row">
-                    <el-link style="margin-top: 6px;font-size: 16px" @click="removeGuest(i)"><i class="el-icon-delete"></i>Remove</el-link>
+                    <el-link style="margin-top: 6px;font-size: 16px" @click="removeGuest(i)"><i
+                        class="el-icon-delete"></i>Remove
+                    </el-link>
                   </el-col>
                 </div>
               </el-collapse-item>
@@ -92,7 +94,9 @@
 
         <!--Complete Booking-->
         <el-col :span="24" style="background:#f3eee7; height:80px;text-align: right;padding-top:20px;">
-          <el-button @click="book" type="info" style="background:black;height: 55px;" v-bind:disabled="!(checked2&&checked3)">Complete Booking<i class="el-icon-lock" v-if="!(checked2&&checked3)"></i>
+          <el-button @click="book" type="info" style="background:black;height: 55px;"
+                     v-bind:disabled="!(checked2&&checked3)">Complete Booking<i class="el-icon-lock"
+                                                                                v-if="!(checked2&&checked3)"></i>
           </el-button>
         </el-col>
       </el-col>
@@ -114,7 +118,7 @@
         </el-col>
 
         <el-col :span="24">
-          <div>Room Number: {{this.data.roomNumber}}</div>
+          <div>Room Number: {{ this.data.roomNumber }}</div>
           <div>{{ new Date(this.data.startDate).toDateString() }} - {{ new Date(this.data.endDate).toDateString() }}
           </div>
           <div>{{ this.data.upperLimit }} Guests Max</div>
@@ -197,7 +201,7 @@ export default {
       this.disables[i] = true;
       this.reloadGuests();
     },
-    removeGuest(i){
+    removeGuest(i) {
       this.guests[i] = '';
       this.names[i] = '';
       this.phones[i] = '';
@@ -213,8 +217,10 @@ export default {
     },
     book() {
       let strings = []
-      for (let i = 0;i < this.guests.length;i++) {
-        let s = this.guests[i].name + ',' + this.guests[i].phone + ',' + this.guests[i].identity;
+      for (let i = 0; i < this.guests.length; i++) {
+        let s = this.guests[i].name === undefined ? '' : this.guests[i].name + ',' +
+        this.guests[i].phone === undefined ? '' : this.guests[i].phone + ',' +
+        this.guests[i].identity === undefined ? '' : this.guests[i].identity;
         strings.push(s);
       }
       this.$http({

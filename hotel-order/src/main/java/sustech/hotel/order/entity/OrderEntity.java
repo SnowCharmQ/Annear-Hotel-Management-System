@@ -28,4 +28,5 @@ public class OrderEntity implements Serializable {
     private BigDecimal afterDiscount;
     private String additional;
     private Integer score;
+    private Long hotelId;
 }

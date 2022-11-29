@@ -3,13 +3,13 @@ package sustech.hotel.exception.order;
 import sustech.hotel.exception.BaseException;
 import sustech.hotel.exception.ExceptionCodeEnum;
 
-public class DuplicateOrderSubmissionException extends BaseException {
+public class CreateOrderException extends BaseException {
 
-    public DuplicateOrderSubmissionException(String message) {
+    public CreateOrderException(String message) {
         super(message);
     }
 
-    public DuplicateOrderSubmissionException(ExceptionCodeEnum exceptionCodeEnum) {
+    public CreateOrderException(ExceptionCodeEnum exceptionCodeEnum) {
         super(exceptionCodeEnum.getMessage());
         this.state = exceptionCodeEnum.getCode();
     }

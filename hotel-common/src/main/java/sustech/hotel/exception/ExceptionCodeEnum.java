@@ -24,7 +24,7 @@ public enum ExceptionCodeEnum {
     ROOM_NOT_FOUND_EXCEPTION(11003, "The room does not exist"),
 
     HOTEL_NOT_FOUND_EXCEPTION(11004, "The hotel does not exist"),
-    DUPLICATE_ORDER_SUBMISSION_EXCEPTION(11005, "Orders have been submitted."),
+    CREATE_ORDER_EXCEPTION(11005, "Create order exception."),
     GUEST_NUMBER_EXCEED_LIMIT_EXCEPTION(11006, "The number of guest number exceed the limit of the room."),
 
     NO_AVAILABLE_ROOM_EXCEPTION(11007, "No available room."),

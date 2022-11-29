@@ -155,7 +155,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
                 orderToken);
         if (result == null || result == 0L)
             //fail
-            throw new DuplicateOrderSubmissionException(ExceptionCodeEnum.DUPLICATE_ORDER_SUBMISSION_EXCEPTION);
+            throw new CreateOrderException(ExceptionCodeEnum.CREATE_ORDER_EXCEPTION);
         //success
         Date currentDate = DateConverter.currentDate();
         if (request.getStartDate().getTime() < currentDate.getTime())

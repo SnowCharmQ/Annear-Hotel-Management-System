@@ -124,8 +124,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Override
     public PayVo getOrderPay(String orderId) {
+        OrderEntity order = baseMapper.selectById(orderId);
+        if (order == null)
+            throw new OrderNotExistException(ExceptionCodeEnum.ORDER_NOT_EXIST_EXCEPTION);
+        if (order.getOrderStatus() != 0)
+            throw new OrderClosedException(ExceptionCodeEnum.ORDER_CLOSED_EXCEPTION);
         PayVo payVo = new PayVo();
-        OrderEntity order = this.baseMapper.selectById(orderId);
         BigDecimal bigDecimal = order.getAfterDiscount().setScale(2, BigDecimal.ROUND_UP);
         payVo.setTotal_amount(bigDecimal.toString());
         payVo.setOut_trade_no(orderId);

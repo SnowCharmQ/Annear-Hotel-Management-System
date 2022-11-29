@@ -283,6 +283,50 @@
       </el-col>
 
       <!--右侧信息-->
+      <el-col :span="7" class="right-box">
+        <div style="font-size:20px;line-height:45px;">Your Stay at Aman New York</div>
+        <el-col :span="12" style="margin-top:20px;">
+          <div style="font-weight:600;">Check-in</div>
+          <div>After 3:00 PM</div>
+        </el-col>
+        <el-col :span="12" style="margin-top:20px;">
+          <div style="font-weight:600;">Check-out</div>
+          <div>Before 12:00 PM</div>
+        </el-col>
+        <el-col :span="24" style="padding-top:20px;">
+          <div>Sun, Oct 23, 2022 - Wed, Nov 30, 2022</div>
+          <div>2 Adults</div>
+        </el-col>
+        <el-col :span="24"><el-divider></el-divider></el-col>
+        <el-col :span="24" style="display:flex;justify-content: space-between;">
+          <div style="font-weight:600;">Total:</div>
+          <div style="font-weight:600;">A$0.00</div>
+        </el-col>
+        <el-col :span="24"><el-divider></el-divider></el-col>
+        <el-col :span="24">
+          <div style='font-size:20px;margin-bottom:20px;color:black;'>Book direct for peace of mind</div>
+
+          <div>
+            <div class="right-flex">
+              <div class="icon-img"><img src="../../assets/images/1.jpg" /></div>
+              <div>24/7 Dedicated Global Reservation Team offering personalised service</div>
+            </div>
+            <div class="right-flex">
+              <div class="icon-img"><img src="../../assets/images/2.jpg" /></div>
+              <div style="margin-top:5px;">Exclusive offers with inspiring itineraries, only when booking direct</div>
+            </div>
+            <div class="right-flex">
+              <div class="icon-img"><img src="../../assets/images/3.jpg" /></div>
+              <div style="margin-top:5px;">A range of unique experiences to enbance your stay,</div>
+            </div>
+            <div class="right-flex">
+              <div class="icon-img"><img src="../../assets/images/4.jpg" /></div>
+              <div style="margin-top:5px;">Awe-inspiring locations with 34 resorts and hotels in 20 locations</div>
+            </div>
+          </div>
+
+        </el-col>
+      </el-col>
     </el-row>
 
   </div>

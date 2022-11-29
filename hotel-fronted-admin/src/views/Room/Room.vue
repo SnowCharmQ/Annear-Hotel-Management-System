@@ -2,64 +2,46 @@
     <div>
         <!-- 添加区域 -->
         <div class="addRoom">
-            <el-button type="primary" size="mini" class="addRoomButton" @click="addClick">Add Room</el-button>
+            <el-button type="primary" size="mini" round class="addRoomButton" @click="addClick">Add Room</el-button>
         </div>
         <!-- 表格区域 -->
         <el-table :data="tableData" style="width: 98%; min-width: 1000px"
-            :header-cell-style="{ color: 'black', fontSize: '14px', fontFamily: 'nano', background: '#f3eee7' }"
-            :row-style="setRowStyle" border-collapse:collapse stripe fit highlight-current-row border
-            empty-text="No Room Added">
+            :cell-style="{ textAlign: 'center', background: '#f3eee7', fontSize: '18px', borderBottomColor: 'black' }"
+            :header-cell-style="{ color: 'black', fontSize: '20px', fontFamily: 'nano', background: '#f3eee7', textAlign: 'center', borderBottomColor: 'black' }"
+            :row-style="setRowStyle" stripe fit highlight-current-row border empty-text="No Room Added">
 
             <el-table-column label="Room No" width="180">
                 <template slot-scope="scope">
-                    <el-popover trigger="hover" placement="top">
-                        <p>Name: {{ scope.row.room_num }}</p>
-
-                        <div slot="reference" class="name-wrapper">
-                            <el-tag size="medium">{{ scope.row.room_num }}</el-tag>
-                        </div>
-                    </el-popover>
+                    {{ scope.row.room_num }}
                 </template>
             </el-table-column>
 
             <el-table-column label="Type" width="180">
                 <template slot-scope="scope">
-                    <el-popover trigger="hover" placement="top">
-                        <p>Type: {{ scope.row.room_type }}</p>
-                        <div slot="reference" class="name-wrapper">
-                            <el-tag size="medium">{{ scope.row.room_type }}</el-tag>
-                        </div>
-                    </el-popover>
+
+                    {{ scope.row.room_type }}
+
                 </template>
             </el-table-column>
             <el-table-column label="Floor" width="180">
                 <template slot-scope="scope">
-                    <el-popover trigger="hover" placement="top">
-                        <p>Floor: {{ scope.row.floor }}</p>
 
-                        <div slot="reference" class="name-wrapper">
-                            <el-tag size="medium">{{ scope.row.floor }}</el-tag>
-                        </div>
-                    </el-popover>
+                    {{ scope.row.floor }}
+
                 </template>
             </el-table-column>
             <el-table-column label="Floor Plan" width="180">
                 <template slot-scope="scope">
-                    <el-popover trigger="hover" placement="top">
-                        <p>Floor Plan: {{ scope.row.floor_plan }}</p>
 
-                        <div slot="reference" class="name-wrapper">
-                            <el-tag size="medium">{{ scope.row.floor_plan }}</el-tag>
-                        </div>
-                    </el-popover>
+                    {{ scope.row.floor_plan }}
                 </template>
             </el-table-column>
 
             <el-table-column label="Operations">
                 <template slot-scope="scope">
-                    <el-button size="mini" type="primary" @click="editClass(scope.$index)">Edit
+                    <el-button size="mini" type="primary" round @click="editClass(scope.$index)" class="editButton">Edit
                     </el-button>
-                    <el-button size="mini" type="danger" @click="deleteClass(scope.$index)">Delete
+                    <el-button size="mini" type="danger" round @click="deleteClass(scope.$index)">Delete
                     </el-button>
                 </template>
             </el-table-column>
@@ -68,7 +50,7 @@
             <el-form ref="form2" :model="form2" :rules="rules" label-width="100px">
                 <el-form-item>
                     <div class="form_header">
-                        <h1><b>Edit Room</b></h1>
+                        <h1>Edit Room</h1>
                     </div>
                 </el-form-item>
                 <el-form-item label="Room No" prop="room_num">
@@ -89,17 +71,15 @@
                 <el-form-item>
                     <div class="button_div">
                         <el-button type="primary" size="small" @click="editForm('form2')">Edit</el-button>
-                        <el-button size="small" class="normal_button" @click="resetForm2('form2')">Cancel
+                        <el-button size="small" class="normal_button" @click="resetForm('form2')">Cancel
                         </el-button>
                     </div>
                 </el-form-item>
 
-
-
             </el-form>
         </el-dialog>
         <div class="flex j-c" style="margin-top:5px">
-            <el-pagination background layout="prev, pager, next" :total="count" :page-size="8"
+            <el-pagination background layout="prev, pager, next" :total="count" :page-size="8" class="pageClass"
                 @current-change="currentChange">
             </el-pagination>
         </div>
@@ -153,7 +133,7 @@ export default {
             if (value === '') {
                 callback(new Error('Please enter Room Number.'));
             } else {
-                let validName = /^[0-9.]+$/.test(value)
+                let validName = /^[a-zA-Z]*[0-9.]+$/.test(value)
                 if (!validName) {
                     callback(new Error('Room Number must be a combination of digits'));
                 }
@@ -202,12 +182,12 @@ export default {
                 if (!validName) {
                     callback(new Error('Room floor plan must be a combination of digits'));
                 }
-                else if(parseInt(value) < 1 || parseInt(value) > 16){
-                    
+                else if (parseInt(value) < 1 || parseInt(value) > 16) {
+
                     callback(new Error('Room floor plan number must be within 1 and 16'));
-                }else{
-                callback();
-            }
+                } else {
+                    callback();
+                }
             }
         };
 
@@ -220,6 +200,18 @@ export default {
                 floor: -1,
                 floor_plan: 2,
 
+            },
+            {
+                room_num: '114',
+                room_type: 'standard suite',
+                floor: 3,
+                floor_plan: 2,
+            },
+            {
+                room_num: '514',
+                room_type: 'three suite',
+                floor: 3,
+                floor_plan: 2,
             }],
             num: '',
             count: 5,
@@ -273,7 +265,7 @@ export default {
             this.drawer = true;
         },
         editClass(index) {
-            
+
             this.form2.room_num = this.tableData[index].room_num
             this.form2.room_type = this.tableData[index].room_type
             this.form2.floor = this.tableData[index].floor
@@ -339,9 +331,9 @@ export default {
             });
         },
         setRowStyle(row) {
-            if (row.row.isPart == true) {
-                return 'color:#1772b4;'
-            }
+            // if (row.row.isPart == true) {
+            return 'color:black;'
+            // }
         },
         async resetForm(formName) {
             this.$refs[formName].resetFields();
@@ -395,6 +387,7 @@ export default {
     border-color: #409EFF;
 }
 
+
 .avatar-uploader-icon {
     font-size: 28px;
     color: #8c939d;
@@ -404,9 +397,59 @@ export default {
     text-align: center;
 }
 
+.form_header {
+    color: black;
+    font-size: medium;
+    font-weight: lighter;
+    font-family: 'nano';
+}
+
 .avatar {
     width: 178px;
     height: 178px;
     display: block;
+}
+
+.el-button--primary {
+    background-color: #f5e8a1;
+    border-color: #f1e4a6;
+    color: black;
+}
+
+.editButton {
+    margin-top: 0px;
+    font-family: 'nano';
+    height: 30px;
+    font-size: 15px;
+    line-height: 0.4;
+    background-color: #f1e4a6;
+    border: 1px solid rgb(238, 213, 184);
+    text-align: center;
+    color: black;
+
+
+    span {
+        font-family: 'nano';
+        color: white;
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+}
+
+.el-button--danger {
+    background-color: #f15973;
+    border-color: #ec9bad;
+    font-family: 'nano';
+    font-size: 15px;
+}
+
+.el-button--danger:hover {
+    background-color: #e9173a;
+
+}
+
+
+.el-button--primary:hover {
+    background-color: #f1cb9a;
 }
 </style>

@@ -103,7 +103,7 @@ export default {
       this.content += html;
     },
     initDialog(username) {
-        if (this.chatUser !== username) {
+        if (this.chatUser != username) {
           this.content = ''
           this.chatUser = username
           let message = {text: 'loadDialog'}
@@ -154,10 +154,10 @@ export default {
                     let text = data.load[i].text
                     let from = data.load[i].from
                     let to = data.load[i].to
-                    if (from === username) {
+                    if (from == username) {
                       _this.messages.push(text)
                       _this.createContent(null, username, text) 
-                    } else if (from === _this.chatUser) {
+                    } else if (from == _this.chatUser) {
                       _this.messages.push(text)
                       _this.createContent(_this.chatUser, null, text) 
                     }

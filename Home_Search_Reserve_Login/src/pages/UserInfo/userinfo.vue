@@ -337,27 +337,27 @@ export default {
     alter_info() {
       // console.log(this.user_id)
       // //TODO: use the API to alter user info
-      // this.$http({
-      //   url: this.$http.adornUrl('/member/member/userinfo/alterUserInfo'),
-      //   method: 'get',
-      //   params: this.$http.adornParams({
-      //     toEditId: this.user_id,
-      //     phone: this.dataForm.phone,
-      //     email: this.email,
-      //     gender: 0,
-      //     birthday: new Date(this.birthday).getTime(),
-      //     province: this.province,
-      //     city: this.city,
-      //     detailAddress: this.detailAddress,
-      //     socialName: this.name
-      //   })
-      // }).then(data => {
-      //   console.log(data)
-      //   this.$message({
-      //     type: 'success',
-      //     message: 'alter info done'
-      //   });
-      // })
+      this.$http({
+        url: this.$http.adornUrl('/member/member/userinfo/alterUserInfo'),
+        method: 'get',
+        params: this.$http.adornParams({
+          toEditId: this.user_id,
+          phone: this.dataForm.phone,
+          email: this.email,
+          gender: 0,
+          birthday: new Date(this.birthday).getTime(),
+          province: this.province,
+          city: this.city,
+          detailAddress: this.detailAddress,
+          socialName: this.name
+        })
+      }).then(data => {
+        console.log(data)
+        this.$message({
+          type: 'success',
+          message: 'alter info done'
+        });
+      })
     }
     ,
     init() {

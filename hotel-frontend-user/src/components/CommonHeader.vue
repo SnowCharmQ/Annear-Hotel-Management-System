@@ -6,7 +6,9 @@
     </div>
 
     <!--------to be changed--------->
-    <div><img src="https://www.aman.com/themes/custom/aman/logo.svg" class="logo"/></div>
+<!--    <div><img src="https://www.aman.com/themes/custom/aman/logo.svg" class="logo"/></div>-->
+    <div><img src="../assets/images/ann.png" class="logo" style="transform:scale(1.35)"/></div>
+<!--    <div>Annear</div>-->
 
     <!--homepage右上角的两个按钮-->
     <div class="r-content">

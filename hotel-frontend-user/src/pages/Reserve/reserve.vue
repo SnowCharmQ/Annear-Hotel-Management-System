@@ -1,6 +1,6 @@
 <template>
   <div class="page-main">
-
+<!--ANNEAR-->
 
     <!--背景图和左下角的text part-->
     <el-carousel height="430px">

@@ -39,15 +39,21 @@
                             <template slot="title">Room Order Quantity</template>
                             <el-menu-item index="3-1-1">Day</el-menu-item>
                             <el-menu-item index="3-1-2">Month</el-menu-item>
-                            <el-menu-item index="3-1-3">Year</el-menu-item>
-                            <el-menu-item index="3-1-4">Type of Room</el-menu-item>
+                            <el-menu-item index="3-1-3">Type of Room</el-menu-item>
                         </el-submenu>
-                        <el-submenu index="4-1">
+                        <el-submenu index="3-2">
                             <template slot="title">Turnover</template>
-                            <el-menu-item index="4-1-1">Day</el-menu-item>
-                            <el-menu-item index="4-1-2">Month</el-menu-item>
-                            <el-menu-item index="4-1-3">Year</el-menu-item>
-                            <el-menu-item index="4-1-4">Type of Room</el-menu-item>
+                            <el-menu-item index="3-2-1">Day</el-menu-item>
+                            <el-menu-item index="3-2-2">Month</el-menu-item>
+                            <el-menu-item index="3-2-3">Type of Room</el-menu-item>
+                        
+                        </el-submenu>
+
+                        <el-submenu index="3-3" >
+                            <template slot="title">Score Ratio</template>
+                            <el-menu-item index="3-3-1">Score Ratio</el-menu-item>
+                            
+                        
                         </el-submenu>
 
                     </el-menu-item-group>

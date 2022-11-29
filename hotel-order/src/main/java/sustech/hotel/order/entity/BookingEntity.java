@@ -9,7 +9,7 @@ import java.util.Date;
 import lombok.Data;
 
 @Data
-@TableName("chb_booking")
+@TableName("cho_booking")
 public class BookingEntity implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;

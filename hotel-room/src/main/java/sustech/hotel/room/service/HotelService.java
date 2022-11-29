@@ -17,7 +17,7 @@ public interface HotelService extends IService<HotelEntity> {
 
     SearchRespVo searchHotel(String token, String sortBy, Boolean reversed, Boolean diningRoom,
                              Boolean parking, Boolean spa, Boolean bar, Boolean gym, Boolean chessRoom,
-                             Boolean swimmingPool, BigDecimal lowest, BigDecimal highest);
+                             Boolean swimmingPool, BigDecimal lowest, BigDecimal highest, String location);
 
     ReserveRespVo initReserve(ReserveReqVo vo);
 }

@@ -304,13 +304,13 @@ export default {
       showCheck: false,
       checked1: 'default',
       checked2: 'hl',
-      checked3: true,
-      checked4: true,
-      checked5: true,
-      checked6: true,
-      checked7: true,
-      checked8: true,
-      checked9: true,
+      checked3: false,
+      checked4: false,
+      checked5: false,
+      checked6: false,
+      checked7: false,
+      checked8: false,
+      checked9: false,
       count1: 0,
       count2: 0,
       locations: [],
@@ -320,6 +320,7 @@ export default {
       curHotel: {},
       dialogVisible: false,
       isLogin: false,
+      location: ''
     };
   },
   methods: {
@@ -332,6 +333,8 @@ export default {
     },
     handleSel(val) {
       this.curSel = val.province + " " + val.city;
+      this.location = val.province + "/" + val.city;
+      this.search();
     },
     updateGuest() {
       this.count2 = this.count1;
@@ -423,7 +426,8 @@ export default {
           chessRoom: this.checked8,
           swimmingPool: this.checked9,
           lowest: this.value[0],
-          highest: this.value[1]
+          highest: this.value[1],
+          location: this.location
         })
       }).then(data => {
         let obj = data.data.data;

@@ -133,7 +133,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     @Override
     public String handlePayResult(PayAsyncVo vo) {
         OrderOperationEntity operation = new OrderOperationEntity();
-        operation.setOperationTime(new Timestamp(System.currentTimeMillis()));
+        operation.setOperationTime(new Timestamp(vo.getNotify_time().getTime()));
         operation.setOrderId(vo.getOut_trade_no());
         if (vo.getTrade_status().equals("TRADE_SUCCESS") || vo.getTrade_status().equals("TRADE_FINISHED")) {
             String orderId = vo.getOut_trade_no();

@@ -131,9 +131,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     public void placeOrder(OrderEntity request, List<String> guestInfo, String orderToken) {
         String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
         Long result = redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class),
-                Arrays.asList(OrderConstant.USER_ORDER_TOKEN_PREFIX + request.getUserId()),
+                List.of(OrderConstant.USER_ORDER_TOKEN_PREFIX + request.getUserId()),
                 orderToken);
-        if (result == 0L)
+        if (result == null || result == 0L)
             //fail
             throw new DuplicateOrderSubmissionException(ExceptionCodeEnum.DUPLICATE_ORDER_SUBMISSION_EXCEPTION);
         //success

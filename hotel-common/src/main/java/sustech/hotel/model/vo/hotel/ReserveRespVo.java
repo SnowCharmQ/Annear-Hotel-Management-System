@@ -17,6 +17,7 @@ public class ReserveRespVo {
     private BigDecimal longitude;
     private BigDecimal latitude;
     private String telephone;
+    private String email;
     private Integer swimmingPool;
     private Integer gym;
     private Integer diningRoom;

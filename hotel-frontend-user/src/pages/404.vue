@@ -4,7 +4,7 @@
       <div class="site-content">
         <h2 class="not-found-title">404</h2>
         <p class="not-found-desc">Sorry！The Page Doesn't Exist</p>
-        <el-button @click="back()">返回上一页</el-button>
+        <el-button @click="back()">Return To The Previous Page</el-button>
         <el-button type="primary" class="not-found-btn-gohome" @click="$router.push({ name: 'home' })">Jump To The Home Page</el-button>
       </div>
     </div>
@@ -18,6 +18,8 @@ export default {
     back() {
       if (fromPath === '/reserve') {
         this.$router.go(-2);
+      } else {
+        this.$router.go(-1);
       }
     }
   },

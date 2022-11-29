@@ -32,7 +32,7 @@
 <meta charset=​"UTF-8">​
 <script>
 
-let baseUrl = 'http://localhost:88';
+let baseUrl = 'http://localhost:12345';
 
 import {strToMd5} from '@/utils/md5'
 import {start} from '@/assets/js/login';

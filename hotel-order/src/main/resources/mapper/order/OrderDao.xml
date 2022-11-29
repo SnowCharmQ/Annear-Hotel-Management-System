@@ -14,5 +14,7 @@
         <result property="afterDiscount" column="after_discount"/>
     </resultMap>
 
-
+    <update id="updateOrderStatus">
+        update cho_order set order_status = #{order_status} where order_id = #{order_id}
+    </update>
 </mapper>

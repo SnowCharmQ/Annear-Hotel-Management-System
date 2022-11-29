@@ -33,7 +33,9 @@ import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.model.vo.order.OrderConfirmRespVo;
 import sustech.hotel.constant.OrderConstant;
 import sustech.hotel.model.vo.order.OrderConfirmVo;
+import sustech.hotel.model.vo.order.PayAsyncVo;
 import sustech.hotel.model.vo.order.PayVo;
+import sustech.hotel.order.dao.BookingDao;
 import sustech.hotel.order.dao.OrderDao;
 import sustech.hotel.order.entity.BookingEntity;
 import sustech.hotel.order.entity.OrderEntity;
@@ -54,19 +56,21 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     private MemberFeignService memberFeignService;
 
     @Autowired
-    RoomFeignService roomFeignService;
+    private RoomFeignService roomFeignService;
 
     @Autowired
-    BookingService bookingService;
+    private BookingService bookingService;
 
     @Autowired
-    OrderInfoService orderInfoService;
+    private OrderInfoService orderInfoService;
 
     @Autowired
-    OrderOperationService orderOperationService;
+    private OrderOperationService orderOperationService;
 
     @Autowired
-    StringRedisTemplate redisTemplate;
+    private BookingDao bookingDao;
+    @Autowired
+    private StringRedisTemplate redisTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -126,14 +130,30 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         return payVo;
     }
 
+    @Override
+    public String handlePayResult(PayAsyncVo vo) {
+        OrderOperationEntity operation = new OrderOperationEntity();
+        operation.setOperationTime(new Timestamp(System.currentTimeMillis()));
+        operation.setOrderId(vo.getOut_trade_no());
+        if (vo.getTrade_status().equals("TRADE_SUCCESS") || vo.getTrade_status().equals("TRADE_FINISHED")) {
+            String orderId = vo.getOut_trade_no();
+            this.baseMapper.updateOrderStatus(orderId, 1);
+            bookingDao.updateOrderStatus(orderId, 1);
+            operation.setOperation(1);
+        } else
+            operation.setOperation(2);
+        orderOperationService.save(operation);
+        return "success";
+    }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void placeOrder(OrderEntity request, List<String> guestInfo, String orderToken) {
         String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
         Long result = redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class),
-                Arrays.asList(OrderConstant.USER_ORDER_TOKEN_PREFIX + request.getUserId()),
+                List.of(OrderConstant.USER_ORDER_TOKEN_PREFIX + request.getUserId()),
                 orderToken);
-        if (result == 0L)
+        if (result == null || result == 0L)
             //fail
             throw new DuplicateOrderSubmissionException(ExceptionCodeEnum.DUPLICATE_ORDER_SUBMISSION_EXCEPTION);
         //success

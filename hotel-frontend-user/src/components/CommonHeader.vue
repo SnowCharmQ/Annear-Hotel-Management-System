@@ -13,6 +13,7 @@
       <el-button type="text" @click="logOut" v-if="isInfo" id="logout">Logout</el-button>
       <img :src="avatar" @click="toInfo()" v-if="isLogin" id="avatar"/>
       <el-button type="text" @click="loginHandle" v-if="showLogin">Login</el-button>
+      <el-button @click="toMap" v-if="!isMap">Map</el-button>
       <el-button @click="toSearch" v-if="showSearch">Search</el-button>
       <el-button @click="toHome" v-if="showHome">Home</el-button>
     </div>
@@ -65,6 +66,7 @@ export default {
       avatar: 'https://ooad-1312953997.cos.ap-guangzhou.myqcloud.com/img/user-filling.png',
       loginDialog: false,
       isLogin: false,
+      isMap: false,
       isInfo: false,
       drawer: false,
       showLogin: true,
@@ -108,6 +110,9 @@ export default {
     toHome() {
       this.$router.push('home')
     },
+    toMap() {
+      this.$router.push('map')
+    },
     toInfo() {
       if (this.$route.name !== "userinfo") {
         this.$router.push('userinfo')
@@ -142,6 +147,7 @@ export default {
         }
         this.show = !(this.$route.name === 'login') && !(this.$route.name === 'register');
         this.isLogin = cookie.get('token');
+        this.isMap = this.$route.name === 'map';
         this.isInfo = this.$route.name === 'userinfo';
         this.showLogin = !(this.$route.name === 'login') && !this.isLogin;
         this.showSearch = !(this.$route.name === 'search' || this.$route.name === 'login' || this.$route.name === 'register');

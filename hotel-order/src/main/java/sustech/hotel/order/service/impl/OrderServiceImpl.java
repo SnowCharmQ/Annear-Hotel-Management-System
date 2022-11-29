@@ -192,12 +192,14 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         bookingService.save(bookingEntity);
         for (String s : guestInfo) {
             String[] info = s.split(",");
-            OrderInfoEntity orderInfoEntity = new OrderInfoEntity();
-            orderInfoEntity.setOrderId(request.getOrderId());
-            orderInfoEntity.setTenantName(info[0]);
-            orderInfoEntity.setIdentityCard(info[1]);
-            orderInfoEntity.setTelephone(info[2]);
-            orderInfoService.save(orderInfoEntity);
+            if (!info[0].equals("") || !info[1].equals("") || !info[2].equals("")) {
+                OrderInfoEntity orderInfoEntity = new OrderInfoEntity();
+                orderInfoEntity.setOrderId(request.getOrderId());
+                orderInfoEntity.setTenantName(info[0]);
+                orderInfoEntity.setIdentityCard(info[1]);
+                orderInfoEntity.setTelephone(info[2]);
+                orderInfoService.save(orderInfoEntity);
+            }
         }
         OrderOperationEntity orderOperationEntity = new OrderOperationEntity();
         orderOperationEntity.setOperation(0);

@@ -300,7 +300,7 @@ export default {
       },
       collectionList: [
         // {
-        //   name: 'Amantaka',
+        //   name: 'Anneartaka',
         //   province: 'Guangdong',
         //   city: 'Shenzhen',
         //   district: "Luang Prabang Lao People's Dem Republic",
@@ -313,7 +313,7 @@ export default {
       orderList: [
         {
           orderId: '0000098',
-          hotel: 'Amantaka',
+          hotel: 'Anneartaka',
           room: 'Two bed rooms',
           orderStatus: 'Finish',
           startTime: '2022-10-1',

@@ -103,10 +103,10 @@
             method.
           </el-col>
           <el-col :span="24" class="form-row img-icon">
-            <img src="https://reservations.aman.com/public/images/Visa.png"/>
-            <img src="https://reservations.aman.com/public/images/MasterCard.png"/>
-            <img src="https://reservations.aman.com/public/images/Amex.png"/>
-            <img src="https://reservations.aman.com/public/images/Discover.png"/>
+            <img src="https://reservations.Annear.com/public/images/Visa.png"/>
+            <img src="https://reservations.Annear.com/public/images/MasterCard.png"/>
+            <img src="https://reservations.Annear.com/public/images/Amex.png"/>
+            <img src="https://reservations.Annear.com/public/images/Discover.png"/>
           </el-col>
           <el-col :span="24" class="form-row">
             <el-input placeholder="Card Number" v-model="value13" style="width:370px;"/>
@@ -120,10 +120,10 @@
           </el-col>
         </el-col>
 
-        <!--Aman New York Policies-->
+        <!--Annear New York Policies-->
         <el-col :span="24" style="background:#f3eee7;line-height:20px;height:20px;"></el-col>
         <el-col :span="24" style="font-size:16px;padding-bottom: 20px;">
-          <el-col :span="24" class="form-title">Aman New York Policies</el-col>
+          <el-col :span="24" class="form-title">Annear New York Policies</el-col>
           <el-col class="form-row" style="display:flex;">
             <div>
               <div style="font-weight:600;">Check-in</div>

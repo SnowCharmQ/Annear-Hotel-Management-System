@@ -79,7 +79,7 @@ export default {
         {
           name: 'Destinations', url: '',
           children: [
-            {name: 'Aman Journeys', url: '', children: []},
+            {name: 'Annear Journeys', url: '', children: []},
             {name: 'Celebrations', url: '', children: []},
             {name: 'Active Adventure', url: '', children: []},
             {name: 'Wellness', url: '', children: []}
@@ -91,7 +91,7 @@ export default {
         {
           name: 'Yachts', url: '',
           children: [
-            {name: 'Aman Journeys', url: '', children: []},
+            {name: 'Annear· Journeys', url: '', children: []},
             {name: 'Celebrations', url: '', children: []},
             {name: 'Culture & Conservation', url: '', children: []},
             {name: 'Active Adventure', url: '', children: []}

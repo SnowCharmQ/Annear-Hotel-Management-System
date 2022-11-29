@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import sustech.hotel.model.to.hotel.RoomInfoTo;
-import sustech.hotel.model.to.hotel.RoomTypeTo;
 import sustech.hotel.room.entity.HotelEntity;
 import sustech.hotel.room.entity.RoomEntity;
 import sustech.hotel.room.entity.RoomTypeEntity;

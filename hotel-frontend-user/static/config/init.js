@@ -14,7 +14,7 @@
             // 插件 - ueditor
             window.SITE_CONFIG.cdnUrl + '/static/plugins/ueditor-1.4.3.3/ueditor.config.js',
             window.SITE_CONFIG.cdnUrl + '/static/plugins/ueditor-1.4.3.3/ueditor.all.min.js',
-            window.SITE_CONFIG.cdnUrl + '/static/plugins/ueditor-1.4.3.3/lang/zh-cn/zh-cn.js',
+            window.SITEi_CONFIG.cdnUrl + '/static/plugins/ueditor-1.4.3.3/lang/zh-cn/zh-cn.js',
             // 业务
             window.SITE_CONFIG.cdnUrl + '/static/js/manifest.js',
             window.SITE_CONFIG.cdnUrl + '/static/js/vendor.js',

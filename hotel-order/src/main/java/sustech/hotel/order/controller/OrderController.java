@@ -96,6 +96,7 @@ public class OrderController {
         return new JsonResult<>(orderService.queryOrderByUser(userId));
     }
 
+    @ResponseBody
     @PostMapping("/confirmOrder")
     public JsonResult<OrderConfirmRespVo> confirmOrder(@RequestBody OrderConfirmVo orderConfirmVo) {
         try {
@@ -146,8 +147,12 @@ public class OrderController {
             if (orders == null || orders.isEmpty()) {
                 vo.setAverageScore(5.0);
             } else {
-                int sum = orders.stream().mapToInt(OrderEntity::getScore).sum();
-                vo.setAverageScore((double) sum / (double) orders.size());
+                List<OrderEntity> notNullList = orders.stream().filter(s -> s.getScore() != null).toList();
+                int sum = notNullList.stream().mapToInt(OrderEntity::getScore).sum();
+                vo.setAverageScore((double) sum / (double) notNullList.size());
+                if (sum == 0) {
+                    vo.setAverageScore(5.0);
+                }
             }
             return vo;
         }).toList();

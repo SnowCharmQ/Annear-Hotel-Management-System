@@ -13,6 +13,6 @@ public interface OrderFeignService {
     @GetMapping("/order/order/getRoomTypeAverageScore")
     JsonResult<String> getAverageScore(@RequestParam("toList") String toList);
 
-    @GetMapping("/order/order/getAllComments")
+    @GetMapping("/order/ordercomments/getAllComments")
     JsonResult<String> getAllComments();
 }

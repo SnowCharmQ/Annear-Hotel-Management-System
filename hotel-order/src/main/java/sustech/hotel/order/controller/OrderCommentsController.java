@@ -28,8 +28,6 @@ public class OrderCommentsController {
     @Autowired
     private OrderCommentsService orderCommentsService;
 
-    @GetMapping("/getCommentsByRoomType")
-
     @ResponseBody
     @RequestMapping("/getAllComments")
     public JsonResult<String> getAllComments() {

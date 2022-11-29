@@ -1,82 +1,6 @@
 <template>
   <div class="page-main">
     <div class="item-img">
-      <el-divider></el-divider>
-      <div class="top-link">
-
-        <!--顶部的按键和电话号码-->
-        <el-link>Hotel Info</el-link>
-        <el-link>Find Reservations</el-link>
-        <el-link><i class="el-icon-phone-outline"></i>+1 212 970 2626</el-link>
-
-        <!--货币选择-->
-        <el-popover placement="bottom" width="885" trigger="click">
-          <div style="padding:0 15px;">
-            <div class="title-popover" style="font-size:18px;border: none;display: flex;">
-              <div>Top Currencies</div>
-              <div style="margin-left: 100px">All Currencies</div>
-            </div>
-
-            <el-col :span="6" class="top-select">
-              <div class="select-item">Property Currency</div>
-              <div class="select-item">AUD - Australian Dollars</div>
-              <div class="select-item">CAD - Canadian Dollars</div>
-              <div class="select-item">CNY - China Yuan Renminbi</div>
-              <div class="select-item">EUR - Euros</div>
-              <div class="select-item">GBP - British Pounds</div>
-              <div class="select-item">INR - Indian Rupees</div>
-              <div class="select-item">SGD - Singapore Dollars</div>
-              <div class="select-item">USD - US Dollars</div>
-              <br><br>
-            </el-col>
-
-            <el-col :span="18" style="margin-top: 0">
-              <el-input v-model="filterText" placeholder="Filter"></el-input>
-              <el-divider></el-divider>
-
-              <el-col :span="12" class="top-select">
-                <div class="select-item">AFN - Afghanistan Afghanis</div>
-                <div class="select-item">DZD - Algerian Dinar</div>
-                <div class="select-item">AED - Arab Emirate Dirham</div>
-                <div class="select-item">AMD - Armenia Drams</div>
-                <div class="select-item">AUD - Australian Dollars</div>
-                <div class="select-item">BSD - Bahamas Bahamian Dollar</div>
-                <div class="select-item">BDT - Bangladeshi Taka</div>
-                <div class="select-item">LSL - Basotho Loti</div>
-                <div class="select-item">BZD - Belize Dollar</div>
-                <div class="select-item">BTN - Bhutan Ngultrum</div>
-                <div class="select-item">BWP - Botswana Pula</div>
-                <div class="select-item">AMD - Armenia Drams</div>
-                <div class="select-item">AUD - Australian Dollars</div>
-                <br><br>
-              </el-col>
-
-              <el-col :span="12" class="top-select">
-                <div class="select-item">ALL - Albania Leke</div>
-                <div class="select-item">AOA - Angola Kwanza</div>
-                <div class="select-item">ARS - Argentina Pesos</div>
-                <div class="select-item">AWG - Aruban Florin</div>
-                <div class="select-item">AZN - Azerbaijani New Manat</div>
-                <div class="select-item">BHD - Bahrain Dinar</div>
-                <div class="select-item">BBD - Barbadian Dollar</div>
-                <div class="select-item">BYN - Belarusian Ruble</div>
-                <div class="select-item">BMD - Bermudian Dollars</div>
-                <div class="select-item">BAM - Bosnian Convertible Marka</div>
-                <div class="select-item">BRL - Brazilian Reals</div>
-                <div class="select-item">BBD - Barbadian Dollar</div>
-                <div class="select-item">BYN - Belarusian Ruble</div>
-                <br><br>
-              </el-col>
-
-            </el-col>
-          </div>
-
-          <div class="flex-row" slot="reference">
-            <el-link>Australian Dollars<i class="el-icon-arrow-down"></i></el-link>
-          </div>
-        </el-popover>
-
-      </div>
     </div>
     <el-divider></el-divider>
     <el-row class="card-search" :gutter="20" style="width:1250px;margin:20px auto;">
@@ -103,9 +27,15 @@
               </el-select>
             </el-input>
           </el-col>
-          <el-col :span="12" class="form-row"><el-input placeholder="Last Name" v-model="value3"/></el-col>
-          <el-col :span="12" class="form-row"><el-input placeholder="Phone" v-model="value4"/></el-col>
-          <el-col :span="12" class="form-row"><el-input placeholder="Email Address" v-model="value5"/></el-col>
+          <el-col :span="12" class="form-row">
+            <el-input placeholder="Last Name" v-model="value3"/>
+          </el-col>
+          <el-col :span="12" class="form-row">
+            <el-input placeholder="Phone" v-model="value4"/>
+          </el-col>
+          <el-col :span="12" class="form-row">
+            <el-input placeholder="Email Address" v-model="value5"/>
+          </el-col>
 
           <!--Address-->
           <el-col :span="24" class="form-title">Address</el-col>
@@ -121,9 +51,15 @@
               <el-option label="Andorra" value="8"></el-option>
             </el-select>
           </el-col>
-          <el-col :span="24" class="form-row"><el-input placeholder="Address" v-model="value7" style="width:410px"/></el-col>
-          <el-col :span="12" class="form-row"><el-input placeholder="City" v-model="value8"/></el-col>
-          <el-col :span="12" class="form-row"><el-input placeholder="Zip / Postal Code " v-model="value9"/></el-col>
+          <el-col :span="24" class="form-row">
+            <el-input placeholder="Address" v-model="value7" style="width:410px"/>
+          </el-col>
+          <el-col :span="12" class="form-row">
+            <el-input placeholder="City" v-model="value8"/>
+          </el-col>
+          <el-col :span="12" class="form-row">
+            <el-input placeholder="Zip / Postal Code " v-model="value9"/>
+          </el-col>
 
           <!--ADD GUEST (OPTIONAL)-->
           <el-col :span="24">
@@ -131,38 +67,57 @@
               <el-collapse-item title="ADD GUEST (OPTIONAL)" name="1">
                 <div>
                   <el-col :span="24" class="form-row" style="font-size:15px;">Guest 1</el-col>
-                  <el-col :span="11" class="form-row"><el-input placeholder="First Name" v-model="value10"/></el-col>
-                  <el-col :span="10" class="form-row"><el-input placeholder="Last Name" v-model="value11"/></el-col>
-                  <el-col :span="3" class="form-row"><el-link style="margin-top:10px;"><i class="el-icon-delete"></i>Remove</el-link></el-col>
+                  <el-col :span="11" class="form-row">
+                    <el-input placeholder="First Name" v-model="value10"/>
+                  </el-col>
+                  <el-col :span="10" class="form-row">
+                    <el-input placeholder="Last Name" v-model="value11"/>
+                  </el-col>
+                  <el-col :span="3" class="form-row">
+                    <el-link style="margin-top:10px;"><i class="el-icon-delete"></i>Remove</el-link>
+                  </el-col>
                 </div>
               </el-collapse-item>
             </el-collapse>
           </el-col>
 
-          <el-col :span="24"><el-divider></el-divider></el-col>
+          <el-col :span="24">
+            <el-divider></el-divider>
+          </el-col>
 
           <!--Additional Details and Preferences-->
           <el-col :span="24">
             <el-col :span="24" class="form-title">Additional Details and Preferences</el-col>
-            <el-col :span="24"><el-input type="textarea" rows="7" placeholder="Please note your requests or special needs" v-model="value12"/></el-col>
+            <el-col :span="24">
+              <el-input type="textarea" rows="7" placeholder="Please note your requests or special needs"
+                        v-model="value12"/>
+            </el-col>
           </el-col>
-          <el-col :span="24"><el-divider></el-divider></el-col>
+          <el-col :span="24">
+            <el-divider></el-divider>
+          </el-col>
 
           <!--Payment Information-->
           <el-col :span="24" class="form-title">Payment Information</el-col>
-          <el-col :span="24">A$7,473.36 due November 6, 2022 (Hotel Local Time). Please provide a valid payment method.</el-col>
+          <el-col :span="24">A$7,473.36 due November 6, 2022 (Hotel Local Time). Please provide a valid payment
+            method.
+          </el-col>
           <el-col :span="24" class="form-row img-icon">
             <img src="https://reservations.Annear.com/public/images/Visa.png"/>
             <img src="https://reservations.Annear.com/public/images/MasterCard.png"/>
             <img src="https://reservations.Annear.com/public/images/Amex.png"/>
             <img src="https://reservations.Annear.com/public/images/Discover.png"/>
           </el-col>
-          <el-col :span="24" class="form-row"><el-input placeholder="Card Number" v-model="value13" style="width:370px;"/></el-col>
+          <el-col :span="24" class="form-row">
+            <el-input placeholder="Card Number" v-model="value13" style="width:370px;"/>
+          </el-col>
           <el-col :span="24" class="form-row">
             <el-input placeholder="Expiration Date (MM/YY) " v-model="value14" style="width:230px;"/>
             <el-input placeholder="CVV * " v-model="value15" style="width:120px;margin-left:15px"/>
           </el-col>
-          <el-col :span="24" class="form-row"><el-input placeholder="Name on Card *" v-model="value16" style="width:370px;"/></el-col>
+          <el-col :span="24" class="form-row">
+            <el-input placeholder="Name on Card *" v-model="value16" style="width:370px;"/>
+          </el-col>
         </el-col>
 
         <!--Annear New York Policies-->
@@ -194,8 +149,12 @@
             <el-checkbox v-model="checked1">Yes, I would like to receive newsletters and special offers by email.
             </el-checkbox>
           </div>
-          <div><el-checkbox v-model="checked2">* I agree with the Privacy Terms.</el-checkbox></div>
-          <div><el-checkbox v-model="checked3">* I agree with the Booking Conditions.</el-checkbox></div>
+          <div>
+            <el-checkbox v-model="checked2">* I agree with the Privacy Terms.</el-checkbox>
+          </div>
+          <div>
+            <el-checkbox v-model="checked3">* I agree with the Booking Conditions.</el-checkbox>
+          </div>
         </el-col>
 
         <!--Complete Booking-->
@@ -208,7 +167,7 @@
 
       <!--右侧信息-->
       <el-col :span="7" class="right-box" style="font-size:15px;">
-        <div style="font-size:20px;line-height:45px;">Your Stay at Annear New York</div>
+        <div style="font-size:20px;line-height:45px;">Your Stay at {{ this.data.hotelName }}</div>
         <el-col :span="12" style="margin-top:20px;">
           <div style="font-weight:600;">Check-in</div>
           <div>After 3:00 PM</div>
@@ -217,56 +176,43 @@
           <div style="font-weight:600;">Check-out</div>
           <div>Before 12:00 PM</div>
         </el-col>
-        <el-col :span="24"><el-divider></el-divider></el-col>
+        <el-col :span="24">
+          <el-divider></el-divider>
+        </el-col>
 
         <el-col :span="24">
-          <div>Sun, Oct 23, 2022 - Wed, Nov 30, 2022</div>
-          <div>2 Adults</div>
-        </el-col>
-        <el-col :span="24" style="display:flex;justify-content: space-between;padding-top: 20px;">
-          <div>Fifth Avenue Junior Suite:</div>
-          <div style="font-weight:600;">A$5,415.48</div>
-        </el-col>
-        <el-col :span="24">Deluxe Twin</el-col>
-        <el-col :span="24">Breakfast in Manhattan</el-col>
-        <el-col :span="24" style="margin-top:10px">
-          <div @click="show1=!show1" style="cursor: pointer;">1 Night<i class="el-icon-arrow-down"></i></div>
-          <div v-if="show1" style="display:flex;justify-content: space-between;padding-left:30px">
-            <div>Nov 10, 2022</div>
-            <div>A$5,415.48</div>
+          <div>{{ new Date(this.data.startDate).toDateString() }} - {{ new Date(this.data.endDate).toDateString() }}
           </div>
+          <div>{{ this.data.upperLimit }} Guests Max</div>
         </el-col>
+        <el-col :span="24" v-if="data.breakfast===1">Breakfast Provided</el-col>
+        <el-col :span="24" v-if="data.breakfast!==1">Breakfast Not Provided</el-col>
         <el-col :span="24" style="display:flex;justify-content: space-between;padding-top: 20px;">
-          <div>Taxes and Fees</div>
-          <div style="font-weight:600;">A$815.03</div>
+          <div>Unit Price Per Night:</div>
+          <div style="font-weight:600;">￥{{ this.data.unitPrice }}</div>
         </el-col>
         <el-col :span="24" style="margin-top:10px">
-          <div @click="show2=!show2" style="cursor: pointer;">Detail<i class="el-icon-arrow-down"></i></div>
-          <div v-if="show2" style="display:flex;justify-content: space-between;padding-left:30px">
-            <div>Nov 10, 2022</div>
-            <div>A$798.78</div>
+          <div @click="show1=!show1" style="cursor: pointer;">{{this.lastDays}} Night<i class="el-icon-arrow-down"></i></div>
+          <div v-if="show1" style="justify-content: space-between;padding-left:30px;margin-top: 10px">
+            <div style="display: flex" v-for="date in this.dates">
+              <div>{{date.toDateString()}}</div>
+            </div>
           </div>
-          <div v-if="show2" style="display:flex;justify-content: space-between;padding-left:30px">
-            <div>Occupancy charge</div>
-            <div>A$16.25</div>
-          </div>
-        </el-col>
-        <el-col :span="24" style="padding:20px 0;">
-          <el-link><i class="el-icon-edit"></i>Edit</el-link>
-          <span style="margin:0 15px;">|</span>
-          <el-link><i class="el-icon-delete"></i>Remove</el-link>
         </el-col>
         <el-col :span="24" style="padding-top:20px;display: flex;">
           <img src="../../assets/images/icon.jpg"/>
-          <div style="font-weight:600;margin-left:10px;margin-top:5px;">Alternate currency displays are for information purposes only.</div>
+          <div style="font-weight:600;margin-left:10px;margin-top:5px;">Alternate currency displays are for information
+            purposes only.
+          </div>
         </el-col>
-        <el-col :span="24"><el-divider></el-divider></el-col>
+        <el-col :span="24">
+          <el-divider></el-divider>
+        </el-col>
 
         <el-col :span="24" style="display:flex;justify-content: space-between;">
           <div style="font-weight:600;">Total:</div>
           <div>
-            <div style="font-weight:600;text-align: right;">A$6,230.51</div>
-            <div style="color:#888">(AUD tax included )</div>
+            <div style="font-weight:600;text-align: right;">￥{{this.data.totalPrice}}</div>
           </div>
         </el-col>
       </el-col>
@@ -276,6 +222,9 @@
 </template>
 
 <script>
+import cookie from "js-cookie";
+import {convertToDate} from "@/utils/utils";
+
 export default {
   name: "home",
   data() {
@@ -304,9 +253,58 @@ export default {
       checked1: false,
       checked2: false,
       checked3: false,
+      data: '',
+      lastDays: 0,
+      dates: []
     };
   },
-  methods: {}
+  methods: {},
+  created() {
+    let startDate = this.$route.query.startDate;
+    let endDate = this.$route.query.endDate;
+    let roomTypeId = this.$route.query.roomTypeId;
+    let hotelId = this.$route.query.hotelId;
+    if (startDate === undefined || endDate === undefined ||
+        roomTypeId === undefined || hotelId === undefined) {
+      this.$router.push('404');
+      return;
+    }
+    let roomId = this.$route.query.roomId;
+    let userToken = cookie.get('token');
+    let d1 = convertToDate(startDate);
+    let d2 = convertToDate(endDate);
+    this.$http({
+      url: this.$http.adornUrl('/order/order/order/confirmOrder'),
+      method: 'post',
+      data: this.$http.adornData({
+        'startDate': d1,
+        'endDate': d2,
+        'userToken': userToken,
+        'roomTypeId': roomTypeId,
+        'roomId': roomId,
+        'hotelId': hotelId
+      })
+    }).then(data => {
+      if (data.data.state === 200) {
+        this.data = data.data.data;
+        let d1 = new Date(this.data.startDate);
+        let d2 = new Date(this.data.endDate);
+        this.lastDays = Math.ceil((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+        let dates = [];
+        dates.push(d1);
+        let d = d1.getTime();
+        for (let i = 0;i < this.lastDays;i++) {
+          d +=  1000 * 60 * 60 *24;
+          dates.push(new Date(d));
+        }
+        this.dates = dates;
+      } else {
+        this.$message.error(data.data.message);
+      }
+    }).catch(err => {
+      this.$message.error("Network Error");
+    })
+  }
 };
 </script>
 

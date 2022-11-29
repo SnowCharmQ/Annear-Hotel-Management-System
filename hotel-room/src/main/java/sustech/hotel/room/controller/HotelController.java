@@ -49,8 +49,9 @@ public class HotelController {
                                                 @RequestParam("parking") Boolean parking, @RequestParam("spa") Boolean spa,
                                                 @RequestParam("bar") Boolean bar, @RequestParam("gym") Boolean gym,
                                                 @RequestParam("chessRoom") Boolean chessRoom, @RequestParam("swimmingPool") Boolean swimmingPool,
-                                                @RequestParam("lowest") BigDecimal lowest, @RequestParam("highest") BigDecimal highest) {
-        SearchRespVo vo = hotelService.searchHotel(token, sortBy, reversed, diningRoom, parking, spa, bar, gym, chessRoom, swimmingPool, lowest, highest);
+                                                @RequestParam("lowest") BigDecimal lowest, @RequestParam("highest") BigDecimal highest,
+                                                @RequestParam("location") String location) {
+        SearchRespVo vo = hotelService.searchHotel(token, sortBy, reversed, diningRoom, parking, spa, bar, gym, chessRoom, swimmingPool, lowest, highest, location);
         return new JsonResult<>(vo);
     }
 

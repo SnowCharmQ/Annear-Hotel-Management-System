@@ -11,8 +11,8 @@ CREATE TABLE cho_order
     origin_money   decimal(18, 2) not null,
     after_discount decimal(18, 2) not null,
     additional     varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-    score          integer
-
+    score          integer,
+    hotel_id       bigint(20)     not null
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4

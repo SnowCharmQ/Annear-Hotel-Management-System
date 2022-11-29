@@ -20,3 +20,9 @@ spring:
             - Path=/room/**
           filters:
             - RewritePath=/room(?<segment>/?.*), $\{segment}
+        - id: order_route
+          uri: lb://hotel-order
+          predicates:
+            - Path=/order/**
+          filters:
+            - RewritePath=/order(?<segment>/?.*), $\{segment}

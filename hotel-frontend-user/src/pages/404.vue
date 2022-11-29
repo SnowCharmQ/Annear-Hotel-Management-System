@@ -18,6 +18,8 @@ export default {
     back() {
       if (fromPath === '/reserve') {
         this.$router.go(-2);
+      } else {
+        this.$router.go(-1);
       }
     }
   },

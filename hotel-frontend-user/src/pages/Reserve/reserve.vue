@@ -10,16 +10,18 @@
             alt="Network Error"
             class="item-img">
       </el-carousel-item>
-      <div class="carousel-box">
+      <div class="carousel-box" style="height: 160px;">
         <div style="font-size:25px;">{{ this.hotelName }}</div>
         <div style="display:flex;margin-top:10px;">
           <div>
             <div><i class="el-icon-school"></i></div>
-            <div style="margin-top:30px;"><i class="el-icon-phone"></i></div>
+            <div style="margin-top:22px;"><i class="el-icon-phone"></i></div>
+            <div style="margin-top:22px;"><i class="el-icon-message"></i></div>
           </div>
           <div>
             <div>{{ this.province }} {{ this.city }} <br> {{ this.district }} {{ this.detailAddress }}</div>
             <div style="margin-top:20px;">{{ this.telephone }}</div>
+            <div style="margin-top:20px;">{{ this.email }}</div>
           </div>
         </div>
       </div>
@@ -212,8 +214,8 @@
                   <div>Per Night</div>
                 </div>
                 <div style="text-align:right;">
-                  <el-button type="info" style="background:black;color:#fff;margin-right: -5px" @click="toCheckOut">Book
-                    Now
+                  <el-button type="info" style="background:black;color:#fff;margin-right: -5px"
+                             @click="toCheckOut(item.typeId)">Book Now
                   </el-button>
                 </div>
               </div>
@@ -224,7 +226,8 @@
 
         <!--详细信息弹窗-->
         <el-dialog :visible.sync="dialogVisible" width="700px" title="Room Details">
-          <span slot="title" class="dialog-footer" style="height: 50px;font-size: 32px;font-family: 'Times New Roman',serif;margin-top: 5px">
+          <span slot="title" class="dialog-footer"
+                style="height: 50px;font-size: 32px;font-family: 'Times New Roman',serif;margin-top: 5px">
               <span style="margin-top: 10px">Room Details</span>
           </span>
           <div class="view-room">
@@ -235,7 +238,7 @@
                 <el-breadcrumb-item style="margin-top: -3px">{{ curRoomType.area }} m<sup>2</sup></el-breadcrumb-item>
                 <el-breadcrumb-item>Score: {{ parseFloat(curRoomType.averageScore).toFixed(1) }}</el-breadcrumb-item>
               </el-breadcrumb>
-              <div>{{curRoomType.description}}</div>
+              <div>{{ curRoomType.description }}</div>
             </div>
             <br>
             <div>
@@ -248,17 +251,19 @@
           </div>
           <el-divider></el-divider>
           <div style="margin:10px 0;font-size: 20px;font-family: 'Times New Roman',serif">
-          <span>Breakfast: <i v-if="curRoomType.breakfast===1" class="el-icon-check"></i><i v-if="curRoomType.breakfast!==1"
-                                                                             class="el-icon-close"></i></span>
+          <span>Breakfast: <i v-if="curRoomType.breakfast===1" class="el-icon-check"></i><i
+              v-if="curRoomType.breakfast!==1"
+              class="el-icon-close"></i></span>
             <span> | </span>
             <span>Windows: <i v-if="curRoomType.windows===1" class="el-icon-check"></i><i v-if="curRoomType.windows!==1"
-                                                                               class="el-icon-close"></i></span>
+                                                                                          class="el-icon-close"></i></span>
             <span> | </span>
-            <span>Television: <i v-if="curRoomType.television===1" class="el-icon-check"></i><i v-if="curRoomType.television!==1"
-                                                                               class="el-icon-close"></i></span>
+            <span>Television: <i v-if="curRoomType.television===1" class="el-icon-check"></i><i
+                v-if="curRoomType.television!==1"
+                class="el-icon-close"></i></span>
             <span> | </span>
             <span>Bathtub: <i v-if="curRoomType.bathtub===1" class="el-icon-check"></i><i v-if="curRoomType.bathtub!==1"
-                                                                                            class="el-icon-close"></i></span>
+                                                                                          class="el-icon-close"></i></span>
             <span> | </span>
             <span>Thermos: <i v-if="curRoomType.thermos===1" class="el-icon-check"></i><i
                 v-if="curRoomType.thermos!==1" class="el-icon-close"></i></span>
@@ -267,17 +272,17 @@
           <el-divider></el-divider>
 
           <!--用户评论区-->
-<!--          <div>-->
-<!--            <div class="detail">User Comment</div>-->
-<!--            <div class="comment-flex" v-for="(item,index) in commentList" :key="index">-->
-<!--              <div class="comment-user">{{ item.name }}：</div>-->
-<!--              <div class="comment-des">-->
-<!--                <div class="comment-content">{{ item.content }}</div>-->
-<!--                <div class="time">{{ item.ctime }}</div>-->
-<!--              </div>-->
-<!--            </div>-->
-<!--          </div>-->
-          <span slot="footer" class="dialog-footer"><el-button type="primary" @click="dialogVisible"
+          <!--          <div>-->
+          <!--            <div class="detail">User Comment</div>-->
+          <!--            <div class="comment-flex" v-for="(item,index) in commentList" :key="index">-->
+          <!--              <div class="comment-user">{{ item.name }}：</div>-->
+          <!--              <div class="comment-des">-->
+          <!--                <div class="comment-content">{{ item.content }}</div>-->
+          <!--                <div class="time">{{ item.ctime }}</div>-->
+          <!--              </div>-->
+          <!--            </div>-->
+          <!--          </div>-->
+          <span slot="footer" class="dialog-footer"><el-button type="primary" @click="toCheckOut(curRoomType.typeId)"
                                                                class="v-btn2">Book Now</el-button></span>
         </el-dialog>
       </el-col>
@@ -333,6 +338,8 @@
 </template>
 
 <script>
+import cookie from "js-cookie";
+
 export default {
   name: "home",
   data() {
@@ -347,6 +354,7 @@ export default {
       district: '',
       detailAddress: '',
       telephone: '',
+      email: '',
       images: [],
       date1: new Date(),
       date2: this.generateTomorrow(),
@@ -380,8 +388,16 @@ export default {
     toMore() {
       this.$message.info('more')
     },
-    toCheckOut() {
-      this.$router.push('Order')
+    toCheckOut(typeId) {
+      let token = cookie.get('token');
+      let startDate = this.date1;
+      let endDate = this.date2;
+      let roomTypeId = typeId;
+      let hotelId = this.$route.query.hotel;
+      if (token === undefined || token === '') {
+        this.$message.info("You Have Not Login In");
+      }
+      this.$router.push('order?startDate=' + startDate + '&endDate=' + endDate + '&roomTypeId=' + roomTypeId + '&hotelId=' + hotelId);
     },
     toFloorPlan() {
       this.$router.push('floorPlan')
@@ -468,6 +484,7 @@ export default {
         this.district = obj.district;
         this.detailAddress = obj.detailAddress;
         this.telephone = obj.telephone;
+        this.email = obj.email;
         this.images = obj.images;
         this.roomTypes = obj.roomTypes;
         this.roomTypeImages = obj.roomTypeImages;
@@ -567,10 +584,10 @@ export default {
     border: 1px solid black;
     background: black;
     text-align: center;
-    line-height: 45px;
-    width: 100%;
+    line-height: 25px;
+    width: 130px;
     color: #fff;
-    margin-top: 10px;
+    //margin-top: 10px;
     cursor: pointer;
   }
 }

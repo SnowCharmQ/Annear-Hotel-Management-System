@@ -121,9 +121,10 @@ public class HotelServiceImpl extends ServiceImpl<HotelDao, HotelEntity> impleme
     public SearchRespVo searchHotel(String token, String sortBy, Boolean reversed,
                                     Boolean diningRoom, Boolean parking, Boolean spa,
                                     Boolean bar, Boolean gym, Boolean chessRoom, Boolean swimmingPool,
-                                    BigDecimal lowest, BigDecimal highest) {
+                                    BigDecimal lowest, BigDecimal highest, String location) {
         SearchRespVo respVo = this.initSearch(token);
         List<HotelVo> hotels = respVo.getHotels();
+        String[] strings = location.split("/");
         List<HotelVo> vos = new ArrayList<>(hotels.stream().filter(o -> {
             boolean flag = true;
             if (diningRoom) flag = o.getDiningRoom() == 1;
@@ -133,6 +134,9 @@ public class HotelServiceImpl extends ServiceImpl<HotelDao, HotelEntity> impleme
             if (gym) flag = flag && o.getGym() == 1;
             if (chessRoom) flag = flag && o.getChessRoom() == 1;
             if (swimmingPool) flag = flag && o.getSwimmingPool() == 1;
+            if (!Objects.equals(location, "")) {
+                flag = flag && Objects.equals(strings[0], o.getProvince()) && Objects.equals(strings[1], o.getCity());
+            }
             return flag && o.getAveragePrice().compareTo(lowest) > 0 && o.getAveragePrice().compareTo(highest) < 0;
         }).toList());
         if (!reversed){

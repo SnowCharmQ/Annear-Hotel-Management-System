@@ -112,7 +112,7 @@ public class RoomTypeServiceImpl extends ServiceImpl<RoomTypeDao, RoomTypeEntity
             Map<Long, List<CommentVo>> map = new HashMap<>();
             for (CommentVo comment : comments) {
                 Long typeId = comment.getTypeId();
-                if (!map.containsKey(typeId)) {
+                if (map.containsKey(typeId)) {
                     List<CommentVo> vos = map.get(typeId);
                     vos.add(comment);
                 } else {

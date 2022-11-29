@@ -13,7 +13,7 @@
         <img src="../../assets/images/img1.png" class="left-img"/>
         <div style="color:#888;">NEW & NOTEWORTHY</div>
         <div class="left-title">A Quest for Happiness</div>
-        <div class="content">lnspircd by Bhutani's dedication to happiness over economic prosperity, Amankorai's new seven- to 1z-night journey invites you to give back to local communities.</div>
+        <div class="content">lnspircd by Bhutani's dedication to happiness over economic prosperity, Annearkorai's new seven- to 1z-night journey invites you to give back to local communities.</div>
         <el-link type="info" @click="toMore">Discover more</el-link>
       </el-col>
 
@@ -22,7 +22,7 @@
         <img src="../../assets/images/img2.jpeg" class="right-img"/>
         <div style="color:#888;">STORIES</div>
         <div class="left-title">Mist and mysticism in Borobodur</div>
-        <div class="content">Join webby-honoured editor Xerxes Cook and celebrated French photographer ferome Gallnd as they uncover Central ava's cultural heartland from Amanjiwwo, sharing firsthand the secrets of its storied landscapcs.</div>
+        <div class="content">Join webby-honoured editor Xerxes Cook and celebrated French photographer ferome Gallnd as they uncover Central ava's cultural heartland from Annearjiwwo, sharing firsthand the secrets of its storied landscapcs.</div>
         <el-link type="info" @click="toMore">Discover more</el-link>
       </el-col>
 

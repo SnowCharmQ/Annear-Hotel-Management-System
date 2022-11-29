@@ -152,10 +152,10 @@
           <el-col :span="24" class="form-title">Payment Information</el-col>
           <el-col :span="24">A$7,473.36 due November 6, 2022 (Hotel Local Time). Please provide a valid payment method.</el-col>
           <el-col :span="24" class="form-row img-icon">
-            <img src="https://reservations.aman.com/public/images/Visa.png"/>
-            <img src="https://reservations.aman.com/public/images/MasterCard.png"/>
-            <img src="https://reservations.aman.com/public/images/Amex.png"/>
-            <img src="https://reservations.aman.com/public/images/Discover.png"/>
+            <img src="https://reservations.Annear.com/public/images/Visa.png"/>
+            <img src="https://reservations.Annear.com/public/images/MasterCard.png"/>
+            <img src="https://reservations.Annear.com/public/images/Amex.png"/>
+            <img src="https://reservations.Annear.com/public/images/Discover.png"/>
           </el-col>
           <el-col :span="24" class="form-row"><el-input placeholder="Card Number" v-model="value13" style="width:370px;"/></el-col>
           <el-col :span="24" class="form-row">
@@ -165,10 +165,10 @@
           <el-col :span="24" class="form-row"><el-input placeholder="Name on Card *" v-model="value16" style="width:370px;"/></el-col>
         </el-col>
 
-        <!--Aman New York Policies-->
+        <!--Annear New York Policies-->
         <el-col :span="24" style="background:#f3eee7;line-height:20px;height:20px;"></el-col>
         <el-col :span="24" style="font-size:16px;padding-bottom: 20px;">
-          <el-col :span="24" class="form-title">Aman New York Policies</el-col>
+          <el-col :span="24" class="form-title">Annear New York Policies</el-col>
           <el-col class="form-row" style="display:flex;">
             <div>
               <div style="font-weight:600;">Check-in</div>
@@ -208,7 +208,7 @@
 
       <!--右侧信息-->
       <el-col :span="7" class="right-box" style="font-size:15px;">
-        <div style="font-size:20px;line-height:45px;">Your Stay at Aman New York</div>
+        <div style="font-size:20px;line-height:45px;">Your Stay at Annear New York</div>
         <el-col :span="12" style="margin-top:20px;">
           <div style="font-weight:600;">Check-in</div>
           <div>After 3:00 PM</div>

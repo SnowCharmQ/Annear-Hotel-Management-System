@@ -6,7 +6,7 @@
     </div>
 
     <!--------to be changed--------->
-    <div><img src="https://www.aman.com/themes/custom/aman/logo.svg" class="logo"/></div>
+    <div><img src="https://www.Annear.com/themes/custom/Annear/logo.svg" class="logo"/></div>
 
     <!--homepage右上角的两个按钮-->
     <div class="r-content">
@@ -79,7 +79,7 @@ export default {
         {
           name: 'Destinations', url: '',
           children: [
-            {name: 'Aman Journeys', url: '', children: []},
+            {name: 'Annear Journeys', url: '', children: []},
             {name: 'Celebrations', url: '', children: []},
             {name: 'Active Adventure', url: '', children: []},
             {name: 'Wellness', url: '', children: []}
@@ -91,7 +91,7 @@ export default {
         {
           name: 'Yachts', url: '',
           children: [
-            {name: 'Aman Journeys', url: '', children: []},
+            {name: 'Annear· Journeys', url: '', children: []},
             {name: 'Celebrations', url: '', children: []},
             {name: 'Culture & Conservation', url: '', children: []},
             {name: 'Active Adventure', url: '', children: []}

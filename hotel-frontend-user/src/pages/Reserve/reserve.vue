@@ -284,7 +284,7 @@
 
       <!--右侧信息-->
       <el-col :span="7" class="right-box">
-        <div style="font-size:20px;line-height:45px;">Your Stay at Aman New York</div>
+        <div style="font-size:20px;line-height:45px;">Your Stay at Annear New York</div>
         <el-col :span="12" style="margin-top:20px;">
           <div style="font-weight:600;">Check-in</div>
           <div>After 3:00 PM</div>

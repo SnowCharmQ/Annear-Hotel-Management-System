@@ -9,7 +9,7 @@
       </el-form>
     </el-dialog>
   </div>
-</template>
+</template>]
 <script>
 
 let areaPolygons = [] // 查询的行政区域
@@ -25,14 +25,14 @@ export default {
       curHotel: {},
       hotelList: [
         {
-          name: 'Aman Kyoto',
+          name: 'Annear Kyoto',
           addr: 'beijin',
           price: '230',
           lng: 116.20,
           lat: 39.56,
           img: require('../../assets/images/hotel/1.jpeg')
         }, {
-          name: 'Aman Kyoto',
+          name: 'Annear Kyoto',
           addr: 'Cape St Charles',
           price: '230',
           lng: 55.40,
@@ -40,7 +40,7 @@ export default {
           img: require('../../assets/images/hotel/1.jpeg')
         },
         {
-          name: 'Amantaka',
+          name: 'Anneartaka',
           addr: "Mexico",
           price: '980',
           lng: 98.52,
@@ -48,7 +48,7 @@ export default {
           img: require('../../assets/images/hotel/2.jpeg')
         },
         {
-          name: 'Amanwella',
+          name: 'Annearwella',
           addr: 'hangzhou',
           price: '560',
           lng: 118.50,
@@ -56,7 +56,7 @@ export default {
           img: require('../../assets/images/hotel/3.jpeg')
         },
         {
-          name: 'Amanera',
+          name: 'Annearera',
           addr: 'nanjing',
           price: '460',
           lng: 118.90,
@@ -64,7 +64,7 @@ export default {
           img: require('../../assets/images/hotel/4.jpeg')
         },
         {
-          name: 'Aman Tokyo',
+          name: 'Annear Tokyo',
           addr: 'Chiyoda-ku, Japan',
           price: '390',
           lng: 106.20,
@@ -72,7 +72,7 @@ export default {
           img: require('../../assets/images/hotel/5.jpeg')
         },
         {
-          name: 'Aman Tokyo',
+          name: 'Annear Tokyo',
           addr: 'shenzheng',
           price: '390',
           lng: 114.085947,
@@ -80,7 +80,7 @@ export default {
           img: require('../../assets/images/hotel/5.jpeg')
         },
         {
-          name: 'Aman Tokyo',
+          name: 'Annear Tokyo',
           addr: 'lanzhou',
           price: '390',
           lng: 103.51,

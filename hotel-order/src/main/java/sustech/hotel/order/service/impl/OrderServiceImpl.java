@@ -198,7 +198,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         for (String s : guestInfo) {
             if (StringUtils.isEmpty(s)) continue;
             String[] info = s.split(",");
-            if (!info[0].equals("") || !info[1].equals("") || !info[2].equals("")) {
+            if (info.length == 0) continue;
+            if (!info[0].equals(" ") || !info[1].equals(" ") || !info[2].equals(" ")) {
                 OrderInfoEntity orderInfoEntity = new OrderInfoEntity();
                 orderInfoEntity.setOrderId(request.getOrderId());
                 orderInfoEntity.setTenantName(info[0]);

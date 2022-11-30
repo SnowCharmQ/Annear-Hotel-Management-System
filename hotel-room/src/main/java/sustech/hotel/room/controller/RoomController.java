@@ -11,12 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import sustech.hotel.model.to.hotel.RoomInfoTo;
+import sustech.hotel.model.to.order.OrderInfoTo;
 import sustech.hotel.room.entity.HotelEntity;
 import sustech.hotel.room.entity.RoomEntity;
 import sustech.hotel.room.entity.RoomTypeEntity;
 import sustech.hotel.room.service.HotelService;
 import sustech.hotel.room.service.RoomService;
-import sustech.hotel.common.utils.Constant;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.room.service.RoomTypeService;
@@ -45,6 +45,19 @@ public class RoomController {
         BeanUtils.copyProperties(roomType, roomInfoTo);
         BeanUtils.copyProperties(hotel, roomInfoTo);
         return new JsonResult<>(roomInfoTo);
+    }
+
+    @RequestMapping("/orderinfo/{roomId}")
+    public JsonResult<OrderInfoTo> getOrderInfo(@PathVariable("roomId") Long roomId) {
+        RoomEntity room = roomService.getById(roomId);
+        Long hotelId = room.getHotelId();
+        HotelEntity hotel = hotelService.getById(hotelId);
+        Long roomNumber = room.getRoomNumber();
+        String hotelName = hotel.getHotelName();
+        OrderInfoTo to = new OrderInfoTo();
+        to.setRoomNumber(roomNumber);
+        to.setHotelName(hotelName);
+        return new JsonResult<>(to);
     }
 
     /**

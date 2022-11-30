@@ -30,4 +30,5 @@ public class HotelVo {
     private String hotelPicture;
     private BigDecimal averagePrice;
     private Boolean isCollect;
+    private Integer floors;
 }

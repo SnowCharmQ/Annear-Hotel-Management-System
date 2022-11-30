@@ -28,6 +28,19 @@ const routes = [
       {
         path: 'room',
         component:() => import('@/views/Room/Room.vue')
+      },
+      {
+        path: 'graph1',
+        component:() => import('@/views/Graphs/graphs1.vue')
+      }, {
+        path: 'graph2',
+        component:() => import('@/views/Graphs/graphs2.vue')
+      }, {
+        path: 'graph3',
+        component:() => import('@/views/Graphs/graphs3.vue')
+      }, {
+        path: 'graph4',
+        component:() => import('@/views/Graphs/graphs4.vue')
       }
     ]
   }

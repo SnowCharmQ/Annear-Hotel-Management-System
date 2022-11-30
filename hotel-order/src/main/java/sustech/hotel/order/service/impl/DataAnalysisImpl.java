@@ -15,7 +15,7 @@ import java.util.*;
 
 @Service("dataAnalysisService")
 public class DataAnalysisImpl extends ServiceImpl<OrderDao, OrderEntity> implements DataAnalysisService {
-    public DataAnalysisVo getLastMonthOrderNumber() {
+    public DataAnalysisVo getLastMonthOrderNumber(Long hotelId) {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.DATE, -31);
         Date start = c.getTime();
@@ -54,7 +54,7 @@ public class DataAnalysisImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         return new DataAnalysisVo(xdata, ydata);
     }
 
-    public DataAnalysisVo getLastYearRoomTypeOrderNumber() {
+    public DataAnalysisVo getLastYearRoomTypeOrderNumber(Long hotelId) {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.MONTH, -12);
         c.set(Calendar.DAY_OF_MONTH, 0);
@@ -101,7 +101,7 @@ public class DataAnalysisImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         return new DataAnalysisVo(xdata, ydata);
     }
 
-    public DataAnalysisVo getLastYearIncome() {
+    public DataAnalysisVo getLastYearIncome(Long hotelId) {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.MONTH, -12);
         Date start = c.getTime();
@@ -138,14 +138,14 @@ public class DataAnalysisImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     }
 
 
-    public DataAnalysisVo getStarDistribution() {
+    public DataAnalysisVo getStarDistribution(Long hotelId) {
         Calendar c = Calendar.getInstance();
         c.add(Calendar.MONTH, -12);
         Date start = c.getTime();
         Date end = new Date();
         int[] score = new int[6];
         List<OrderEntity> orders = this.baseMapper.selectList(new QueryWrapper<OrderEntity>().and(
-                o -> o.ge("start_date", start).le("end_date", end)));
+                o -> o.eq("hotel_id", hotelId).ge("start_date", start).le("end_date", end)));
 
         for (OrderEntity entity : orders) {
             score[entity.getScore()] += 1;

@@ -6,11 +6,11 @@ import sustech.hotel.order.entity.BookingEntity;
 import sustech.hotel.order.entity.OrderEntity;
 
 public interface DataAnalysisService extends IService<OrderEntity> {
-    public DataAnalysisVo getLastMonthOrderNumber();
+    public DataAnalysisVo getLastMonthOrderNumber(Long hotelId);
 
-    public DataAnalysisVo getLastYearRoomTypeOrderNumber();
+    public DataAnalysisVo getLastYearRoomTypeOrderNumber(Long hotelId);
 
-    public DataAnalysisVo getLastYearIncome();
+    public DataAnalysisVo getLastYearIncome(Long hotelId);
 
-    public DataAnalysisVo getStarDistribution();
+    public DataAnalysisVo getStarDistribution(Long hotelId);
 }

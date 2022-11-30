@@ -1,8 +1,13 @@
 package sustech.hotel.order.config;
 
+
 import org.springframework.amqp.core.Binding;
 import org.springframework.amqp.core.Exchange;
 import org.springframework.amqp.core.TopicExchange;
+import org.springframework.amqp.rabbit.connection.CachingConnectionFactory;
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
+import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -12,6 +17,7 @@ import org.springframework.amqp.core.Queue;
 
 @Configuration
 public class MyRabbitMQConfig {
+    @Bean
     public Queue orderDelayQueue() {
         HashMap<String, Object> arguments = new HashMap<>();
         arguments.put("x-dead-letter-exchange", "order-event-exchange");
@@ -48,30 +54,40 @@ public class MyRabbitMQConfig {
                 "order.release.order",
                 null);
     }
+//
+//    @Bean
+//    public Binding orderReleaseOtherBinding() {
+//
+//        return new Binding("stock.release.stock.queue",
+//                Binding.DestinationType.QUEUE,
+//                "order-event-exchange",
+//                "order.release.other.#",
+//                null);
+//    }
 
-    @Bean
-    public Binding orderReleaseOtherBinding() {
 
-        return new Binding("stock.release.stock.queue",
-                Binding.DestinationType.QUEUE,
-                "order-event-exchange",
-                "order.release.other.#",
-                null);
-    }
-
-    @Bean
-    public Queue orderSecKillOrderQueue() {
-        return new Queue("order.secKill.order.queue", true, false, false);
-    }
-
-    @Bean
-    public Binding orderSecKillOrderQueueBinding() {
-        return new Binding(
-                "order.secKill.order.queue",
-                Binding.DestinationType.QUEUE,
-                "order-event-exchange",
-                "order.secKill.order",
-                null);
-
-    }
+//    /**
+//     * 以下代码用于初始化时的地址信息配置 2
+//     */
+//    @Bean
+//    public RabbitTemplate rabbitTemplate(ConnectionFactory connectionFactory) {
+//
+//        RabbitTemplate template = new RabbitTemplate(connectionFactory);
+//        template.setMessageConverter(new Jackson2JsonMessageConverter());
+//        return template;
+//    }
+//
+//    /**
+//     * 以下代码用于初始化时的地址信息配置 1
+//     */
+//    @Bean
+//    public ConnectionFactory connectionFactory() {
+//        CachingConnectionFactory connectionFactory =
+//                new CachingConnectionFactory("1.12.55.105", 5672);
+//        connectionFactory.setUsername("guest");
+//        connectionFactory.setPassword("guest");
+//        connectionFactory.setVirtualHost("/");
+//        connectionFactory.setPublisherConfirms(true);
+//        return connectionFactory;
+//    }
 }

@@ -210,6 +210,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         orderOperationEntity.setOperationTime(new Timestamp(System.currentTimeMillis()));
         orderOperationEntity.setOrderId(request.getOrderId());
         orderOperationService.save(orderOperationEntity);
+        rabbitTemplate.convertAndSend("order-event-exchange","order.create.order",request);
     }
 
     @Override

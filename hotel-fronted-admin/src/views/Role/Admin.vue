@@ -2,28 +2,24 @@
     <div>
         <!-- 添加区域 -->
         <div class="addAdmin">
-            <el-button type="primary" size="mini" class="addAdminButton" @click="addClick">Add Admin</el-button>
+            <el-button type="primary" size="mini" round class="addAdminButton" @click="addClick">Add Admin</el-button>
         </div>
         <!-- 表格区域 -->
         <el-table :data="tableData" style="width: 98%; min-width: 1000px"
-            :header-cell-style="{ color: 'black', fontSize: '14px', fontFamily: 'nano', background: '#f3eee7' }"
+            :header-cell-style="{textAlign:'center', color: 'black', fontSize: '20px', fontFamily: 'nano', background: '#f3eee7', borderBottomColor: 'black'}"
+            :cell-style="{ textAlign: 'center', background: '#f3eee7', fontSize: '18px', borderBottomColor: 'black' }"
             :row-style="setRowStyle" border-collapse:collapse stripe fit highlight-current-row border
             empty-text="No Administator Added">
             <el-table-column label="Date" text-align="center" width="180">
                 <template slot-scope="scope">
-                    <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px">{{ scope.row.date }}</span>
+                   {{ scope.row.date }}
                 </template>
             </el-table-column>
             <el-table-column label="Name" width="180">
                 <template slot-scope="scope">
-                    <el-popover trigger="hover" placement="top">
-                        <p>Name: {{ scope.row.admin_name }}</p>
+                    {{ scope.row.admin_name }}
 
-                        <div slot="reference" class="name-wrapper">
-                            <el-tag size="medium">{{ scope.row.admin_name }}</el-tag>
-                        </div>
-                    </el-popover>
+                    
                 </template>
             </el-table-column>
 
@@ -69,20 +65,7 @@ import { done } from 'nprogress';
 
 export default {
     data() {
-        var validateAdminName = (rule, value, callback) => {
-
-            if (value === '') {
-                callback(new Error('Please enter name of administrator.'));
-            } else {
-                let validName = /^[0-9a-zA-Z.]+$/.test(value)
-                if (!validName) {
-                    callback(new Error('Duration must be a combination of number and letter'));
-                }
-                else {
-                    callback();
-                }
-            }
-        };
+        
         var validateAdminPassword = (rule, value, callback) => {
 
             if (value === '') {
@@ -100,11 +83,17 @@ export default {
         return {
             // 表格数据
             tableData: [{
-                date: '2016-05-03',
-                admin_name: 'Tom',
-                admin_password: 'xxx'
+                date: '2022-11-23',
+                admin_name: '邱逸伦',
+                admin_password: '123456'
 
-            }],
+            },
+            {
+                date: '2022-11-24',
+                admin_name: '眭眭',
+                admin_password: '171070'
+
+            },],
             count: 5,
             form: {
                 date: '',
@@ -113,10 +102,7 @@ export default {
             },
             rules: {
 
-                admin_name: [
-                    { validator: validateAdminName, trigger: 'blur' },
-
-                ],
+                
                 admin_password: [
                     { validator: validateAdminPassword, trigger: 'blur' },
 
@@ -195,5 +181,31 @@ export default {
 
 .drawerStyle {
     color: #dc8917;
+}
+.addAdminButton {
+    font-family: 'nano';
+    font-size: medium;
+    color: black;
+    border-color: black;
+    background-color: #f3eee7;
+}
+.el-button--danger {
+    background-color: #f15973;
+    border-color: #ec9bad;
+    font-family: 'nano';
+    font-size: 15px;
+}
+
+.el-button--danger:hover {
+    background-color: #e9173a;
+
+}
+.el-button--primary {
+    background-color: #f3eee7;
+    border-color: #000000;
+    color: black;
+}
+.el-button--primary:hover {
+    background-color: #ffffff;
 }
 </style>

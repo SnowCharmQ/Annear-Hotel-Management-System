@@ -17,10 +17,13 @@ import sustech.hotel.exception.BaseException;
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.order.NoAvailableRoomException;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
+import sustech.hotel.model.to.hotel.HotelTo;
+import sustech.hotel.model.to.hotel.RoomTo;
 import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.model.vo.hotel.AvailableRoomTypeVo;
 import sustech.hotel.model.vo.order.OrderConfirmRespVo;
 import sustech.hotel.model.vo.order.OrderConfirmVo;
+import sustech.hotel.model.vo.order.OrderInfoVo;
 import sustech.hotel.model.vo.order.PlaceOrderVo;
 import sustech.hotel.order.dao.BookingDao;
 import sustech.hotel.order.entity.OrderEntity;
@@ -100,7 +103,7 @@ public class OrderController {
     @PostMapping("/confirmOrder")
     public JsonResult<OrderConfirmRespVo> confirmOrder(@RequestBody OrderConfirmVo orderConfirmVo) {
         try {
-            OrderConfirmRespVo resp ;
+            OrderConfirmRespVo resp;
             if (orderConfirmVo.getRoomId() == null) {
                 Date startDate = DateConverter.convertStringToDate(orderConfirmVo.getStartDate());
                 Date endDate = DateConverter.convertStringToDate(orderConfirmVo.getEndDate());
@@ -157,6 +160,19 @@ public class OrderController {
             return vo;
         }).toList();
         return new JsonResult<>(JSON.toJSONString(vos));
+    }
+
+    @ResponseBody
+    @RequestMapping("/orderInfo")
+    public JsonResult<OrderInfoVo> getOrderInfo(@RequestParam String orderId) {
+        OrderEntity orderEntity = orderService.getById(orderId);
+        OrderInfoVo orderInfoVo = new OrderInfoVo();
+        BeanUtils.copyProperties(orderEntity, orderInfoVo);
+        RoomTo room = roomFeignService.getRoomByID(orderEntity.getRoomId()).getData();
+        orderInfoVo.setRoomNumber(room.getRoomNumber());
+        HotelTo hotel = roomFeignService.getHotelByID(room.getHotelId()).getData();
+        orderInfoVo.setHotelName(hotel.getHotelName());
+        return new JsonResult<>(orderInfoVo);
     }
 
 }

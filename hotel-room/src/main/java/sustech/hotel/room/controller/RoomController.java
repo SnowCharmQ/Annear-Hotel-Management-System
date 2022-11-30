@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import sustech.hotel.model.to.hotel.RoomInfoTo;
+import sustech.hotel.model.vo.hotel.BookingRoomInfoVo;
+import sustech.hotel.room.dao.RoomDao;
 import sustech.hotel.room.entity.HotelEntity;
 import sustech.hotel.room.entity.RoomEntity;
 import sustech.hotel.room.entity.RoomTypeEntity;
@@ -34,6 +36,9 @@ public class RoomController {
 
     @Autowired
     private HotelService hotelService;
+
+    @Autowired
+    private RoomDao roomDao;
 
     @RequestMapping("/allInfo/{roomId}")
     public JsonResult<RoomInfoTo> allInfo(@PathVariable("roomId") Long roomId) {
@@ -99,5 +104,10 @@ public class RoomController {
         List<Long> conflictList = JSON.parseArray(json, Long.class);
         List<Long> list = roomService.getAvailableRoom(hotelId, typeId, conflictList);
         return new JsonResult<>(list);
+    }
+
+    @GetMapping("/floorRoomList")
+    public JsonResult<List<BookingRoomInfoVo>> getFloorRoomList(@RequestParam("hotel_id") Long hotelId, @RequestParam("layout_id") Long layoutId){
+        return new JsonResult<>( roomDao.selectRoomByHotelIdAndLayoutId(hotelId, layoutId));
     }
 }

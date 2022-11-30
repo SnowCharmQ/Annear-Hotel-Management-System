@@ -13,8 +13,10 @@ import sustech.hotel.common.utils.DateConverter;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
+import sustech.hotel.model.vo.hotel.BookingRoomInfoVo;
 import sustech.hotel.order.dao.BookingDao;
 import sustech.hotel.order.entity.BookingEntity;
+import sustech.hotel.order.feign.RoomFeignService;
 import sustech.hotel.order.service.BookingService;
 
 
@@ -27,6 +29,9 @@ public class BookingController {
 
     @Autowired
     private BookingService bookingService;
+
+    @Autowired
+    private RoomFeignService roomFeignService;
 
     /**
      * 根据传入的参数map进行分页查询
@@ -86,4 +91,21 @@ public class BookingController {
         String json = JSON.toJSONString(conflictList);
         return new JsonResult<>(json);
     }
+
+    @ResponseBody
+    @GetMapping("/bookingRoomInfo")
+    public JsonResult<List<BookingRoomInfoVo>> getBookingRoomInfo(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, @RequestParam("hotelId") Long hotelId, @RequestParam("layoutId") Long layoutId) {
+        List<BookingRoomInfoVo> list = roomFeignService.getFloorRoomList(hotelId, layoutId).getData();
+        Date start = DateConverter.convertStringToDate(startDate);
+        Date end = DateConverter.convertStringToDate(endDate);
+        for (BookingRoomInfoVo info : list) {
+            Integer result = bookingDao.checkConflict(start, end, info.getRoomId());
+            if (result == 0)
+                info.setCanReserve(Boolean.TRUE);
+            else
+                info.setCanReserve(Boolean.FALSE);
+        }
+        return new JsonResult<>(list);
+    }
+
 }

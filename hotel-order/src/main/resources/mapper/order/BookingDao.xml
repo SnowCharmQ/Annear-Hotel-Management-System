@@ -32,4 +32,8 @@
         update cho_booking set order_state = #{order_state} where order_id = #{order_id}
     </update>
 
+    <delete id="deleteByOrderId">
+        delete from cho_booking where order_id = #{order_id}
+    </delete>
+
 </mapper>

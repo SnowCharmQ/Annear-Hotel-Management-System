@@ -26,7 +26,7 @@ VueAMap.initAMapApiLoader({
 locale.use(lang)
 
 
-Vue.use(Element)
+Vue.use(Element, {locale})
 Vue.config.productionTip = false
 axios.defaults.withCredentials = true
 Vue.prototype.$http = request // ajax请求方法

@@ -27,6 +27,10 @@ const routes = [
                 name: 'reserve',
                 component: () => import('../pages/Reserve/reserve')
             }, {
+                path: '/comments',
+                name: 'comments',
+                component: () => import('../pages/Comments/comments')
+            }, {
                 path: '/order',
                 name: 'order',
                 meta: {

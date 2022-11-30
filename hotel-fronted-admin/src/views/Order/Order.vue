@@ -2,20 +2,21 @@
     <div>
         <!-- 添加区域 -->
         <div class="addRoom">
+            <i class="el-icon-office-building" ></i>
             <!-- <el-button type="primary" size="mini"  class="addRoomButton" @click="addClick">Add Room</el-button> -->
             <el-select v-model="form.hotel" placeholder="Shanghai Hotel" class="selection">
                 <el-option label="Shanghai Hotel" value="Shanghai Hotel"></el-option>
                 <el-option label="Beijing Hotel" value="Beijing Hotel"></el-option>
                 <el-option label="Shenzhen Hotel" value="Shenzhen Hotel"></el-option>
             </el-select>
-
+            <i class="el-icon-s-home"></i>
             <!-- <el-button type="primary" size="mini"  class="addRoomButton" @click="addClick">Add Room</el-button> -->
             <el-select v-model="form.type" placeholder="King Bed Suite" class="selection">
                 <el-option label="Standard Suite" value="Standard Suite"></el-option>
                 <el-option label="Presidential Suite" value="Presidential Suite"></el-option>
                 <el-option label="King Bed Suite" value="King Bed Suite"></el-option>
             </el-select>
-
+            <i class="el-icon-data-line"></i>
             <el-select v-model="form.status" placeholder="Finished" class="selection">
                 <el-option label="Finished" value="Finished"></el-option>
                 <el-option label="Waiting to Pay" value="Waiting to Pay"></el-option>
@@ -23,8 +24,10 @@
                 <el-option label="Undertaking" value="Undertaking"></el-option>
                 <el-option label="Waiting Comment" value="Waiting Comment"></el-option>
             </el-select>
+            <i class="el-icon-date"></i>
             <el-date-picker type="date" placeholder="check-in" v-model="form2.date1" style="width: 15%;">
             </el-date-picker>
+            <i class="el-icon-date"></i>
             <el-date-picker type="date" placeholder="check-out" v-model="form2.date2" style="width: 15%;">
             </el-date-picker>
         </div>
@@ -78,7 +81,7 @@
                     {{ scope.row.phone }}
                 </template>
             </el-table-column>
-            <el-table-column label="email" width="180">
+            <el-table-column label="email">
                 <template slot-scope="scope">
 
                     {{ scope.row.email }}
@@ -508,6 +511,7 @@ export default {
     font-size: 15px;
 }
 
+
 .el-button--danger:hover {
     background-color: #e9173a;
 
@@ -517,4 +521,37 @@ export default {
 .el-button--primary:hover {
     background-color: #ffffff;
 }
+::v-deep .el-table tbody tr:hover>td {
+    background-color: #8dfae1;
+    opacity: 70%;
+}
+
+.el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
+    background-color: #8dfae1;
+}
+.el-icon-office-building{
+    padding-left: 5px;
+    padding-right: 0;
+    width: 18px;
+    height: 25px;
+}
+.el-icon-s-home{
+    padding-left: 5px;
+    width: 18px;
+    height: 25px;
+}
+.el-icon-data-line{
+    padding-left: 5px;
+    width: 18px;
+    height: 25px;
+}
+.el-icon-date{
+    padding-left: 5px;
+    width: 18px;
+    height: 25px;
+}
+.el-pagination.is-background .el-pager {
+    background-color: #f3eee7;
+    color: #FFF;
+    }
 </style>

@@ -68,7 +68,12 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
             throw new PhoneNumberExistedException(ExceptionCodeEnum.PHONE_NUMBER_EXISTED_EXCEPTION);
         }
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date birthday = sdf.parse(vo.getBirthday());
+        Date birthday;
+        if (vo.getBirthday() != null && vo.getBirthday().length() > 0) {
+            birthday = sdf.parse(vo.getBirthday());
+        } else {
+            birthday = null;
+        }
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encode = passwordEncoder.encode(vo.getPassword());
         UserInfoEntity entity = new UserInfoEntity();
@@ -149,7 +154,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
     }
 
     @Override
-    public void alterInfo(Long toEditId, String phone, String email,Integer gender, Date birthday, String province, String city, String detailAddress, String socialName) {
+    public void alterInfo(Long toEditId, String phone, String email, Integer gender, Date birthday, String province, String city, String detailAddress, String socialName) {
         this.userInfoDao.updateInfo(toEditId, phone, email, gender, birthday, province, city, detailAddress, socialName);
     }
 

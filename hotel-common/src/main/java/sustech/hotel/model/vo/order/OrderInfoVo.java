@@ -4,6 +4,7 @@ import lombok.Data;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.List;
 
 @Data
 public class OrderInfoVo {
@@ -24,4 +25,5 @@ public class OrderInfoVo {
     private String contactEmail;
     private Long roomNumber;
     private String hotelName;
+    private List<TenantVo> tenants;
 }

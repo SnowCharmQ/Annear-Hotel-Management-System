@@ -16,18 +16,19 @@ import sustech.hotel.common.utils.DateConverter;
 import sustech.hotel.exception.BaseException;
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.order.NoAvailableRoomException;
+import sustech.hotel.exception.order.OrderNotExistException;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.model.to.hotel.HotelTo;
 import sustech.hotel.model.to.hotel.RoomTo;
+import sustech.hotel.model.to.order.OrderInfoTo;
 import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.model.vo.hotel.AvailableRoomTypeVo;
-import sustech.hotel.model.vo.order.OrderConfirmRespVo;
-import sustech.hotel.model.vo.order.OrderConfirmVo;
-import sustech.hotel.model.vo.order.OrderInfoVo;
-import sustech.hotel.model.vo.order.PlaceOrderVo;
+import sustech.hotel.model.vo.order.*;
 import sustech.hotel.order.dao.BookingDao;
 import sustech.hotel.order.entity.OrderEntity;
+import sustech.hotel.order.entity.OrderInfoEntity;
 import sustech.hotel.order.feign.RoomFeignService;
+import sustech.hotel.order.service.OrderInfoService;
 import sustech.hotel.order.service.OrderService;
 import sustech.hotel.common.utils.Constant;
 import sustech.hotel.common.utils.PageUtils;
@@ -41,6 +42,9 @@ public class OrderController {
 
     @Autowired
     private OrderService orderService;
+
+    @Autowired
+    private OrderInfoService orderInfoService;
 
     @Autowired
     private BookingDao bookingDao;
@@ -121,8 +125,9 @@ public class OrderController {
 
     }
 
+    @ResponseBody
     @RequestMapping("/generateOrder")
-    public JsonResult<Void> generateOrder(@RequestBody PlaceOrderVo request) {
+    public JsonResult<String> generateOrder(@RequestBody PlaceOrderVo request) {
         try {
             Long userid = orderService.checkUserID(request.getUserToken());
             String orderToken = request.getOrderToken();
@@ -132,8 +137,11 @@ public class OrderController {
             order.setEndDate(DateConverter.convertStringToDate(request.getEndDate()));
             order.setRoomId(request.getRoomId());
             order.setAdditional(request.getAdditional());
-            orderService.placeOrder(order, request.getGuestInfo(), orderToken);
-            return new JsonResult<>();
+            order.setContactName(request.getContactName());
+            order.setContactPhone(request.getContactPhone());
+            order.setContactEmail(request.getContactEmail());
+            String s = orderService.placeOrder(order, request.getGuestInfo(), orderToken);
+            return new JsonResult<>(s);
         } catch (BaseException e) {
             return new JsonResult<>(e);
         }
@@ -166,12 +174,21 @@ public class OrderController {
     @RequestMapping("/orderInfo")
     public JsonResult<OrderInfoVo> getOrderInfo(@RequestParam String orderId) {
         OrderEntity orderEntity = orderService.getById(orderId);
+        if (orderEntity == null) {
+            return new JsonResult<>(new OrderNotExistException(ExceptionCodeEnum.ORDER_NOT_EXIST_EXCEPTION));
+        }
         OrderInfoVo orderInfoVo = new OrderInfoVo();
         BeanUtils.copyProperties(orderEntity, orderInfoVo);
-        RoomTo room = roomFeignService.getRoomByID(orderEntity.getRoomId()).getData();
-        orderInfoVo.setRoomNumber(room.getRoomNumber());
-        HotelTo hotel = roomFeignService.getHotelByID(room.getHotelId()).getData();
-        orderInfoVo.setHotelName(hotel.getHotelName());
+        OrderInfoTo data = roomFeignService.getOrderInfo(orderEntity.getRoomId()).getData();
+        orderInfoVo.setRoomNumber(data.getRoomNumber());
+        orderInfoVo.setHotelName(data.getHotelName());
+        List<OrderInfoEntity> tenants = orderInfoService.list(new QueryWrapper<OrderInfoEntity>().eq("order_id", orderEntity.getOrderId()));
+        List<TenantVo> vos = tenants.stream().map(o -> {
+            TenantVo tenantVo = new TenantVo();
+            BeanUtils.copyProperties(o, tenantVo);
+            return tenantVo;
+        }).toList();
+        orderInfoVo.setTenants(vos);
         return new JsonResult<>(orderInfoVo);
     }
 

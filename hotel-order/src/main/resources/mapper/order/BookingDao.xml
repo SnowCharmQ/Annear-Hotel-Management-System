@@ -36,4 +36,8 @@
         delete from cho_booking where order_id = #{order_id}
     </delete>
 
+    <select id="checkConflict" resultType="Integer">
+        select count(*) from chb_booking where room_id = #{room_id} and start_date &lt;= #{end_date} and end_date &gt;= #{start_date}
+    </select>
+
 </mapper>

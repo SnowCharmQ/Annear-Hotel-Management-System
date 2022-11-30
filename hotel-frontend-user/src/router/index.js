@@ -73,6 +73,13 @@ const routes = [
                     requireAuth: true
                 },
                 component: () => import('../pages/Chat/chat')
+            },{
+                path: '/alipay',
+                name: 'alipay',
+                meta: {
+                    requireAuth: true
+                },
+                component: () => import('../pages/alipay')
             }, {
                 path: '/map',
                 name: 'map',
@@ -92,9 +99,7 @@ const routes = [
                 name: '404',
                 component: () => import('../pages/404'),
                 meta: {title: '404'}
-            },
-            
-            {
+            }, {
                 path: '/video',
                 name: 'video',
                 component: () => import('../pages/Video/video'),

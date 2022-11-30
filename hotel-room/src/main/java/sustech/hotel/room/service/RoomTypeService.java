@@ -1,7 +1,10 @@
 package sustech.hotel.room.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
 import sustech.hotel.common.utils.PageUtils;
+import sustech.hotel.exception.ExceptionCodeEnum;
+import sustech.hotel.exception.room.RoomConflictsException;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.model.to.hotel.CommentInfoTo;
 import sustech.hotel.model.vo.hotel.RoomTypeSearchVo;
@@ -19,4 +22,10 @@ public interface RoomTypeService extends IService<RoomTypeEntity> {
     RoomTypeSearchVo search(Long hotelId, Integer guests, String startDate, String endDate, String sortBy, Boolean reversed, BigDecimal lowest, BigDecimal highest, Boolean breakfast, Boolean windows, Boolean television, Boolean bathtub, Boolean thermos);
 
     CommentInfoTo getCommentInfo(Long typeId);
+
+    void addRoomType(RoomTypeEntity entity);
+
+    void deleteType(Long typeId);
+
+    void alterType(RoomTypeEntity roomType);
 }

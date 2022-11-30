@@ -5,9 +5,11 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serial;
 import java.io.Serializable;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 @TableName("chr_admin")
 public class AdminEntity implements Serializable {
     @Serial

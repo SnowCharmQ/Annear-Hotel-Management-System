@@ -100,4 +100,19 @@ public class RoomTypeController {
         List<AvailableRoomTypeTo> list = roomTypeService.getAvailableRoomType(hotelId, conflictList);
         return new JsonResult<>(list);
     }
+
+    @PostMapping("/addRoomTYpe")
+    void addRoomType(@RequestBody RoomTypeEntity entity){
+        this.roomTypeService.addRoomType(entity);
+    }
+
+    @PostMapping("/deleteType")
+    void deleteType(Long typeId){
+        this.roomTypeService.deleteType(typeId);
+    }
+
+    @PostMapping("/alterType")
+    void alterType(@RequestBody RoomTypeEntity roomType){
+        this.roomTypeService.alterType(roomType);
+    }
 }

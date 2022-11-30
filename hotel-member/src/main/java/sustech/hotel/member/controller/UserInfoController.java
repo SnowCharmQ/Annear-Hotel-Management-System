@@ -196,4 +196,15 @@ public class UserInfoController {
         userInfoDao.updateInfo(userId, phone, email, gender, day, province, city, detailAddress, socialName);
         return new JsonResult<>();
     }
+
+    @GetMapping("/getAllUsersInfo")
+    public JsonResult<PageUtils> getAllUsers(Map<String, Object> params){
+        return new JsonResult<>(userInfoService.getAllUsers(params));
+    }
+
+    @PostMapping("/getAllUsersInfo")
+    public JsonResult<Void> deleteUserById(Long userId){
+        this.userInfoService.deleteUserById(userId);
+        return new JsonResult<>();
+    }
 }

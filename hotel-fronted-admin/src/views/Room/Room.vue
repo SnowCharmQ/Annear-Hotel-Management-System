@@ -2,7 +2,7 @@
     <div>
         <!-- 添加区域 -->
         <div class="addRoom">
-            <el-button type="primary" size="mini" round class="addRoomButton" @click="addClick">Add Room</el-button>
+            <el-button type="primary" size="mini"  class="addRoomButton" @click="addClick">Add Room</el-button>
         </div>
         <!-- 表格区域 -->
         <el-table :data="tableData" style="width: 98%; min-width: 1000px"
@@ -39,9 +39,9 @@
 
             <el-table-column label="Operations">
                 <template slot-scope="scope">
-                    <el-button size="mini" type="primary" round @click="editClass(scope.$index)" class="editButton">Edit
+                    <el-button size="mini" type="primary" @click="editClass(scope.$index)" class="editButton">Edit
                     </el-button>
-                    <el-button size="mini" type="danger" round @click="deleteClass(scope.$index)">Delete
+                    <el-button size="mini" type="danger" @click="deleteClass(scope.$index)">Delete
                     </el-button>
                 </template>
             </el-table-column>
@@ -411,8 +411,8 @@ export default {
 }
 
 .el-button--primary {
-    background-color: #f5e8a1;
-    border-color: #f1e4a6;
+    background-color: #f3eee7;
+    border-color: #000000;
     color: black;
 }
 
@@ -422,8 +422,8 @@ export default {
     height: 30px;
     font-size: 15px;
     line-height: 0.4;
-    background-color: #f1e4a6;
-    border: 1px solid rgb(238, 213, 184);
+    background-color: #f3eee7;
+    border: 1px solid rgb(0, 0, 0);
     text-align: center;
     color: black;
 
@@ -450,6 +450,6 @@ export default {
 
 
 .el-button--primary:hover {
-    background-color: #f1cb9a;
+    background-color: #ffffff;
 }
 </style>

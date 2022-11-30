@@ -71,30 +71,24 @@ export default {
     },
     sendMsg() {
       if (!this.isSend) {
-        this.$refs['dataForm'].validate((valid) => {
-          if (valid) {
-            this.timeoutChange();
-            this.$http({
-              url: this.$http.adornUrl('/auth/message/login'),
-              method: 'get',
-              params: this.$http.adornParams({
-                phone: this.dataForm.phone
-              })
-            }).then(data => {
-              let resp = data.data;
-              if (resp && resp.state === 200) {
-                this.$message.success("Successfully Sent");
-              } else if (resp && resp.state !== 200) {
-                this.$message.error(resp.message);
-              } else {
-                this.$message.error("Network Error");
-              }
-            }).catch(err => {
-              this.$message.error("Network Error");
-            })
+        this.timeoutChange();
+        this.$http({
+          url: this.$http.adornUrl('/auth/message/login'),
+          method: 'get',
+          params: this.$http.adornParams({
+            phone: this.dataForm.phone
+          })
+        }).then(data => {
+          let resp = data.data;
+          if (resp && resp.state === 200) {
+            this.$message.success("Successfully Sent");
+          } else if (resp && resp.state !== 200) {
+            this.$message.error(resp.message);
           } else {
-            this.$message.error("Invalid Input");
+            this.$message.error("Network Error");
           }
+        }).catch(err => {
+          this.$message.error("Network Error");
         })
       }
     },

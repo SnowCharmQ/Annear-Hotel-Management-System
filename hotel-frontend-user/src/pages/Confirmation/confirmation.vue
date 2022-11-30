@@ -1,4 +1,5 @@
 <template>
+  <!--  <div v-if="alipay!==''" v-html="alipay"></div>-->
   <div class="page-main">
     <div class="item-img">
     </div>
@@ -117,7 +118,6 @@ export default {
   name: "confirmation",
   data() {
     return {
-      OrderID: 12114514,
       isEdit: true,
       alipay_url: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMwAAACDCAMAAAD28gR5AAAAilBMVEX///8rpt8/Ojnx+f31+/52w+khpN6Nze3W7vhOs+M7NjX9/PyFy+03MjH29vY1Ly6FgoKqp6eOi4pKRURbuebNy8uX0u65t7ein5/CwcHf8fpDPz3f3t4GoN3v7+/n9PvH5/Z6d3ZSTk1aVlXV1NRwbWwuJyY/ruKt2/K64vVpZWSXlJQkHRtmvufo7dHSAAAGzElEQVR4nO2a6ZqiOhBAETVqEBRBFkEWQQFp3//1biUsgo2K9Nc6M7fOj+kW0cmhkqoitCAgCIIgCIIgCIIgCIIgCIIgCIIgCIIgCPLPM+mB9OlB9sPPjNlz0mD86YH2IJsmox4kyXL36aE+ZZYQ0keGEJIEnx7sE9J9L5XC5902kue6nqfAT6XP6fOkvwvYTN+7biTXtF3TlDzV7XO6cW9Kdc69t4dGsV1FzRV3Hfc42b90BmaRAF3v7NNfH38LaesKZu7Gah+Znd4x5GLE80XHW2T5y6O/gcnYqrrtJdM54n3G3gq6QvMBGcmOLe/fkIE05iqe4Ho9Tv5dmd1yaviDJAbRvTBelFHiuFkGFM/zeF3w9T3ZLydvEWHUMuRi1Mzm7K3dbFmjP5Qxo8hsvLRDwJaKGvbOylTLdOTcRsecPpLxjrJ8vs5pZXOS5ZMKMv7iU5HRp1cC/tbyeqBO4F0yJhVFatcvlY0siismI8ynl8+sGXKlSgD766EHkfFCkJHDOjQNmTfzOJvdqnTK2AcR0LbV64YMywR9cuovyJB9BZeZX/SSRlr7LuOtKZOhmyqhXWW8DWQClR13VcuyXME1LctstIzstWXyVOixX636injwge2rwW3KLHd+SbFmxyW7yyOZrSNymaiq0VeZrUbpas1Cs1lR6ljrgwg/DuUMVMyzpmkHzdEiOKLkMqVyVI3fdGTRvv2vXpKZ724Z357zTUZaU3qMwEauQtOUgcNcZi0zX/kQwRFKN3zqmafD2naFOKL0lEOUDizCavkdkCCPL6+65kAT/Rt8vtV5uUsGrr5jW2wcVWjuyoihHasanOoUCyq3uX7O3oPPWisQDYtJuKXiyRRepXXVvzEK4JTx8oGMtJbpWXEjZpM/lqEs4SkbPiV5aJTi0tsrdjqEhnlqJj8I33rodW95T6YjD19ufb/JQGA0U5DY1S2HeFfG4WsgZrNJVptfwWQs+CVn9erIQhNrtHXKizLw7+IyXS6nFz1JmBg/yLsCo5m8b2SUDeUXPGahKWvLYxlelWhYfQHc5LMLwWXcM4svzC4pp/Tc6z65U4aMLkawG08mY38epMZywXZsSMKq91h/IAMSjlkJ0KKneSwD+iyIpYqrrs8sG3IZyRKLL2FW1uuzrJQhidHcEpuM55mxIGTGXmStqtqWUSxIZdwghnGL3OuZDJ9MGv+4m5+dFdUqmSI0sHxUh0Zb4XW4DBlBmzz2gywL5uOqyR3vUi64eCDD0ukh5LAhFT1NHxkWGUXVRCqGMSu6hYygFgUrpNcS/KoMGaWCn16KBoDoRuY3Gt20vUXYkpHylehoJbynsXvKhGxSQSHVoD9Yy7WMx1dNBEllSGCKyFwm8+no2nAmujGvdXxj2tRpyUBg6MYsOdI6+z5NACwTs7Qm55LQlBHUFYsN5LQhgWEyJMmES6uZJKPFMqjOmPiBoZNq27MlAytGiwWpgN8IHLbPZFhJog6kKpVJuUJbxuMFa0jBrGR0P9iP2txsK4/nxoIXopYMG1dev4JbNFbkH3QAvHKokLzkXGHpF86Kedm9ykBPxjPaoMDwaTadLG/vA8jIuD0zgPkGjfVVhqWyqLEDxMcBkbrbARxdSWIJqyiMPJJrN86v2YxdklAsas1wmRm5dZnxpJa1Hsn4QTrVr5IwrlbS8diqgVVwvzc7quoRjpx5b8/rrHgs5lUtI5mQ4oYUzFpmnLWnGSFG4ZIsllnz7Ml4V9cjSV19tZOO+nU6fR1cZX1arb64DIUD4bVrpo4or07nuBw2hXS2OkVndnolwx2HFMxShug7QW8mrGq9ZPxWU7/zwExyt9v2NqO3ZXjS1lJVK5bKA65UyjjHcxQdy1aZ4ebHKFS9mJ9eHbS1YQWzkklSuKus2jGWyfhO0yRNyiPNTD2QazZ7jOSG4rCCyeBFU/eFnXFJoGoSmFhFJCZGfbNMRrrxw+eZfWQkN96aoTOwYDKK3gyaMGmXpUBQBmE3GzUrz2hRbD8NpY+Md44OcJ99Wg/e1yl6MzJrX3g/vX3OCS/1dPgW2BrW+rN7es+RKZx1HL6dU3bNBEZargtomdNF13NOsk+MYKDP5nA4PFvX3vF8Pq/NH2xN1Tdn0JBlAZAZ08WoQ6UIz9DZ5sbAk2FKLvCjXbb6yRnMo4TDl8g9yLufz7xE85nm7e5lF+9+pvkSk9njwd9G5s/+s4bOR0r3efPfAbzK7Lb9/3sDA1SdzHMVdhv3hzNJ9eT7ZmbH9mZyCT491h7M08ZDsrsY2Rsfgv2Eyfg573s2iSAIgiAIgiAIgiAIgiAIgiAIgiAIgiDI/43/AB3HopCxvY2BAAAAAElFTkSuQmCC',
       show1: false,
@@ -138,12 +138,26 @@ export default {
       identities: [],
       disables: [],
       isReload: true,
+      alipay: ''
     };
   },
   methods: {
     pay() {
       this.$http({
-
+        url: this.$http.adornUrl('/order/payOrder'),
+        method: 'get',
+        params: this.$http.adornParams({
+          orderId: this.$route.query.orderId
+        })
+      }).then(data => {
+        if (data.data.state === 200) {
+          this.alipay = data.data.data;
+          let routerData = this.$router.resolve({path:'/alipay',query: {htmlData: this.alipay}});
+          window.open(routerData.href, '_ blank')
+        } else {
+          this.$message.error(data.data.message);
+          this.$router.push('home');
+        }
       })
     },
     cancel() {
@@ -162,18 +176,23 @@ export default {
         orderId: orderId
       })
     }).then(data => {
-      this.data = data.data.data;
-      let d1 = new Date(this.data.startDate);
-      let d2 = new Date(this.data.endDate);
-      this.lastDays = Math.ceil((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
-      let dates = [];
-      dates.push(d1);
-      let d = d1.getTime();
-      for (let i = 0; i < this.lastDays; i++) {
-        d += 1000 * 60 * 60 * 24;
-        dates.push(new Date(d));
+      if (data.data.state !== 200) {
+        this.$message.error(data.data.message);
+        this.$router.push('404');
+      } else {
+        this.data = data.data.data;
+        let d1 = new Date(this.data.startDate);
+        let d2 = new Date(this.data.endDate);
+        this.lastDays = Math.ceil((d2.getTime() - d1.getTime()) / (1000 * 60 * 60 * 24));
+        let dates = [];
+        dates.push(d1);
+        let d = d1.getTime();
+        for (let i = 0; i < this.lastDays; i++) {
+          d += 1000 * 60 * 60 * 24;
+          dates.push(new Date(d));
+        }
+        this.dates = dates;
       }
-      this.dates = dates;
     }).catch(err => {
       this.$message.error("Network Error");
     })

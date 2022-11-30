@@ -16,6 +16,7 @@ import sustech.hotel.common.utils.DateConverter;
 import sustech.hotel.exception.BaseException;
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.order.NoAvailableRoomException;
+import sustech.hotel.exception.order.OrderNotExistException;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.model.to.hotel.HotelTo;
 import sustech.hotel.model.to.hotel.RoomTo;
@@ -173,6 +174,9 @@ public class OrderController {
     @RequestMapping("/orderInfo")
     public JsonResult<OrderInfoVo> getOrderInfo(@RequestParam String orderId) {
         OrderEntity orderEntity = orderService.getById(orderId);
+        if (orderEntity == null) {
+            return new JsonResult<>(new OrderNotExistException(ExceptionCodeEnum.ORDER_NOT_EXIST_EXCEPTION));
+        }
         OrderInfoVo orderInfoVo = new OrderInfoVo();
         BeanUtils.copyProperties(orderEntity, orderInfoVo);
         OrderInfoTo data = roomFeignService.getOrderInfo(orderEntity.getRoomId()).getData();

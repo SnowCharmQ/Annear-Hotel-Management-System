@@ -1,6 +1,6 @@
 <template>
   <div class="page-main">
-<!--ANNEAR-->
+    <!--ANNEAR-->
 
     <!--背景图和左下角的text part-->
     <el-carousel height="430px">
@@ -11,7 +11,8 @@
             class="item-img">
       </el-carousel-item>
       <div class="carousel-box" style="height: 160px;">
-        <div style="font-size:25px;">{{ this.hotelName }}</div>
+        <div style="font-size:25px;">{{ this.hotelName }} &ensp; <i @click="toChat" class="el-icon-chat-dot-round"
+                                                                    style="cursor: pointer"></i></div>
         <div style="display:flex;margin-top:10px;">
           <div>
             <div><i class="el-icon-school"></i></div>
@@ -300,32 +301,34 @@
         </el-col>
         <el-col :span="24" style="padding-top:20px;">
           <div>Hope you enjoy your stay at Annear :)</div>
-<!--          <div>2 Adults</div>-->
+          <!--          <div>2 Adults</div>-->
         </el-col>
-<!--        <el-col :span="24"><el-divider></el-divider></el-col>-->
-<!--        <el-col :span="24" style="display:flex;justify-content: space-between;">-->
-<!--          <div style="font-weight:600;">Total:</div>-->
-<!--          <div style="font-weight:600;">A$0.00</div>-->
-<!--        </el-col>-->
-        <el-col :span="24"><el-divider></el-divider></el-col>
+        <!--        <el-col :span="24"><el-divider></el-divider></el-col>-->
+        <!--        <el-col :span="24" style="display:flex;justify-content: space-between;">-->
+        <!--          <div style="font-weight:600;">Total:</div>-->
+        <!--          <div style="font-weight:600;">A$0.00</div>-->
+        <!--        </el-col>-->
+        <el-col :span="24">
+          <el-divider></el-divider>
+        </el-col>
         <el-col :span="24">
           <div style='font-size:20px;margin-bottom:20px;color:black;'>Book direct for peace of mind</div>
 
           <div>
             <div class="right-flex">
-              <div class="icon-img"><img src="../../assets/images/1.jpg" /></div>
+              <div class="icon-img"><img src="../../assets/images/1.jpg"/></div>
               <div>24/7 Dedicated Global Reservation Team offering personalised service</div>
             </div>
             <div class="right-flex">
-              <div class="icon-img"><img src="../../assets/images/2.jpg" /></div>
+              <div class="icon-img"><img src="../../assets/images/2.jpg"/></div>
               <div style="margin-top:5px;">Exclusive offers with inspiring itineraries, only when booking direct</div>
             </div>
             <div class="right-flex">
-              <div class="icon-img"><img src="../../assets/images/3.jpg" /></div>
+              <div class="icon-img"><img src="../../assets/images/3.jpg"/></div>
               <div style="margin-top:5px;">A range of unique experiences to enhance your stay, accessible online</div>
             </div>
             <div class="right-flex">
-              <div class="icon-img"><img src="../../assets/images/4.jpg" /></div>
+              <div class="icon-img"><img src="../../assets/images/4.jpg"/></div>
               <div style="margin-top:5px;">Awe-inspiring locations with 34 resorts and hotels in 20 locations</div>
             </div>
           </div>
@@ -460,8 +463,10 @@ export default {
       for (let p in paths) {
         return paths[p];
       }
+    },
+    toChat() {
+      this.$router.push('chat?hotel=' + this.hotelName);
     }
-
   },
   created() {
     let hotelId = this.$route.query.hotel;

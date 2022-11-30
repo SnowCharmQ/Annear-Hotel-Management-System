@@ -65,7 +65,7 @@
                 </el-table>
                 <el-dialog :visible.async="dialogFormVisible" :beforeClose="handleDialogFormClose"
                     class="exchangeDialog">
-                    <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+                    <el-form ref="form" :model="form" label-width="100px">
                         <el-form-item>
                             <div class="form_header">
                                 <h1>Exchange Coupon</h1>
@@ -189,6 +189,12 @@ export default {
 
 
         },
+        handleDialogFormClose() {
+
+            // this.$refs['form2'].resetFields();
+            this.dialogFormVisible = false;
+
+        },
         async resetForm(formName) {
             this.$refs[formName].resetFields();
             this.dialogFormVisible = false;
@@ -302,7 +308,8 @@ export default {
     border-color: #f1e4a6;
     color: black;
 }
-.exchange_form_button:hover{
+
+.exchange_form_button:hover {
     background-color: #fbc82f;
 }
 

@@ -163,7 +163,8 @@ public class UserInfoController {
      * query user info by id
      */
     @GetMapping("/queryUserInfoById")
-    public JsonResult<UserInfoEntity> queryUserInfoById(Long userId) {
+    public JsonResult<UserInfoEntity> queryUserInfoById(String token) {
+        Long userId = JwtHelper.getUserId(token);
         return new JsonResult<>(userInfoService.queryUserInfoById(userId));
     }
 
@@ -172,7 +173,7 @@ public class UserInfoController {
      */
     @ResponseBody
     @GetMapping("/queryUserInfoByName")
-    public JsonResult<UserInfoEntity> queryUserInfoById(String userName) {
+    public JsonResult<UserInfoEntity> queryUserInfoByName(String userName) {
         return new JsonResult<>(userInfoService.queryUserInfoByName(userName));
     }
 
@@ -186,12 +187,13 @@ public class UserInfoController {
     }
 
     @GetMapping("/alterUserInfo")
-    public JsonResult<Void> alterUserInfo(Long toEditId, String phone, String email, Integer gender, Long birthday, String province, String city, String detailAddress,String socialName) {
+    public JsonResult<Void> alterUserInfo(String toEditId, String phone, String email, Integer gender, Long birthday, String province, String city, String detailAddress,String socialName) {
+        Long userId = JwtHelper.getUserId(toEditId);
         System.out.println(toEditId);
         System.out.println(phone);
         System.out.println(birthday);
         Date day = new Date(birthday);
-        userInfoDao.updateInfo(toEditId, phone, email, gender, day, province, city, detailAddress, socialName);
+        userInfoDao.updateInfo(userId, phone, email, gender, day, province, city, detailAddress, socialName);
         return new JsonResult<>();
     }
 }

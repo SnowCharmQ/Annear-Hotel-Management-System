@@ -8,4 +8,6 @@ import java.util.Map;
 
 public interface OrderCommentsService extends IService<OrderCommentsEntity> {
     PageUtils queryPage(Map<String, Object> params);
+
+    PageUtils getComments(Long typeId, Map<String, Object> params);
 }

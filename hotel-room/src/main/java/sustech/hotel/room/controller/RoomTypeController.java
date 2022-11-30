@@ -6,10 +6,12 @@ import java.util.List;
 import java.util.Map;
 
 import com.alibaba.fastjson2.JSON;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
+import sustech.hotel.model.to.hotel.CommentInfoTo;
 import sustech.hotel.model.vo.hotel.RoomTypeSearchVo;
 import sustech.hotel.room.entity.RoomTypeEntity;
 import sustech.hotel.room.service.RoomTypeService;
@@ -23,6 +25,12 @@ public class RoomTypeController {
 
     @Autowired
     private RoomTypeService roomTypeService;
+
+    @GetMapping("/getCommentInfo")
+    public JsonResult<List<CommentInfoTo>> getCommentInfo(List<Long> typeIds) {
+        List<CommentInfoTo> list = typeIds.stream().map(l -> roomTypeService.getCommentInfo(l)).toList();
+        return new JsonResult<>(list);
+    }
 
     @GetMapping("/search")
     public JsonResult<RoomTypeSearchVo> search(@RequestParam("hotelId") Long hotelId, @RequestParam("guests") Integer guests,

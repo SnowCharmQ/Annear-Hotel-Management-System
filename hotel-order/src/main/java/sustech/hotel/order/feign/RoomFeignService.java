@@ -29,4 +29,7 @@ public interface RoomFeignService {
 
     @GetMapping("/room/room/availableRoom")
     JsonResult<List<Long>> getAvailableRoom(@RequestParam("hotel_id") Long hotelId, @RequestParam("type_id") Long typeId, @RequestParam("json") String json);
+
+    @GetMapping("/room/roomtype/getCommentInfo")
+    JsonResult<List<CommentInfoTo>> getCommentInfo(List<Long> typeIds);
 }

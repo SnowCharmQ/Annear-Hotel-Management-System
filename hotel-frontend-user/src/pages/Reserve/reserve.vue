@@ -341,7 +341,7 @@
 import cookie from "js-cookie";
 
 export default {
-  name: "home",
+  name: "reserve",
   data() {
     return {
       input3: '',

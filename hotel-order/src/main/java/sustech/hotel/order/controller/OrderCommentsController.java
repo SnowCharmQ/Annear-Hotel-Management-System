@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import sustech.hotel.model.vo.order.CommentVo;
 import sustech.hotel.order.entity.OrderCommentsEntity;
 import sustech.hotel.order.entity.OrderEntity;
+import sustech.hotel.order.feign.RoomFeignService;
 import sustech.hotel.order.service.OrderCommentsService;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
@@ -27,6 +28,20 @@ public class OrderCommentsController {
 
     @Autowired
     private OrderCommentsService orderCommentsService;
+
+
+    @ResponseBody
+    @RequestMapping("/getComments")
+    public JsonResult<PageUtils> getComments(Map<String, Object> params) {
+        Object o = params.get("typeId");
+        Long typeId = null;
+        if (o != null) {
+            typeId = (Long) o;
+        }
+        PageUtils pageUtils = orderCommentsService.getComments(typeId, params);
+        return new JsonResult<>(pageUtils);
+    }
+
 
     @ResponseBody
     @RequestMapping("/getAllComments")
@@ -46,7 +61,7 @@ public class OrderCommentsController {
      * 根据传入的参数map进行分页查询
      */
     @RequestMapping("/list")
-    public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params){
+    public JsonResult<PageUtils> list(@RequestParam Map<String, Object> params) {
         PageUtils page = orderCommentsService.queryPage(params);
         return new JsonResult<>(page);
     }
@@ -55,8 +70,8 @@ public class OrderCommentsController {
      * 保存一条数据到数据库中
      */
     @RequestMapping("/save")
-    public JsonResult<Void> save(@RequestBody OrderCommentsEntity orderComments){
-		orderCommentsService.save(orderComments);
+    public JsonResult<Void> save(@RequestBody OrderCommentsEntity orderComments) {
+        orderCommentsService.save(orderComments);
         return new JsonResult<>();
     }
 
@@ -64,8 +79,8 @@ public class OrderCommentsController {
      * 修改数据库中的一条数据（根据传入的一条类数据）
      */
     @RequestMapping("/update")
-    public JsonResult<Void> update(@RequestBody OrderCommentsEntity orderComments){
-		orderCommentsService.updateById(orderComments);
+    public JsonResult<Void> update(@RequestBody OrderCommentsEntity orderComments) {
+        orderCommentsService.updateById(orderComments);
         return new JsonResult<>();
     }
 
@@ -73,8 +88,8 @@ public class OrderCommentsController {
      * 批量删除数据库中的数据（根据主键删除）
      */
     @RequestMapping("/delete")
-    public JsonResult<Void> delete(@RequestBody String[] orderIds){
-		orderCommentsService.removeByIds(Arrays.asList(orderIds));
+    public JsonResult<Void> delete(@RequestBody String[] orderIds) {
+        orderCommentsService.removeByIds(Arrays.asList(orderIds));
         return new JsonResult<>();
     }
 }

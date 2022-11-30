@@ -86,6 +86,17 @@ const routes = [
                 name: '404',
                 component: () => import('../pages/404'),
                 meta: {title: '404'}
+            },
+            {
+                path: '/confirmation',
+                name: 'confirmation',
+                component: () => import('../pages/Confirmation/confirmation'),
+                
+            },
+            {
+                path: '/video',
+                name: 'video',
+                component: () => import('../pages/Video/video'),
             }, {
                 path: '*',
                 redirect: '/404'

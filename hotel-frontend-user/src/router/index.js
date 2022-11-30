@@ -78,6 +78,10 @@ const routes = [
                 name: 'map',
                 component: () => import('../pages/Map/index')
             }, {
+                path: '/coupon',
+                name: 'coupon',
+                component: () => import('../pages/Coupon/coupon')
+            }, {
                 path: '/404',
                 name: '404',
                 component: () => import('../pages/404'),

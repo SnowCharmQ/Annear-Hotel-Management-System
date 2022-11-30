@@ -118,8 +118,9 @@ public class OrderController {
 
     }
 
+    @ResponseBody
     @RequestMapping("/generateOrder")
-    public JsonResult<Void> generateOrder(@RequestBody PlaceOrderVo request) {
+    public JsonResult<String> generateOrder(@RequestBody PlaceOrderVo request) {
         try {
             Long userid = orderService.checkUserID(request.getUserToken());
             String orderToken = request.getOrderToken();
@@ -129,8 +130,8 @@ public class OrderController {
             order.setEndDate(DateConverter.convertStringToDate(request.getEndDate()));
             order.setRoomId(request.getRoomId());
             order.setAdditional(request.getAdditional());
-            orderService.placeOrder(order, request.getGuestInfo(), orderToken);
-            return new JsonResult<>();
+            String s = orderService.placeOrder(order, request.getGuestInfo(), orderToken);
+            return new JsonResult<>(s);
         } catch (BaseException e) {
             return new JsonResult<>(e);
         }

@@ -5,16 +5,17 @@
     <div class="item-img">
       <el-divider></el-divider>
       <div class="top-link">
-        <el-link>Hotel Info</el-link>
+        <el-link>Hotel Information</el-link>
         <el-link>Find Reservations</el-link>
         <el-link>Property Currency</el-link>
-        <el-link><i class="el-icon-user"></i>Sign In</el-link>
       </div>
     </div>
     <el-divider></el-divider>
 
     <el-row class="card-search" :gutter="20">
-      <div style="background:#f3eee7;line-height:80px;padding-left:15px;font-size:18px">Select a Room</div>
+      <div style="background:#f3eee7;line-height:80px;padding-left:15px;font-size:18px">
+        Select a Room
+      </div>
       <div class="roomList">
         <img src="../../assets/images/floorplan.jpg" style="width:1240px;"/>
         <div class="flex-row">
@@ -27,54 +28,50 @@
         </div>
       </div>
 
+      <el-dropdown split-button type="primary" @command="handleCommand">
+        Floor: {{curFloor}}
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item v-for="f in this.floors" :command="f">Floor {{f}}</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+
       <!--弹窗-->
-      <el-dialog :visible.sync="dialogVisible" width="700px" title="Book">
-        <div class="view-room">
-          <div>
-            <div class="room-title">{{ curRow.name }}</div>
-            <div style="margin:10px 0">
-              <span>{{ curRow.twin }} Twin</span>
-              <span> | </span>
-              <span>{{ curRow.area }}</span>
-            </div>
-            <div>Room Amenities</div>
-          </div>
-          <div>
-            <el-image
-                style="width: 260px; height: 180px"
-                :src="curRow.img"
-                :preview-src-list="[curRow.img]">
-            </el-image>
-          </div>
-        </div>
-        <el-divider></el-divider>
+      <!--      <el-dialog :visible.sync="dialogVisible" width="700px" title="Book">-->
+      <!--        <div class="view-room">-->
+      <!--          <div>-->
+      <!--            <div class="room-title">{{ curRow.name }}</div>-->
+      <!--            <div style="margin:10px 0">-->
+      <!--              <span>{{ curRow.twin }} Twin</span>-->
+      <!--              <span> | </span>-->
+      <!--              <span>{{ curRow.area }}</span>-->
+      <!--            </div>-->
+      <!--            <div>Room Amenities</div>-->
+      <!--          </div>-->
+      <!--          <div>-->
+      <!--            <el-image-->
+      <!--                style="width: 260px; height: 180px"-->
+      <!--                :src="curRow.img"-->
+      <!--                :preview-src-list="[curRow.img]">-->
+      <!--            </el-image>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--        <el-divider></el-divider>-->
 
-        <div>
-          <div class="detail">{{ curRow.detail }}</div>
-          <div class="dline">{{ curRow.d1 }}</div>
-          <div class="dline">{{ curRow.d2 }}</div>
-          <div class="dline">{{ curRow.d3 }}</div>
-          <div class="dline">{{ curRow.d4 }}</div>
-          <div class="dline">{{ curRow.d5 }}</div>
-          <div class="dline">{{ curRow.d6 }}</div>
-        </div>
-        <el-divider></el-divider>
+      <!--        <div>-->
+      <!--          <div class="detail">{{ curRow.detail }}</div>-->
+      <!--          <div class="dline">{{ curRow.d1 }}</div>-->
+      <!--          <div class="dline">{{ curRow.d2 }}</div>-->
+      <!--          <div class="dline">{{ curRow.d3 }}</div>-->
+      <!--          <div class="dline">{{ curRow.d4 }}</div>-->
+      <!--          <div class="dline">{{ curRow.d5 }}</div>-->
+      <!--          <div class="dline">{{ curRow.d6 }}</div>-->
+      <!--        </div>-->
+      <!--        <el-divider></el-divider>-->
 
-        <!--用户评论区-->
-        <div>
-          <div class="detail">User Comment</div>
-          <div class="comment-flex" v-for="(item,index) in commentList" :key="index">
-            <div class="comment-user">{{ item.name }}：</div>
-            <div class="comment-des">
-              <div class="comment-content">{{ item.content }}</div>
-              <div class="time">{{ item.ctime }}</div>
-            </div>
-          </div>
-        </div>
-        <span slot="footer" class="dialog-footer">
-          <el-button type="primary" @click="dialogVisible = false" class="v-btn2">Book Now</el-button>
-        </span>
-      </el-dialog>
+      <!--        <span slot="footer" class="dialog-footer">-->
+      <!--          <el-button type="primary" @click="dialogVisible = false" class="v-btn2">Book Now</el-button>-->
+      <!--        </span>-->
+      <!--      </el-dialog>-->
 
     </el-row>
   </div>
@@ -86,483 +83,41 @@ export default {
   data() {
     return {
       dialogVisible: false,
-      curRow: '',
-      list: [
-        {
-          roomNO: '01',
-          twin: '3',
-          area: '70m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 1',
-          d2: 'Linving arca 1',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 1',
-          d4: 'Subtle Shoji screens made of delicate washi paper 1',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 1',
-          d6: 'Personal bar 1',
-          img: require('../../assets/images/room/r1.jpg')
-        },
-        {
-          roomNO: '02',
-          twin: '2',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r2.jpg')
-        },
-        {
-          roomNO: '03',
-          twin: '3',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r3.jpg')
-        },
-        {
-          roomNO: '04',
-          twin: '3',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r4.jpg')
-        },
-        {
-          roomNO: '05',
-          twin: '2',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r5.jpg')
-        },
-        {
-          roomNO: '06',
-          twin: '0',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r6.jpg')
-        },
-        {
-          roomNO: '07',
-          twin: '7',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r7.jpg')
-        },
-        {
-          roomNO: '08',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r8.jpg')
-        },
-        {
-          roomNO: '09',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r9.jpg')
-        },
-        {
-          roomNO: '10',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r10.jpg')
-        },
-        {
-          roomNO: '11',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r11.jpg')
-        },
-        {
-          roomNO: '12',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r12.jpg')
-        },
-        {
-          roomNO: '13',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r13.jpg')
-        },
-        {
-          roomNO: '14',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r14.jpg')
-        },
-        {
-          roomNO: '15',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r15.jpg')
-        },
-        {
-          roomNO: '16',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r1.jpg')
-        },
-        {
-          roomNO: '17',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r2.jpg')
-        },
-        {
-          roomNO: '18',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r3.jpg')
-        },
-        {
-          roomNO: '19',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r4.jpg')
-        },
-        {
-          roomNO: '20',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r5.jpg')
-        },
-        {
-          roomNO: '21',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r6.jpg')
-        },
-        {
-          roomNO: '22',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r7.jpg')
-        },
-        {
-          roomNO: '23',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r8.jpg')
-        },
-        {
-          roomNO: '24',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r9.jpg')
-        },
-        {
-          roomNO: '25',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r10.jpg')
-        },
-        {
-          roomNO: '26',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r11.jpg')
-        },
-        {
-          roomNO: '27',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r12.jpg')
-        },
-        {
-          roomNO: '28',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r13.jpg')
-        },
-        {
-          roomNO: '29',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r14.jpg')
-        },
-        {
-          roomNO: '30',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r15.jpg')
-        },
-        {
-          roomNO: '31',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r1.jpg')
-        },
-        {
-          roomNO: '31',
-          twin: '4',
-          area: '72m²',
-          name: 'Annear Kyoto',
-          detail: 'Deluxe Rooms are the argest entry-level rooms in the city,offering space and privacy at 7amz(764sqft)overkooking the Imperiall Pallace Gardens.',
-          d1: 'Views of lmpcrial Palace GardersTwin beds 2',
-          d2: 'Linving arca 2',
-          d3: 'Barhroom with tradlitional Fuaro soaking tub 2',
-          d4: 'Subtle Shoji screens made of delicate washi paper 2',
-          d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
-          d6: 'Personal bar 2',
-          img: require('../../assets/images/room/r2.jpg')
-        },
-      ],
-      commentList: [
-        {name: 'user1', content: 'The view is goods', ctime: '2022-11-15'},
-        {name: 'user2', content: 'The room is comfortable', ctime: '2022-11-14'},
-        {name: 'user3', content: 'A good check-in experience', ctime: '2022-11-12'}
-      ]
+      roomType: '',
+      roomTypes: [],
+      floors: 3,
+      curFloor: 1
     };
   },
-  mounted() {
-    this.curRow = this.list[0]
-  },
   methods: {
-    toReserve() {
-      this.$router.push('reserve')
-    },
     toOpen(index) {
       if (index === 3 || index === 4 || index === 5) {
         return;
       }
-      this.curRow = this.list[index]
+      this.roomType = this.roomTypes[index]
       this.dialogVisible = true;
+    },
+    handleCommand(command) {
+      this.curFloor = command;
     }
+  },
+  created() {
+
   }
 };
 </script>
 
 <style lang="scss" scoped>
+
+.el-dropdown-link {
+  cursor: pointer;
+  color: #409EFF;
+}
+
+.el-icon-arrow-down {
+  font-size: 12px;
+}
+
 .page-main {
   background: #f3eee7;
 

@@ -239,9 +239,8 @@ export default {
           'contactEmail': this.email
         })
       }).then(data => {
-        console.log(data);
+        this.$router.push('confirmation?orderId=' + data.data.data);
       }).catch(err => {
-        console.log(err)
         this.$message.error("Network Error");
       })
     }

@@ -1,6 +1,7 @@
 package sustech.hotel.order.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -160,7 +161,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public void placeOrder(OrderEntity request, List<String> guestInfo, String orderToken) {
+    public String placeOrder(OrderEntity request, List<String> guestInfo, String orderToken) {
         String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
         Long result = redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class),
                 List.of(OrderConstant.USER_ORDER_TOKEN_PREFIX + request.getUserId()),
@@ -195,6 +196,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         bookingEntity.setOrderState(0);
         bookingService.save(bookingEntity);
         for (String s : guestInfo) {
+            if (StringUtils.isEmpty(s)) continue;
             String[] info = s.split(",");
             if (!info[0].equals("") || !info[1].equals("") || !info[2].equals("")) {
                 OrderInfoEntity orderInfoEntity = new OrderInfoEntity();
@@ -211,6 +213,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         orderOperationEntity.setOrderId(request.getOrderId());
         orderOperationService.save(orderOperationEntity);
         rabbitTemplate.convertAndSend("order-event-exchange", "order.create.order", request);
+        return request.getOrderId();
     }
 
     @Override

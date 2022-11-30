@@ -31,6 +31,8 @@ public enum ExceptionCodeEnum {
 
     ORDER_NOT_EXIST_EXCEPTION(11008, "The order does not exist."),
     ORDER_CLOSED_EXCEPTION(11009, "The order has been closed."),
+
+    ORDER_NOT_FINISH_EXCEPTION(11010, "Order haven't finish."),
     // 20000 ~ others
 
     INVALID_DATE_EXCEPTION(20000, "The date is invalid");

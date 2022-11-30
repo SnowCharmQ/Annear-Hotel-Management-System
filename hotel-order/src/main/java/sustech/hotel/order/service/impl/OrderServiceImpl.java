@@ -243,7 +243,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         if (orderInfo.getOrderStatus().equals(0)) {
             //代付款状态进行关单
             this.baseMapper.updateOrderStatus(orderInfo.getOrderId(), 2);
-            bookingDao.deleteById(orderEntity.getOrderId());
+            bookingDao.deleteByOrderId(orderEntity.getOrderId());
             // 发送消息给MQ
             OrderTo orderTo = new OrderTo();
             BeanUtils.copyProperties(orderInfo, orderTo);
@@ -261,5 +261,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             orderOperationService.save(orderOperationEntity);
         }
     }
+
+
+
 
 }

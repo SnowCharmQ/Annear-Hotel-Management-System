@@ -24,4 +24,13 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
+    <build>
+        <finalName>Hotel-Management-System</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
 </project>

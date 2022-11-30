@@ -41,13 +41,16 @@ const routes = [
       }, {
         path: 'graph4',
         component:() => import('@/views/Graphs/graphs4.vue')
+      }, {
+        path: 'chat',
+        component:() => import('@/views/chat.vue')
       }
     ]
   }
 ]
 
 const router = new VueRouter({
-  mode: 'history',
+  mode: 'hash',
   base: process.env.BASE_URL,
   routes
 })

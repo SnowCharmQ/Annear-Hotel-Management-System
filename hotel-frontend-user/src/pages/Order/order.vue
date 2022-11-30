@@ -233,7 +233,10 @@ export default {
           'startDate': sd,
           'endDate': ed,
           'additional': this.value,
-          'guestInfo': strings
+          'guestInfo': strings,
+          'contactName': this.truename,
+          'contactPhone': this.phone,
+          'contactEmail': this.email
         })
       }).then(data => {
         console.log(data);

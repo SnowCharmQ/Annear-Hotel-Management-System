@@ -161,13 +161,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void placeOrder(OrderEntity request, List<String> guestInfo, String orderToken) {
-//        String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
-//        Long result = redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class),
-//                List.of(OrderConstant.USER_ORDER_TOKEN_PREFIX + request.getUserId()),
-//                orderToken);
-//        if (result == null || result == 0L)
-//            //fail
-//            throw new CreateOrderException(ExceptionCodeEnum.CREATE_ORDER_EXCEPTION);
+        String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+        Long result = redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class),
+                List.of(OrderConstant.USER_ORDER_TOKEN_PREFIX + request.getUserId()),
+                orderToken);
+        if (result == null || result == 0L)
+            //fail
+            throw new CreateOrderException(ExceptionCodeEnum.CREATE_ORDER_EXCEPTION);
         //success
         Date currentDate = DateConverter.currentDate();
         if (request.getStartDate().getTime() < currentDate.getTime())

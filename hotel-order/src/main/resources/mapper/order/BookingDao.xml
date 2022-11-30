@@ -26,18 +26,27 @@
         from cho_booking
         where start_date &gt;= #{start_date}
           and end_date &lt;= #{end_date}
-          and hotel_id = #{hotel_id} and type_id = #{type_id}
+          and hotel_id = #{hotel_id}
+          and type_id = #{type_id}
     </select>
     <update id="updateOrderStatus">
-        update cho_booking set order_state = #{order_state} where order_id = #{order_id}
+        update cho_booking
+        set order_state = #{order_state}
+        where order_id = #{order_id}
     </update>
 
     <delete id="deleteByOrderId">
-        delete from cho_booking where order_id = #{order_id}
+        delete
+        from cho_booking
+        where order_id = #{order_id}
     </delete>
 
     <select id="checkConflict" resultType="Integer">
-        select count(*) from chb_booking where room_id = #{room_id} and start_date &lt;= #{end_date} and end_date &gt;= #{start_date}
+        select count(*)
+        from cho_booking
+        where room_id = #{room_id}
+          and start_date &lt;= #{end_date}
+          and end_date &gt;= #{start_date}
     </select>
 
 </mapper>

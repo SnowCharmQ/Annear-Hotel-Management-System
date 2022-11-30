@@ -94,8 +94,8 @@ public class BookingController {
 
     @ResponseBody
     @GetMapping("/bookingRoomInfo")
-    public JsonResult<List<BookingRoomInfoVo>> getBookingRoomInfo(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, @RequestParam("hotelId") Long hotelId, @RequestParam("layoutId") Long layoutId) {
-        List<BookingRoomInfoVo> list = roomFeignService.getFloorRoomList(hotelId, layoutId).getData();
+    public JsonResult<List<BookingRoomInfoVo>> getBookingRoomInfo(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, @RequestParam("hotelId") Long hotelId, @RequestParam("floor") Long floor) {
+        List<BookingRoomInfoVo> list = roomFeignService.getFloorRoomList(hotelId, floor).getData();
         Date start = DateConverter.convertStringToDate(startDate);
         Date end = DateConverter.convertStringToDate(endDate);
         for (BookingRoomInfoVo info : list) {

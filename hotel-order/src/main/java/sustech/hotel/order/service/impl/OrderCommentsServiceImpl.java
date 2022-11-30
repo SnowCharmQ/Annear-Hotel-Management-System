@@ -4,10 +4,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -49,7 +46,6 @@ public class OrderCommentsServiceImpl extends ServiceImpl<OrderCommentsDao, Orde
     public PageUtils getComments(Long typeId, Map<String, Object> params) {
         List<OrderCommentsEntity> entities = this.list();
         List<CommentShowVo> vos = entities.stream().map(o -> {
-            System.out.println(o);
             CommentShowVo vo = new CommentShowVo();
             OrderEntity byId = orderService.getById(o.getOrderId());
             vo.setTypeId(byId.getTypeId());
@@ -73,7 +69,6 @@ public class OrderCommentsServiceImpl extends ServiceImpl<OrderCommentsDao, Orde
             vo.setTypeName(info.getTypeName());
             vo.setHotelName(info.getHotelName());
         }
-
         int curPage = 1;
         int limit = 10;
         if (params.get(Constant.PAGE) != null) {

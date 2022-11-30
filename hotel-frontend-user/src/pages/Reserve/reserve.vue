@@ -190,7 +190,7 @@
 
         <!--每个酒店的具体信息--> <!------------>
         <div style="clear:both;">
-          <el-col :span="24" v-for="item in roomTypes" :key="item.typeId" class="room-list">
+          <el-col :span="24" v-for="(item, index) in roomTypes" :key="index" class="room-list">
             <img :src="roomTypeImages[item.typeId][0]" class="image">
             <div class="room-right">
               <div class="card-name" style="font-size: 22px">{{ hotelName }}</div>

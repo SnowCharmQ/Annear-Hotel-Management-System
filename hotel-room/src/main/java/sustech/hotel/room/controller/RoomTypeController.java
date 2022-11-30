@@ -2,6 +2,7 @@ package sustech.hotel.room.controller;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 
@@ -26,8 +27,11 @@ public class RoomTypeController {
     @Autowired
     private RoomTypeService roomTypeService;
 
-    @GetMapping("/getCommentInfo")
-    public JsonResult<List<CommentInfoTo>> getCommentInfo(List<Long> typeIds) {
+    @RequestMapping("/getCommentInfo")
+    public JsonResult<List<CommentInfoTo>> getCommentInfo(@RequestBody List<Long> typeIds) {
+        HashSet<Long> set = new HashSet<>(typeIds);
+        typeIds.clear();
+        typeIds.addAll(set);
         List<CommentInfoTo> list = typeIds.stream().map(l -> roomTypeService.getCommentInfo(l)).toList();
         return new JsonResult<>(list);
     }

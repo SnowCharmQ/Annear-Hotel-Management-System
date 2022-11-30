@@ -6,13 +6,15 @@
     <el-row class="card-search" :gutter="20" style="width:1250px;margin:20px auto;">
       <el-col :span="17" style="background:#fff; padding: 0 0;margin-left: 120px">
         <div style="clear:both;">
-          <el-col :span="24" v-for="comment in comments" :key="comment.typeId" class="room-list">
-            <img :src="comment.picture" class="image">
+          <el-col :span="24" v-for="(comment, idx) in comments" :key="idx" class="room-list">
+            <img :src="comment.picture" v-if="comment.picture" class="image">
             <div class="room-right">
               <div class="card-name" style="font-size: 22px">{{ comment.hotelName }}</div>
               <div style="font-weight:600;font-size: 20px">{{ comment.typeName }}</div>
               <br>
               <div>{{ comment.comments }}</div>
+              <div>Comment Time: {{comment.commentTime}}</div>
+              <div>Score: {{parseFloat(comment.score).toFixed(1)}}</div>
             </div>
           </el-col>
         </div>
@@ -20,14 +22,14 @@
     </el-row>
 
     <div class="pagination">
-      <span style="margin-right:-16px;font-size: 20px;font-family: 'Times New Roman',serif; color: #000000;">Total Records: {{ total }} &ensp;&ensp;&ensp;  Current Page:</span>
+      <span style="margin-right:-16px;font-size: 20px;font-family: 'Times New Roman',serif; color: #000000;">Total Records: {{ totalCount }} &ensp;&ensp;&ensp;  Current Page:</span>
       <el-pagination
           @size-change="sizeChangeHandle"
           @current-change="currentChangeHandle"
           :current-page="pageIndex"
           :page-sizes="[10, 20, 50, 100]"
           :page-size="pageSize"
-          :total="total"
+          :total="totalCount"
           layout="jumper, total, sizes, prev, pager, next, ->"
       ></el-pagination>
     </div>
@@ -39,26 +41,21 @@ export default {
   name: "comments",
   data() {
     return {
-      comments: [{
-        'typeId': '1',
-        'typeName': 'wqdwq',
-        'comments': 'dwadaw',
-        'commentTime': '2022-10-14',
-        'picture': 'wiad',
-        'video': 'daw',
-        'hotelName': 'dawfeaf'
-      }],
+      comments: [],
       pageIndex: 1,
       pageSize: 10,
-      total: 50
+      totalCount: 50
     }
   },
   methods: {
-    sizeChangeHandle() {
-
+    sizeChangeHandle(val) {
+      this.pageSize = val;
+      this.pageIndex = 1;
+      this.getCommentList();
     },
-    currentChangeHandle() {
-
+    currentChangeHandle(val) {
+      this.pageIndex = val;
+      this.getCommentList();
     },
     getCommentList() {
       let params = {};
@@ -73,7 +70,9 @@ export default {
         method: 'get',
         params: this.$http.adornParams(params)
       }).then(data => {
-        console.log(data);
+          let result = data.data.data;
+          this.comments = result.list;
+          this.totalCount = result.totalCount;
       }).catch(err => {
         this.$message.error("Network Error");
       })

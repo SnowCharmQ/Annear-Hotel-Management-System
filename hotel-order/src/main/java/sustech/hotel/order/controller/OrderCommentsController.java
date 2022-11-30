@@ -32,11 +32,11 @@ public class OrderCommentsController {
 
     @ResponseBody
     @RequestMapping("/getComments")
-    public JsonResult<PageUtils> getComments(Map<String, Object> params) {
+    public JsonResult<PageUtils> getComments(@RequestParam Map<String, Object> params) {
         Object o = params.get("typeId");
         Long typeId = null;
         if (o != null) {
-            typeId = (Long) o;
+            typeId = Long.parseLong((String) o);
         }
         PageUtils pageUtils = orderCommentsService.getComments(typeId, params);
         return new JsonResult<>(pageUtils);

@@ -139,6 +139,8 @@ public class RoomTypeServiceImpl extends ServiceImpl<RoomTypeDao, RoomTypeEntity
         RoomTypeEntity roomType = this.getById(typeId);
         Long hotelId = roomType.getHotelId();
         HotelEntity hotel = hotelService.getById(hotelId);
+        to.setTypeId(typeId);
+        to.setTypeName(roomType.getTypeName());
         to.setHotelId(hotelId);
         to.setHotelName(hotel.getHotelName());
         RoomTypePictureEntity picture = roomTypePictureService.getOne(new QueryWrapper<RoomTypePictureEntity>()

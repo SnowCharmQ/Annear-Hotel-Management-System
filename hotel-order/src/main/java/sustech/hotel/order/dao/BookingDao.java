@@ -18,4 +18,6 @@ public interface BookingDao extends BaseMapper<BookingEntity> {
     void updateOrderStatus(@Param("order_id") String orderId, @Param("order_state") Integer orderState);
 
     void deleteByOrderId(@Param("order_id") String orderId);
+
+    Integer checkConflict(@Param("start_date") Date startDate, @Param("end_date") Date endDate, @Param("room_id") Long roomId);
 }

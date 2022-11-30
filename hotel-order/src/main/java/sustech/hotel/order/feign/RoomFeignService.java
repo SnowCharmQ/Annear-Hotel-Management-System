@@ -4,6 +4,7 @@ import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.model.to.hotel.*;
+import sustech.hotel.model.vo.hotel.BookingRoomInfoVo;
 import sustech.hotel.model.to.order.OrderInfoTo;
 
 import java.util.List;
@@ -24,6 +25,9 @@ public interface RoomFeignService {
 
     @GetMapping("/room/roomtype/availableRoomType")
     JsonResult<List<AvailableRoomTypeTo>> getAvailableRoomType(@RequestParam("hotelId") Long hotelId, @RequestParam("json") String json);
+
+    @GetMapping("/room/room/floorRoomList")
+     JsonResult<List<BookingRoomInfoVo>> getFloorRoomList(@RequestParam("hotel_id") Long hotelId, @RequestParam("layout_id") Long layoutId);
 
     @GetMapping("/room/room/availableRoom")
     JsonResult<List<Long>> getAvailableRoom(@RequestParam("hotel_id") Long hotelId, @RequestParam("type_id") Long typeId, @RequestParam("json") String json);

@@ -18,10 +18,12 @@
       <div class="roomList">
         <img src="../../assets/images/floorplan.jpg" style="width:1240px;"/>
         <div class="flex-row">
+          <div style="width: 5px;height: 240px;position: relative;margin-top: 100px;"></div>
           <div class="roomNum1" v-for="(item, index) in 9" :key="index" @click="toOpen(index)"></div>
         </div>
-        <div class="flex-row flex-row3" style="margin-top:300px">
-          <div class="roomNum1" v-for="(item, index) in 9" :key="index" @click="toOpen(8 + index)"></div>
+        <div class="flex-row flex-row3" style="margin-top:380px">
+          <div style="width: 5px;height: 240px;position: relative;margin-top: 100px;"></div>
+          <div class="roomNum2" v-for="(item, index) in 9" :key="index" @click="toOpen(8 + index)"></div>
         </div>
       </div>
 
@@ -601,11 +603,20 @@ export default {
 
   .roomNum1 {
     // border: 3px solid #333;
-    width: 121px;
+    width: 127px;
     height: 240px;
     cursor: pointer;
     position: relative;
     margin-top: 100px;
+  }
+
+  .roomNum2 {
+    // border: 3px solid #333;
+    width: 127px;
+    height: 240px;
+    cursor: pointer;
+    position: relative;
+    margin-top: -50px;
   }
 
   .roomDoor {

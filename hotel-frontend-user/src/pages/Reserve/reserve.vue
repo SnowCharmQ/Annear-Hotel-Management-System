@@ -271,6 +271,7 @@
           </div>
 
           <el-divider></el-divider>
+          <el-link style="font-family: 'Times New Roman',serif;font-size: 18px" @click="toComments">View Comments</el-link>
 
           <!--用户评论区-->
           <!--          <div>-->
@@ -466,6 +467,9 @@ export default {
     },
     toChat() {
       this.$router.push('chat?hotel=' + this.hotelName);
+    },
+    toComments() {
+      this.$router.push('comments?roomType=' + this.curRoomType.typeId);
     }
   },
   created() {

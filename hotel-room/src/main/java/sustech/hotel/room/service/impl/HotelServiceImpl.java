@@ -139,7 +139,7 @@ public class HotelServiceImpl extends ServiceImpl<HotelDao, HotelEntity> impleme
             }
             return flag && o.getAveragePrice().compareTo(lowest) > 0 && o.getAveragePrice().compareTo(highest) < 0;
         }).toList());
-        if (!reversed){
+        if (!reversed) {
             if (Objects.equals(sortBy, "name")) {
                 vos.sort(Comparator.comparing(HotelVo::getHotelName));
             } else if (Objects.equals(sortBy, "price")) {
@@ -192,5 +192,20 @@ public class HotelServiceImpl extends ServiceImpl<HotelDao, HotelEntity> impleme
         }, executor);
         CompletableFuture.allOf(task1, task2).join();
         return resp;
+    }
+
+    @Override
+    public List<HotelMapVo> getMapInfo() {
+        List<HotelEntity> hotelEntities = this.list();
+        List<HotelMapVo> vos = new ArrayList<>();
+        for (HotelEntity entity : hotelEntities) {
+            String picturePath = hotelPictureService.getOne(new QueryWrapper<HotelPictureEntity>()
+                    .and(i -> i.eq("hotel_id", entity.getHotelId()).eq("cover", 1))).getPicturePath();
+
+            BigDecimal avgPrice = roomTypeDao.selectAvgPriceByHotelId(entity.getHotelId());
+            HotelMapVo vo = new HotelMapVo(entity.getHotelId(), entity.getProvince(), entity.getCity(), entity.getDistrict(), entity.getHotelName(), entity.getDetailAddress(), avgPrice, entity.getLongitude(), entity.getLatitude(), picturePath);
+            vos.add(vo);
+        }
+        return vos;
     }
 }

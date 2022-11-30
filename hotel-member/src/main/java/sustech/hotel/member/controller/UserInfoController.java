@@ -14,6 +14,7 @@ import sustech.hotel.common.utils.JwtHelper;
 import sustech.hotel.exception.BaseException;
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.auth.UserNotFoundException;
+import sustech.hotel.member.dao.UserInfoDao;
 import sustech.hotel.member.entity.UserInfoEntity;
 import sustech.hotel.member.feign.OrderFeignService;
 import sustech.hotel.member.service.UserInfoService;
@@ -32,6 +33,9 @@ public class UserInfoController {
 
     @Autowired
     private OrderFeignService orderFeignService;
+
+    @Autowired
+    private UserInfoDao userInfoDao;
 
     @Operation(summary = "根据手机号验证码登录或注册（feign调用）")
     @PostMapping("/login/code")
@@ -159,7 +163,8 @@ public class UserInfoController {
      * query user info by id
      */
     @GetMapping("/queryUserInfoById")
-    public JsonResult<UserInfoEntity> queryUserInfoById(Long userId) {
+    public JsonResult<UserInfoEntity> queryUserInfoById(String token) {
+        Long userId = JwtHelper.getUserId(token);
         return new JsonResult<>(userInfoService.queryUserInfoById(userId));
     }
 
@@ -168,7 +173,7 @@ public class UserInfoController {
      */
     @ResponseBody
     @GetMapping("/queryUserInfoByName")
-    public JsonResult<UserInfoEntity> queryUserInfoById(String userName) {
+    public JsonResult<UserInfoEntity> queryUserInfoByName(String userName) {
         return new JsonResult<>(userInfoService.queryUserInfoByName(userName));
     }
 
@@ -181,11 +186,14 @@ public class UserInfoController {
         return orderFeignService.queryOrderByUser(userId);
     }
 
-//    @GetMapping("/alterUserInfo")
-//    public JsonResult<Void> alterUserInfo(Long toEditId, String phone, String email, Integer gender, Date birthday, String province, String city, String detailAddress,String socialName) {
-//        System.out.println(toEditId);
-//        System.out.println(phone);
-//        userInfoService.alterInfo(toEditId, phone, email, gender, birthday, province, city, detailAddress, socialName);
-//        return new JsonResult<>();
-//    }
+    @GetMapping("/alterUserInfo")
+    public JsonResult<Void> alterUserInfo(String toEditId, String phone, String email, Integer gender, Long birthday, String province, String city, String detailAddress,String socialName) {
+        Long userId = JwtHelper.getUserId(toEditId);
+        System.out.println(toEditId);
+        System.out.println(phone);
+        System.out.println(birthday);
+        Date day = new Date(birthday);
+        userInfoDao.updateInfo(userId, phone, email, gender, day, province, city, detailAddress, socialName);
+        return new JsonResult<>();
+    }
 }

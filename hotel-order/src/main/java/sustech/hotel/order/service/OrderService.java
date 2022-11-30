@@ -26,4 +26,6 @@ public interface OrderService extends IService<OrderEntity> {
     String handlePayResult(PayAsyncVo vo);
 
     UserTo getUser(String token);
+
+    void closeOrder(OrderEntity orderEntity);
 }

@@ -5,7 +5,9 @@ import router from './router'
 import store from './store'
 
 import '../src/plugin'  // 导入插件
-
+// main.js
+import * as echarts from "echarts"
+Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false
 

@@ -12,10 +12,7 @@ import sustech.hotel.exception.BaseException;
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.order.HotelNotFoundException;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
-import sustech.hotel.model.vo.hotel.HotelVo;
-import sustech.hotel.model.vo.hotel.ReserveReqVo;
-import sustech.hotel.model.vo.hotel.ReserveRespVo;
-import sustech.hotel.model.vo.hotel.SearchRespVo;
+import sustech.hotel.model.vo.hotel.*;
 import sustech.hotel.room.entity.HotelEntity;
 import sustech.hotel.room.service.HotelService;
 
@@ -117,5 +114,11 @@ public class HotelController {
     public JsonResult<Void> delete(@RequestBody Long[] hotelIds) {
         hotelService.removeByIds(Arrays.asList(hotelIds));
         return new JsonResult<>();
+    }
+
+    @ResponseBody
+    @GetMapping("/getMapInfo")
+    public JsonResult<List<HotelMapVo>> getMapInfo(){
+        return new JsonResult<>(hotelService.getMapInfo());
     }
 }

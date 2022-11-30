@@ -37,7 +37,7 @@
     </delete>
 
     <select id="checkConflict" resultType="Integer">
-        select count(*) from chb_booking where room_id = #{room_id} and start_date <= #{end_date} and end_date >= #{start_date}
+        select count(*) from chb_booking where room_id = #{room_id} and start_date &lt;= #{end_date} and end_date &gt;= #{start_date}
     </select>
 
 </mapper>

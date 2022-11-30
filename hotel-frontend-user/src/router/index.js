@@ -70,10 +70,6 @@ const routes = [
                 },
                 component: () => import('../pages/Chat/chat')
             }, {
-                path: '/graph',
-                name: 'graph',
-                component: () => import('../pages/ManagerPages/graphs')
-            }, {
                 path: '/map',
                 name: 'map',
                 component: () => import('../pages/Map/index')

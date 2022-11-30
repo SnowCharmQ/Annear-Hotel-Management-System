@@ -13,76 +13,61 @@
 
           <!--Contact Info-->
           <el-col :span="24" class="form-title">Contact Info</el-col>
-          <el-col :span="12" class="form-row">
-            <el-input placeholder="First Name" v-model="value1" class="input-with-select">
-              <el-select v-model="value2" slot="prepend" placeholder="Prefix">
-                <el-option label="Mr." value="1"></el-option>
-                <el-option label="Ms." value="2"></el-option>
-                <el-option label="Mrs." value="3"></el-option>
-                <el-option label="Madame" value="4"></el-option>
-                <el-option label="Miss" value="5"></el-option>
-                <el-option label="Lady" value="6"></el-option>
-                <el-option label="Dr." value="7"></el-option>
-                <el-option label="Professor" value="8"></el-option>
-              </el-select>
-            </el-input>
-          </el-col>
-          <el-col :span="12" class="form-row">
-            <el-input placeholder="Last Name" v-model="value3"/>
-          </el-col>
-          <el-col :span="12" class="form-row">
-            <el-input placeholder="Phone" v-model="value4"/>
-          </el-col>
-          <el-col :span="12" class="form-row">
-            <el-input placeholder="Email Address" v-model="value5"/>
-          </el-col>
+          <div style="height: 120px;">
+            <el-col :span="8" style="display: flex">
+              <el-col style="font-size: 20px; margin-top: 6px">Name:</el-col>
+              <el-input style="width: 480px" placeholder="Name" v-model="truename"/>
+            </el-col>
+            <el-col :span="10" style="display: flex">
+              <el-col style="font-size: 20px; margin-top: 6px">Username:</el-col>
+              <el-input style="width: 480px" placeholder="Username" v-model="username"/>
+            </el-col>
+          </div>
+          <div style="height: 70px;">
+            <el-col :span="8" style="display: flex">
+              <el-col style="font-size: 20px; margin-top: 6px">Phone:</el-col>
+              <el-input style="width: 480px" placeholder="Phone" v-model="phone"/>
+            </el-col>
+            <el-col :span="9" style="display: flex">
+              <el-col style="font-size: 20px; margin-top: 6px">Email:</el-col>
+              <el-input style="width: 450px;margin-right: -44px" placeholder="Email" v-model="email"/>
+            </el-col>
+          </div>
 
-          <!--Address-->
-          <el-col :span="24" class="form-title">Address</el-col>
-          <el-col :span="24" class="form-row  info-sel1">
-            <el-select v-model="value6" placeholder="Country" style="width:370px">
-              <el-option label="China" value="1"></el-option>
-              <el-option label="United States" value="2"></el-option>
-              <el-option label="Afghanistan" value="3"></el-option>
-              <el-option label="Aland Islands" value="4"></el-option>
-              <el-option label="Albania" value="5"></el-option>
-              <el-option label="Algeria" value="6"></el-option>
-              <el-option label="American Samoa" value="7"></el-option>
-              <el-option label="Andorra" value="8"></el-option>
-            </el-select>
-          </el-col>
-          <el-col :span="24" class="form-row">
-            <el-input placeholder="Address" v-model="value7" style="width:410px"/>
-          </el-col>
-          <el-col :span="12" class="form-row">
-            <el-input placeholder="City" v-model="value8"/>
-          </el-col>
-          <el-col :span="12" class="form-row">
-            <el-input placeholder="Zip / Postal Code " v-model="value9"/>
-          </el-col>
 
           <!--ADD GUEST (OPTIONAL)-->
-          <el-col :span="24">
+          <el-col :span="24" v-if="isReload">
             <el-collapse v-model="activeNames">
-              <el-collapse-item title="ADD GUEST (OPTIONAL)" name="1">
-                <div>
-                  <el-col :span="24" class="form-row" style="font-size:15px;">Guest 1</el-col>
-                  <el-col :span="11" class="form-row">
-                    <el-input placeholder="First Name" v-model="value10"/>
+              <el-collapse-item title="ADD GUESTS" name="1">
+                <div v-for="i in this.data.upperLimit">
+                  <el-col :span="24" class="form-row" style="font-size:15px;">Guest {{ i }}</el-col>
+                  <el-col :span="10" class="form-row">
+                    <el-input placeholder="Name" v-model="names[i]" v-bind:disabled="disables[i]"/>
                   </el-col>
                   <el-col :span="10" class="form-row">
-                    <el-input placeholder="Last Name" v-model="value11"/>
+                    <el-input placeholder="Phone Number" v-model="phones[i]" v-bind:disabled="disables[i]"/>
+                  </el-col>
+                  <br>
+                  <el-col :span="10" class="form-row">
+                    <el-input placeholder="Identity Number" v-model="identities[i]" v-bind:disabled="disables[i]"/>
+                  </el-col>
+                  <el-col :span="2" class="form-row"></el-col>
+                  <el-col :span="3" class="form-row" v-if="!disables[i]">
+                    <el-link style="margin-top: 6px;font-size: 16px" @click="addGuest(i)">
+                      <i class="el-icon-circle-plus"></i>Add
+                    </el-link>
+                  </el-col>
+                  <el-col :span="3" class="form-row" v-if="disables[i]">
+                    <el-col style="margin-top: 7px;font-size: 16px;color: cornflowerblue">Added</el-col>
                   </el-col>
                   <el-col :span="3" class="form-row">
-                    <el-link style="margin-top:10px;"><i class="el-icon-delete"></i>Remove</el-link>
+                    <el-link style="margin-top: 6px;font-size: 16px" @click="removeGuest(i)"><i
+                        class="el-icon-delete"></i>Remove
+                    </el-link>
                   </el-col>
                 </div>
               </el-collapse-item>
             </el-collapse>
-          </el-col>
-
-          <el-col :span="24">
-            <el-divider></el-divider>
           </el-col>
 
           <!--Additional Details and Preferences-->
@@ -90,65 +75,15 @@
             <el-col :span="24" class="form-title">Additional Details and Preferences</el-col>
             <el-col :span="24">
               <el-input type="textarea" rows="7" placeholder="Please note your requests or special needs"
-                        v-model="value12"/>
+                        v-model="value"/>
             </el-col>
           </el-col>
-          <el-col :span="24">
-            <el-divider></el-divider>
-          </el-col>
-
-          <!--Payment Information-->
-          <el-col :span="24" class="form-title">Payment Information</el-col>
-          <el-col :span="24">A$7,473.36 due November 6, 2022 (Hotel Local Time). Please provide a valid payment
-            method.
-          </el-col>
-          <el-col :span="24" class="form-row img-icon">
-            <img src="https://reservations.Annear.com/public/images/Visa.png"/>
-            <img src="https://reservations.Annear.com/public/images/MasterCard.png"/>
-            <img src="https://reservations.Annear.com/public/images/Amex.png"/>
-            <img src="https://reservations.Annear.com/public/images/Discover.png"/>
-          </el-col>
-          <el-col :span="24" class="form-row">
-            <el-input placeholder="Card Number" v-model="value13" style="width:370px;"/>
-          </el-col>
-          <el-col :span="24" class="form-row">
-            <el-input placeholder="Expiration Date (MM/YY) " v-model="value14" style="width:230px;"/>
-            <el-input placeholder="CVV * " v-model="value15" style="width:120px;margin-left:15px"/>
-          </el-col>
-          <el-col :span="24" class="form-row">
-            <el-input placeholder="Name on Card *" v-model="value16" style="width:370px;"/>
-          </el-col>
-        </el-col>
-
-        <!--Annear New York Policies-->
-        <el-col :span="24" style="background:#f3eee7;line-height:20px;height:20px;"></el-col>
-        <el-col :span="24" style="font-size:16px;padding-bottom: 20px;">
-          <el-col :span="24" class="form-title">Annear New York Policies</el-col>
-          <el-col class="form-row" style="display:flex;">
-            <div>
-              <div style="font-weight:600;">Check-in</div>
-              <div>After 3:00 PM</div>
-            </div>
-            <div style="margin-left:60px;">
-              <div style="font-weight:600;">Check-out</div>
-              <div>Before 12:00 PM</div>
-            </div>
-          </el-col>
-          <el-col>ROOM 1 FIFTH AVENUE JUNIOR SUITE, DELUXE TWIN</el-col>
-          <el-col style="margin-top:10px;">Guarantee Policy</el-col>
-          <el-col>One night room plus and tax deposit is required at time of booking.</el-col>
-          <el-col style="margin-top:10px;">Cancel Policy</el-col>
-          <el-col>Cancel before 18:00EST two days prior to arrival to avoid one night plus tax penalty.</el-col>
         </el-col>
 
         <!--Acknowledgement-->
         <el-col :span="24" style="background:#f3eee7;line-height:20px;height:20px;"></el-col>
         <el-col :span="24" style="font-size:16px; line-height:40px;">
           <el-col :span="24" class="form-title">Acknowledgement</el-col>
-          <div>
-            <el-checkbox v-model="checked1">Yes, I would like to receive newsletters and special offers by email.
-            </el-checkbox>
-          </div>
           <div>
             <el-checkbox v-model="checked2">* I agree with the Privacy Terms.</el-checkbox>
           </div>
@@ -159,7 +94,9 @@
 
         <!--Complete Booking-->
         <el-col :span="24" style="background:#f3eee7; height:80px;text-align: right;padding-top:20px;">
-          <el-button type="info" style="background:black;height: 55px;">Complete Booking<i class="el-icon-lock"></i>
+          <el-button @click="book" type="info" style="background:black;height: 55px;"
+                     v-bind:disabled="!(checked2&&checked3)">Complete Booking<i class="el-icon-lock"
+                                                                                v-if="!(checked2&&checked3)"></i>
           </el-button>
         </el-col>
       </el-col>
@@ -181,6 +118,7 @@
         </el-col>
 
         <el-col :span="24">
+          <div>Room Number: {{ this.data.roomNumber }}</div>
           <div>{{ new Date(this.data.startDate).toDateString() }} - {{ new Date(this.data.endDate).toDateString() }}
           </div>
           <div>{{ this.data.upperLimit }} Guests Max</div>
@@ -192,10 +130,11 @@
           <div style="font-weight:600;">￥{{ this.data.unitPrice }}</div>
         </el-col>
         <el-col :span="24" style="margin-top:10px">
-          <div @click="show1=!show1" style="cursor: pointer;">{{this.lastDays}} Night<i class="el-icon-arrow-down"></i></div>
+          <div @click="show1=!show1" style="cursor: pointer;">{{ this.lastDays }} Night<i
+              class="el-icon-arrow-down"></i></div>
           <div v-if="show1" style="justify-content: space-between;padding-left:30px;margin-top: 10px">
             <div style="display: flex" v-for="date in this.dates">
-              <div>{{date.toDateString()}}</div>
+              <div>{{ date.toDateString() }}</div>
             </div>
           </div>
         </el-col>
@@ -212,7 +151,7 @@
         <el-col :span="24" style="display:flex;justify-content: space-between;">
           <div style="font-weight:600;">Total:</div>
           <div>
-            <div style="font-weight:600;text-align: right;">￥{{this.data.totalPrice}}</div>
+            <div style="font-weight:600;text-align: right;">￥{{ this.data.totalPrice }}</div>
           </div>
         </el-col>
       </el-col>
@@ -225,40 +164,88 @@
 import cookie from "js-cookie";
 import {convertToDate} from "@/utils/utils";
 
+let sd = '';
+let ed = '';
+
 export default {
   name: "home",
   data() {
     return {
       show1: false,
       show2: false,
-      value1: '',
-      value2: '8',
-      value3: '',
-      value4: '',
-      value5: '',
-      value6: '',
-      value7: '',
-      value8: '',
-      value9: '',
-      value10: '',
-      value11: '',
-      value12: '',
-      value13: '',
-      value14: '',
-      value15: '',
-      value16: '',
+      truename: '',
+      username: '',
+      phone: '',
+      email: '',
+      value: '',
       filterText: '',
-      activeNames: "0",
+      activeNames: "1",
       showCheck: false,
       checked1: false,
       checked2: false,
       checked3: false,
       data: '',
       lastDays: 0,
-      dates: []
+      dates: [],
+      guests: [],
+      names: [],
+      phones: [],
+      identities: [],
+      disables: [],
+      isReload: true
     };
   },
-  methods: {},
+  methods: {
+    addGuest(i) {
+      this.guests[i] = {'name': this.names[i], 'phone': this.phones[i], 'identity': this.identities[i]};
+      this.disables[i] = true;
+      this.reloadGuests();
+    },
+    removeGuest(i) {
+      this.guests[i] = '';
+      this.names[i] = '';
+      this.phones[i] = '';
+      this.identities[i] = '';
+      this.disables[i] = false;
+      this.reloadGuests();
+    },
+    reloadGuests() {
+      this.isReload = false;
+      this.$nextTick(() => {
+        this.isReload = true;
+      })
+    },
+    book() {
+      let strings = []
+      for (let i = 0; i < this.guests.length; i++) {
+        let s = this.guests[i].name === undefined ? '' : this.guests[i].name + ',' +
+        this.guests[i].phone === undefined ? '' : this.guests[i].phone + ',' +
+        this.guests[i].identity === undefined ? '' : this.guests[i].identity;
+        strings.push(s);
+      }
+      this.$http({
+        url: this.$http.adornUrl('/order/order/order/generateOrder'),
+        method: 'post',
+        data: this.$http.adornData({
+          'userToken': cookie.get('token'),
+          'orderToken': this.data.token,
+          'roomId': this.data.roomId,
+          'startDate': sd,
+          'endDate': ed,
+          'additional': this.value,
+          'guestInfo': strings,
+          'contactName': this.truename,
+          'contactPhone': this.phone,
+          'contactEmail': this.email
+        })
+      }).then(data => {
+        console.log(data);
+      }).catch(err => {
+        console.log(err)
+        this.$message.error("Network Error");
+      })
+    }
+  },
   created() {
     let startDate = this.$route.query.startDate;
     let endDate = this.$route.query.endDate;
@@ -273,6 +260,8 @@ export default {
     let userToken = cookie.get('token');
     let d1 = convertToDate(startDate);
     let d2 = convertToDate(endDate);
+    sd = d1;
+    ed = d2;
     this.$http({
       url: this.$http.adornUrl('/order/order/order/confirmOrder'),
       method: 'post',
@@ -293,11 +282,22 @@ export default {
         let dates = [];
         dates.push(d1);
         let d = d1.getTime();
-        for (let i = 0;i < this.lastDays;i++) {
-          d +=  1000 * 60 * 60 *24;
+        for (let i = 0; i < this.lastDays; i++) {
+          d += 1000 * 60 * 60 * 24;
           dates.push(new Date(d));
         }
         this.dates = dates;
+        this.truename = this.data.user.username;
+        this.username = this.data.user.socialName;
+        this.phone = this.data.user.phone;
+        this.email = this.data.user.email;
+        for (let i = 0; i < this.data.upperLimit; i++) {
+          this.names.push('');
+          this.phones.push('');
+          this.identities.push('');
+          this.guests.push('');
+          this.disables.push(false);
+        }
       } else {
         this.$message.error(data.data.message);
       }

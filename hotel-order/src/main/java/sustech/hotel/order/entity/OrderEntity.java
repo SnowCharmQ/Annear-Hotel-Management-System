@@ -29,4 +29,7 @@ public class OrderEntity implements Serializable {
     private String additional;
     private Integer score;
     private Long hotelId;
+    private String contactName;
+    private String contactPhone;
+    private String contactEmail;
 }

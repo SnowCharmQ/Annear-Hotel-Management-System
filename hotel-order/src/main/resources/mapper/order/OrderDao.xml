@@ -8,8 +8,6 @@
         <result property="orderId" column="order_id"/>
         <result property="roomId" column="room_id"/>
         <result property="orderStatus" column="order_status"/>
-        <result property="startTime" column="start_time"/>
-        <result property="endTime" column="end_time"/>
         <result property="originMoney" column="origin_money"/>
         <result property="afterDiscount" column="after_discount"/>
     </resultMap>

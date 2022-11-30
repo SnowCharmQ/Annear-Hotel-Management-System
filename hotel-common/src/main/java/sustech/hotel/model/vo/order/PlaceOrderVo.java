@@ -9,9 +9,12 @@ import java.util.List;
 public class PlaceOrderVo {
     private String userToken;
     private String orderToken;
-    private Long roomID;
+    private Long roomId;
     private String startDate;
     private String endDate;
     private String additional;
     private List<String> guestInfo;
+    private String contactName;
+    private String contactPhone;
+    private String contactEmail;
 }

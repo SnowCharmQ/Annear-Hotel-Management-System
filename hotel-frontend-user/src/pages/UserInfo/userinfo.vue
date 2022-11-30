@@ -335,124 +335,116 @@ export default {
     }
   }, methods: {
     alter_info() {
-      // console.log(this.user_id)
+      console.log(this.user_id)
       // //TODO: use the API to alter user info
-      // this.$http({
-      //   url: this.$http.adornUrl('/member/member/userinfo/alterUserInfo'),
-      //   method: 'get',
-      //   params: this.$http.adornParams({
-      //     toEditId: this.user_id,
-      //     phone: this.dataForm.phone,
-      //     email: this.email,
-      //     gender: 0,
-      //     birthday: new Date(this.birthday).getTime(),
-      //     province: this.province,
-      //     city: this.city,
-      //     detailAddress: this.detailAddress,
-      //     socialName: this.name
-      //   })
-      // }).then(data => {
-      //   console.log(data)
-      //   this.$message({
-      //     type: 'success',
-      //     message: 'alter info done'
-      //   });
-      // })
+      this.$http({
+        url: this.$http.adornUrl('/member/member/userinfo/alterUserInfo'),
+        method: 'get',
+        params: this.$http.adornParams({
+          toEditId: cookie.get('token'),
+          phone: this.dataForm.phone,
+          email: this.email,
+          gender: 0,
+          birthday: new Date(this.birthday).getTime(),
+          province: this.province,
+          city: this.city,
+          detailAddress: this.address,
+          socialName: this.name
+        })
+      }).then(data => {
+        console.log(data)
+        this.$message({
+          type: 'success',
+          message: 'alter info done'
+        });
+      })
     }
     ,
     init() {
       console.log('hi1')
-      //TODO get the API to get the info and init the page
+      //init userInfo
       this.$http({
-        url: this.$http.adornUrl('/auth/getUsernameByToken'),
+        url: this.$http.adornUrl('/member/member/userinfo/queryUserInfoById'),
         method: 'get',
         params: this.$http.adornParams({
           token: cookie.get('token')
         })
       }).then(data => {
-            console.log('hi')
-            let resp = data.data.data;
-            console.log(resp)
-            this.$http({
-              url: this.$http.adornUrl('/member/member/userinfo/queryUserInfoByName'),
-              method: 'get',
-              params: this.$http.adornParams({
-                userName: resp
-              })
-            }).then(data => {
-              let info = data.data.data
-              this.user_id = info.userId
-              this.name = info.socialName
-              this.name_begin = info.gender === 0 ? 'Mr.' : 'Mis.'
-              this.user_name = info.username
-              this.email = info.email
-              this.province = info.province
-              this.address = info.detailAddress
-              this.city = info.city
-              this.birthday = info.birthday
-              this.growth = 'growth: ' + info.growth
-              this.balance = 'balance: ' + info.balance
-              this.dataForm.phone = info.phone
-            })
-          }
-      )
-    }
-    ,
-    show_comments_page() {
-      this.dialogVisible = true
-    }
-    ,
-    submit_comments(star, comment) {
-      this.dialogVisible = false
-      this.$message({
-        type: 'success',
-        message: 'upload comments done'
-      });
-    }
-    ,
-    handleRemove(file, fileList) {
-      console.log(file, fileList);
-    }
-    ,
-    handlePreview(file) {
-      console.log(file);
-    }
-    ,
-    uploadPicture(file) {
-      let picture = file.file
-      let formData = new FormData();
-      formData.append('file', picture)
-      formData.append('orderId', this.selectedOrderId)
-      let url = this.$http.adornUrl('/auth/uploadPicture')
-
-      axios.post(url, formData, {
-        headers: {'Content-Type': 'multipart/form-data'}
-      }).then(data => {
-        let pictureUrl = data.data.data
-        console.log(pictureUrl)
-        this.fileList.push({name: picture.name, url: pictureUrl})
-      });
-    }
-    ,
-    uploadVideo(file) {
-      let video = file.file
-      let formData = new FormData();
-      formData.append('file', video)
-      formData.append('orderId', this.selectedOrderId)
-      let url = this.$http.adornUrl('/auth/uploadVideo')
-
-      axios.post(url, formData, {
-        headers: {'Content-Type': 'multipart/form-data'}
-      }).then(data => {
-        let videoUrl = data.data.data
-        console.log(videoUrl)
-        this.videoList.push({name: video.name, url: videoUrl})
-      });
-    }
-  },
-  mounted() {
-    this.init()
+        let info = data.data.data
+        console.log(info)
+        this.user_id = info.userId
+        this.name = info.socialName
+        this.name_begin = info.gender === 0 ? 'Mr.' : 'Mis.'
+        this.user_name = info.username
+        this.email = info.email
+        this.province = info.province
+        this.address = info.detailAddress
+        this.city = info.city
+        this.birthday = info.birthday
+        this.growth = 'growth: ' + info.growth
+        this.balance = 'balance: ' + info.balance
+        this.dataForm.phone = info.phone
+      })
+      //TODO: init user order
   }
+  ,
+  show_comments_page() {
+    this.dialogVisible = true
+  }
+  ,
+  submit_comments(star, comment) {
+    this.dialogVisible = false
+    this.$message({
+      type: 'success',
+      message: 'upload comments done'
+    });
+  }
+  ,
+  handleRemove(file, fileList) {
+    console.log(file, fileList);
+  }
+  ,
+  handlePreview(file) {
+    console.log(file);
+  }
+  ,
+  uploadPicture(file) {
+    let picture = file.file
+    let formData = new FormData();
+    formData.append('file', picture)
+    formData.append('orderId', this.selectedOrderId)
+    let url = this.$http.adornUrl('/auth/uploadPicture')
+
+    axios.post(url, formData, {
+      headers: {'Content-Type': 'multipart/form-data'}
+    }).then(data => {
+      let pictureUrl = data.data.data
+      console.log(pictureUrl)
+      this.fileList.push({name: picture.name, url: pictureUrl})
+    });
+  }
+  ,
+  uploadVideo(file) {
+    let video = file.file
+    let formData = new FormData();
+    formData.append('file', video)
+    formData.append('orderId', this.selectedOrderId)
+    let url = this.$http.adornUrl('/auth/uploadVideo')
+
+    axios.post(url, formData, {
+      headers: {'Content-Type': 'multipart/form-data'}
+    }).then(data => {
+      let videoUrl = data.data.data
+      console.log(videoUrl)
+      this.videoList.push({name: video.name, url: videoUrl})
+    });
+  }
+}
+,
+mounted()
+{
+  this.init()
+}
 }
 
 

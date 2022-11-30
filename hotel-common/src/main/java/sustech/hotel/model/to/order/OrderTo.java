@@ -19,4 +19,5 @@ public class OrderTo {
     private Date endTime;
     private BigDecimal originMoney;
     private BigDecimal afterDiscount;
+    private Long hotelId;
 }

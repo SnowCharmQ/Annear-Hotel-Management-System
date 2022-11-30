@@ -127,7 +127,7 @@ public class OrderController {
             order.setUserId(userid);
             order.setStartDate(DateConverter.convertStringToDate(request.getStartDate()));
             order.setEndDate(DateConverter.convertStringToDate(request.getEndDate()));
-            order.setRoomId(request.getRoomID());
+            order.setRoomId(request.getRoomId());
             order.setAdditional(request.getAdditional());
             orderService.placeOrder(order, request.getGuestInfo(), orderToken);
             return new JsonResult<>();

@@ -1,5 +1,6 @@
 package sustech.hotel.model.vo.order;
 import lombok.Data;
+import sustech.hotel.model.vo.member.UserVo;
 
 import java.math.BigDecimal;
 import java.sql.Date;
@@ -24,4 +25,5 @@ public class OrderConfirmRespVo {
     private String token;
     private Date startDate;
     private Date endDate;
+    private UserVo user;
 }

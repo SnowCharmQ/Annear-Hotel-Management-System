@@ -2,17 +2,20 @@ drop table if exists cho_order;
 CREATE TABLE cho_order
 (
     order_id       varchar(30) primary key,
-    user_id        bigint(20)     not null,
-    type_id        bigint(20)     not null,
-    room_id        bigint(20)     not null, -- room
-    order_status   integer        not null, -- 0 booking, 1 isPayed, 2 isCheckIn, 3 isLeaved, 4 isCancelled
-    start_date     date           not null,
-    end_date       date           not null,
-    origin_money   decimal(18, 2) not null,
-    after_discount decimal(18, 2) not null,
+    user_id        bigint(20)                                                   not null,
+    type_id        bigint(20)                                                   not null,
+    room_id        bigint(20)                                                   not null, -- room
+    order_status   integer                                                      not null, -- 0 booking, 1 isPayed, 2 isCheckIn, 3 isLeaved, 4 isCancelled
+    start_date     date                                                         not null,
+    end_date       date                                                         not null,
+    origin_money   decimal(18, 2)                                               not null,
+    after_discount decimal(18, 2)                                               not null,
     additional     varchar(1000) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
     score          integer,
-    hotel_id       bigint(20)     not null
+    hotel_id       bigint(20)                                                   not null,
+    contact_name   varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
+    contact_phone  varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL,
+    contact_email  varchar(64) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4
@@ -22,10 +25,10 @@ CREATE TABLE cho_order
 drop table if exists cho_order_info;
 CREATE TABLE cho_order_info
 (
-    order_id      varchar(30) not null,
+    order_id      varchar(30)                                                  not null,
     tenant_name   varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
-    identity_card char(18)    not null,
-    telephone     char(11)
+    identity_card char(18)                                                     not null,
+    telephone     varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL
 ) ENGINE = InnoDB
   AUTO_INCREMENT = 1
   CHARACTER SET = utf8mb4

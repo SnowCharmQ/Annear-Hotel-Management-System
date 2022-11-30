@@ -2,6 +2,7 @@ package sustech.hotel.order.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import sustech.hotel.common.utils.PageUtils;
+import sustech.hotel.model.to.member.UserTo;
 import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.model.vo.order.*;
 import sustech.hotel.order.entity.OrderEntity;
@@ -23,4 +24,6 @@ public interface OrderService extends IService<OrderEntity> {
     PayVo getOrderPay(String orderId);
 
     String handlePayResult(PayAsyncVo vo);
+
+    UserTo getUser(String token);
 }

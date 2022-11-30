@@ -16,7 +16,7 @@
     <el-row class="card-search" :gutter="20">
       <div style="background:#f3eee7;line-height:80px;padding-left:15px;font-size:18px">Select a Room</div>
       <div class="roomList">
-        <img src="../../assets/images/floor.jpg" style="width:1240px;"/>
+        <img src="../../assets/images/floorplan.jpg" style="width:1240px;"/>
         <div class="flex-row">
           <div class="roomNum1" v-for="(item, index) in 9" :key="index" @click="toOpen(index)"></div>
         </div>
@@ -98,7 +98,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 1',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 1',
           d6: 'Personal bar 1',
-          img: require('../../assets/images/hotel/1.jpeg')
+          img: require('../../assets/images/room/r1.jpg')
         },
         {
           roomNO: '02',
@@ -112,7 +112,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/2.jpeg')
+          img: require('../../assets/images/room/r2.jpg')
         },
         {
           roomNO: '03',
@@ -126,7 +126,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/3.jpeg')
+          img: require('../../assets/images/room/r3.jpg')
         },
         {
           roomNO: '04',
@@ -140,7 +140,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/4.jpeg')
+          img: require('../../assets/images/room/r4.jpg')
         },
         {
           roomNO: '05',
@@ -154,7 +154,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/5.jpeg')
+          img: require('../../assets/images/room/r5.jpg')
         },
         {
           roomNO: '06',
@@ -168,7 +168,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/6.jpeg')
+          img: require('../../assets/images/room/r6.jpg')
         },
         {
           roomNO: '07',
@@ -182,7 +182,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/7.jpeg')
+          img: require('../../assets/images/room/r7.jpg')
         },
         {
           roomNO: '08',
@@ -196,7 +196,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/8.jpeg')
+          img: require('../../assets/images/room/r8.jpg')
         },
         {
           roomNO: '09',
@@ -210,7 +210,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/9.jpeg')
+          img: require('../../assets/images/room/r9.jpg')
         },
         {
           roomNO: '10',
@@ -224,7 +224,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/3.jpeg')
+          img: require('../../assets/images/room/r10.jpg')
         },
         {
           roomNO: '11',
@@ -238,7 +238,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/4.jpeg')
+          img: require('../../assets/images/room/r11.jpg')
         },
         {
           roomNO: '12',
@@ -252,7 +252,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/5.jpeg')
+          img: require('../../assets/images/room/r12.jpg')
         },
         {
           roomNO: '13',
@@ -266,7 +266,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/6.jpeg')
+          img: require('../../assets/images/room/r13.jpg')
         },
         {
           roomNO: '14',
@@ -280,7 +280,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/7.jpeg')
+          img: require('../../assets/images/room/r14.jpg')
         },
         {
           roomNO: '15',
@@ -294,7 +294,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/1.jpeg')
+          img: require('../../assets/images/room/r15.jpg')
         },
         {
           roomNO: '16',
@@ -308,7 +308,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/2.jpeg')
+          img: require('../../assets/images/room/r1.jpg')
         },
         {
           roomNO: '17',
@@ -322,7 +322,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/3.jpeg')
+          img: require('../../assets/images/room/r2.jpg')
         },
         {
           roomNO: '18',
@@ -336,7 +336,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/4.jpeg')
+          img: require('../../assets/images/room/r3.jpg')
         },
         {
           roomNO: '19',
@@ -350,7 +350,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/1.jpeg')
+          img: require('../../assets/images/room/r4.jpg')
         },
         {
           roomNO: '20',
@@ -364,7 +364,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/4.jpeg')
+          img: require('../../assets/images/room/r5.jpg')
         },
         {
           roomNO: '21',
@@ -378,7 +378,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/2.jpeg')
+          img: require('../../assets/images/room/r6.jpg')
         },
         {
           roomNO: '22',
@@ -392,7 +392,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/3.jpeg')
+          img: require('../../assets/images/room/r7.jpg')
         },
         {
           roomNO: '23',
@@ -406,7 +406,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/9.jpeg')
+          img: require('../../assets/images/room/r8.jpg')
         },
         {
           roomNO: '24',
@@ -420,7 +420,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/8.jpeg')
+          img: require('../../assets/images/room/r9.jpg')
         },
         {
           roomNO: '25',
@@ -434,7 +434,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/7.jpeg')
+          img: require('../../assets/images/room/r10.jpg')
         },
         {
           roomNO: '26',
@@ -448,7 +448,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/6.jpeg')
+          img: require('../../assets/images/room/r11.jpg')
         },
         {
           roomNO: '27',
@@ -462,7 +462,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/5.jpeg')
+          img: require('../../assets/images/room/r12.jpg')
         },
         {
           roomNO: '28',
@@ -476,7 +476,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/4.jpeg')
+          img: require('../../assets/images/room/r13.jpg')
         },
         {
           roomNO: '29',
@@ -490,7 +490,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/3.jpeg')
+          img: require('../../assets/images/room/r14.jpg')
         },
         {
           roomNO: '30',
@@ -504,7 +504,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/3.jpeg')
+          img: require('../../assets/images/room/r15.jpg')
         },
         {
           roomNO: '31',
@@ -518,7 +518,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/4.jpeg')
+          img: require('../../assets/images/room/r1.jpg')
         },
         {
           roomNO: '31',
@@ -532,7 +532,7 @@ export default {
           d4: 'Subtle Shoji screens made of delicate washi paper 2',
           d5: 'WiP, TV with video camcorder connection, sound systean, safe 2',
           d6: 'Personal bar 2',
-          img: require('../../assets/images/hotel/5.jpeg')
+          img: require('../../assets/images/room/r2.jpg')
         },
       ],
       commentList: [

@@ -30,6 +30,7 @@ import sustech.hotel.model.to.hotel.RoomTo;
 import sustech.hotel.model.to.hotel.RoomTypeTo;
 import sustech.hotel.model.to.member.UserTo;
 import sustech.hotel.model.to.order.OrderTo;
+import sustech.hotel.model.vo.member.UserVo;
 import sustech.hotel.model.vo.order.OrderConfirmRespVo;
 import sustech.hotel.constant.OrderConstant;
 import sustech.hotel.model.vo.order.OrderConfirmVo;
@@ -95,7 +96,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Override
     public OrderConfirmRespVo confirmOrder(OrderConfirmVo request) {
-        Long userID = checkUserID(request.getUserToken());
+        UserTo user = getUser(request.getUserToken());
+        UserVo vo = new UserVo();
+        BeanUtils.copyProperties(user, vo);
         JsonResult<RoomInfoTo> roomInfo = roomFeignService.allInfo(request.getRoomId());
         OrderConfirmRespVo resp = new OrderConfirmRespVo();
         BeanUtils.copyProperties(roomInfo.getData(), resp);
@@ -111,17 +114,22 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         resp.setStartDate(start);
         resp.setEndDate(end);
         String token = UUID.randomUUID().toString().replace("-", "");
-        redisTemplate.opsForValue().set(OrderConstant.USER_ORDER_TOKEN_PREFIX + userID, token, 15, TimeUnit.MINUTES);
+        redisTemplate.opsForValue().set(OrderConstant.USER_ORDER_TOKEN_PREFIX + user.getUserId(), token, 15, TimeUnit.MINUTES);
         resp.setToken(token);
         // TODO: 2022/11/24 set after discount price
         resp.setFinalPrice(resp.getTotalPrice());
+        resp.setUser(vo);
         return resp;
     }
 
     @Override
     public PayVo getOrderPay(String orderId) {
+        OrderEntity order = baseMapper.selectById(orderId);
+        if (order == null)
+            throw new OrderNotExistException(ExceptionCodeEnum.ORDER_NOT_EXIST_EXCEPTION);
+        if (order.getOrderStatus() != 0)
+            throw new OrderClosedException(ExceptionCodeEnum.ORDER_CLOSED_EXCEPTION);
         PayVo payVo = new PayVo();
-        OrderEntity order = this.baseMapper.selectById(orderId);
         BigDecimal bigDecimal = order.getAfterDiscount().setScale(2, BigDecimal.ROUND_UP);
         payVo.setTotal_amount(bigDecimal.toString());
         payVo.setOut_trade_no(orderId);
@@ -168,6 +176,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         bookingService.checkAvailable(request.getRoomId(), request.getStartDate(), request.getEndDate());
         request.setOrderStatus(0);
         request.setOrderId(IdWorker.getTimeId());
+        BeanUtils.copyProperties(room.getData(), request);
         JsonResult<RoomTypeTo> roomType = roomFeignService.getRoomTypeByID(room.getData().getTypeId());
         if (guestInfo.size() > roomType.getData().getUpperLimit())
             throw new GuestNumberExceedLimitException(ExceptionCodeEnum.GUEST_NUMBER_EXCEED_LIMIT_EXCEPTION);
@@ -179,15 +188,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         BeanUtils.copyProperties(request, bookingEntity);
         bookingEntity.setHotelId(roomType.getData().getHotelId());
         bookingEntity.setTypeId(roomType.getData().getTypeId());
+        bookingEntity.setOrderState(0);
         bookingService.save(bookingEntity);
         for (String s : guestInfo) {
             String[] info = s.split(",");
-            OrderInfoEntity orderInfoEntity = new OrderInfoEntity();
-            orderInfoEntity.setOrderId(request.getOrderId());
-            orderInfoEntity.setTenantName(info[0]);
-            orderInfoEntity.setIdentityCard(info[1]);
-            orderInfoEntity.setTelephone(info[2]);
-            orderInfoService.save(orderInfoEntity);
+            if (!info[0].equals("") || !info[1].equals("") || !info[2].equals("")) {
+                OrderInfoEntity orderInfoEntity = new OrderInfoEntity();
+                orderInfoEntity.setOrderId(request.getOrderId());
+                orderInfoEntity.setTenantName(info[0]);
+                orderInfoEntity.setIdentityCard(info[1]);
+                orderInfoEntity.setTelephone(info[2]);
+                orderInfoService.save(orderInfoEntity);
+            }
         }
         OrderOperationEntity orderOperationEntity = new OrderOperationEntity();
         orderOperationEntity.setOperation(0);
@@ -198,6 +210,12 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Override
     public Long checkUserID(String token) {
+        return this.getUser(token).getUserId();
+    }
+
+
+    @Override
+    public UserTo getUser(String token) {
         Long userid;
         try {
             userid = JwtHelper.getUserId(token);
@@ -209,7 +227,6 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         JsonResult<UserTo> user = memberFeignService.getUser(userid);
         if (user == null || user.getData() == null)
             throw new UserNotFoundException(ExceptionCodeEnum.USER_NOT_FOUND_EXCEPTION);
-        return user.getData().getUserId();
+        return user.getData();
     }
-
 }

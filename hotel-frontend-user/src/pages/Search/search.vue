@@ -254,6 +254,10 @@
         </div>
         <br>
         <div style="font-size: 18px;font-family: 'Times New Roman',serif">
+          {{ curHotel.floors }} Floors In Total
+        </div>
+        <br>
+        <div style="font-size: 18px;font-family: 'Times New Roman',serif">
           {{ curHotel.description }}
         </div>
         <el-divider style="height: 5px"></el-divider>

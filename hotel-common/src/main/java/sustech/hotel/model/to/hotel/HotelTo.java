@@ -25,4 +25,5 @@ public class HotelTo {
     private Integer spa;
     private Integer chessRoom;
     private Long starLevel;
+    private Integer floors;
 }

@@ -1,10 +1,7 @@
 package sustech.hotel.order.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.model.to.hotel.*;
 
@@ -29,4 +26,7 @@ public interface RoomFeignService {
 
     @GetMapping("/room/room/availableRoom")
     JsonResult<List<Long>> getAvailableRoom(@RequestParam("hotel_id") Long hotelId, @RequestParam("type_id") Long typeId, @RequestParam("json") String json);
+
+    @RequestMapping("/room/roomtype/getCommentInfo")
+    JsonResult<List<CommentInfoTo>> getCommentInfo(@RequestBody List<Long> typeIds);
 }

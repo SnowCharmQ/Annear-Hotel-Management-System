@@ -16,13 +16,16 @@ import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.Query;
 
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
+import sustech.hotel.model.to.hotel.CommentInfoTo;
 import sustech.hotel.model.vo.hotel.AvailableRoomTypeVo;
 import sustech.hotel.model.vo.hotel.RoomTypeSearchVo;
 import sustech.hotel.model.vo.order.CommentVo;
 import sustech.hotel.room.dao.RoomTypeDao;
+import sustech.hotel.room.entity.HotelEntity;
 import sustech.hotel.room.entity.RoomTypeEntity;
 import sustech.hotel.room.entity.RoomTypePictureEntity;
 import sustech.hotel.room.feign.OrderFeignService;
+import sustech.hotel.room.service.HotelService;
 import sustech.hotel.room.service.RoomTypePictureService;
 import sustech.hotel.room.service.RoomTypeService;
 
@@ -35,6 +38,9 @@ public class RoomTypeServiceImpl extends ServiceImpl<RoomTypeDao, RoomTypeEntity
 
     @Autowired
     private RoomTypePictureService roomTypePictureService;
+
+    @Autowired
+    private HotelService hotelService;
 
     @Autowired
     ThreadPoolExecutor executor;
@@ -125,5 +131,21 @@ public class RoomTypeServiceImpl extends ServiceImpl<RoomTypeDao, RoomTypeEntity
         }, executor);
         CompletableFuture.allOf(task1, task2, task3).join();
         return resp;
+    }
+
+    @Override
+    public CommentInfoTo getCommentInfo(Long typeId) {
+        CommentInfoTo to = new CommentInfoTo();
+        RoomTypeEntity roomType = this.getById(typeId);
+        Long hotelId = roomType.getHotelId();
+        HotelEntity hotel = hotelService.getById(hotelId);
+        to.setTypeId(typeId);
+        to.setTypeName(roomType.getTypeName());
+        to.setHotelId(hotelId);
+        to.setHotelName(hotel.getHotelName());
+        RoomTypePictureEntity picture = roomTypePictureService.getOne(new QueryWrapper<RoomTypePictureEntity>()
+                .and(o -> o.eq("type_id", typeId).eq("cover", 1)));
+        to.setTypePicture(picture.getPicturePath());
+        return to;
     }
 }

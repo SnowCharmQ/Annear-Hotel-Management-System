@@ -74,7 +74,6 @@
                     <el-menu-item index="1"><i class="el-icon-message"></i>Email</el-menu-item>
 
 
-
                     <el-submenu index="4">
                         <template slot="title"><i class="el-icon-user-solid"></i>Administrator</template>
                         <el-menu-item index="4-1">Personal Center</el-menu-item>

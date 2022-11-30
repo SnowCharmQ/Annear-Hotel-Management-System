@@ -18,8 +18,7 @@
             <el-table-column label="Name" width="180">
                 <template slot-scope="scope">
                    {{ scope.row.customer_name }}
-
-                      
+                
                 </template>
             </el-table-column>
             <el-table-column label="ID" width="180">

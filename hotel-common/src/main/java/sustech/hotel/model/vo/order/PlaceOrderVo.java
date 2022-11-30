@@ -14,4 +14,7 @@ public class PlaceOrderVo {
     private String endDate;
     private String additional;
     private List<String> guestInfo;
+    private String contactName;
+    private String contactPhone;
+    private String contactEmail;
 }

@@ -24,69 +24,77 @@ export default {
       showHotel: false,
       curHotel: {},
       hotelList: [
-        {
-          name: 'Annear Kyoto',
-          addr: 'beijin',
-          price: '230',
-          lng: 116.20,
-          lat: 39.56,
-          img: require('../../assets/images/hotel/1.jpeg')
-        }, {
-          name: 'Annear Kyoto',
-          addr: 'Cape St Charles',
-          price: '230',
-          lng: 55.40,
-          lat: 52.13,
-          img: require('../../assets/images/hotel/1.jpeg')
-        },
-        {
-          name: 'Anneartaka',
-          addr: "Mexico",
-          price: '980',
-          lng: 98.52,
-          lat: 19.03,
-          img: require('../../assets/images/hotel/2.jpeg')
-        },
-        {
-          name: 'Annearwella',
-          addr: 'hangzhou',
-          price: '560',
-          lng: 118.50,
-          lat: 29.11,
-          img: require('../../assets/images/hotel/3.jpeg')
-        },
-        {
-          name: 'Annearera',
-          addr: 'nanjing',
-          price: '460',
-          lng: 118.90,
-          lat: 31.99,
-          img: require('../../assets/images/hotel/4.jpeg')
-        },
-        {
-          name: 'Annear Tokyo',
-          addr: 'Chiyoda-ku, Japan',
-          price: '390',
-          lng: 106.20,
-          lat: 29.56,
-          img: require('../../assets/images/hotel/5.jpeg')
-        },
-        {
-          name: 'Annear Tokyo',
-          addr: 'shenzheng',
-          price: '390',
-          lng: 114.085947,
-          lat: 22.547,
-          img: require('../../assets/images/hotel/5.jpeg')
-        },
-        {
-          name: 'Annear Tokyo',
-          addr: 'lanzhou',
-          price: '390',
-          lng: 103.51,
-          lat: 36.04,
-          img: require('../../assets/images/hotel/5.jpeg')
-        }
+        // {
+        //   name: 'Annear Kyoto',
+        //   addr: 'beijin',
+        //   price: '230',
+        //   lng: 116.20,
+        //   lat: 39.56,
+        //   img: require('../../assets/images/hotel/1.jpeg')
+        // }, {
+        //   name: 'Annear Kyoto',
+        //   addr: 'Cape St Charles',
+        //   price: '230',
+        //   lng: 55.40,
+        //   lat: 52.13,
+        //   img: require('../../assets/images/hotel/1.jpeg')
+        // },
+        // {
+        //   name: 'Anneartaka',
+        //   addr: "Mexico",
+        //   price: '980',
+        //   lng: 98.52,
+        //   lat: 19.03,
+        //   img: require('../../assets/images/hotel/2.jpeg')
+        // },
+        // {
+        //   name: 'Annearwella',
+        //   addr: 'hangzhou',
+        //   price: '560',
+        //   lng: 118.50,
+        //   lat: 29.11,
+        //   img: require('../../assets/images/hotel/3.jpeg')
+        // },
+        // {
+        //   name: 'Annearera',
+        //   addr: 'nanjing',
+        //   price: '460',
+        //   lng: 118.90,
+        //   lat: 31.99,
+        //   img: require('../../assets/images/hotel/4.jpeg')
+        // },
+        // {
+        //   name: 'Annear Tokyo',
+        //   addr: 'Chiyoda-ku, Japan',
+        //   price: '390',
+        //   lng: 106.20,
+        //   lat: 29.56,
+        //   img: require('../../assets/images/hotel/5.jpeg')
+        // },
+        // {
+        //   name: 'Annear Tokyo',
+        //   addr: 'shenzheng',
+        //   price: '390',
+        //   lng: 114.085947,
+        //   lat: 22.547,
+        //   img: require('../../assets/images/hotel/5.jpeg')
+        // },
+        // {
+        //   name: 'Annear Tokyo',
+        //   addr: 'lanzhou',
+        //   price: '390',
+        //   lng: 103.51,
+        //   lat: 36.04,
+        //   img: require('../../assets/images/hotel/5.jpeg')
+        // },
+        // {
+        //   name: 'Annear Tokyo',
+        //   addr: 'lanzhou',
+        //   price: '390',
+        //   lng: 113.51,
+        //   lat: 30.04,
+        //   img: require('../../assets/images/hotel/5.jpeg')
+        // }
       ]
     };
   },
@@ -95,7 +103,6 @@ export default {
       if (this.timer) clearTimeout(this.timer)
       this.timer = setTimeout(() => {
         // this.seachArea1()
-
       }, 1500)
     }
   },
@@ -105,8 +112,28 @@ export default {
     }
     console.log(AMap, 'AMap-->>')
     // 初始化一个地图
-    this.initMap();
-    this.curHotel = this.hotelList[0]
+    this.$http({
+      url: this.$http.adornUrl('/room/room/hotel/getMapInfo'),
+      method: 'get',
+    }).then(data => {
+      let hotels = data.data.data
+      for (let i in hotels) {
+        let hotel = hotels[i]
+        let item = {
+          name: hotel.hotelName,
+          addr: hotel.province + ', ' + hotel.city + ', ' + hotel.district + ', ' + hotel.detailAddress,
+          price: hotel.price,
+          lng: hotel.latitude,
+          lat: hotel.longitude,
+          img: hotel.picture
+        }
+        this.hotelList.push(item)
+      }
+      this.initMap();
+      this.curHotel = this.hotelList[0]
+    }).catch(err => {
+      this.$message.error("Network Error")
+    })
   },
   methods: {
     initMap() {

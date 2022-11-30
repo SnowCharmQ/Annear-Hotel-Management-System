@@ -161,13 +161,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     @Transactional(rollbackFor = Exception.class)
     @Override
     public void placeOrder(OrderEntity request, List<String> guestInfo, String orderToken) {
-        String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
-        Long result = redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class),
-                List.of(OrderConstant.USER_ORDER_TOKEN_PREFIX + request.getUserId()),
-                orderToken);
-        if (result == null || result == 0L)
-            //fail
-            throw new CreateOrderException(ExceptionCodeEnum.CREATE_ORDER_EXCEPTION);
+//        String script = "if redis.call('get', KEYS[1]) == ARGV[1] then return redis.call('del', KEYS[1]) else return 0 end";
+//        Long result = redisTemplate.execute(new DefaultRedisScript<Long>(script, Long.class),
+//                List.of(OrderConstant.USER_ORDER_TOKEN_PREFIX + request.getUserId()),
+//                orderToken);
+//        if (result == null || result == 0L)
+//            //fail
+//            throw new CreateOrderException(ExceptionCodeEnum.CREATE_ORDER_EXCEPTION);
         //success
         Date currentDate = DateConverter.currentDate();
         if (request.getStartDate().getTime() < currentDate.getTime())
@@ -210,7 +210,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         orderOperationEntity.setOperationTime(new Timestamp(System.currentTimeMillis()));
         orderOperationEntity.setOrderId(request.getOrderId());
         orderOperationService.save(orderOperationEntity);
-        rabbitTemplate.convertAndSend("order-event-exchange","order.create.order",request);
+        rabbitTemplate.convertAndSend("order-event-exchange", "order.create.order", request);
     }
 
     @Override
@@ -237,13 +237,13 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Override
     public void closeOrder(OrderEntity orderEntity) {
-
         //关闭订单之前先查询一下数据库，判断此订单状态是否已支付
         OrderEntity orderInfo = this.baseMapper.selectById(orderEntity.getOrderId());
 
         if (orderInfo.getOrderStatus().equals(0)) {
             //代付款状态进行关单
             this.baseMapper.updateOrderStatus(orderInfo.getOrderId(), 2);
+            bookingDao.deleteById(orderEntity.getOrderId());
             // 发送消息给MQ
             OrderTo orderTo = new OrderTo();
             BeanUtils.copyProperties(orderInfo, orderTo);
@@ -254,6 +254,11 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             } catch (Exception e) {
                 //TODO 定期扫描数据库，重新发送失败的消息
             }
+            OrderOperationEntity orderOperationEntity = new OrderOperationEntity();
+            orderOperationEntity.setOperation(2);
+            orderOperationEntity.setOrderId(orderEntity.getOrderId());
+            orderOperationEntity.setOperationTime(new Timestamp(System.currentTimeMillis()));
+            orderOperationService.save(orderOperationEntity);
         }
     }
 

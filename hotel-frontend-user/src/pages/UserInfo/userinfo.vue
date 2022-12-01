@@ -88,91 +88,12 @@
                 <el-breadcrumb-item>telephone: {{ item.telephone }}</el-breadcrumb-item>
               </el-breadcrumb>
               <div>A contemporary retreat for a restful night’s sleep</div>
-              <el-link>Hotel details</el-link>
+              <el-link @click="toHotel(item.hotelId)">Hotel details</el-link>
             </div>
           </el-col>
         </div>
       </el-collapse-item>
     </el-collapse>
-    <el-collapse class="collection" accordion>
-      <el-collapse-item title="My Orders" name="1">
-        <div style="clear:both;">
-          <el-col :span="24" v-for="item in orderList" :key="item.orderId" class="room-list">
-            <img :src="item.img" style="margin-left:5px">
-            <div class="room-right">
-              <div style="font-size:10px">OrderId: {{ item.orderId }}</div>
-              <div style="font-weight:600;">Hotel: {{ item.hotel }}</div>
-              <div style="">Room: {{ item.room }}</div>
-              <el-breadcrumb separator="|" style="margin:10px 0;">
-                <el-breadcrumb-item>Start Time: {{ item.startTime }}</el-breadcrumb-item>
-                <el-breadcrumb-item>Leave Time: {{ item.endTime }}</el-breadcrumb-item>
-              </el-breadcrumb>
-              <div>Order Status: {{ item.orderStatus }}</div>
-              <el-breadcrumb separator="|" style="margin:10px 0;">
-                <el-breadcrumb-item>Origin Money: ${{ item.originMoney }}</el-breadcrumb-item>
-                <el-breadcrumb-item>After Discount: ${{ item.afterDiscount }}</el-breadcrumb-item>
-              </el-breadcrumb>
-              <el-button v-if="item.comments === ''" type="text" @click="show_comments_page">Given Comments</el-button>
-              <div v-if="item.comments">Comments: {{ item.comments }}</div>
-            </div>
-          </el-col>
-        </div>
-      </el-collapse-item>
-
-
-    </el-collapse>
-    <el-dialog :visible.sync="dialogVisible" center width="50%">
-      <div style="font-size: 18px;line-height: 28px;color: #333;">Give your comments</div>
-      <div style="margin:10px 0">
-        <span> Thanks for sharing your experience staying in Annear</span>
-      </div>
-      <div style="display: flex;flex-direction: column;align-items: center;justify-content: center;">
-        <br>
-        <el-form :inline="true">
-          <el-select v-model="star" placeholder="Star" style="width: 80px">
-            <el-option label="1" value="1"></el-option>
-            <el-option label="2" value="2"></el-option>
-            <el-option label="3" value="3"></el-option>
-            <el-option label="4" value="4"></el-option>
-            <el-option label="5" value="5"></el-option>
-          </el-select>
-          <br><br>
-          <el-input v-model="comment"
-                    style="width: 500px"
-                    maxlength="50"
-                    show-word-limit
-                    placeholder="your comments">
-          </el-input>
-          <br><br>
-          <el-upload
-              class="upload-demo"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              :http-request="uploadPicture"
-              :file-list="fileList"
-              :limit=1
-              list-type="picture">
-            <el-button size="small" type="primary">Upload Picture</el-button>
-            <div slot="tip" class="el-upload__tip">please upload .one jpg/png file</div>
-          </el-upload>
-          <br>
-          <el-upload
-              class="upload-demo"
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :http-request="uploadVideo"
-              :limit=1
-              :file-list="videoList">
-            <el-button size="small" type="primary">Upload Video</el-button>
-            <div slot="tip" class="el-upload__tip">please upload one .mp4 file</div>
-          </el-upload>
-        </el-form>
-      </div>
-      <span slot="footer" class="dialog-footer">
-        <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="submit_comments(star, comment)">Submit</el-button>
-      </span>
-    </el-dialog>
   </div>
 </template>
 
@@ -373,7 +294,6 @@ export default {
         this.balance = 'balance: ' + info.balance
         this.dataForm.phone = info.phone
 
-        // console.log(this.user_id)
         this.$http({
           url: this.$http.adornUrl('/member/member/collecthotel/collectedList'),
           method: 'get',
@@ -381,14 +301,11 @@ export default {
             userId: cookie.get('token')
           })
         }).then(data => {
-          console.log('hiiii')
-          console.log(data)
           let resp = data.data.data
-          console.log(resp)
           for (let i = 0; i < resp.length; i++) {
-            console.log(i)
             let item = resp[i]
             let p = {
+              hotelId: item.hotelId,
               name: item.hotelName,
               province: item.province,
               city: item.city,
@@ -401,10 +318,7 @@ export default {
             this.collectionList.push(p)
           }
         })
-
       })
-
-
       //TODO: init user order
     }
     ,
@@ -418,6 +332,9 @@ export default {
         type: 'success',
         message: 'upload comments done'
       });
+    },
+    toHotel(hotelId) {
+      this.$router.push("reserve?hotel=" + hotelId);
     }
     ,
     handleRemove(file, fileList) {
@@ -455,7 +372,6 @@ export default {
         headers: {'Content-Type': 'multipart/form-data'}
       }).then(data => {
         let videoUrl = data.data.data
-        console.log(videoUrl)
         this.videoList.push({name: video.name, url: videoUrl})
       });
     }

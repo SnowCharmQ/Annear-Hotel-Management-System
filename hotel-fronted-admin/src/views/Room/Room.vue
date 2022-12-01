@@ -322,8 +322,6 @@ export default {
           this.$message.error("Wrong Input");
           return false;
         }
-        this.$refs[formName].resetFields();
-
       });
     },
     setRowStyle(row) {

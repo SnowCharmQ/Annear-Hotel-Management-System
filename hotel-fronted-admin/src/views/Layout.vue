@@ -45,24 +45,14 @@
           </template>
           <el-menu-item-group>
             <el-submenu index="4-1">
-              <template slot="title">Room Order Quantity</template>
-              <el-menu-item index="4-1-1">Day</el-menu-item>
-              <el-menu-item index="4-1-2">Month</el-menu-item>
-              <el-menu-item index="4-1-3">Type of Room</el-menu-item>
+              <template slot="title">Order</template>
+              <el-menu-item index="graph1" style="font-size: 10px;font-family: 'Times New Roman',serif">Daily Orders Counts</el-menu-item>
+              <el-menu-item index="graph2" style="font-size: 10px;font-family: 'Times New Roman',serif">RoomType Orders Counts</el-menu-item>
+              <el-menu-item index="graph3" style="font-size: 10px;font-family: 'Times New Roman',serif">Order Score Counts</el-menu-item>
             </el-submenu>
-            <el-submenu index="3-2">
-              <template slot="title">Turnover</template>
-              <el-menu-item index="4-2-1">Day</el-menu-item>
-              <el-menu-item index="4-2-2">Month</el-menu-item>
-              <el-menu-item index="4-2-3">Type of Room</el-menu-item>
-
-            </el-submenu>
-
-            <el-submenu index="3-3">
-              <template slot="title">Score Ratio</template>
-              <el-menu-item index="3-3-1">Score Ratio</el-menu-item>
-
-
+            <el-submenu index="4-2">
+              <template slot="title">Income</template>
+              <el-menu-item index="graph4" style="font-size: 10px;font-family: 'Times New Roman',serif">Monthly Income</el-menu-item>
             </el-submenu>
 
           </el-menu-item-group>

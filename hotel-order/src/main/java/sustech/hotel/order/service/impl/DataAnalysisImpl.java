@@ -148,7 +148,8 @@ public class DataAnalysisImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
                 o -> o.eq("hotel_id", hotelId).ge("start_date", start).le("end_date", end)));
 
         for (OrderEntity entity : orders) {
-            score[entity.getScore()] += 1;
+            if (entity.getScore() != null)
+                score[entity.getScore()] += 1;
         }
 
         List<String> xdata = new ArrayList<>();
@@ -161,15 +162,4 @@ public class DataAnalysisImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         return new DataAnalysisVo(xdata, ydata);
     }
 
-
-    public static void main(String[] args) {
-        SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, -31);
-        Date start = c.getTime();
-        Date end = new Date();
-        c.setTime(end);
-        System.out.println(end);
-        System.out.println(c.get(Calendar.DATE));
-    }
 }

@@ -28,4 +28,6 @@ public interface OrderService extends IService<OrderEntity> {
     UserTo getUser(String token);
 
     void closeOrder(OrderEntity orderEntity);
+
+    PageUtils getUserOrders(Map<String, Object> params);
 }

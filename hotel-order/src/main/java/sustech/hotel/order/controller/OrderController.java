@@ -28,7 +28,6 @@ import sustech.hotel.order.entity.OrderInfoEntity;
 import sustech.hotel.order.feign.RoomFeignService;
 import sustech.hotel.order.service.OrderInfoService;
 import sustech.hotel.order.service.OrderService;
-import sustech.hotel.common.utils.Constant;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
 
@@ -192,19 +191,10 @@ public class OrderController {
 
     @ResponseBody
     @GetMapping("/getUserOrders")
-    public JsonResult<List<OrderShowVo>> getUserOrders(@RequestParam("token") String token) {
+    public JsonResult<PageUtils> getUserOrders(@RequestParam Map<String, Object> params) {
         try{
-            Long userId = orderService.checkUserId(token);
-            List<OrderEntity> entities = orderService.list(new QueryWrapper<OrderEntity>().eq("user_id", userId));
-            List<OrderTo> tos = entities.stream().map(o -> {
-                OrderTo to = new OrderTo();
-                BeanUtils.copyProperties(o, to);
-                return to;
-            }).toList();
-            String json = JSON.toJSONString(tos);
-            String data = roomFeignService.getOrderRoomInfo(json).getData();
-            List<OrderShowVo> list = JSON.parseArray(data, OrderShowVo.class);
-            return new JsonResult<>(list);
+            PageUtils pageUtils = orderService.getUserOrders(params);
+            return new JsonResult<>(pageUtils);
         } catch (BaseException e) {
             return new JsonResult<>(e);
         }

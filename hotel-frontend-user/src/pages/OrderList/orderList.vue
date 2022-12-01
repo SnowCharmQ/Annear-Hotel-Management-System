@@ -1,29 +1,29 @@
 <template>
   <div class="page-main">
-    <div style="background:#f3eee7;line-height:80px;padding-left:15px;font-size:22px">View The Comments Of Our Hotels
+    <div style="background:#f3eee7;line-height:80px;padding-left:15px;font-size:22px">View All Your Orders In Our Hotels
     </div>
 
     <el-row class="card-search" :gutter="20" style="width:1250px;margin:20px auto;">
       <el-col :span="17" style="background:#fff; padding: 0 0;margin-left: 120px">
         <div style="clear:both;">
           <el-col :span="24" v-for="(item, idx) in orderList" :key="idx" class="room-list">
-            <img :src="item.img" style="margin-left:5px">
             <div class="room-right">
-              <div style="font-size:10px">OrderId: {{ item.orderId }}</div>
+              <div style="font-size:14px">OrderId: {{ item.orderId }}</div>
               <div style="font-weight:600;">Hotel: {{ item.hotelName }}</div>
               <div style="font-weight:600;">RoomType: {{ item.typeName }}</div>
               <div style="font-weight:600;">Room: {{ item.roomNumber }}</div>
               <el-breadcrumb separator="|" style="margin:10px 0;">
-                <el-breadcrumb-item>Start Time: {{ item.startTime }}</el-breadcrumb-item>
-                <el-breadcrumb-item>Leave Time: {{ item.endTime }}</el-breadcrumb-item>
+                <el-breadcrumb-item>Start Time: {{ item.startDate }}</el-breadcrumb-item>
+                <el-breadcrumb-item>Leave Time: {{ item.endDate }}</el-breadcrumb-item>
               </el-breadcrumb>
-              <div>Order Status: {{ item.orderStatus }}</div>
               <el-breadcrumb separator="|" style="margin:10px 0;">
                 <el-breadcrumb-item>Origin Money: ${{ item.originMoney }}</el-breadcrumb-item>
                 <el-breadcrumb-item>After Discount: ${{ item.afterDiscount }}</el-breadcrumb-item>
               </el-breadcrumb>
-              <el-button v-if="item.comments === ''" type="text" @click="showCommentPage">Given Comments</el-button>
-              <div v-if="item.comments">Comments: {{ item.comments }}</div>
+              <div>Order Status: {{ statusMap[item.orderStatus] }}</div>
+              <div>Additional Information: {{item.additional}}</div>
+              <el-button v-if="item.score === null" type="text" @click="showCommentPage(item)">Give Comments</el-button>
+              <div v-if="item.score !== null">Score: {{item.score}}</div>
             </div>
           </el-col>
         </div>
@@ -76,14 +76,16 @@
           </div>
           <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="submit_comments(score, comment)">Submit</el-button>
+        <el-button type="primary" @click="submitComment()">Submit</el-button>
       </span>
         </el-dialog>
       </el-col>
     </el-row>
 
     <div class="pagination">
-      <span style="margin-right:-16px;font-size: 20px;font-family: 'Times New Roman',serif; color: #000000;">Total Records: {{ totalCount }} &ensp;&ensp;&ensp;  Current Page:</span>
+      <span style="margin-right:-16px;font-size: 20px;font-family: 'Times New Roman',serif; color: #000000;">Total Records: {{
+          totalCount
+        }} &ensp;&ensp;&ensp;  Current Page:</span>
       <el-pagination
           @size-change="sizeChangeHandle"
           @current-change="currentChangeHandle"
@@ -100,6 +102,7 @@
 <script>
 import cookie from "js-cookie";
 import axios from "axios";
+import {convertToDate} from "@/utils/utils";
 
 export default {
   name: "orderList",
@@ -115,7 +118,9 @@ export default {
       fileList: [],
       videoList: [],
       tempUrl: '',
-      selectedOrderId: ''
+      selectedOrderId: '',
+      statusMap: {0: 'unpaid', 1: 'paid', 2: 'be canceled', 3: 'be evaluated', 4: 'finished'},
+      curComment: ''
     }
   },
   methods: {
@@ -138,7 +143,8 @@ export default {
         })
       }).then(data => {
         if (data.data.state === 200) {
-          this.orderList = data.data.data;
+          this.orderList = data.data.data.list;
+          this.totalCount = this.orderList.length;
         } else {
           this.$message.error(data.data.message);
         }
@@ -156,12 +162,10 @@ export default {
       formData.append('file', picture)
       formData.append('orderId', this.selectedOrderId)
       let url = this.$http.adornUrl('/auth/uploadPicture')
-
       axios.post(url, formData, {
         headers: {'Content-Type': 'multipart/form-data'}
       }).then(data => {
         let pictureUrl = data.data.data
-        console.log(pictureUrl)
         this.fileList.push({name: picture.name, url: pictureUrl})
       });
     },
@@ -175,12 +179,38 @@ export default {
         headers: {'Content-Type': 'multipart/form-data'}
       }).then(data => {
         let videoUrl = data.data.data
-        console.log(videoUrl)
         this.videoList.push({name: video.name, url: videoUrl})
       });
     },
-    showCommentPage() {
+    showCommentPage(item) {
       this.dialogVisible = true;
+      this.curComment = item;
+    },
+    submitComment() {
+      this.dialogVisible = false;
+      let date = new Date();
+      let str = convertToDate(date);
+      this.$http({
+        url: this.$http.adornUrl('/order/order/ordercomments/commentOrder'),
+        method: 'post',
+        data: this.$http.adornData({
+          'orderId': this.curComment.orderId,
+          'typeId': this.curComment.typeId,
+          'comments': this.comment,
+          'commentTime': str,
+          'picture': this.fileList[0] === undefined ? '' : this.fileList[0].url,
+          'video': this.videoList[0] === undefined ? '' : this.videoList[0].url,
+          'score': this.score
+        })
+      }).then(data => {
+        if (data.data.state === 200) {
+          this.$message.success("Successfully Commented")
+        } else {
+          this.$message.error(data.data.message);
+        }
+      }).catch(err => {
+        this.$message.error("Network Error")
+      })
     }
   },
   created() {

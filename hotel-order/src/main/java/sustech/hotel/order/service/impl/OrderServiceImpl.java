@@ -1,5 +1,6 @@
 package sustech.hotel.order.service.impl;
 
+import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -33,11 +34,8 @@ import sustech.hotel.model.to.hotel.RoomTypeTo;
 import sustech.hotel.model.to.member.UserTo;
 import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.model.vo.member.UserVo;
-import sustech.hotel.model.vo.order.OrderConfirmRespVo;
+import sustech.hotel.model.vo.order.*;
 import sustech.hotel.constant.OrderConstant;
-import sustech.hotel.model.vo.order.OrderConfirmVo;
-import sustech.hotel.model.vo.order.PayAsyncVo;
-import sustech.hotel.model.vo.order.PayVo;
 import sustech.hotel.order.dao.BookingDao;
 import sustech.hotel.order.dao.OrderDao;
 import sustech.hotel.order.entity.BookingEntity;
@@ -266,7 +264,29 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         }
     }
 
-
+    @Override
+    public PageUtils getUserOrders(Map<String, Object> params) {
+        String token = (String) params.get("token");
+        Long userId = this.checkUserId(token);
+        List<OrderEntity> entities = this.list(new QueryWrapper<OrderEntity>().eq("user_id", userId));
+        List<OrderTo> tos = entities.stream().map(o -> {
+            OrderTo to = new OrderTo();
+            BeanUtils.copyProperties(o, to);
+            return to;
+        }).toList();
+        String json = JSON.toJSONString(tos);
+        String data = roomFeignService.getOrderRoomInfo(json).getData();
+        List<OrderShowVo> list = JSON.parseArray(data, OrderShowVo.class);
+        int curPage = 1;
+        int limit = 10;
+        if (params.get(Constant.PAGE) != null) {
+            curPage = Integer.parseInt(params.get(Constant.PAGE).toString());
+        }
+        if (params.get(Constant.LIMIT) != null) {
+            limit = Integer.parseInt(params.get(Constant.LIMIT).toString());
+        }
+        return new PageUtils(list, list.size(), limit, curPage);
+    }
 
 
 }

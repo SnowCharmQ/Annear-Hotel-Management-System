@@ -8,6 +8,14 @@
         <div style="clear:both;">
           <el-col :span="24" v-for="(comment, idx) in comments" :key="idx" class="room-list">
             <img :src="comment.picture" v-if="comment.picture" class="image">
+<!--            <vam-video-->
+<!--                :properties="videoOption.properties"-->
+<!--                :videoStyle="videoOption.videoStyle"-->
+<!--                :controlsConfig="videoOption.controlsConfig"-->
+<!--                @play="playVideo"-->
+<!--                @canplay="canplayVideo"-->
+<!--                @pause="pauseVideo"-->
+<!--            ></vam-video>-->
             <div class="room-right">
               <div class="card-name" style="font-size: 22px">{{ comment.hotelName }}</div>
               <div style="font-weight:600;font-size: 20px">{{ comment.typeName }}</div>

@@ -203,8 +203,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
                 OrderInfoEntity orderInfoEntity = new OrderInfoEntity();
                 orderInfoEntity.setOrderId(request.getOrderId());
                 orderInfoEntity.setTenantName(info[0]);
-                orderInfoEntity.setIdentityCard(info[1]);
-                orderInfoEntity.setTelephone(info[2]);
+                orderInfoEntity.setTelephone(info[1]);
+                orderInfoEntity.setIdentityCard(info[2]);
                 orderInfoService.save(orderInfoEntity);
             }
         }

@@ -47,17 +47,15 @@
             <el-breadcrumb separator="|" style="margin:10px 0;">
               <el-breadcrumb-item>{{ curRoomType.upperLimit }} Guests Max</el-breadcrumb-item>
               <el-breadcrumb-item style="margin-top: -3px">{{ curRoomType.area }} m<sup>2</sup></el-breadcrumb-item>
-              <el-breadcrumb-item>Score: {{ parseFloat(curRoomType.averageScore).toFixed(1) }}</el-breadcrumb-item>
             </el-breadcrumb>
             <div>{{ curRoomType.description }}</div>
           </div>
           <br>
           <div>
-<!--            <el-image-->
-<!--                style="width: 260px; height: 180px"-->
-<!--                :src="updatePicturePath()"-->
-<!--                :preview-src-list="this.roomTypeImages[this.curRoomType.typeId]">-->
-<!--            </el-image>-->
+            <el-image
+                style="width: 260px; height: 180px"
+                :src="curRoomType.picture">
+            </el-image>
           </div>
         </div>
         <el-divider></el-divider>
@@ -83,19 +81,8 @@
         <el-divider></el-divider>
         <el-link style="font-family: 'Times New Roman',serif;font-size: 18px" @click="toComments">View Comments
         </el-link>
-
-        <!--用户评论区-->
-        <!--          <div>-->
-        <!--            <div class="detail">User Comment</div>-->
-        <!--            <div class="comment-flex" v-for="(item,index) in commentList" :key="index">-->
-        <!--              <div class="comment-user">{{ item.name }}：</div>-->
-        <!--              <div class="comment-des">-->
-        <!--                <div class="comment-content">{{ item.content }}</div>-->
-        <!--                <div class="time">{{ item.ctime }}</div>-->
-        <!--              </div>-->
-        <!--            </div>-->
-        <!--          </div>-->
-        <span slot="footer" class="dialog-footer"><el-button type="primary" @click="toCheckOut(curRoomType.typeId)"
+        <span slot="footer" class="dialog-footer"><el-button type="primary" v-bind:disabled="dis"
+                                                             @click="toCheckOut()"
                                                              class="v-btn2">Book Now</el-button></span>
       </el-dialog>
 
@@ -105,6 +92,7 @@
 
 <script>
 import {convertToDate} from "@/utils/utils";
+import cookie from "js-cookie";
 
 export default {
   name: "floorPlan",
@@ -113,6 +101,7 @@ export default {
       dialogVisible: false,
       curRoomType: '',
       roomTypes: [],
+      dis: false,
       floors: 0,
       curFloor: 1,
       idxMap: {1: 17, 2: 16, 3: 15, 4: 14, 5: 13, 6: 12, 7: 11, 8: 10, 9: 9, 10: 0, 11: 1, 12: 2, 13: 6, 14: 7, 15: 8},
@@ -131,48 +120,74 @@ export default {
     },
     handleCommand(command) {
       this.curFloor = command;
+      this.refresh();
+    },
+    toComments() {
+      this.$router.push('comments?roomType=' + this.curRoomType.typeId);
+    },
+    toCheckOut() {
+      if (this.curRoomType.canReserve) {
+        let roomId = this.curRoomType.roomId;
+        let typeId = this.curRoomType.typeId;
+        let token = cookie.get('token');
+        let startDate = this.$route.query.startDate;
+        let endDate = this.$route.query.endDate;
+        let hotelId = this.$route.query.hotel;
+        if (token === undefined || token === '') {
+          this.$message.info("You Have Not Login In");
+        }
+        this.$router.push('order?startDate=' + startDate + '&endDate=' + endDate + '&room=' + roomId + '&roomType=' + typeId + '&hotel=' + hotelId);
+      } else {
+       this.$message.error("The room is not available");
+      }
+    },
+    refresh() {
+      let hotelId = this.$route.query.hotel;
+      let startDate = this.$route.query.startDate;
+      let endDate = this.$route.query.endDate;
+      this.disables = [];
+      this.roomTypes = [];
+      for (let i = 0; i < 16; i++) {
+        this.disables.push(false);
+        this.roomTypes.push({});
+      }
+      if (hotelId === undefined || startDate === undefined || endDate === undefined) {
+        this.$router.push('404');
+      } else {
+        let floor = this.curFloor;
+        let d1 = convertToDate(startDate)
+        let d2 = convertToDate(endDate)
+        this.$http({
+          url: this.$http.adornUrl('/order/order/booking/bookingRoomInfo'),
+          method: 'get',
+          params: this.$http.adornParams({
+            hotelId: hotelId,
+            floor: floor,
+            startDate: d1,
+            endDate: d2
+          })
+        }).then(data => {
+          if (data.data.state !== 200) {
+            this.$message.error(data.data.message);
+          } else {
+            let result = data.data.data;
+            for (let i = 0; i < result.length; i++) {
+              let info = result[i];
+              let floorPlanId = info.floorPlanId;
+              let floorPlanIdx = this.idxMap[floorPlanId];
+              this.disables[floorPlanIdx] = true;
+              this.roomTypes[floorPlanIdx] = info;
+            }
+            this.floors = result[0].floors;
+          }
+        }).catch(err => {
+          this.$message.error("Network Error");
+        })
+      }
     }
   },
   created() {
-    let hotelId = this.$route.query.hotel;
-    let startDate = this.$route.query.startDate;
-    let endDate = this.$route.query.endDate;
-    for (let i = 0; i < 16; i++) {
-      this.disables.push(false);
-      this.roomTypes.push({});
-    }
-    if (hotelId === undefined || startDate === undefined || endDate === undefined) {
-      this.$router.push('404');
-    } else {
-      let floor = this.curFloor;
-      let d1 = convertToDate(startDate)
-      let d2 = convertToDate(endDate)
-      this.$http({
-        url: this.$http.adornUrl('/order/order/booking/bookingRoomInfo'),
-        method: 'get',
-        params: this.$http.adornParams({
-          hotelId: hotelId,
-          floor: floor,
-          startDate: d1,
-          endDate: d2
-        })
-      }).then(data => {
-        if (data.data.state !== 200) {
-          this.$message.error(data.data.message);
-        } else {
-          let result = data.data.data;
-          for (let i = 0; i < result.length; i++) {
-            let info = result[0];
-            let floorPlanId = info.floorPlanId;
-            let floorPlanIdx = this.idxMap[floorPlanId];
-            this.disables[floorPlanIdx] = true;
-            this.roomTypes[floorPlanIdx] = info;
-          }
-        }
-      }).catch(err => {
-        this.$message.error("Network Error");
-      })
-    }
+    this.refresh();
   }
 };
 </script>

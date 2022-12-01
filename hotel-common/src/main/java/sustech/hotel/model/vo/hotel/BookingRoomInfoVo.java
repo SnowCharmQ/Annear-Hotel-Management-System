@@ -23,4 +23,6 @@ public class BookingRoomInfoVo {
     private String description;
     private BigDecimal area;
     private Boolean canReserve;
+    private String picture;
+    private Long floors;
 }

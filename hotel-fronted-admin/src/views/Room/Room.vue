@@ -237,7 +237,23 @@ export default {
       this.dialogFormVisible = true
     },
     deleteClass(index) {
-      this.tableData.splice(index, 1);
+      let data = this.tableData[index];
+      let params = {}
+      Object.assign(params, {
+        hotelId: this.hotelId,
+        roomNumber: data.room_num,
+        roomType: data.room_type,
+        floor: data.floor,
+        floorPlan: data.floor_plan,
+      })
+      this.$get(this.$baseUrl + '/room/room/room/deleteRoom', params).then(data => {
+        if (data.state === 200) {
+          this.$message.success("Successfully Deleted");
+          this.tableData.splice(index, 1);
+        } else {
+          this.$message.error(data.message);
+        }
+      })
     },
     handleDrawerClose(done) {
       done();
@@ -319,7 +335,7 @@ export default {
 </script>
 <style scoped lang="scss">
 .addRoomButton {
-  font-family: 'nano';
+  font-family: 'nano', serif;
   font-size: medium;
   color: black;
   border-color: black;

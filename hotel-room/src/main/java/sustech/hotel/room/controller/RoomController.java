@@ -128,7 +128,7 @@ public class RoomController {
     }
 
     @GetMapping("/floorRoomList")
-    public JsonResult<List<BookingRoomInfoVo>> getFloorRoomList(@RequestParam("hotel_id") Long hotelId, @RequestParam("floor") Long floor){
+    public JsonResult<List<BookingRoomInfoVo>> getFloorRoomList(@RequestParam("hotel_id") Long hotelId, @RequestParam("floor") Long floor) {
         LayoutEntity layout = layoutService.getOne(new QueryWrapper<LayoutEntity>().and(o -> o.eq("hotel_id", hotelId).eq("floor", floor)));
         return new JsonResult<>(roomDao.selectRoomByHotelIdAndLayoutId(hotelId, layout.getLayoutId()));
     }
@@ -216,4 +216,19 @@ public class RoomController {
         this.roomService.updateById(originRoom);
         return new JsonResult<>();
     }
+
+    @ResponseBody
+    @GetMapping("/deleteRoom")
+    public JsonResult<Void> deleteRoom(@RequestParam("hotelId") Long hotelId, @RequestParam("roomNumber") Long roomNumber, @RequestParam("roomType") String roomType,
+                                       @RequestParam("floor") Long floor, @RequestParam("floorPlan") Long floorPlan) {
+        LayoutEntity layout = layoutService.getOne(new QueryWrapper<LayoutEntity>().and(o -> o.eq("hotel_id", hotelId).eq("floor", floor)));
+        Long layoutId = layout.getLayoutId();
+        roomService.remove(new QueryWrapper<RoomEntity>()
+                .and(o -> o.eq("room_number", roomNumber)
+                        .eq("hotel_id", hotelId)
+                        .eq("floor_plan_id", floorPlan)
+                        .eq("layout_id", layoutId)));
+        return new JsonResult<>();
+    }
+
 }

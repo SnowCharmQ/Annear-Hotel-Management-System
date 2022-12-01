@@ -11,13 +11,48 @@
             :row-style="setRowStyle" border-collapse:collapse stripe fit highlight-current-row border
             empty-text="No Room Added">
 
-            <el-table-column label="Name" width="180">
+            <el-table-column label="Name" width="100">
                 <template slot-scope="scope">
                     {{ scope.row.type_name }}
                 </template>
             </el-table-column>
+            <el-table-column label="Upper Limit" width="80">
+                <template slot-scope="scope">
+                    {{ scope.row.upper_limit }}
+                </template>
+            </el-table-column>
+            <el-table-column label="Breakfast" width="80">
+                <template slot-scope="scope">
+                    {{ scope.row.breakfast }}
+                </template>
+            </el-table-column>
+            <el-table-column label="Windows" width="120">
+                <template slot-scope="scope">
+                    {{ scope.row.window }}
+                </template>
+            </el-table-column>
+            <el-table-column label="Television" width="80">
+                <template slot-scope="scope">
+                    {{ scope.row.television }}
+                </template>
+            </el-table-column>
+            <el-table-column label="Bathtub" width="100">
+                <template slot-scope="scope">
+                    {{ scope.row.bathtub }}
+                </template>
+            </el-table-column>
+            <el-table-column label="Thermos" width="100">
+                <template slot-scope="scope">
+                    {{ scope.row.thermos }}
+                </template>
+            </el-table-column>
+            <el-table-column label="Discription" width="100">
+                <template slot-scope="scope">
+                    {{ scope.row.discription }}
+                </template>
+            </el-table-column>
 
-            <el-table-column label="Price" width="180">
+            <el-table-column label="Price" width="80">
                 <template slot-scope="scope">
                     {{ scope.row.price }}
                 </template>
@@ -48,6 +83,22 @@
                 <el-form-item label="Type Name" prop="type_name">
                     <el-input v-model="form2.type_name"></el-input>
                 </el-form-item>
+                <el-form-item label="Upper Limit" prop="price">
+                    <el-input v-model="form2.upper_limit"></el-input>
+                </el-form-item>
+                <el-form-item label="Television" prop="price">
+                    <el-input v-model="form2.television"></el-input>
+                </el-form-item>
+                <el-form-item label="Bathtub" prop="price">
+                    <el-input v-model="form2.bathtub"></el-input>
+                </el-form-item>
+                <el-form-item label="Thermos" prop="price">
+                    <el-input v-model="form2.thermos"></el-input>
+                </el-form-item>
+                <el-form-item label="Discription" prop="price">
+                    <el-input v-model="form2.discription"></el-input>
+                </el-form-item>
+                
                 <el-form-item label="Price" prop="price">
                     <el-input v-model="form2.price"></el-input>
                 </el-form-item>
@@ -83,6 +134,12 @@
             <!-- 表单 -->
 
             <el-form ref="form" :model="form" :rules="rules" label-width="100px">
+                <el-form-item label="Type Name" prop="name">
+                    <el-input v-model="form.name"></el-input>
+                </el-form-item>
+                <el-form-item label="Price" prop="price">
+                    <el-input v-model="form.price"></el-input>
+                </el-form-item>
                 <el-form-item label="Photo">
                     <el-upload class="avatar-uploader" action="https://jsonplaceholder.typicode.com/posts/"
                         :show-file-list="false" :on-success="handleAvatarSuccess" :before-upload="beforeAvatarUpload">
@@ -90,14 +147,31 @@
                         <i v-else class="el-icon-plus avatar-uploader-icon"></i>
                     </el-upload>
                 </el-form-item>
-
-                <el-form-item label="Room Type" prop="type_name">
-                    <el-input v-model="form.type_name"></el-input>
+                <el-form-item label="Upper Limit" prop="upper_limit">
+                    <el-input v-model="form.upper_limit"></el-input>
+                </el-form-item>
+                <el-form-item label="Breakfast" prop="breakfast">
+                    <el-input v-model="form.breakfast"></el-input>
+                </el-form-item>
+                <el-form-item label="Window" prop="window">
+                    <el-input v-model="form.window"></el-input>
+                </el-form-item>
+                <el-form-item label="Television" prop="television">
+                    <el-input v-model="form.television"></el-input>
+                </el-form-item>
+                <el-form-item label="Bathtub" prop="bathtub">
+                    <el-input v-model="form.bathtub"></el-input>
+                </el-form-item>
+                <el-form-item label="Thermos" prop="thermos">
+                    <el-input v-model="form.thermos"></el-input>
+                </el-form-item>
+                <el-form-item label="Discription" prop="discription">
+                    <el-input v-model="form.discription"></el-input>
                 </el-form-item>
 
-                <el-form-item label="Price" prop="price">
-                    <el-input v-model="form.price"></el-input>
-                </el-form-item>
+              
+
+            
                 <el-form-item>
                     <div class="button_div">
                         <el-button type="primary" size="small" @click="submitForm('form')">Submit</el-button>
@@ -151,8 +225,16 @@ export default {
             tableData: [{
                 photo: ['data:image/jpeg;base64,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'],
                 type_name: 'Standard Room',
-
                 price: 100,
+                upper_limit: 3,
+                breakfast: true,
+                
+                window: true,
+                television: true,
+                bathtub: true,
+                discription: 'hahaha',
+                thermos: true
+
 
 
             },
@@ -161,6 +243,15 @@ export default {
                 type_name:'Presidential Suite',
 
                 price: 1000,
+                
+                upper_limit: 3,
+                breakfast: true,
+                
+                window: true,
+                television: true,
+                bathtub: true,
+                discription: 'hahaha',
+                thermos: true
 
 
             },
@@ -169,6 +260,14 @@ export default {
                 type_name:'King bed room',
 
                 price: 300,
+                upper_limit: 3,
+                breakfast: true,
+                
+                window: true,
+                television: true,
+                bathtub: true,
+                discription: 'hahaha',
+                thermos: true
 
 
             }],
@@ -181,12 +280,28 @@ export default {
                 type_name: '',
 
                 price: '',
-                photo: ''
+                photo: '',
+                upper_limit: '',
+                breakfast:'',
+                
+                window: '',
+                television: '',
+                bathtub: '',
+                discription: '',
+                thermos:''
             },
             form2: {
                 type_name: '',
                 price: '',
                 photo: '',
+                upper_limit: '',
+                breakfast:'',
+                
+                window: '',
+                television: '',
+                bathtub: '',
+                discription: '',
+                thermos:'',
                 index: -1
             },
             rules: {

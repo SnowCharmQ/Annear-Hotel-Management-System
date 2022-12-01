@@ -258,7 +258,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     }
 
     @Override
-    public Long checkUserID(String token) {
+    public Long checkUserId(String token) {
         return this.getUser(token).getUserId();
     }
 

@@ -138,7 +138,7 @@ export default {
         }
         this.$router.push('order?startDate=' + startDate + '&endDate=' + endDate + '&room=' + roomId + '&roomType=' + typeId + '&hotel=' + hotelId);
       } else {
-       this.$message.error("The room is not available");
+       this.$message.info("The room is not available");
       }
     },
     refresh() {

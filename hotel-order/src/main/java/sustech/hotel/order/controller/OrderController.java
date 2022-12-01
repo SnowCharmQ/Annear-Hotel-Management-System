@@ -18,8 +18,6 @@ import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.order.NoAvailableRoomException;
 import sustech.hotel.exception.order.OrderNotExistException;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
-import sustech.hotel.model.to.hotel.HotelTo;
-import sustech.hotel.model.to.hotel.RoomTo;
 import sustech.hotel.model.to.order.OrderInfoTo;
 import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.model.vo.hotel.AvailableRoomTypeVo;
@@ -129,7 +127,7 @@ public class OrderController {
     @RequestMapping("/generateOrder")
     public JsonResult<String> generateOrder(@RequestBody PlaceOrderVo request) {
         try {
-            Long userid = orderService.checkUserID(request.getUserToken());
+            Long userid = orderService.checkUserId(request.getUserToken());
             String orderToken = request.getOrderToken();
             OrderEntity order = new OrderEntity();
             order.setUserId(userid);
@@ -190,6 +188,26 @@ public class OrderController {
         }).toList();
         orderInfoVo.setTenants(vos);
         return new JsonResult<>(orderInfoVo);
+    }
+
+    @ResponseBody
+    @GetMapping("/getUserOrders")
+    public JsonResult<List<OrderShowVo>> getUserOrders(@RequestParam("token") String token) {
+        try{
+            Long userId = orderService.checkUserId(token);
+            List<OrderEntity> entities = orderService.list(new QueryWrapper<OrderEntity>().eq("user_id", userId));
+            List<OrderTo> tos = entities.stream().map(o -> {
+                OrderTo to = new OrderTo();
+                BeanUtils.copyProperties(o, to);
+                return to;
+            }).toList();
+            String json = JSON.toJSONString(tos);
+            String data = roomFeignService.getOrderRoomInfo(json).getData();
+            List<OrderShowVo> list = JSON.parseArray(data, OrderShowVo.class);
+            return new JsonResult<>(list);
+        } catch (BaseException e) {
+            return new JsonResult<>(e);
+        }
     }
 
 }

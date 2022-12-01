@@ -151,8 +151,8 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
     }
 
     @Override
-    public void alterInfo(Long toEditId, String phone, String email, Integer gender, Date birthday, String province, String city, String detailAddress, String socialName) {
-        this.userInfoDao.updateInfo(toEditId, phone, email, gender, birthday, province, city, detailAddress, socialName);
+    public void alterInfo(Long toEditId, String phone, String email, Integer gender, Date birthday, String province, String city, String detailAddress, String socialName, String name) {
+        this.userInfoDao.updateInfo(toEditId, phone, email, gender, birthday, province, city, detailAddress, socialName, name);
     }
 
     @Override

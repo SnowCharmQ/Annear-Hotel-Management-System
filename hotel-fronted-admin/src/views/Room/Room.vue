@@ -86,7 +86,7 @@
 
         <!-- 抽屉区域 -->
         <el-drawer title="Add a Room No" text-align="center" :visible.sync="drawer" direction="rtl"
-            :before-close="handleDrawerClose" class="drawerStyle" size="50%">
+            :before-close="handleDrawerClose" class="drawerStyle" width="20%">
             <!-- 表单 -->
 
             <el-form ref="form" :model="form" :rules="rules" label-width="100px">
@@ -368,9 +368,6 @@ export default {
     background-color: #f3eee7;
 }
 
-.drawerStyle {
-    color: #dc8917;
-}
 
 // 上传头像样式
 .avatar-uploader {
@@ -447,7 +444,9 @@ export default {
     background-color: #e9173a;
 
 }
-
+::v-deep.el-drawer {
+    background-color: #f3eee7;
+  }
 
 .el-button--primary:hover {
     background-color: #ffffff;

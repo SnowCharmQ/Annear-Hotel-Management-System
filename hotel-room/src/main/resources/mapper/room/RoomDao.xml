@@ -11,7 +11,7 @@
         <result property="layoutId" column="layout_id"/>
     </resultMap>
 
-    <select id="selectAvailableRoomId" resultType="Long">
+    <select id="selectAvailableRoomId" resultType="java.lang.Long">
         select room_id from chr_room where type_id = #{type_id} and hotel_id = #{hotel_id} and room_id not in
         <foreach collection="conflict_list" item="item" separator="," open="(" close=")">
             #{item}

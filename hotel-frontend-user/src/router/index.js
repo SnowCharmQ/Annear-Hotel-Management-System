@@ -73,13 +73,20 @@ const routes = [
                     requireAuth: true
                 },
                 component: () => import('../pages/Chat/chat')
-            },{
+            }, {
                 path: '/alipay',
                 name: 'alipay',
                 meta: {
                     requireAuth: true
                 },
                 component: () => import('../pages/alipay')
+            }, {
+                path: '/orderlist',
+                name: 'orderlist',
+                meta: {
+                    requireAuth: true
+                },
+                component: () => import('../pages/OrderList/orderList')
             }, {
                 path: '/map',
                 name: 'map',
@@ -88,13 +95,13 @@ const routes = [
                 path: '/coupon',
                 name: 'coupon',
                 component: () => import('../pages/Coupon/coupon')
-            }, 
+            },
             {
                 path: '/confirmation',
                 name: 'confirmation',
                 component: () => import('../pages/Confirmation/confirmation'),
-                
-            },{
+
+            }, {
                 path: '/404',
                 name: '404',
                 component: () => import('../pages/404'),

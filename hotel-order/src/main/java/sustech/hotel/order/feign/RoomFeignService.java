@@ -6,6 +6,7 @@ import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.model.to.hotel.*;
 import sustech.hotel.model.vo.hotel.BookingRoomInfoVo;
 import sustech.hotel.model.to.order.OrderInfoTo;
+import sustech.hotel.model.vo.order.OrderShowVo;
 
 import java.util.List;
 
@@ -34,4 +35,7 @@ public interface RoomFeignService {
 
     @RequestMapping("/room/roomtype/getCommentInfo")
     JsonResult<List<CommentInfoTo>> getCommentInfo(@RequestBody List<Long> typeIds);
+
+    @RequestMapping("/room/room/getOrderRoomInfo")
+    JsonResult<String> getOrderRoomInfo(@RequestParam("json") String json);
 }

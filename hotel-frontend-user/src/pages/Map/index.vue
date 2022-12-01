@@ -117,7 +117,6 @@ export default {
       method: 'get',
     }).then(data => {
       let hotels = data.data.data
-      console.log(hotels)
       for (let i = 0;i < hotels.length;i++) {
         let hotel = hotels[i]
         let item = {

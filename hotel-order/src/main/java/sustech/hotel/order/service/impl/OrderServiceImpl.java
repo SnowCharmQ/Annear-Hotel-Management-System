@@ -8,11 +8,11 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -27,7 +27,6 @@ import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.auth.UserNotFoundException;
 import sustech.hotel.exception.order.*;
 import sustech.hotel.exception.others.InvalidDateException;
-import sustech.hotel.model.to.hotel.HotelTo;
 import sustech.hotel.model.to.hotel.RoomInfoTo;
 import sustech.hotel.model.to.hotel.RoomTo;
 import sustech.hotel.model.to.hotel.RoomTypeTo;
@@ -58,6 +57,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Autowired
     private MemberFeignService memberFeignService;
+
+    @Autowired
+    private OrderDao orderDao;
 
     @Autowired
     private RoomFeignService roomFeignService;
@@ -306,7 +308,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         }
     }
 
-
-
-
+    @Scheduled(cron = "0 1 12 * * ?")
+    public void automaticUpdateOrderStatus() {
+        orderDao.automaticUpdateOrderStatus();
+    }
 }

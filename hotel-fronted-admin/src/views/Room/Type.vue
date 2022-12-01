@@ -9,7 +9,7 @@
               :cell-style="{ textAlign: 'center', background: '#f3eee7', fontSize: '22px', fontFamily: 'nano',borderBottomColor: 'black' }"
               :header-cell-style="{ color: 'black', fontSize: '20px', fontFamily: 'nano', background: '#f3eee7', textAlign: 'center', borderBottomColor: 'black' }"
               :row-style="setRowStyle" border-collapse:collapse stripe fit highlight-current-row border
-              empty-text="No Room Added">
+              empty-text="No Room Added" :key="num">
 
       <el-table-column label="Name" width="100">
         <template slot-scope="scope">
@@ -407,6 +407,7 @@ export default {
             description: this.form2.discription,
             area: this.form2.area
           }
+          this.num = Math.random();
           this.$post(this.$baseUrl + '/room/room/roomtype/alterType', para).then(data => {
             console.log(data)
             if (data.state == 200) {

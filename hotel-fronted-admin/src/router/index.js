@@ -12,9 +12,9 @@ const routes = [
   {
     path: '/layout',
     component: () => import("@/views/Layout.vue"),
-    meta: {
-      requireAuth: true
-    },
+    // meta: {
+    //   requireAuth: true
+    // },
     children: [
       {
         path: 'customer',

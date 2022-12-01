@@ -8,7 +8,7 @@
     <el-table :data="tableData" style="width: 98%; min-width: 1000px"
               :cell-style="{ textAlign: 'center', background: '#f3eee7', fontSize: '18px', borderBottomColor: 'black' }"
               :header-cell-style="{ color: 'black', fontSize: '20px', fontFamily: 'nano', background: '#f3eee7', textAlign: 'center', borderBottomColor: 'black' }"
-              :row-style="setRowStyle" stripe fit highlight-current-row border empty-text="No Room Added">
+              :row-style="setRowStyle" stripe fit highlight-current-row border empty-text="No Room Added" :key="num">
 
       <el-table-column label="Room No" width="180">
         <template slot-scope="scope">
@@ -271,6 +271,7 @@ export default {
             oldFloor: this.tableData[this.form2.index].floor,
             oldFloorPlan: this.tableData[this.form2.index].floor_plan
           })
+          this.num = Math.random();
           this.$get(this.$baseUrl + '/room/room/room/editRoom', params).then(data => {
             if (data.state === 200) {
               this.$message.success("Successfully Edited");

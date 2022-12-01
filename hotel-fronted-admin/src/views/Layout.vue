@@ -182,6 +182,7 @@ export default {
   .right {
 
     flex: 1;
+    background-color: #f3eee7;
 
 
     // 顶部导航样式

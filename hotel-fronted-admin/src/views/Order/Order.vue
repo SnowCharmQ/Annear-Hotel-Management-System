@@ -44,7 +44,7 @@
               :header-cell-style="{ color: 'black', fontSize: '20px', fontFamily: 'nano', background: '#f3eee7', textAlign: 'center', borderBottomColor: 'black' }"
               :row-style="setRowStyle" stripe fit highlight-current-row border empty-text="No Room Added">
 
-      <el-table-column label="orderID" width="50">
+      <el-table-column label="orderID" width="180">
         <template slot-scope="scope">
           {{ scope.row.orderID }}
         </template>
@@ -58,7 +58,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="room id" width="250">
+      <el-table-column label="room id" width="80">
         <template slot-scope="scope">
 
           {{ scope.row.roomId }}
@@ -66,7 +66,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="check-in date" width="250">
+      <el-table-column label="check-in date" width="160">
         <template slot-scope="scope">
 
           {{ scope.row.date1 }}
@@ -74,7 +74,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="check-out date" width="250">
+      <el-table-column label="check-out date" width="160">
         <template slot-scope="scope">
 
           {{ scope.row.date2 }}

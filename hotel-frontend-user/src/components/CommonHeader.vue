@@ -1,7 +1,7 @@
 <template>
   <header>
     <div class="l-content">
-      <i class="el-icon-s-unfold" v-if="show" @click="drawer=true"></i>
+      <i class="el-icon-s-unfold" v-if="show" @click="drawer=true" size="20%"></i>
       <span class="titles" v-if="show">Menu</span>
     </div>
 
@@ -33,7 +33,7 @@
     <el-drawer
         title="Menu"
         :visible.sync="drawer"
-        direction="ltr">
+        direction="ltr" size="20px">
       <div style="padding:0 15px;">
         <!-- 第一级菜单 -->
         <el-tabs tab-position="left" @tab-click="menuClick">
@@ -209,7 +209,8 @@ header {
   }
 
   ::v-deep.el-drawer {
-    width: 700px !important;
+    width: 200px !important;
+    background-color: #f3eee7;
   }
 
   .r-content {

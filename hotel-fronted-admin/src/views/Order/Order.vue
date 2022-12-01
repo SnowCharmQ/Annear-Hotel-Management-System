@@ -15,7 +15,7 @@
             <el-select v-model="form.status" placeholder="Finished" class="selection">
                 <el-option label="Finished" value="Finished"></el-option>
                 <el-option label="Waiting to Pay" value="Waiting to Pay"></el-option>
-                <el-option label="Cancelled" value="Cancelled"></el-option>
+                <el-option label="Order Cancelled" value="Cancelled"></el-option>
                 <el-option label="Undertaking" value="Undertaking"></el-option>
                 <el-option label="Waiting Comment" value="Waiting Comment"></el-option>
                 <el-option label="Cancelled" value="Cancelled"></el-option>

@@ -181,6 +181,10 @@ export default {
 
             });
         },
+        currentChange(pageIndex) {
+            this.pageIndex = pageIndex;
+            console.log("To be done current");
+        },
         setRowStyle(row) {
             if (row.row.isPart == true) {
                 return 'color:#1772b4;'

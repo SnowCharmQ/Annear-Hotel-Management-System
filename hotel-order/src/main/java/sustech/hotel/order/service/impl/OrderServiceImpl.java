@@ -3,11 +3,14 @@ package sustech.hotel.order.service.impl;
 import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.apache.commons.lang.StringUtils;
+import org.aspectj.weaver.ast.Or;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +21,7 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 import sustech.hotel.common.utils.*;
@@ -26,6 +30,7 @@ import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.auth.UserNotFoundException;
 import sustech.hotel.exception.order.*;
 import sustech.hotel.exception.others.InvalidDateException;
+import sustech.hotel.model.to.hotel.HotelTo;
 import sustech.hotel.model.to.hotel.RoomInfoTo;
 import sustech.hotel.model.to.hotel.RoomTo;
 import sustech.hotel.model.to.hotel.RoomTypeTo;
@@ -34,6 +39,9 @@ import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.model.vo.member.UserVo;
 import sustech.hotel.model.vo.order.*;
 import sustech.hotel.constant.OrderConstant;
+import sustech.hotel.model.vo.order.OrderConfirmVo;
+import sustech.hotel.model.vo.order.PayAsyncVo;
+import sustech.hotel.model.vo.order.PayVo;
 import sustech.hotel.order.dao.BookingDao;
 import sustech.hotel.order.dao.OrderDao;
 import sustech.hotel.order.entity.BookingEntity;
@@ -77,6 +85,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     @Autowired
     private RabbitTemplate rabbitTemplate;
 
+    @Autowired
+    private JavaMailSender mailSender;
+
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         int status = -1;
@@ -102,15 +113,15 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             int finalStatus = status;
             entities = entities.stream().filter(entity -> entity.getOrderStatus() == finalStatus).toList();
         }
-        if (roomId!= -1){
+        if (roomId != -1) {
             int finalType = roomId;
             entities = entities.stream().filter(entity -> entity.getRoomId() == finalType).toList();
         }
-        if (date1!=null){
+        if (date1 != null) {
             Date finalDate = date1;
             entities = entities.stream().filter(entity -> entity.getStartDate().equals(finalDate)).toList();
         }
-        if (date2!=null){
+        if (date2 != null) {
             Date finalDate1 = date2;
             entities = entities.stream().filter(entity -> entity.getEndDate().equals(finalDate1)).toList();
         }
@@ -191,6 +202,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             this.baseMapper.updateOrderStatus(orderId, 1);
             bookingDao.updateOrderStatus(orderId, 1);
             operation.setOperation(1);
+            OrderEntity order = orderDao.selectById(vo.getOut_trade_no());
+            sendMail(order.getOrderId(), order.getContactEmail(), order.getStartDate(), order.getEndDate());
         } else
             operation.setOperation(2);
         orderOperationService.save(operation);
@@ -260,6 +273,26 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         return this.getUser(token).getUserId();
     }
 
+    @Override
+    public void sendMail(String orderId, String to, Date startDate, Date endDate) {
+        try {
+            SimpleMailMessage message = new SimpleMailMessage();
+            message.setFrom("2750638996@qq.com");
+            message.setTo(to);
+            message.setSubject("[Annear] Notification of successful hotel reservations");
+            message.setText(
+                    String.format("""
+                            Dear travelers.
+                            Hello!
+                            We are pleased to inform you that you have successfully booked Annear Hotel from %s to %s, your order number is %s. If you have any questions, please feel free to call us.
+
+                            Best Regards
+                            Annear Hotel""", startDate, endDate, orderId));
+            mailSender.send(message);
+        } catch (Exception ignored) {
+
+        }
+    }
 
     @Override
     public UserTo getUser(String token) {

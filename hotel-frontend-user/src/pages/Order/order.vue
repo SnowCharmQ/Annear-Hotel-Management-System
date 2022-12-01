@@ -263,14 +263,14 @@ export default {
   created() {
     let startDate = this.$route.query.startDate;
     let endDate = this.$route.query.endDate;
-    let roomTypeId = this.$route.query.roomTypeId;
-    let hotelId = this.$route.query.hotelId;
+    let roomTypeId = this.$route.query.roomType;
+    let hotelId = this.$route.query.hotel;
     if (startDate === undefined || endDate === undefined ||
         roomTypeId === undefined || hotelId === undefined) {
       this.$router.push('404');
       return;
     }
-    let roomId = this.$route.query.roomId;
+    let roomId = this.$route.query.room;
     let userToken = cookie.get('token');
     let d1 = convertToDate(startDate);
     let d2 = convertToDate(endDate);

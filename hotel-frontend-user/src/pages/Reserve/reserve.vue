@@ -191,7 +191,7 @@
 
         <!--每个酒店的具体信息--> <!------------>
         <div style="clear:both;">
-          <el-col :span="24" v-for="(item, index) in roomTypes" :key="index" class="room-list">
+          <el-col :span="24" v-for="(item, index) in roomTypes" v-if="item.num > 0" :key="index" class="room-list">
             <img :src="roomTypeImages[item.typeId][0]" class="image">
             <div class="room-right">
               <div class="card-name" style="font-size: 22px">{{ hotelName }}</div>
@@ -390,9 +390,6 @@ export default {
     showDate() {
       this.showCheck = true;
     },
-    toMore() {
-      this.$message.info('more')
-    },
     toCheckOut(typeId) {
       let token = cookie.get('token');
       let startDate = this.date1;
@@ -402,7 +399,7 @@ export default {
       if (token === undefined || token === '') {
         this.$message.info("You Have Not Login In");
       }
-      this.$router.push('order?startDate=' + startDate + '&endDate=' + endDate + '&roomTypeId=' + roomTypeId + '&hotelId=' + hotelId);
+      this.$router.push('order?startDate=' + startDate + '&endDate=' + endDate + '&roomType=' + roomTypeId + '&hotel=' + hotelId);
     },
     toFloorPlan() {
       let startDate = this.date1;

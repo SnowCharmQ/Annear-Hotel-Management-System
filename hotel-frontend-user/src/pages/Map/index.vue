@@ -106,7 +106,7 @@ export default {
       }, 1500)
     }
   },
-  mounted() {
+  created() {
     window._AMapSecurityConfig = {
       securityJsCode: 'f3b4637de1fe910d5be8399da35b8ce7',
     }
@@ -117,7 +117,8 @@ export default {
       method: 'get',
     }).then(data => {
       let hotels = data.data.data
-      for (let i in hotels) {
+      console.log(hotels)
+      for (let i = 0;i < hotels.length;i++) {
         let hotel = hotels[i]
         let item = {
           name: hotel.hotelName,

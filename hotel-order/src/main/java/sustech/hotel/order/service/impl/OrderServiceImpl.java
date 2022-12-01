@@ -1,5 +1,6 @@
 package sustech.hotel.order.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -12,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.sql.Date;
-import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
@@ -83,14 +83,10 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         int roomId = -1;
         Date date1 = null;
         Date date2 = null;
-        System.out.println("roomId");
-        System.out.println(params.get("roomId"));
         if (params.get("status") != null) {
             status = Integer.parseInt(params.get("status").toString());
         }
         if (params.get("roomId") != null) {
-            System.out.println("roomId");
-            System.out.println(params.get("roomId"));
             roomId = Integer.parseInt(params.get("roomId").toString());
         }
         if (params.get("date1") != null && !params.get("date1").equals("0")) {

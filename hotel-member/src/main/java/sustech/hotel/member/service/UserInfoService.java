@@ -1,6 +1,8 @@
 package sustech.hotel.member.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.IService;
+import sustech.hotel.common.utils.Constant;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.exception.BaseException;
@@ -44,5 +46,9 @@ public interface UserInfoService extends IService<UserInfoEntity> {
     void modifyPassword(ModifyPasswordVo vo) throws BaseException;
 
     Long getUserId(String token);
+
+    public PageUtils getAllUsers(Map<String, Object> params);
+
+    public void deleteUserById(Long userId);
 }
 

@@ -11,4 +11,6 @@ public interface RoomService extends IService<RoomEntity> {
     PageUtils queryPage(Map<String, Object> params);
 
     List<Long> getAvailableRoom(Long hotelId, Long typeId, List<Long> conflictList);
+
+    boolean typeExist(Long typeId);
 }

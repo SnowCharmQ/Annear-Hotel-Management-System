@@ -6,7 +6,7 @@
         </div>
         <!-- 表格区域 -->
         <el-table :data="tableData" style="width: 98%; min-width: 1000px"
-            :cell-style="{ textAlign: 'center', background: '#f3eee7', fontSize: '18px', borderBottomColor: 'black' }"
+            :cell-style="{ textAlign: 'center', background: '#f3eee7', fontSize: '22px', fontFamily: 'nano',borderBottomColor: 'black' }"
             :header-cell-style="{ color: 'black', fontSize: '20px', fontFamily: 'nano', background: '#f3eee7', textAlign: 'center', borderBottomColor: 'black' }"
             :row-style="setRowStyle" border-collapse:collapse stripe fit highlight-current-row border
             empty-text="No Room Added">

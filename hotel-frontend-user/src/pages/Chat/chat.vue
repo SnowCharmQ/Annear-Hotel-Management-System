@@ -3,12 +3,13 @@
     <el-row>
       <el-col :span="4">
         <el-card style="width: 300px; height: 400px; margin-left: auto; color: #333">
-         <div style="padding-bottom: 10px; border-bottom: 1px solid #ccc">Chatring Users<span style="font-size: 12px">（点击聊天气泡开始聊天）</span></div>
-          <div style="padding: 10px 0" v-for="user in users" :key="user.username">
-            <span>{{ user.username }}</span>
+          <div style="padding-bottom: 10px; border-bottom: 1px solid #ccc">Chatring Users<span style="font-size: 12px">（点击聊天气泡开始聊天）</span>
+          </div>
+          <div style="padding: 10px 0" v-for="user in users" :key="user">
+            <span>{{ user }}</span>
             <i class="el-icon-chat-dot-round" style="margin-left: 10px; font-size: 16px; cursor: pointer"
-               @click="initDialog(user.username)"></i>
-            <span style="font-size: 12px;color: limegreen; margin-left: 5px" v-if="user.username === chatUser">chatting...</span>
+               @click="initDialog(user)"></i>
+            <span style="font-size: 12px;color: limegreen; margin-left: 5px" v-if="user === chatUser">chatting...</span>
           </div>
         </el-card>
       </el-col>
@@ -33,6 +34,7 @@
 </template>
 <script>
 import cookie from "js-cookie"
+
 let socket;
 export default {
   name: "chat",
@@ -41,7 +43,7 @@ export default {
       circleUrl: 'https://cube.elemecdn.com/3/7c/3ea6beec64369c2642b92c6726f1epng.png',
       user: {},
       isCollapse: false,
-      users: [],
+      users: [this.$route.query.hotel],
       chatUser: '',
       text: "",
       messages: [],
@@ -103,84 +105,81 @@ export default {
       this.content += html;
     },
     initDialog(username) {
-        if (this.chatUser !== username) {
-          this.content = ''
-          this.chatUser = username
-          let message = {text: 'loadDialog'}
-          socket.send(JSON.stringify(message));
-          console.log(this.chatUser)
-        }
+      if (this.chatUser !== username) {
+        this.content = ''
+        this.chatUser = username
+        let message = {text: 'loadDialog'}
+        socket.send(JSON.stringify(message));
+        console.log(this.chatUser)
+      }
     },
     init() {
+      console.log(this.users)
       let _this = this;
       this.$http({
-            url: this.$http.adornUrl('/auth/getUsernameByToken'),
-            method: 'get',
-            params: this.$http.adornParams({
-              token: cookie.get('token')
-            })
-          }).then(data => {
-            let resp = data.data;
-            console.log(resp.data)
-            _this.user = resp.data
-          
-            console.log(this.user)
-            let username = this.user
-            if (typeof (WebSocket) == "undefined") {
-              console.log("您的浏览器不支持WebSocket");
-            } else {
-              console.log("您的浏览器支持WebSocket");
-              let socketUrl = "ws://localhost:11000/imserver/" + username;
-              if (socket != null) {
-                socket.close();
-                socket = null;
+        url: this.$http.adornUrl('/auth/getUsernameByToken'),
+        method: 'get',
+        params: this.$http.adornParams({
+          token: cookie.get('token')
+        })
+      }).then(data => {
+        let resp = data.data;
+        console.log(resp.data)
+        _this.user = resp.data
+
+        console.log(this.user)
+        let username = this.user
+        if (typeof (WebSocket) == "undefined") {
+          console.log("您的浏览器不支持WebSocket");
+        } else {
+          console.log("您的浏览器支持WebSocket");
+          let socketUrl = "ws://localhost:11000/imserver/" + username;
+          if (socket != null) {
+            socket.close();
+            socket = null;
+          }
+          // 开启一个websocket服务
+          socket = new WebSocket(socketUrl);
+          //打开事件
+          socket.onopen = function () {
+            console.log("websocket已打开");
+          };
+          //  浏览器端收消息，获得从服务端发送过来的文本消息
+          socket.onmessage = function (msg) {
+            console.log("收到数据====" + msg.data)
+            let data = JSON.parse(msg.data)  // 对收到的json数据进行解析， 类似这样的： {"users": [{"username": "zhang"},{ "username": "admin"}]}
+            if (data.load) {
+              for (let i in data.load) {
+                console.log(data.load[i])
+                let text = data.load[i].text
+                let from = data.load[i].from
+                let to = data.load[i].to
+                if (from === username) {
+                  _this.messages.push(text)
+                  _this.createContent(null, username, text)
+                } else if (from === _this.chatUser) {
+                  _this.messages.push(text)
+                  _this.createContent(_this.chatUser, null, text)
+                }
               }
-              // 开启一个websocket服务
-              socket = new WebSocket(socketUrl);
-              //打开事件
-              socket.onopen = function () {
-                console.log("websocket已打开");
-              };
-              //  浏览器端收消息，获得从服务端发送过来的文本消息
-              socket.onmessage = function (msg) {
-                console.log("收到数据====" + msg.data)
-                let data = JSON.parse(msg.data)  // 对收到的json数据进行解析， 类似这样的： {"users": [{"username": "zhang"},{ "username": "admin"}]}
-                if (data.users) {  // 获取在线人员信息
-                  _this.users = data.users.filter(user => user.username !== username)  // 获取当前连接的所有用户信息，并且排除自身，自己不会出现在自己的聊天列表里
-                }
-                else if (data.load) {
-                  for (var i in data.load) {
-                    console.log(data.load[i])
-                    let text = data.load[i].text
-                    let from = data.load[i].from
-                    let to = data.load[i].to
-                    if (from === username) {
-                      _this.messages.push(text)
-                      _this.createContent(null, username, text) 
-                    } else if (from === _this.chatUser) {
-                      _this.messages.push(text)
-                      _this.createContent(_this.chatUser, null, text) 
-                    }
-                  }
-                } 
-                else {
-                  if (data.from === _this.chatUser) {
-                    _this.messages.push(data)
-                    _this.createContent(data.from, null, data.text)
-                  }
-                }
-              };
-              //关闭事件
-              socket.onclose = function () {
-                console.log("websocket closed");
-              };
-              //发生了错误事件
-              socket.onerror = function () {
-                console.log("websocket error");
+            } else {
+              if (data.from === _this.chatUser) {
+                _this.messages.push(data)
+                _this.createContent(data.from, null, data.text)
               }
             }
-          
-          })
+          };
+          //关闭事件
+          socket.onclose = function () {
+            console.log("websocket closed");
+          };
+          //发生了错误事件
+          socket.onerror = function () {
+            console.log("websocket error");
+          }
+        }
+
+      })
     }
   }
 }
@@ -192,13 +191,15 @@ export default {
   border-radius: 10px;
   font-family: sans-serif;
   padding: 10px;
-  width:auto;
-  display:inline-block !important;
-  display:inline;
+  width: auto;
+  display: inline-block !important;
+  display: inline;
 }
+
 .right {
   background-color: rgb(35, 182, 187);
 }
+
 .left {
   background-color: rgb(29, 185, 89);
 }

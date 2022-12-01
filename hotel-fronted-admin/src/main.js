@@ -11,6 +11,8 @@ Vue.prototype.$echarts = echarts
 
 Vue.config.productionTip = false
 
+Vue.prototype.$baseUrl = 'http://localhost:12345'
+
 new Vue({
   router,
   store,

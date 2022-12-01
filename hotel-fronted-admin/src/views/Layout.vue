@@ -78,9 +78,9 @@
                 </div>
                 <el-menu :default-active="activeIndex2" class="el-menu-demo" mode="horizontal" @select="handleSelect"
                     background-color="#f3eee7" text-color="grey" active-text-color="black">
-                    <el-menu-item index="1"><i class="el-icon-s-home"></i>Home</el-menu-item>
-                    <el-menu-item index="1"><i class="el-icon-s-comment"></i>Message</el-menu-item>
-                    <el-menu-item index="1"><i class="el-icon-message"></i>Email</el-menu-item>
+                    <el-menu-item index="1"><i class="el-icon-s-home" @click="goHome"></i>Home</el-menu-item>
+                    <el-menu-item index="2"><i class="el-icon-s-comment"></i>Message</el-menu-item>
+                    <el-menu-item index="3"><i class="el-icon-message"></i>Email</el-menu-item>
 
 
                     <el-submenu index="4">
@@ -122,11 +122,17 @@ export default {
             console.log(key, keyPath);
         },
         handleSelect(key, keyPath) {
-            console.log(key, keyPath);
+            if(key == 1)
+                this.$router.push('/')
         },
         exit() {
             this.$router.push('/')
             console.log("EXIT")
+        },
+        goHome(){
+            console.log("Go Home")
+            this.$router.push('/')
+            console.log("Go Home")
         }
 
     }

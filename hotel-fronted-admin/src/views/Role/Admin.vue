@@ -32,7 +32,8 @@
         </el-table>
         <div class="flex j-c" style="margin-top:5px">
             <el-pagination background layout="prev, pager, next" :total="count" :page-size="8"
-                @current-change="currentChange">
+               
+                >
             </el-pagination>
         </div>
 
@@ -136,6 +137,10 @@ export default {
         handleDrawerClose(done) {
             done();
 
+        },
+        currentChange(pageIndex) {
+            this.pageIndex = pageIndex;
+            console.log("To be done current");
         },
         submitForm(formName) {
             this.$refs[formName].validate(async (valid) => {

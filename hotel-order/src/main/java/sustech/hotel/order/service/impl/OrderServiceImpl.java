@@ -1,6 +1,5 @@
 package sustech.hotel.order.service.impl;
 
-import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.toolkit.IdWorker;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
@@ -8,6 +7,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -18,7 +18,6 @@ import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.transaction.annotation.Transactional;
 import sustech.hotel.common.utils.*;
@@ -27,7 +26,6 @@ import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.auth.UserNotFoundException;
 import sustech.hotel.exception.order.*;
 import sustech.hotel.exception.others.InvalidDateException;
-import sustech.hotel.model.to.hotel.HotelTo;
 import sustech.hotel.model.to.hotel.RoomInfoTo;
 import sustech.hotel.model.to.hotel.RoomTo;
 import sustech.hotel.model.to.hotel.RoomTypeTo;
@@ -57,6 +55,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     private MemberFeignService memberFeignService;
 
     @Autowired
+    private OrderDao orderDao;
+
+    @Autowired
     private RoomFeignService roomFeignService;
 
     @Autowired
@@ -78,11 +79,54 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<OrderEntity> page = this.page(
-                new Query<OrderEntity>().getPage(params),
-                new QueryWrapper<>()
-        );
-        return new PageUtils(page);
+        int status = -1;
+        int roomId = -1;
+        Date date1 = null;
+        Date date2 = null;
+        System.out.println("roomId");
+        System.out.println(params.get("roomId"));
+        if (params.get("status") != null) {
+            status = Integer.parseInt(params.get("status").toString());
+        }
+        if (params.get("roomId") != null) {
+            System.out.println("roomId");
+            System.out.println(params.get("roomId"));
+            roomId = Integer.parseInt(params.get("roomId").toString());
+        }
+        if (params.get("date1") != null && !params.get("date1").equals("0")) {
+            date1 = new Date(Long.parseLong(params.get("date1").toString()));
+        }
+        if (params.get("date2") != null && !params.get("date2").equals("0")) {
+            date2 = new Date(Long.parseLong(params.get("date2").toString()));
+        }
+        int hotelId = Integer.parseInt(params.get("hotel").toString());
+        List<OrderEntity> entities = this.baseMapper.selectList(new QueryWrapper<OrderEntity>().eq("hotel_id", hotelId));
+
+        if (status != -1) {
+            int finalStatus = status;
+            entities = entities.stream().filter(entitie -> entitie.getOrderStatus() == finalStatus).toList();
+        }
+        if (roomId!= -1){
+            int finalType = roomId;
+            entities = entities.stream().filter(entitie -> entitie.getRoomId() == finalType).toList();
+        }
+        if (date1!=null){
+            Date finalDate = date1;
+            entities = entities.stream().filter(entitie -> entitie.getStartDate().equals(finalDate)).toList();
+        }
+        if (date2!=null){
+            Date finalDate1 = date2;
+            entities = entities.stream().filter(entitie -> entitie.getEndDate().equals(finalDate1)).toList();
+        }
+        int curPage = 1;
+        int limit = 10;
+        if (params.get(Constant.PAGE) != null) {
+            curPage = Integer.parseInt(params.get(Constant.PAGE).toString());
+        }
+        if (params.get(Constant.LIMIT) != null) {
+            limit = Integer.parseInt(params.get(Constant.LIMIT).toString());
+        }
+        return new PageUtils(entities, entities.size(), limit, curPage);
     }
 
     @Override
@@ -289,4 +333,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     }
 
 
+    @Scheduled(cron = "0 1 12 * * ?")
+    public void automaticUpdateOrderStatus() {
+        orderDao.automaticUpdateOrderStatus();
+    }
 }

@@ -1,20 +1,17 @@
 package sustech.hotel.room.controller;
 
-import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import sustech.hotel.common.utils.DateConverter;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.exception.BaseException;
-import sustech.hotel.exception.ExceptionCodeEnum;
-import sustech.hotel.exception.order.HotelNotFoundException;
-import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.model.vo.hotel.*;
 import sustech.hotel.room.entity.HotelEntity;
+import sustech.hotel.room.entity.RoomTypeEntity;
 import sustech.hotel.room.service.HotelService;
+import sustech.hotel.room.service.RoomTypeService;
 
 import java.math.BigDecimal;
 import java.util.*;
@@ -26,6 +23,9 @@ public class HotelController {
 
     @Autowired
     private HotelService hotelService;
+
+    @Autowired
+    private RoomTypeService roomTypeService;
 
 
     @ResponseBody
@@ -122,8 +122,18 @@ public class HotelController {
         return new JsonResult<>(hotelService.getMapInfo());
     }
 
-    @GetMapping("/getHotelByName")
-    public JsonResult<HotelEntity> getHotelByName(String name){
-        return new JsonResult<>(this.hotelService.getHotelByName(name));
+    @ResponseBody
+    @GetMapping("/initAdminRoom")
+    public JsonResult<AdminRoomVo> getHotelByName(String name){
+        AdminRoomVo vo = new AdminRoomVo();
+        HotelEntity hotel = hotelService.getOne(new QueryWrapper<HotelEntity>().eq("hotel_name", name));
+        Long hotelId = hotel.getHotelId();
+        List<RoomTypeEntity> roomTypes = roomTypeService.list(new QueryWrapper<RoomTypeEntity>().eq("hotel_id", hotelId));
+        List<String> strings = roomTypes.stream().map(RoomTypeEntity::getTypeName).toList();
+        vo.setHotelId(hotelId);
+        vo.setHotelName(name);
+        vo.setFloors(hotel.getFloors());
+        vo.setTypeNames(strings);
+        return new JsonResult<>(vo);
     }
 }

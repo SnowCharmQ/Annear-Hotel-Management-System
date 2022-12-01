@@ -1,9 +1,6 @@
 package sustech.hotel.room.controller;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.alibaba.fastjson2.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -12,6 +9,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import sustech.hotel.exception.ExceptionCodeEnum;
+import sustech.hotel.exception.room.RoomExistedException;
 import sustech.hotel.model.to.hotel.RoomInfoTo;
 import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.model.vo.hotel.BookingRoomInfoVo;
@@ -157,5 +156,37 @@ public class RoomController {
         } else vos = new ArrayList<>();
         String s = JSON.toJSONString(vos);
         return new JsonResult<>(s);
+    }
+
+    @ResponseBody
+    @GetMapping("/addRoom")
+    public JsonResult<Void> addRoom(@RequestParam("hotelId") Long hotelId, @RequestParam("roomNumber") Long roomNumber, @RequestParam("roomType") String roomType,
+                                    @RequestParam("floor") Long floor, @RequestParam("floorPlan") Long floorPlan) {
+        RoomEntity room = new RoomEntity();
+        List<RoomEntity> rooms = roomService.list(new QueryWrapper<RoomEntity>().eq("hotel_id", hotelId));
+        List<RoomEntity> list = rooms.stream().filter(o -> Objects.equals(o.getRoomNumber(), roomNumber)).toList();
+        if (!list.isEmpty()) {
+            return new JsonResult<>(new RoomExistedException(ExceptionCodeEnum.ROOM_EXISTED_EXCEPTION));
+        }
+        LayoutEntity layout = layoutService.getOne(new QueryWrapper<LayoutEntity>().and(o -> o.eq("hotel_id", hotelId).eq("floor", floor)));
+        Long layoutId = layout.getLayoutId();
+        List<RoomEntity> list1 = roomService.list(new QueryWrapper<RoomEntity>().and(o -> o.eq("layout_id", layoutId).eq("floor_plan_id", floorPlan)));
+        if (!list1.isEmpty()) {
+            return new JsonResult<>(new RoomExistedException(ExceptionCodeEnum.ROOM_EXISTED_EXCEPTION));
+        }
+        RoomTypeEntity type = roomTypeService.getOne(new QueryWrapper<RoomTypeEntity>().and(o -> o.eq("type_name", roomType).eq("hotel_id", hotelId)));
+        room.setLayoutId(layoutId);
+        room.setRoomNumber(roomNumber);
+        room.setFloorPlanId(floorPlan);
+        room.setHotelId(hotelId);
+        room.setTypeId(type.getTypeId());
+        return new JsonResult<>();
+    }
+
+    @ResponseBody
+    @GetMapping("/editRoom")
+    public JsonResult<Void> editRoom(@RequestParam("hotelId") Long hotelId, @RequestParam("roomNumber") Long roomNumber, @RequestParam("roomType") String roomType,
+                                     @RequestParam("floor") Long floor, @RequestParam("floorPlan") Long floorPlan) {
+        return null;
     }
 }

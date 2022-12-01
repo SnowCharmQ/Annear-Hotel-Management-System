@@ -37,7 +37,9 @@ public enum ExceptionCodeEnum {
 
     INVALID_DATE_EXCEPTION(20000, "The date is invalid"),
 
-    ROOM_CONFLICTS_EXCEPTION(20001, "There are room have the type, can not delete the type");
+    ROOM_CONFLICTS_EXCEPTION(20001, "There are room have the type, can not delete the type"),
+
+    ROOM_EXISTED_EXCEPTION(20002, "The room number is existed");
 
     private final int code;
     private final String message;

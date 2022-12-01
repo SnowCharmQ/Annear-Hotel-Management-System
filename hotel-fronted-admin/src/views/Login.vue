@@ -93,6 +93,7 @@ export default {
               data = data.data;
               sessionStorage.setItem('token', data);
               this.$setToken();
+              this.$router.push('layout');
             } else {
               this.$message.error(data.message);
             }

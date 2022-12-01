@@ -1,5 +1,6 @@
 package sustech.hotel.order.controller;
 
+import java.sql.Date;
 import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
@@ -10,6 +11,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import sustech.hotel.common.utils.DateConverter;
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.order.OrderNotExistException;
 import sustech.hotel.exception.order.OrderNotFinishException;
@@ -52,11 +54,16 @@ public class OrderCommentsController {
     public JsonResult<Void> commentOrder(@RequestBody CommentVo comment) {
         OrderEntity orderEntity = orderService.getById(comment.getOrderId());
         if (orderEntity == null)
-            throw new OrderNotExistException(ExceptionCodeEnum.ORDER_NOT_EXIST_EXCEPTION);
-        if (orderEntity.getOrderStatus() != 3)
-            throw new OrderNotFinishException(ExceptionCodeEnum.ORDER_NOT_FINISH_EXCEPTION);
+            return new JsonResult<>(new OrderNotExistException(ExceptionCodeEnum.ORDER_NOT_EXIST_EXCEPTION));
+        if (orderEntity.getOrderStatus() < 3)
+            return new JsonResult<>(new OrderNotFinishException(ExceptionCodeEnum.ORDER_NOT_FINISH_EXCEPTION));
+        orderEntity.setScore(comment.getScore());
+        orderService.updateById(orderEntity);
         OrderCommentsEntity orderCommentsEntity = new OrderCommentsEntity();
         BeanUtils.copyProperties(comment, orderCommentsEntity);
+        String time = comment.getCommentTime();
+        Date date = DateConverter.convertStringToDate(time);
+        orderCommentsEntity.setCommentTime(date);
         orderCommentsService.save(orderCommentsEntity);
         orderDao.updateOrderStatus(comment.getOrderId(), 4);
         OrderOperationEntity orderOperationEntity = new OrderOperationEntity();

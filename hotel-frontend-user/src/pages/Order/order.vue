@@ -317,6 +317,7 @@ export default {
         }
       } else {
         this.$message.error(data.data.message);
+        this.$router.go(-1);
       }
     }).catch(err => {
       this.$message.error("Network Error");

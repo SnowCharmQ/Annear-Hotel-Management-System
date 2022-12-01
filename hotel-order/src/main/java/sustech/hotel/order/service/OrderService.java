@@ -7,6 +7,7 @@ import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.model.vo.order.*;
 import sustech.hotel.order.entity.OrderEntity;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -28,4 +29,8 @@ public interface OrderService extends IService<OrderEntity> {
     UserTo getUser(String token);
 
     void closeOrder(OrderEntity orderEntity);
+
+    PageUtils getUserOrders(Map<String, Object> params);
+
+    void sendMail(String orderId, String to, Date startDate, Date endDate);
 }

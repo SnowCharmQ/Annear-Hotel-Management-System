@@ -10,7 +10,7 @@
         <!--Contact Info-->
         <el-col :span="24" class="form-title">Contact Info</el-col>
         <el-col :span="6" class="form-row">
-          <el-input placeholder="First Name" v-model="name" class="input-with-select">
+          <el-input placeholder="Name" v-model="name" class="input-with-select">
             <el-select v-model="name_begin" slot="prepend" placeholder="Prefix">
               <el-option label="Mr." value="1"></el-option>
               <el-option label="Ms." value="2"></el-option>
@@ -335,8 +335,6 @@ export default {
     }
   }, methods: {
     alter_info() {
-      console.log(this.user_id)
-      // //TODO: use the API to alter user info
       this.$http({
         url: this.$http.adornUrl('/member/member/userinfo/alterUserInfo'),
         method: 'get',
@@ -349,19 +347,22 @@ export default {
           province: this.province,
           city: this.city,
           detailAddress: this.address,
-          socialName: this.name
+          socialName: this.user_name,
+          name: this.name
         })
       }).then(data => {
-        console.log(data)
-        this.$message({
-          type: 'success',
-          message: 'alter info done'
-        });
+        if (data.data.state === 200){
+          this.$message({
+            type: 'success',
+            message: 'alter info done'
+          });
+        } else {
+         this.$message.error(data.data.message);
+        }
       })
     }
     ,
     init() {
-      console.log('hi1')
       //init userInfo
       this.$http({
         url: this.$http.adornUrl('/member/member/userinfo/queryUserInfoById'),
@@ -371,7 +372,6 @@ export default {
         })
       }).then(data => {
         let info = data.data.data
-        console.log(info)
         this.user_id = info.userId
         this.name = info.socialName
         this.name_begin = info.gender === 0 ? 'Mr.' : 'Mis.'

@@ -33,18 +33,28 @@
 
     <update id="updateInfo">
         UPDATE chm_user_info
-        SET phone = #{phone}, email = #{email}, gender = #{gender}, birthday = #{birthday}, province = #{province}, city = #{city}, detail_address = #{detailAddress}, social_name = #{socialName}
-        WHERE user_id  = #{toEditId}
+        SET phone          = #{phone},
+            email          = #{email},
+            gender         = #{gender},
+            birthday       = #{birthday},
+            province       = #{province},
+            city           = #{city},
+            detail_address = #{detailAddress},
+            social_name    = #{socialName},
+            username       = #{name}
+        WHERE user_id = #{toEditId}
     </update>
 
     <insert id="register">
-        INSERT INTO chm_user_info (username, password, phone, email, gender, province, city, social_name, birthday, balance, detail_address)
-        VALUES (#{name}, #{password}, #{phone}, #{email}, #{gender}, #{province}, #{city}, #{social_name}, #{birthday}, 0, #{detailedAdr});
+        INSERT INTO chm_user_info (username, password, phone, email, gender, province, city, social_name, birthday,
+                                   balance, detail_address)
+        VALUES (#{name}, #{password}, #{phone}, #{email}, #{gender}, #{province}, #{city}, #{social_name}, #{birthday},
+                0, #{detailedAdr});
     </insert>
 
     <update id="test">
         UPDATE chm_user_info
         SET username = #{name}
-        WHERE user_id  = #{toEditId}
+        WHERE user_id = #{toEditId}
     </update>
 </mapper>

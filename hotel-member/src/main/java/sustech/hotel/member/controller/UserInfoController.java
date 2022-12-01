@@ -80,7 +80,7 @@ public class UserInfoController {
         try {
             userInfoService.modifyPassword(vo);
             return new JsonResult<>();
-        }catch (BaseException e) {
+        } catch (BaseException e) {
             return new JsonResult<>(e);
         }
     }
@@ -187,13 +187,10 @@ public class UserInfoController {
     }
 
     @GetMapping("/alterUserInfo")
-    public JsonResult<Void> alterUserInfo(String toEditId, String phone, String email, Integer gender, Long birthday, String province, String city, String detailAddress,String socialName) {
+    public JsonResult<Void> alterUserInfo(String toEditId, String phone, String email, Integer gender, Long birthday, String province, String city, String detailAddress, String socialName, String name) {
         Long userId = JwtHelper.getUserId(toEditId);
-        System.out.println(toEditId);
-        System.out.println(phone);
-        System.out.println(birthday);
         Date day = new Date(birthday);
-        userInfoDao.updateInfo(userId, phone, email, gender, day, province, city, detailAddress, socialName);
+        userInfoDao.updateInfo(userId, phone, email, gender, day, province, city, detailAddress, socialName, name);
         return new JsonResult<>();
     }
 }

@@ -31,7 +31,7 @@ public interface UserInfoService extends IService<UserInfoEntity> {
 
     UserInfoEntity queryUserInfoByName(String username);
 
-    void alterInfo(Long toEditId, String phone, String email, Integer gender, Date birthday, String province, String city, String detailAddress, String socialName);
+    void alterInfo(Long toEditId, String phone, String email, Integer gender, Date birthday, String province, String city, String detailAddress, String socialName, String name);
 
     JsonResult<List<OrderTo>> queryOrderByUser(Long userId);
 

@@ -15,4 +15,8 @@
     <update id="updateOrderStatus">
         update cho_order set order_status = #{order_status} where order_id = #{order_id}
     </update>
+
+    <update id="automaticUpdateOrderStatus">
+        update cho_order set order_status = 3 where end_date = curdate() and order_status = 1
+    </update>
 </mapper>

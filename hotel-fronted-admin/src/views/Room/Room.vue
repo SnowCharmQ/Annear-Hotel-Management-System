@@ -85,8 +85,8 @@
         </div>
 
         <!-- 抽屉区域 -->
-        <el-drawer title="Add a Room No" text-align="center" :visible.sync="drawer" direction="rtl"
-            :before-close="handleDrawerClose" class="drawerStyle" width="20%">
+        <el-drawer title="Add a Room No" textAlign="center" :visible.sync="drawer" direction="rtl"
+            :before-close="handleDrawerClose" width="20%">
             <!-- 表单 -->
 
             <el-form ref="form" :model="form" :rules="rules" label-width="100px">
@@ -383,6 +383,9 @@ export default {
 .avatar-uploader:hover {
     border-color: #409EFF;
 }
+.addRoom .el-drawer {
+    width: 800px !important;
+}
 
 
 .avatar-uploader-icon {
@@ -444,8 +447,8 @@ export default {
     background-color: #e9173a;
 
 }
-::v-deep.el-drawer {
-    background-color: #f3eee7;
+.el-drawer.rtl {
+    background: #6aabc5;
   }
 
 .el-button--primary:hover {

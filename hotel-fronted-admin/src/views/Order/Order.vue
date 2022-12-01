@@ -9,6 +9,7 @@
                 <el-option label="Standard Suite" value="Standard Suite"></el-option>
                 <el-option label="Presidential Suite" value="Presidential Suite"></el-option>
                 <el-option label="King Bed Suite" value="King Bed Suite"></el-option>
+                <el-option label="Cancelled" value="Cancelled"></el-option>
             </el-select>
             <i class="el-icon-data-line"></i>
             <el-select v-model="form.status" placeholder="Finished" class="selection">
@@ -17,6 +18,7 @@
                 <el-option label="Cancelled" value="Cancelled"></el-option>
                 <el-option label="Undertaking" value="Undertaking"></el-option>
                 <el-option label="Waiting Comment" value="Waiting Comment"></el-option>
+                <el-option label="Cancelled" value="Cancelled"></el-option>
             </el-select>
             <i class="el-icon-date"></i>
             <el-date-picker type="date" placeholder="check-in" v-model="form2.date1" style="width: 15%;">

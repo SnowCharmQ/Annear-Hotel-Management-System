@@ -27,5 +27,8 @@
         group by province, city;
     </select>
 
+    <select id="selectByHotelId" resultType="sustech.hotel.model.vo.hotel.HotelVo">
+        select * from chr_hotel join chr_hotel_picture chp on chr_hotel.hotel_id = chp.hotel_id where cover = 1 and chp.hotel_id = #{hotel_id}
+    </select>
 
 </mapper>

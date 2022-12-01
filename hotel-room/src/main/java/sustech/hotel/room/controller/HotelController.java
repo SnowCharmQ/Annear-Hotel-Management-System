@@ -13,6 +13,7 @@ import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.order.HotelNotFoundException;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.model.vo.hotel.*;
+import sustech.hotel.room.dao.HotelDao;
 import sustech.hotel.room.entity.HotelEntity;
 import sustech.hotel.room.service.HotelService;
 
@@ -26,6 +27,9 @@ public class HotelController {
 
     @Autowired
     private HotelService hotelService;
+
+    @Autowired
+    private HotelDao hotelDao;
 
 
     @ResponseBody
@@ -118,12 +122,20 @@ public class HotelController {
 
     @ResponseBody
     @GetMapping("/getMapInfo")
-    public JsonResult<List<HotelMapVo>> getMapInfo(){
+    public JsonResult<List<HotelMapVo>> getMapInfo() {
         return new JsonResult<>(hotelService.getMapInfo());
     }
 
     @GetMapping("/getHotelByName")
-    public JsonResult<HotelEntity> getHotelByName(String name){
+    public JsonResult<HotelEntity> getHotelByName(String name) {
         return new JsonResult<>(this.hotelService.getHotelByName(name));
+    }
+
+    @PostMapping("/collectedList")
+    public JsonResult<List<HotelVo>> getCollectedList(@RequestBody List<Long> hotelId) {
+        List<HotelVo> list = new ArrayList<>();
+        for (Long id : hotelId)
+            list.add(hotelDao.selectByHotelId(id));
+        return new JsonResult<>(list);
     }
 }

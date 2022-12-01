@@ -5,7 +5,7 @@
 
     <el-row class="card-search" :gutter="20" style="width:1250px;margin:20px auto;">
       <el-col :span="17" style="background:#fff; padding: 0 0;margin-left: 120px">
-        <div style="clear:both;">
+        <div style="clear:both;" v-if="reload">
           <el-col :span="24" v-for="(item, idx) in orderList" :key="idx" class="room-list">
             <div class="room-right">
               <div style="font-size:14px">OrderId: {{ item.orderId }}</div>
@@ -120,7 +120,8 @@ export default {
       tempUrl: '',
       selectedOrderId: '',
       statusMap: {0: 'unpaid', 1: 'paid', 2: 'be canceled', 3: 'be evaluated', 4: 'finished'},
-      curComment: ''
+      curComment: '',
+      reload: true
     }
   },
   methods: {
@@ -205,6 +206,7 @@ export default {
       }).then(data => {
         if (data.data.state === 200) {
           this.$message.success("Successfully Commented")
+          location.reload();
         } else {
           this.$message.error(data.data.message);
         }

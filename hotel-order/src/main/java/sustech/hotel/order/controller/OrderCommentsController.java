@@ -58,7 +58,7 @@ public class OrderCommentsController {
         if (orderEntity.getOrderStatus() < 3)
             return new JsonResult<>(new OrderNotFinishException(ExceptionCodeEnum.ORDER_NOT_FINISH_EXCEPTION));
         orderEntity.setScore(comment.getScore());
-        orderService.save(orderEntity);
+        orderService.updateById(orderEntity);
         OrderCommentsEntity orderCommentsEntity = new OrderCommentsEntity();
         BeanUtils.copyProperties(comment, orderCommentsEntity);
         String time = comment.getCommentTime();

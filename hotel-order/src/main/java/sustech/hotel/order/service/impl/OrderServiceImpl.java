@@ -100,19 +100,19 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
 
         if (status != -1) {
             int finalStatus = status;
-            entities = entities.stream().filter(entitie -> entitie.getOrderStatus() == finalStatus).toList();
+            entities = entities.stream().filter(entity -> entity.getOrderStatus() == finalStatus).toList();
         }
         if (roomId!= -1){
             int finalType = roomId;
-            entities = entities.stream().filter(entitie -> entitie.getRoomId() == finalType).toList();
+            entities = entities.stream().filter(entity -> entity.getRoomId() == finalType).toList();
         }
         if (date1!=null){
             Date finalDate = date1;
-            entities = entities.stream().filter(entitie -> entitie.getStartDate().equals(finalDate)).toList();
+            entities = entities.stream().filter(entity -> entity.getStartDate().equals(finalDate)).toList();
         }
         if (date2!=null){
             Date finalDate1 = date2;
-            entities = entities.stream().filter(entitie -> entitie.getEndDate().equals(finalDate1)).toList();
+            entities = entities.stream().filter(entity -> entity.getEndDate().equals(finalDate1)).toList();
         }
         int curPage = 1;
         int limit = 10;

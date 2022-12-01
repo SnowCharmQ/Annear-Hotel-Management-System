@@ -188,10 +188,10 @@
         <el-form-item label="Thermos" prop="thermos">
           <el-input v-model="form.thermos"></el-input>
         </el-form-item>
-        <el-form-item label="Discription" prop="discription">
+        <el-form-item label="Description" prop="description">
           <el-input v-model="form.discription"></el-input>
         </el-form-item>
-        <el-form-item label="Discription" prop="discription">
+        <el-form-item label="area" prop="area">
           <el-input v-model="form.area"></el-input>
         </el-form-item>
 
@@ -301,7 +301,7 @@ export default {
       let resp = data.data;
       console.log(resp)
       let para = {'name': resp}
-      this.$get(this.$baseUrl + '/room/room/hotel/getHotelByName', para).then(data => {
+      this.$get(this.$baseUrl + '/room/room/hotel/initAdminRoom', para).then(data => {
         let resp = data.data
         console.log(resp)
         this.hotelId = resp.hotelId

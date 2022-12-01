@@ -17,7 +17,7 @@ import java.util.*;
 public class DataAnalysisImpl extends ServiceImpl<OrderDao, OrderEntity> implements DataAnalysisService {
     public DataAnalysisVo getLastMonthOrderNumber(Long hotelId) {
         Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, -31);
+        c.add(Calendar.DATE, -30);
         Date start = c.getTime();
         Date end = new Date();
         int[] orderCount = new int[32];
@@ -39,7 +39,7 @@ public class DataAnalysisImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         }
 
         c = Calendar.getInstance();
-        c.add(Calendar.DATE, -31);
+        c.add(Calendar.DATE, -30);
         List<String> xdata = new ArrayList<>();
         List<Integer> ydata = new ArrayList<>();
         SimpleDateFormat ft = new SimpleDateFormat("MM-dd");

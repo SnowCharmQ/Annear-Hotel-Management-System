@@ -140,7 +140,7 @@ export default {
       let resp = data.data;
       console.log(resp)
       let para = {'name': resp}
-      this.$get(this.$baseUrl + '/room/room/hotel/getHotelByName', para).then(data => {
+      this.$get(this.$baseUrl + '/room/room/hotel/initAdminRoom', para).then(data => {
         let resp = data.data
         console.log(resp)
         this.hotelId = resp.hotelId

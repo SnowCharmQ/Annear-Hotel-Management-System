@@ -2,6 +2,7 @@ package sustech.hotel.room.service.impl;
 
 import com.alibaba.fastjson2.JSON;
 import net.bytebuddy.implementation.bytecode.Throw;
+import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +14,7 @@ import java.util.concurrent.ThreadPoolExecutor;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import sustech.hotel.common.utils.Constant;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.Query;
 
@@ -22,10 +24,13 @@ import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.model.to.hotel.CommentInfoTo;
 import sustech.hotel.model.to.hotel.RoomTypeTo;
 import sustech.hotel.model.vo.hotel.AvailableRoomTypeVo;
+import sustech.hotel.model.vo.hotel.RoomTypeInfoVo;
 import sustech.hotel.model.vo.hotel.RoomTypeSearchVo;
+import sustech.hotel.model.vo.hotel.RoomTypeVo;
 import sustech.hotel.model.vo.order.CommentVo;
 import sustech.hotel.room.dao.RoomTypeDao;
 import sustech.hotel.room.entity.HotelEntity;
+import sustech.hotel.room.entity.RoomEntity;
 import sustech.hotel.room.entity.RoomTypeEntity;
 import sustech.hotel.room.entity.RoomTypePictureEntity;
 import sustech.hotel.room.feign.OrderFeignService;
@@ -55,11 +60,30 @@ public class RoomTypeServiceImpl extends ServiceImpl<RoomTypeDao, RoomTypeEntity
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
-        IPage<RoomTypeEntity> page = this.page(
-                new Query<RoomTypeEntity>().getPage(params),
-                new QueryWrapper<>()
-        );
-        return new PageUtils(page);
+        int hotelId = Integer.parseInt(params.get("hotel").toString());
+        List<RoomTypeEntity> entities = this.baseMapper.selectList(new QueryWrapper<RoomTypeEntity>().eq("hotel_id", hotelId));
+        List<RoomTypeInfoVo> roomTypeInfoVos = new ArrayList<>();
+        for (RoomTypeEntity roomType : entities) {
+            RoomTypeInfoVo roomTypeInfoVo = new RoomTypeInfoVo();
+            BeanUtils.copyProperties(roomType, roomTypeInfoVo);
+            String photo = roomTypePictureService.getRoomPicture(roomTypeInfoVo.getTypeId());
+            if (photo != null) {
+                roomTypeInfoVo.setPhoto(photo);
+            }
+            roomTypeInfoVos.add(roomTypeInfoVo);
+            System.out.println(photo);
+        }
+        int curPage = 1;
+        int limit = 10;
+        if (params.get(Constant.PAGE) != null) {
+            curPage = Integer.parseInt(params.get(Constant.PAGE).toString());
+        }
+        if (params.get(Constant.LIMIT) != null) {
+            limit = Integer.parseInt(params.get(Constant.LIMIT).toString());
+        }
+        System.out.println(curPage);
+        System.out.println(limit);
+        return new PageUtils(roomTypeInfoVos, entities.size(), limit, curPage);
     }
 
     @Override
@@ -158,27 +182,46 @@ public class RoomTypeServiceImpl extends ServiceImpl<RoomTypeDao, RoomTypeEntity
     }
 
     @Override
-    public List<RoomTypeEntity> getRoomType(String hotel) {
+    public List<RoomTypeInfoVo> getRoomType(String hotel) {
         HotelEntity entity = hotelService.getHotelByName(hotel);
-        return this.baseMapper.selectList(new QueryWrapper<RoomTypeEntity>().eq("hotel_id", entity.getHotelId()));
+
+        List<RoomTypeEntity> list = this.baseMapper.selectList(new QueryWrapper<RoomTypeEntity>().eq("hotel_id", entity.getHotelId()));
+        List<RoomTypeInfoVo> roomTypeInfoVos = new ArrayList<>();
+        for (RoomTypeEntity roomType : list) {
+            RoomTypeInfoVo roomTypeInfoVo = new RoomTypeInfoVo();
+            BeanUtils.copyProperties(roomType, roomTypeInfoVo);
+            String photo = roomTypePictureService.getRoomPicture(roomTypeInfoVo.getTypeId());
+            roomTypeInfoVo.setPhoto(photo);
+            roomTypeInfoVos.add(roomTypeInfoVo);
+            System.out.println(photo);
+        }
+        return roomTypeInfoVos;
     }
 
     @Override
-    public void addRoomType(RoomTypeEntity entity) {
+    public Long addRoomType(RoomTypeVo entityVo) {
+        RoomTypeEntity entity = new RoomTypeEntity();
+        BeanUtils.copyProperties(entityVo, entity);
         this.baseMapper.insert(entity);
+        System.out.println(entity.getTypeId());
+        return entity.getTypeId();
     }
 
     @Override
     public void deleteType(Long typeId) {
+        System.out.println("delete");
+        System.out.println(typeId);
         if (roomService.typeExist(typeId)) {
             throw new RoomConflictsException(ExceptionCodeEnum.ROOM_CONFLICTS_EXCEPTION);
         } else {
-            this.baseMapper.delete(new QueryWrapper<RoomTypeEntity>().eq("type_id", typeId));
+            this.removeById(typeId);
         }
     }
 
     @Override
     public void alterType(RoomTypeEntity roomType) {
+        System.out.println("update");
+        System.out.println(roomType.toString());
         this.updateById(roomType);
     }
 }

@@ -11,9 +11,12 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import sustech.hotel.exception.BaseException;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.model.to.hotel.CommentInfoTo;
+import sustech.hotel.model.vo.hotel.RoomTypeInfoVo;
 import sustech.hotel.model.vo.hotel.RoomTypeSearchVo;
+import sustech.hotel.model.vo.hotel.RoomTypeVo;
 import sustech.hotel.room.entity.RoomTypeEntity;
 import sustech.hotel.room.service.RoomTypeService;
 import sustech.hotel.common.utils.PageUtils;
@@ -101,23 +104,30 @@ public class RoomTypeController {
         return new JsonResult<>(list);
     }
 
-    @PostMapping("/addRoomTYpe")
-    void addRoomType(@RequestBody RoomTypeEntity entity){
-        this.roomTypeService.addRoomType(entity);
+    @PostMapping("/addRoomType")
+    public JsonResult<Long> addRoomType(@RequestBody RoomTypeVo entity) {
+        return new JsonResult<>(this.roomTypeService.addRoomType(entity));
     }
 
-    @PostMapping("/deleteType")
-    void deleteType(Long typeId){
-        this.roomTypeService.deleteType(typeId);
+    @GetMapping("/deleteType")
+    public JsonResult<Void> deleteType(Long typeId) {
+        System.out.println(typeId);
+        try {
+            this.roomTypeService.deleteType(typeId);
+        } catch (BaseException e) {
+            return new JsonResult<>(e);
+        }
+        return new JsonResult<>();
     }
 
     @PostMapping("/alterType")
-    void alterType(@RequestBody RoomTypeEntity roomType){
+    public JsonResult<Void> alterType(@RequestBody RoomTypeEntity roomType) {
         this.roomTypeService.alterType(roomType);
+        return new JsonResult<>();
     }
 
     @GetMapping("/getRoomType")
-    public JsonResult<List<RoomTypeEntity>> getRoomType(String hotel){
+    public JsonResult<List<RoomTypeInfoVo>> getRoomType(String hotel) {
         return new JsonResult<>(this.roomTypeService.getRoomType(hotel));
     }
 }

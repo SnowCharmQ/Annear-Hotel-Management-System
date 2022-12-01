@@ -178,7 +178,7 @@ export default {
 
     // 右侧样式
     .right {
-
+        background-color: #f3eee7;
         flex: 1;
 
 

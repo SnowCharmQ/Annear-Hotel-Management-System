@@ -7,8 +7,11 @@ import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.room.RoomConflictsException;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.model.to.hotel.CommentInfoTo;
+import sustech.hotel.model.vo.hotel.RoomTypeInfoVo;
 import sustech.hotel.model.vo.hotel.RoomTypeSearchVo;
+import sustech.hotel.model.vo.hotel.RoomTypeVo;
 import sustech.hotel.room.entity.RoomTypeEntity;
+import sustech.hotel.room.entity.RoomTypePictureEntity;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -23,11 +26,13 @@ public interface RoomTypeService extends IService<RoomTypeEntity> {
 
     CommentInfoTo getCommentInfo(Long typeId);
 
-    void addRoomType(RoomTypeEntity entity);
+    Long addRoomType(RoomTypeVo entity);
 
     void deleteType(Long typeId);
 
     void alterType(RoomTypeEntity roomType);
 
-    List<RoomTypeEntity> getRoomType(String hotel);
+    List<RoomTypeInfoVo> getRoomType(String hotel);
+
+
 }

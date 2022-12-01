@@ -192,6 +192,7 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
             String encode = passwordEncoder.encode(vo.getPassword());
             entity.setPassword(encode);
+            this.baseMapper.updateById(entity);
         } else {
             String oldPwd = entity.getPassword();
             BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();

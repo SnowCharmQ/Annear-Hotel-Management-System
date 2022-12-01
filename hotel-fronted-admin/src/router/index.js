@@ -12,6 +12,9 @@ const routes = [
   {
     path: '/layout',
     component: () => import("@/views/Layout.vue"),
+    meta: {
+      requireAuth: true
+    },
     children: [
       {
         path: 'customer',
@@ -60,3 +63,18 @@ const router = new VueRouter({
 })
 
 export default router
+
+router.beforeEach((to, from, next) => {
+  if (to.meta.requireAuth) {
+    if (sessionStorage.getItem('token')) {
+      next();
+    } else {
+      next({
+        path: '/',
+        query: {redirect: to.fullPath}
+      })
+    }
+  } else {
+    next();
+  }
+})

@@ -24,4 +24,6 @@ public interface HotelService extends IService<HotelEntity> {
     ReserveRespVo initReserve(ReserveReqVo vo);
 
     public List<HotelMapVo> getMapInfo();
+
+    HotelEntity getHotelByName(String hotel);
 }

@@ -35,7 +35,9 @@ public enum ExceptionCodeEnum {
     ORDER_NOT_FINISH_EXCEPTION(11010, "Order haven't finish."),
     // 20000 ~ others
 
-    INVALID_DATE_EXCEPTION(20000, "The date is invalid");
+    INVALID_DATE_EXCEPTION(20000, "The date is invalid"),
+
+    ROOM_CONFLICTS_EXCEPTION(20001, "There are room have the type, can not delete the type");
 
     private final int code;
     private final String message;

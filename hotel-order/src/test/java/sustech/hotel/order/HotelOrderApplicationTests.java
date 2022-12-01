@@ -15,25 +15,25 @@ import java.util.List;
 
 @SpringBootTest
 class HotelOrderApplicationTests {
-    @Autowired
-    OrderController orderController;
-
-    @Autowired
-    OrderOperationService orderOperationService;
-
-    @Test
-    void contextLoads() {
-        System.out.println(orderController.queryByUser((long)12012705).getData());
-    }
-
-    @Test
-    void testInsert(){
-        OrderOperationEntity orderOperationEntity = new OrderOperationEntity();
-        orderOperationEntity.setOrderId("test1");
-        orderOperationEntity.setOperationTime(new Timestamp(System.currentTimeMillis()));
-        orderOperationEntity.setOperation(1);
-        System.out.println(orderOperationEntity.getOperationTime());
-        orderOperationService.save(orderOperationEntity);
-    }
+//    @Autowired
+//    OrderController orderController;
+//
+//    @Autowired
+//    OrderOperationService orderOperationService;
+//
+//    @Test
+//    void contextLoads() {
+//        System.out.println(orderController.queryByUser((long)12012705).getData());
+//    }
+//
+//    @Test
+//    void testInsert(){
+//        OrderOperationEntity orderOperationEntity = new OrderOperationEntity();
+//        orderOperationEntity.setOrderId("test1");
+//        orderOperationEntity.setOperationTime(new Timestamp(System.currentTimeMillis()));
+//        orderOperationEntity.setOperation(1);
+//        System.out.println(orderOperationEntity.getOperationTime());
+//        orderOperationService.save(orderOperationEntity);
+//    }
 
 }

@@ -208,4 +208,10 @@ public class HotelServiceImpl extends ServiceImpl<HotelDao, HotelEntity> impleme
         }
         return vos;
     }
+
+    @Override
+    public HotelEntity getHotelByName(String hotel) {
+        System.out.println(hotel);
+        return this.baseMapper.selectOne(new QueryWrapper<HotelEntity>().eq("hotel_name", hotel));
+    }
 }

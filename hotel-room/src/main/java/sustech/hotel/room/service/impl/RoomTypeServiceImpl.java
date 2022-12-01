@@ -1,6 +1,7 @@
 package sustech.hotel.room.service.impl;
 
 import com.alibaba.fastjson2.JSON;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,8 +16,11 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.Query;
 
+import sustech.hotel.exception.ExceptionCodeEnum;
+import sustech.hotel.exception.room.RoomConflictsException;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.model.to.hotel.CommentInfoTo;
+import sustech.hotel.model.to.hotel.RoomTypeTo;
 import sustech.hotel.model.vo.hotel.AvailableRoomTypeVo;
 import sustech.hotel.model.vo.hotel.RoomTypeSearchVo;
 import sustech.hotel.model.vo.order.CommentVo;
@@ -26,6 +30,7 @@ import sustech.hotel.room.entity.RoomTypeEntity;
 import sustech.hotel.room.entity.RoomTypePictureEntity;
 import sustech.hotel.room.feign.OrderFeignService;
 import sustech.hotel.room.service.HotelService;
+import sustech.hotel.room.service.RoomService;
 import sustech.hotel.room.service.RoomTypePictureService;
 import sustech.hotel.room.service.RoomTypeService;
 
@@ -41,6 +46,9 @@ public class RoomTypeServiceImpl extends ServiceImpl<RoomTypeDao, RoomTypeEntity
 
     @Autowired
     private HotelService hotelService;
+
+    @Autowired
+    private RoomService roomService;
 
     @Autowired
     ThreadPoolExecutor executor;
@@ -147,5 +155,30 @@ public class RoomTypeServiceImpl extends ServiceImpl<RoomTypeDao, RoomTypeEntity
                 .and(o -> o.eq("type_id", typeId).eq("cover", 1)));
         to.setTypePicture(picture.getPicturePath());
         return to;
+    }
+
+    @Override
+    public List<RoomTypeEntity> getRoomType(String hotel) {
+        HotelEntity entity = hotelService.getHotelByName(hotel);
+        return this.baseMapper.selectList(new QueryWrapper<RoomTypeEntity>().eq("hotel_id", entity.getHotelId()));
+    }
+
+    @Override
+    public void addRoomType(RoomTypeEntity entity) {
+        this.baseMapper.insert(entity);
+    }
+
+    @Override
+    public void deleteType(Long typeId) {
+        if (roomService.typeExist(typeId)) {
+            throw new RoomConflictsException(ExceptionCodeEnum.ROOM_CONFLICTS_EXCEPTION);
+        } else {
+            this.baseMapper.delete(new QueryWrapper<RoomTypeEntity>().eq("type_id", typeId));
+        }
+    }
+
+    @Override
+    public void alterType(RoomTypeEntity roomType) {
+        this.updateById(roomType);
     }
 }

@@ -17,10 +17,7 @@ import java.util.Objects;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import sustech.hotel.common.utils.JsonResult;
-import sustech.hotel.common.utils.JwtHelper;
-import sustech.hotel.common.utils.PageUtils;
-import sustech.hotel.common.utils.Query;
+import sustech.hotel.common.utils.*;
 
 import sustech.hotel.exception.BaseException;
 import sustech.hotel.exception.ExceptionCodeEnum;
@@ -220,5 +217,23 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoDao, UserInfoEntity
             throw new UserNotLoginException(ExceptionCodeEnum.USER_NOT_LOGIN_EXCEPTION);
         }
         return userId;
+    }
+
+    public PageUtils getAllUsers(Map<String, Object> params) {
+        List<UserInfoEntity> allUsers = this.list();
+
+        int curPage = 1;
+        int limit = 10;
+        if (params.get(Constant.PAGE) != null) {
+            curPage = Integer.parseInt(params.get(Constant.PAGE).toString());
+        }
+        if (params.get(Constant.LIMIT) != null) {
+            limit = Integer.parseInt(params.get(Constant.LIMIT).toString());
+        }
+        return new PageUtils(allUsers, allUsers.size(), limit, curPage);
+    }
+
+    public void deleteUserById(Long userId) {
+        this.baseMapper.delete(new QueryWrapper<UserInfoEntity>().eq("user_id", userId));
     }
 }

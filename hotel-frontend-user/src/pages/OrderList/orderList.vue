@@ -85,16 +85,7 @@
     <div class="pagination">
       <span style="margin-right:-16px;font-size: 20px;font-family: 'Times New Roman',serif; color: #000000;">Total Records: {{
           totalCount
-        }} &ensp;&ensp;&ensp;  Current Page:</span>
-      <el-pagination
-          @size-change="sizeChangeHandle"
-          @current-change="currentChangeHandle"
-          :current-page="pageIndex"
-          :page-sizes="[10, 20, 50, 100]"
-          :page-size="pageSize"
-          :total="totalCount"
-          layout="jumper, total, sizes, prev, pager, next, ->"
-      ></el-pagination>
+        }} &ensp;&ensp;&ensp; </span>
     </div>
   </div>
 </template>

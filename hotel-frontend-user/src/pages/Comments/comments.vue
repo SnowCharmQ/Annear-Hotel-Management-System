@@ -2,60 +2,89 @@
   <div class="page-main">
     <div style="background:#f3eee7;line-height:80px;padding-left:15px;font-size:22px">View The Comments Of Our Hotels
     </div>
-
     <el-row class="card-search" :gutter="20" style="width:1250px;margin:20px auto;">
       <el-col :span="17" style="background:#fff; padding: 0 0;margin-left: 120px">
         <div style="clear:both;">
           <el-col :span="24" v-for="(comment, idx) in comments" :key="idx" class="room-list">
             <img :src="comment.picture" v-if="comment.picture" class="image">
-<!--            <vam-video-->
-<!--                :properties="videoOption.properties"-->
-<!--                :videoStyle="videoOption.videoStyle"-->
-<!--                :controlsConfig="videoOption.controlsConfig"-->
-<!--                @play="playVideo"-->
-<!--                @canplay="canplayVideo"-->
-<!--                @pause="pauseVideo"-->
-<!--            ></vam-video>-->
             <div class="room-right">
               <div class="card-name" style="font-size: 22px">{{ comment.hotelName }}</div>
               <div style="font-weight:600;font-size: 20px">{{ comment.typeName }}</div>
               <br>
               <div>{{ comment.comments }}</div>
-              <div>Comment Time: {{comment.commentTime}}</div>
+              <div>Comment Time: {{comment.commentTime.toString().split(" ")[0]}}</div>
               <div>Score: {{parseFloat(comment.score).toFixed(1)}}</div>
+              <div style="cursor:pointer;" @click="openDialog(comment)">View The Video</div>
             </div>
+            <el-dialog :visible.sync="dialogVisible" center width="50%">
+              <vam-video
+                  :properties="videoOption.properties"
+                  :videoStyle="videoOption.videoStyle"
+                  :controlsConfig="videoOption.controlsConfig"
+                  @play="playVideo"
+                  @canplay="canplayVideo"
+                  @pause="pauseVideo"
+              ></vam-video>
+            </el-dialog>
           </el-col>
         </div>
       </el-col>
     </el-row>
 
     <div class="pagination">
-      <span style="margin-right:-16px;font-size: 20px;font-family: 'Times New Roman',serif; color: #000000;">Total Records: {{ totalCount }} &ensp;&ensp;&ensp;  Current Page:</span>
-      <el-pagination
-          @size-change="sizeChangeHandle"
-          @current-change="currentChangeHandle"
-          :current-page="pageIndex"
-          :page-sizes="[10, 20, 50, 100]"
-          :page-size="pageSize"
-          :total="totalCount"
-          layout="jumper, total, sizes, prev, pager, next, ->"
-      ></el-pagination>
+      <span style="margin-right:-16px;font-size: 20px;font-family: 'Times New Roman',serif; color: #000000;">Total Records: {{ totalCount }} &ensp;&ensp;&ensp;</span>
     </div>
   </div>
 </template>
 
 <script>
+import VamVideo from "vue-vam-video";
+
 export default {
   name: "comments",
+  components: {
+    VamVideo
+  },
   data() {
     return {
       comments: [],
       pageIndex: 1,
       pageSize: 10,
-      totalCount: 50
+      totalCount: 50,
+      videoOption: {
+        properties: {
+          poster: require("../../assets/images/home1.png"),
+          src: "",
+          // preload: "auto",
+          // loop: "loop",
+          // autoplay:"autoplay",
+          // muted:true
+        },
+        videoStyle: {
+          width: "400px",
+          height: "200px",
+        },
+        controlsConfig: {
+          fullScreenTit:"全屏",
+          EscfullScreenTit:"退出全屏",
+          speedTit:"倍速",
+          yinliangTit:"音量",
+          jingyinTit:"静音",
+          playTit:"播放",
+          pauseTit:"暂停",
+          fullScreen:true,
+          speed:true,
+          listen:true
+        }
+      },
+      dialogVisible: false
     }
   },
   methods: {
+    openDialog(comment) {
+      this.dialogVisible = true;
+      this.videoOption.properties.src = comment.video;
+    },
     sizeChangeHandle(val) {
       this.pageSize = val;
       this.pageIndex = 1;
@@ -84,6 +113,15 @@ export default {
       }).catch(err => {
         this.$message.error("Network Error");
       })
+    },
+    playVideo(){
+      console.log("play");
+    },
+    pauseVideo(){
+      console.log("pause");
+    },
+    canplayVideo(){
+      console.log("canplay");
     }
   },
   created() {

@@ -109,8 +109,9 @@ public class CollectHotelController {
     }
 
     @RequestMapping("/collectedList")
-    public JsonResult<List<HotelVo>> getCollectedList(@RequestParam("userId") Long userId) {
-        List<Long> hotelList = collectHotelService.showCollectedHotel(userId);
+    public JsonResult<List<HotelVo>> getCollectedList(@RequestParam("userId") String token) {
+        Long id = JwtHelper.getUserId(token);
+        List<Long> hotelList = collectHotelService.showCollectedHotel(id);
         return new JsonResult<>(roomFeignService.getCollectedList(hotelList).getData());
     }
 }

@@ -88,8 +88,7 @@
                 <el-breadcrumb-item>telephone: {{ item.telephone }}</el-breadcrumb-item>
               </el-breadcrumb>
               <div>A contemporary retreat for a restful night’s sleep</div>
-              <div style="font-weight:600;">Average price: ${{ item.price }}</div>
-              <el-link>Room details</el-link>
+              <el-link>Hotel details</el-link>
             </div>
           </el-col>
         </div>
@@ -298,18 +297,7 @@ export default {
         password: '',
         re_password: ''
       },
-      collectionList: [
-        {
-          name: 'Anneartaka',
-          province: 'Guangdong',
-          city: 'Shenzhen',
-          district: "Luang Prabang Lao People's Dem Republic",
-          starlevel: 5,
-          telephone: 15566888888,
-          price: '1980',
-          img: require('../../assets/images/hotel/2.jpeg'),
-        }
-      ],
+      collectionList: [],
       orderList: [
         {
           orderId: '0000098',
@@ -385,31 +373,33 @@ export default {
         this.balance = 'balance: ' + info.balance
         this.dataForm.phone = info.phone
 
-
+        // console.log(this.user_id)
         this.$http({
-          url: this.$http.adornUrl('/member/member/userinfo/queryUserInfoById'),
+          url: this.$http.adornUrl('/member/member/collecthotel/collectedList'),
           method: 'get',
           params: this.$http.adornParams({
-            id: this.user_id
+            userId: cookie.get('token')
           })
         }).then(data => {
-          let resp = data.data
+          console.log('hiiii')
+          console.log(data)
+          let resp = data.data.data
+          console.log(resp)
           for (let i = 0; i < resp.length; i++) {
+            console.log(i)
             let item = resp[i]
-            collectionList.push(
-                {
-                  name: 'Anneartaka',
-                  province: 'Guangdong',
-                  city: 'Shenzhen',
-                  district: "Luang Prabang Lao People's Dem Republic",
-                  starlevel: 5,
-                  telephone: 15566888888,
-                  price: '1980',
-                  img: require('../../assets/images/hotel/2.jpeg'),
-                }
-            )
+            let p = {
+              name: item.hotelName,
+              province: item.province,
+              city: item.city,
+              district: item.district,
+              starlevel: item.starLevel,
+              telephone: item.telephone,
+              price: item.averagePrice,
+              img: item.picturePath
+            }
+            this.collectionList.push(p)
           }
-
         })
 
       })

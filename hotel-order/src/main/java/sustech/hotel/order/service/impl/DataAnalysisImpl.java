@@ -148,7 +148,9 @@ public class DataAnalysisImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
                 o -> o.eq("hotel_id", hotelId).ge("start_date", start).le("end_date", end)));
 
         for (OrderEntity entity : orders) {
-            score[entity.getScore()] += 1;
+            if (entity != null) {
+                score[entity.getScore()] += 1;
+            }
         }
 
         List<String> xdata = new ArrayList<>();

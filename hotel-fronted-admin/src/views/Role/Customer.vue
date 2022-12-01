@@ -18,8 +18,7 @@
             <el-table-column label="Name" width="180">
                 <template slot-scope="scope">
                    {{ scope.row.customer_name }}
-
-                      
+                
                 </template>
             </el-table-column>
             <el-table-column label="ID" width="180">
@@ -244,6 +243,10 @@ export default {
 .el-button--danger:hover {
     background-color: #e9173a;
 
+}
+::v-deep .el-table tbody tr:hover>td {
+    background-color: #8dfae1;
+    opacity: 70%;
 }
 
 

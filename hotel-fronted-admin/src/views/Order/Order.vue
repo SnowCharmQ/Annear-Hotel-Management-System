@@ -2,7 +2,34 @@
     <div>
         <!-- 添加区域 -->
         <div class="addRoom">
-            <el-button type="primary" size="mini"  class="addRoomButton" @click="addClick">Add Room</el-button>
+            <i class="el-icon-office-building" ></i>
+            <!-- <el-button type="primary" size="mini"  class="addRoomButton" @click="addClick">Add Room</el-button> -->
+            <el-select v-model="form.hotel" placeholder="Shanghai Hotel" class="selection">
+                <el-option label="Shanghai Hotel" value="Shanghai Hotel"></el-option>
+                <el-option label="Beijing Hotel" value="Beijing Hotel"></el-option>
+                <el-option label="Shenzhen Hotel" value="Shenzhen Hotel"></el-option>
+            </el-select>
+            <i class="el-icon-s-home"></i>
+            <!-- <el-button type="primary" size="mini"  class="addRoomButton" @click="addClick">Add Room</el-button> -->
+            <el-select v-model="form.type" placeholder="King Bed Suite" class="selection">
+                <el-option label="Standard Suite" value="Standard Suite"></el-option>
+                <el-option label="Presidential Suite" value="Presidential Suite"></el-option>
+                <el-option label="King Bed Suite" value="King Bed Suite"></el-option>
+            </el-select>
+            <i class="el-icon-data-line"></i>
+            <el-select v-model="form.status" placeholder="Finished" class="selection">
+                <el-option label="Finished" value="Finished"></el-option>
+                <el-option label="Waiting to Pay" value="Waiting to Pay"></el-option>
+                <el-option label="Cancelled" value="Cancelled"></el-option>
+                <el-option label="Undertaking" value="Undertaking"></el-option>
+                <el-option label="Waiting Comment" value="Waiting Comment"></el-option>
+            </el-select>
+            <i class="el-icon-date"></i>
+            <el-date-picker type="date" placeholder="check-in" v-model="form2.date1" style="width: 15%;">
+            </el-date-picker>
+            <i class="el-icon-date"></i>
+            <el-date-picker type="date" placeholder="check-out" v-model="form2.date2" style="width: 15%;">
+            </el-date-picker>
         </div>
         <!-- 表格区域 -->
         <el-table :data="tableData" style="width: 98%; min-width: 1000px"
@@ -10,41 +37,58 @@
             :header-cell-style="{ color: 'black', fontSize: '20px', fontFamily: 'nano', background: '#f3eee7', textAlign: 'center', borderBottomColor: 'black' }"
             :row-style="setRowStyle" stripe fit highlight-current-row border empty-text="No Room Added">
 
-            <el-table-column label="Room No" width="180">
+            <el-table-column label="orderID" width="100">
                 <template slot-scope="scope">
-                    {{ scope.row.room_num }}
+                    {{ scope.row.orderID }}
                 </template>
             </el-table-column>
 
-            <el-table-column label="Type" width="180">
+            <el-table-column label="userID" width="100">
                 <template slot-scope="scope">
 
-                    {{ scope.row.room_type }}
+                    {{ scope.row.userID }}
 
                 </template>
             </el-table-column>
-            <el-table-column label="Floor" width="180">
+            <el-table-column label="check-in date" width="250">
                 <template slot-scope="scope">
 
-                    {{ scope.row.floor }}
+                    {{ scope.row.date1 }}
 
                 </template>
             </el-table-column>
-            <el-table-column label="Floor Plan" width="180">
+            <el-table-column label="check-out date" width="250">
                 <template slot-scope="scope">
 
-                    {{ scope.row.floor_plan }}
+                    {{ scope.row.date2 }}
+                </template>
+            </el-table-column>
+            <el-table-column label="score" width="80">
+                <template slot-scope="scope">
+
+                    {{ scope.row.score }}
+                </template>
+            </el-table-column>
+            <el-table-column label="name" width="100">
+                <template slot-scope="scope">
+
+                    {{ scope.row.name }}
+                </template>
+            </el-table-column>
+            <el-table-column label="phone" width="150">
+                <template slot-scope="scope">
+
+                    {{ scope.row.phone }}
+                </template>
+            </el-table-column>
+            <el-table-column label="email">
+                <template slot-scope="scope">
+
+                    {{ scope.row.email }}
                 </template>
             </el-table-column>
 
-            <el-table-column label="Operations">
-                <template slot-scope="scope">
-                    <el-button size="mini" type="primary" @click="editClass(scope.$index)" class="editButton">Edit
-                    </el-button>
-                    <el-button size="mini" type="danger" @click="deleteClass(scope.$index)">Delete
-                    </el-button>
-                </template>
-            </el-table-column>
+           
         </el-table>
         <el-dialog :visible.async="dialogFormVisible" :beforeClose="handleDialogFormClose">
             <el-form ref="form2" :model="form2" :rules="rules" label-width="100px">
@@ -195,40 +239,60 @@ export default {
         return {
             // 表格数据
             tableData: [{
-                room_num: '114514',
-                room_type: 'presidential suite',
-                floor: -1,
-                floor_plan: 2,
+                orderID: '114',
+                userID: '514',
+                date1: '2022-12-01',
+                date2: '2022-12-02',
+                score: '4.0',
+                name: 'HE SUI',
+                phone: '18125933962',
+                email: '12012929@mail.sustech.edu.cn'
+
 
             },
             {
-                room_num: '114',
-                room_type: 'standard suite',
-                floor: 3,
-                floor_plan: 2,
+                orderID: '115',
+                userID: '515',
+                date1: '2022-11-30',
+                date2: '2022-12-02',
+                score: '3.7',
+                name: 'QIAN QIAN',
+                phone: '18125933962',
+                email: '12012919@mail.sustech.edu.cn'
             },
             {
-                room_num: '514',
-                room_type: 'three suite',
-                floor: 3,
-                floor_plan: 2,
+                orderID: '116',
+                userID: '516',
+                date1: '2022-11-29',
+                date2: '2022-12-02',
+                score: '4.4',
+                name: 'sui_h',
+                phone: '18125933112',
+                email: 'suih@mail.sustech.edu.cn'
             }],
             num: '',
             count: 5,
             imageUrl: '',
             dialogFormVisible: false,
             form: {
-                room_num: '',
-                room_type: '',
-                floor: '',
-                floor_plan: '',
+                orderID: '',
+                userID: '',
+                date1: '',
+                date2: '',
+                score: '',
+                name: '',
+                phone: '',
+                email: ''
             },
             form2: {
-                room_num: '',
-                room_type: '',
-                floor: -1,
-                floor_plan: 2,
-                index: -1
+                orderID: '',
+                userID: '',
+                date1: '',
+                date2: '',
+                score: '',
+                name: '',
+                phone: '',
+                email: ''
             },
             rules: {
 
@@ -436,12 +500,17 @@ export default {
     }
 }
 
+.selection {
+    width: 150px;
+}
+
 .el-button--danger {
     background-color: #f15973;
     border-color: #ec9bad;
     font-family: 'nano';
     font-size: 15px;
 }
+
 
 .el-button--danger:hover {
     background-color: #e9173a;
@@ -456,4 +525,33 @@ export default {
     background-color: #8dfae1;
     opacity: 70%;
 }
+
+.el-table--enable-row-hover .el-table__body tr:hover>td.el-table__cell {
+    background-color: #8dfae1;
+}
+.el-icon-office-building{
+    padding-left: 5px;
+    padding-right: 0;
+    width: 18px;
+    height: 25px;
+}
+.el-icon-s-home{
+    padding-left: 5px;
+    width: 18px;
+    height: 25px;
+}
+.el-icon-data-line{
+    padding-left: 5px;
+    width: 18px;
+    height: 25px;
+}
+.el-icon-date{
+    padding-left: 5px;
+    width: 18px;
+    height: 25px;
+}
+.el-pagination.is-background .el-pager {
+    background-color: #f3eee7;
+    color: #FFF;
+    }
 </style>

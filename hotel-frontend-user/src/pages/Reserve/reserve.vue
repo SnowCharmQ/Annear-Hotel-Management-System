@@ -271,7 +271,8 @@
           </div>
 
           <el-divider></el-divider>
-          <el-link style="font-family: 'Times New Roman',serif;font-size: 18px" @click="toComments">View Comments</el-link>
+          <el-link style="font-family: 'Times New Roman',serif;font-size: 18px" @click="toComments">View Comments
+          </el-link>
 
           <!--用户评论区-->
           <!--          <div>-->
@@ -404,7 +405,10 @@ export default {
       this.$router.push('order?startDate=' + startDate + '&endDate=' + endDate + '&roomTypeId=' + roomTypeId + '&hotelId=' + hotelId);
     },
     toFloorPlan() {
-      this.$router.push('floorPlan')
+      let startDate = this.date1;
+      let endDate = this.date2;
+      let hotelId = this.$route.query.hotel;
+      this.$router.push('floorPlan?hotel=' + hotelId + "&startDate=" + startDate + "&endDate=" + endDate);
     },
     updateGuests() {
       this.count2 = this.count1;

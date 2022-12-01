@@ -24,69 +24,99 @@
         </div>
         <div class="flex-row flex-row3" style="margin-top:380px">
           <div style="width: 5px;height: 240px;position: relative;margin-top: 100px;"></div>
-          <div class="roomNum2" v-for="(item, index) in 9" :key="index" @click="toOpen(8 + index)"></div>
+          <div class="roomNum2" v-for="(item, index) in 9" :key="index" @click="toOpen(9 + index)"></div>
         </div>
       </div>
 
       <el-dropdown split-button type="primary" @command="handleCommand">
-        Floor: {{curFloor}}
+        Floor: {{ curFloor }}
         <el-dropdown-menu slot="dropdown">
-          <el-dropdown-item v-for="f in this.floors" :command="f">Floor {{f}}</el-dropdown-item>
+          <el-dropdown-item v-for="f in this.floors" :command="f">Floor {{ f }}</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
 
-      <!--弹窗-->
-      <!--      <el-dialog :visible.sync="dialogVisible" width="700px" title="Book">-->
-      <!--        <div class="view-room">-->
-      <!--          <div>-->
-      <!--            <div class="room-title">{{ curRow.name }}</div>-->
-      <!--            <div style="margin:10px 0">-->
-      <!--              <span>{{ curRow.twin }} Twin</span>-->
-      <!--              <span> | </span>-->
-      <!--              <span>{{ curRow.area }}</span>-->
-      <!--            </div>-->
-      <!--            <div>Room Amenities</div>-->
-      <!--          </div>-->
-      <!--          <div>-->
-      <!--            <el-image-->
-      <!--                style="width: 260px; height: 180px"-->
-      <!--                :src="curRow.img"-->
-      <!--                :preview-src-list="[curRow.img]">-->
-      <!--            </el-image>-->
-      <!--          </div>-->
-      <!--        </div>-->
-      <!--        <el-divider></el-divider>-->
+      <!--详细信息弹窗-->
+      <el-dialog :visible.sync="dialogVisible" width="700px" title="Room Details">
+          <span slot="title" class="dialog-footer"
+                style="height: 50px;font-size: 32px;font-family: 'Times New Roman',serif;margin-top: 5px">
+              <span style="margin-top: 10px">Room Details</span>
+          </span>
+        <div class="view-room">
+          <div>
+            <div class="room-title" style="font-size: 22px">{{ curRoomType.typeName }}</div>
+            <el-breadcrumb separator="|" style="margin:10px 0;">
+              <el-breadcrumb-item>{{ curRoomType.upperLimit }} Guests Max</el-breadcrumb-item>
+              <el-breadcrumb-item style="margin-top: -3px">{{ curRoomType.area }} m<sup>2</sup></el-breadcrumb-item>
+              <el-breadcrumb-item>Score: {{ parseFloat(curRoomType.averageScore).toFixed(1) }}</el-breadcrumb-item>
+            </el-breadcrumb>
+            <div>{{ curRoomType.description }}</div>
+          </div>
+          <br>
+          <div>
+<!--            <el-image-->
+<!--                style="width: 260px; height: 180px"-->
+<!--                :src="updatePicturePath()"-->
+<!--                :preview-src-list="this.roomTypeImages[this.curRoomType.typeId]">-->
+<!--            </el-image>-->
+          </div>
+        </div>
+        <el-divider></el-divider>
+        <div style="margin:10px 0;font-size: 20px;font-family: 'Times New Roman',serif">
+          <span>Breakfast: <i v-if="curRoomType.breakfast===1" class="el-icon-check"></i><i
+              v-if="curRoomType.breakfast!==1"
+              class="el-icon-close"></i></span>
+          <span> | </span>
+          <span>Windows: <i v-if="curRoomType.windows===1" class="el-icon-check"></i><i v-if="curRoomType.windows!==1"
+                                                                                        class="el-icon-close"></i></span>
+          <span> | </span>
+          <span>Television: <i v-if="curRoomType.television===1" class="el-icon-check"></i><i
+              v-if="curRoomType.television!==1"
+              class="el-icon-close"></i></span>
+          <span> | </span>
+          <span>Bathtub: <i v-if="curRoomType.bathtub===1" class="el-icon-check"></i><i v-if="curRoomType.bathtub!==1"
+                                                                                        class="el-icon-close"></i></span>
+          <span> | </span>
+          <span>Thermos: <i v-if="curRoomType.thermos===1" class="el-icon-check"></i><i
+              v-if="curRoomType.thermos!==1" class="el-icon-close"></i></span>
+        </div>
 
-      <!--        <div>-->
-      <!--          <div class="detail">{{ curRow.detail }}</div>-->
-      <!--          <div class="dline">{{ curRow.d1 }}</div>-->
-      <!--          <div class="dline">{{ curRow.d2 }}</div>-->
-      <!--          <div class="dline">{{ curRow.d3 }}</div>-->
-      <!--          <div class="dline">{{ curRow.d4 }}</div>-->
-      <!--          <div class="dline">{{ curRow.d5 }}</div>-->
-      <!--          <div class="dline">{{ curRow.d6 }}</div>-->
-      <!--        </div>-->
-      <!--        <el-divider></el-divider>-->
+        <el-divider></el-divider>
+        <el-link style="font-family: 'Times New Roman',serif;font-size: 18px" @click="toComments">View Comments
+        </el-link>
 
-      <!--        <span slot="footer" class="dialog-footer">-->
-      <!--          <el-button type="primary" @click="dialogVisible = false" class="v-btn2">Book Now</el-button>-->
-      <!--        </span>-->
-      <!--      </el-dialog>-->
+        <!--用户评论区-->
+        <!--          <div>-->
+        <!--            <div class="detail">User Comment</div>-->
+        <!--            <div class="comment-flex" v-for="(item,index) in commentList" :key="index">-->
+        <!--              <div class="comment-user">{{ item.name }}：</div>-->
+        <!--              <div class="comment-des">-->
+        <!--                <div class="comment-content">{{ item.content }}</div>-->
+        <!--                <div class="time">{{ item.ctime }}</div>-->
+        <!--              </div>-->
+        <!--            </div>-->
+        <!--          </div>-->
+        <span slot="footer" class="dialog-footer"><el-button type="primary" @click="toCheckOut(curRoomType.typeId)"
+                                                             class="v-btn2">Book Now</el-button></span>
+      </el-dialog>
 
     </el-row>
   </div>
 </template>
 
 <script>
+import {convertToDate} from "@/utils/utils";
+
 export default {
   name: "floorPlan",
   data() {
     return {
       dialogVisible: false,
-      roomType: '',
+      curRoomType: '',
       roomTypes: [],
-      floors: 3,
-      curFloor: 1
+      floors: 0,
+      curFloor: 1,
+      idxMap: {1: 17, 2: 16, 3: 15, 4: 14, 5: 13, 6: 12, 7: 11, 8: 10, 9: 9, 10: 0, 11: 1, 12: 2, 13: 6, 14: 7, 15: 8},
+      disables: [],
     };
   },
   methods: {
@@ -94,15 +124,55 @@ export default {
       if (index === 3 || index === 4 || index === 5) {
         return;
       }
-      this.roomType = this.roomTypes[index]
-      this.dialogVisible = true;
+      this.curRoomType = this.roomTypes[index];
+      if (this.disables[index]) {
+        this.dialogVisible = true;
+      }
     },
     handleCommand(command) {
       this.curFloor = command;
     }
   },
   created() {
-
+    let hotelId = this.$route.query.hotel;
+    let startDate = this.$route.query.startDate;
+    let endDate = this.$route.query.endDate;
+    for (let i = 0; i < 16; i++) {
+      this.disables.push(false);
+      this.roomTypes.push({});
+    }
+    if (hotelId === undefined || startDate === undefined || endDate === undefined) {
+      this.$router.push('404');
+    } else {
+      let floor = this.curFloor;
+      let d1 = convertToDate(startDate)
+      let d2 = convertToDate(endDate)
+      this.$http({
+        url: this.$http.adornUrl('/order/order/booking/bookingRoomInfo'),
+        method: 'get',
+        params: this.$http.adornParams({
+          hotelId: hotelId,
+          floor: floor,
+          startDate: d1,
+          endDate: d2
+        })
+      }).then(data => {
+        if (data.data.state !== 200) {
+          this.$message.error(data.data.message);
+        } else {
+          let result = data.data.data;
+          for (let i = 0; i < result.length; i++) {
+            let info = result[0];
+            let floorPlanId = info.floorPlanId;
+            let floorPlanIdx = this.idxMap[floorPlanId];
+            this.disables[floorPlanIdx] = true;
+            this.roomTypes[floorPlanIdx] = info;
+          }
+        }
+      }).catch(err => {
+        this.$message.error("Network Error");
+      })
+    }
   }
 };
 </script>

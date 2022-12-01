@@ -391,6 +391,11 @@ export default {
 
 }
 
+::v-deep .el-table tbody tr:hover>td {
+    background-color: #8dfae1;
+    opacity: 70%;
+}
+
 
 .el-button--primary:hover {
     background-color: #fffefd;

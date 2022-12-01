@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import sustech.hotel.common.utils.DateConverter;
+import sustech.hotel.exception.BaseException;
 import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.others.InvalidDateException;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
@@ -135,7 +136,7 @@ public class RoomTypeController {
     }
 
     @GetMapping("/getRoomType")
-    public JsonResult<List<RoomTypeEntity>> getRoomType(String hotel) {
+    public JsonResult<List<RoomTypeInfoVo>> getRoomType(String hotel) {
         return new JsonResult<>(this.roomTypeService.getRoomType(hotel));
     }
 }

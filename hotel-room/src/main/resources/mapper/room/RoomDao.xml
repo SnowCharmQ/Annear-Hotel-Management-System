@@ -19,6 +19,13 @@
     </select>
 
     <select id="selectRoomByHotelIdAndLayoutId" resultType="sustech.hotel.model.vo.hotel.BookingRoomInfoVo">
-        select * from chr_room join chr_room_type crt on chr_room.type_id = crt.type_id where crt.hotel_id = #{hotel_id} and layout_id = #{layout_id}
+        select *, crtp.picture_path, ch.floors as picture
+        from chr_room as cr
+                 join chr_room_type as crt on cr.type_id = crt.type_id
+                 join chr_room_type_picture crtp on cr.type_id = crtp.type_id
+                 join chr_hotel ch on cr.hotel_id = ch.hotel_id
+        where crt.hotel_id = #{hotel_id}
+          and cr.layout_id = #{layout_id}
+          and crtp.cover = 1;
     </select>
 </mapper>

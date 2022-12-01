@@ -153,7 +153,8 @@ export default {
         if (data.data.state === 200) {
           this.alipay = data.data.data;
           let routerData = this.$router.resolve({path:'/alipay',query: {htmlData: this.alipay}});
-          window.open(routerData.href, '_ blank')
+          window.open(routerData.href, '_ blank');
+          window.close();
         } else {
           this.$message.error(data.data.message);
           this.$router.push('home');

@@ -54,25 +54,29 @@
           </div>
         </el-form-item>
         <el-form-item label="Room No" prop="room_num">
-          <el-input v-model="form2.room_num"></el-input>
+          <el-input style="width: 280px" v-model="rn"></el-input>
         </el-form-item>
-        <el-form-item label="Room Type" prop="room_type">
-          <el-input v-model="form2.room_type"></el-input>
-        </el-form-item>
-
-        <el-form-item label="Room Floor" prop="floor">
-          <el-input v-model="form2.floor"></el-input>
+        <el-form-item label="Type" prop="type">
+          <el-select style="width: 280px" v-model="rt" placeholder="Choose The Room Type">
+            <el-option v-for="roomType in roomTypes" :value="roomType"></el-option>
+          </el-select>
         </el-form-item>
 
-        <el-form-item label="Floor Plan" prop="floor_plan">
-          <el-input v-model="form2.floor_plan"></el-input>
+        <el-form-item label="Floor" prop="floor">
+          <el-select style="width: 280px" v-model="f" placeholder="Choose The Floor">
+            <el-option v-for="floor in floors" :value="floor"></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="Floor Plan" prop="floor">
+          <el-select style="width: 280px" v-model="form2.floor_plan" placeholder="Choose The Floor Plan Index">
+            <el-option v-for="f in 15" :value="f"></el-option>
+          </el-select>
         </el-form-item>
 
         <el-form-item>
           <div class="button_div">
             <el-button type="primary" size="small" @click="editForm('form2')">Edit</el-button>
-            <el-button size="small" class="normal_button" @click="resetForm('form2')">Cancel
-            </el-button>
           </div>
         </el-form-item>
 
@@ -95,23 +99,24 @@
       <el-form ref="form" :model="form" :rules="rules" label-width="100px">
 
 
-        <el-form-item label="Room No" prop="room_num">
-          <el-input v-model="form.room_num"></el-input>
+        <el-form-item label="Room No" prop="roomNumber">
+          <el-input style="width: 220px" v-model="form.roomNumber"></el-input>
         </el-form-item>
 
         <el-form-item label="Type" prop="type">
-          <el-input v-model="form.room_type"></el-input>
+          <el-select style="width: 280px" v-model="form.roomType" placeholder="Choose The Room Type">
+            <el-option v-for="f in roomTypes" :value="f"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item label="Floor" prop="floor">
-          <el-select v-model="form.floor" placeholder="The 1st floor">
-            <el-option label="The 1st floor" value="1"></el-option>
-            <el-option label="The 2nd floor" value="2"></el-option>
-            <el-option label="The 3rd floor" value="3"></el-option>
-            <el-option label="The 4th floor" value="4"></el-option>
+          <el-select style="width: 280px" v-model="form.floor" placeholder="Choose The Floor">
+            <el-option v-for="f in floors" :value="f"></el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="Floor Plan" prop="floor">
-          <el-input v-model="form.floor_plan"></el-input>
+          <el-select style="width: 280px" v-model="form.floorPlan" placeholder="Choose The Floor Plan Index">
+            <el-option v-for="f in 15" :value="f"></el-option>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <div class="button_div">
@@ -145,107 +150,44 @@ export default {
       }
     };
 
-    var validateRoomType = (rule, value, callback) => {
-
-      if (value === '') {
-        callback(new Error('Please enter the type.'));
-      } else {
-        let validName = /^[0-9a-zA-Z .]+$/.test(value)
-        if (!validName) {
-          callback(new Error('Room type must be a combination of digits or letters'));
-        } else {
-          callback();
-        }
-      }
-    };
-
-    var validateFloor = (rule, value, callback) => {
-
-      if (value === '') {
-        callback(new Error('Please enter the floor.'));
-      } else {
-        let validName = /^[+-]?[0-9.]+$/.test(value)
-        if (!validName) {
-          callback(new Error('Room floor must be number'));
-        } else {
-          callback();
-        }
-      }
-    };
-    var validateFloorPlan = (rule, value, callback) => {
-
-      if (value === '') {
-        callback(new Error('Please enter the floor plan.'));
-      } else {
-        let validName = /^[0-9.]+$/.test(value)
-        console.log(parseInt(value))
-        if (!validName) {
-          callback(new Error('Room floor plan must be a combination of digits'));
-        } else if (parseInt(value) < 1 || parseInt(value) > 16) {
-
-          callback(new Error('Room floor plan number must be within 1 and 16'));
-        } else {
-          callback();
-        }
-      }
-    };
-
-
     return {
       // 表格数据
       tableData: [],
-      pageSize : 8,
+      pageSize: 8,
       pageIndex: 1,
       hotelId: '',
       num: '',
       count: 5,
       imageUrl: '',
       dialogFormVisible: false,
-      form: {
-        room_num: '',
-        room_type: '',
-        floor: '',
-        floor_plan: '',
-      },
-      form2: {
-        room_num: '',
-        room_type: '',
-        floor: -1,
-        floor_plan: 2,
-        index: -1
-      },
       rules: {
-
         room_num: [
           {validator: validateRoomNum, trigger: 'blur'},
-
         ],
-        room_type: [
-          {validator: validateRoomType, trigger: 'blur'},
-        ],
-        floor: [
-          {validator: validateFloor, trigger: 'blur'},
-        ],
-        floor_plan: [
-          {validator: validateFloorPlan, trigger: 'blur'}
-        ],
-
       },
       // 是否打开抽屉
       drawer: false,
+      form: {roomNumber: '', roomType: '', floor: '', floorPlan: ''},
+      form2: {roomNumber: '', roomType: '', floor: '', floorPlan: '', index: ''},
+      roomTypes: [],
+      floors: 0,
+      roomNumber: '',
+      rn: 0,
+      rt: 0,
+      f: 0,
+      fp: 0
     }
   },
   created() {
     let params = {'token': sessionStorage.getItem('token')};
     this.$get(this.$baseUrl + '/auth/getUsernameByToken', params).then(data => {
       let resp = data.data;
-      console.log(resp)
       let para = {'name': resp}
-      this.$get(this.$baseUrl + '/room/room/hotel/getHotelByName', para).then(data => {
+      this.$get(this.$baseUrl + '/room/room/hotel/initAdminRoom', para).then(data => {
         let resp = data.data
-        console.log(resp)
         this.hotelId = resp.hotelId
-        console.log(this.hotelId)
+        this.roomTypes = resp.typeNames;
+        this.floors = resp.floors;
         this.getTableData();
       })
     })
@@ -260,16 +202,13 @@ export default {
         hotel: this.hotelId,
       })
       this.tableData = []
-      console.log('hi')
-      console.log(params)
       this.$get(this.$baseUrl + '/room/room/room/list', params).then(data => {
         let resp = data.data.list
-        console.log(resp)
         for (let i = 0; i < resp.length; i++) {
           let item = resp[i]
           this.tableData.push({
             room_num: item.roomNumber,
-            room_type: item.typeId,
+            room_type: item.typeName,
             floor: item.layoutId,
             floor_plan: item.floorPlanId
           })
@@ -288,59 +227,98 @@ export default {
       this.form2.floor = this.tableData[index].floor
       this.form2.floor_plan = this.tableData[index].floor_plan
 
+      this.rn = this.form2.room_num;
+      this.rt = this.form2.room_type;
+      this.f = this.form2.floor;
+      this.fp = this.form2.floor_plan;
+
       this.form2.index = index
 
       this.dialogFormVisible = true
     },
     deleteClass(index) {
-      this.tableData.splice(index, 1);
+      let data = this.tableData[index];
+      let params = {}
+      Object.assign(params, {
+        hotelId: this.hotelId,
+        roomNumber: data.room_num,
+        roomType: data.room_type,
+        floor: data.floor,
+        floorPlan: data.floor_plan,
+      })
+      this.$get(this.$baseUrl + '/room/room/room/deleteRoom', params).then(data => {
+        if (data.state === 200) {
+          this.$message.success("Successfully Deleted");
+          this.tableData.splice(index, 1);
+        } else {
+          this.$message.error(data.message);
+        }
+      })
     },
     handleDrawerClose(done) {
       done();
-
     },
     editForm(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-
-          this.tableData[this.form2.index] = JSON.parse(JSON.stringify(this.form2))
-          console.log(this.tableData[this.form2.index])
-          // 为了更新表单
-          this.num = Math.random();
-          console.log("hello world!");
-
+          let params = {}
+          Object.assign(params, {
+            hotelId: this.hotelId,
+            roomNumber: this.rn,
+            roomType: this.rt,
+            floor: this.f,
+            floorPlan: this.fp,
+            oldFloor: this.tableData[this.form2.index].floor,
+            oldFloorPlan: this.tableData[this.form2.index].floor_plan
+          })
+          this.$get(this.$baseUrl + '/room/room/room/editRoom', params).then(data => {
+            if (data.state === 200) {
+              this.$message.success("Successfully Edited");
+              location.reload();
+            } else {
+              this.$message.error(data.message);
+            }
+          }).catch(err => {
+            this.$message.error("Network Error");
+          })
+          this.dialogFormVisible = false;
         } else {
-          console.log('error submit!!');
+          this.$message.error("Wrong Input");
           return false;
         }
-        this.$refs[formName].resetFields();
-        this.dialogFormVisible = false;
       });
     },
     handleDialogFormClose() {
 
       // this.$refs['form2'].resetFields();
       this.dialogFormVisible = false;
-
     },
     currentChange(pageIndex) {
       this.pageIndex = pageIndex;
-      console.log("To be done current");
     },
     submitForm(formName) {
+      let params = {};
+      Object.assign(params, {
+        hotelId: this.hotelId,
+        roomNumber: this.form.roomNumber,
+        roomType: this.form.roomType,
+        floor: this.form.floor,
+        floorPlan: this.form.floorPlan
+      });
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-          // alert('submit!');
-
-
-          this.tableData.push(
-              JSON.parse(JSON.stringify(this.form))
-          );
-
-          console.log("hello world!");
-
+          this.$get(this.$baseUrl + '/room/room/room/addRoom', params).then(data => {
+            if (data.state === 200) {
+              this.$message.success("Successfully Added");
+              location.reload();
+            } else {
+              this.$message.error(data.message);
+            }
+          }).catch(err => {
+            this.$message.error("Network Error");
+          })
         } else {
-          console.log('error submit!!');
+          this.$message.error("Wrong Input");
           return false;
         }
         this.$refs[formName].resetFields();
@@ -352,33 +330,12 @@ export default {
       return 'color:black;'
       // }
     },
-    async resetForm(formName) {
-      this.$refs[formName].resetFields();
-      this.dialogFormVisible = false;
-    },
-    // 上传成功
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error('Avatar picture must be JPG format!');
-      }
-      if (!isLt2M) {
-        this.$message.error('Avatar picture size can not exceed 2MB!');
-      }
-      return isJPG && isLt2M;
-    }
-
   }
 }
 </script>
 <style scoped lang="scss">
 .addRoomButton {
-  font-family: 'nano';
+  font-family: 'nano', serif;
   font-size: medium;
   color: black;
   border-color: black;

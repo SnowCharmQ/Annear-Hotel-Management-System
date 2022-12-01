@@ -197,15 +197,17 @@ export default {
   },
   methods: {
     addGuest(i) {
-      this.guests[i] = {'name': this.names[i], 'phone': this.phones[i], 'identity': this.identities[i]};
+      let k = i - 1;
+      this.guests[k] = {'name': this.names[k], 'phone': this.phones[k], 'identity': this.identities[k]};
       this.disables[i] = true;
       this.reloadGuests();
     },
     removeGuest(i) {
-      this.guests[i] = '';
-      this.names[i] = '';
-      this.phones[i] = '';
-      this.identities[i] = '';
+      let k = i - 1;
+      this.guests[k] = '';
+      this.names[k] = '';
+      this.phones[k] = '';
+      this.identities[k] = '';
       this.disables[i] = false;
       this.reloadGuests();
     },
@@ -220,19 +222,19 @@ export default {
       for (let i = 0; i < this.guests.length; i++) {
         let s = '';
         if (this.guests[i].name) {
-          s +=  this.guests[i].name;
+          s += this.guests[i].name;
         } else {
           s += ' ';
         }
         s += ',';
         if (this.guests[i].phone) {
-          s +=  this.guests[i].phone;
+          s += this.guests[i].phone;
         } else {
           s += ' ';
         }
         s += ',';
         if (this.guests[i].identity) {
-          s +=  this.guests[i].identity;
+          s += this.guests[i].identity;
         } else {
           s += ' ';
         }
@@ -254,7 +256,11 @@ export default {
           'contactEmail': this.email
         })
       }).then(data => {
-        this.$router.push('confirmation?orderId=' + data.data.data);
+        if (data.data.state !== 200) {
+          this.$message.error(data.data.message)
+        } else {
+          this.$router.push('confirmation?orderId=' + data.data.data);
+        }
       }).catch(err => {
         this.$message.error("Network Error");
       })

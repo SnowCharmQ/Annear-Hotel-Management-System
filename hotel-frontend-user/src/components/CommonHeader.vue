@@ -34,21 +34,12 @@
         title="Menu"
         :visible.sync="drawer"
         direction="ltr">
-      <div style="padding:0 15px">
+      <div style="padding:0 15px;">
         <!-- 第一级菜单 -->
         <el-tabs tab-position="left" @tab-click="menuClick">
-          <el-tab-pane label="" v-for="(item,index) in menu" :key="index" :name="item.url+'-'+index">
-            <template slot="label">{{ item.name }}<i class="el-icon-arrow-right right-icon"
-                                                     v-if="item.children.length > 0"></i></template>
+          <el-tab-pane v-for="(item,index) in menu" :key="index" :name="item.url+'-'+index">
+            <template slot="label">{{ item.name }}</template>
             <!-- 第二级菜单 -->
-            <div>
-              <el-tabs tab-position="left" @tab-click="menuClick">
-                <el-tab-pane v-for="(child,idx) in item.children" :key="idx" :name="child.url+'-'+idx">
-                  <template slot="label">{{ child.name }}<i class="el-icon-arrow-right right-icon"
-                                                            v-if="child.children.length > 0"></i></template>
-                </el-tab-pane>
-              </el-tabs>
-            </div>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -77,29 +68,9 @@ export default {
       show: true,
       form: {},
       menu: [
-        {name: 'Home', url: '/', children: []},
-        {
-          name: 'Destinations', url: '',
-          children: [
-            {name: 'Annear Journeys', url: '', children: []},
-            {name: 'Celebrations', url: '', children: []},
-            {name: 'Active Adventure', url: '', children: []},
-            {name: 'Wellness', url: '', children: []}
-          ]
-        },
-        {name: 'Hotels & Resorts', url: '', children: []},
-        {name: 'Villas', url: '', children: []},
-        {name: 'Residences', url: '', children: []},
-        {
-          name: 'Yachts', url: '',
-          children: [
-            {name: 'Annear· Journeys', url: '', children: []},
-            {name: 'Celebrations', url: '', children: []},
-            {name: 'Culture & Conservation', url: '', children: []},
-            {name: 'Active Adventure', url: '', children: []}
-          ]
-        },
-        {name: 'Private Travel ', url: '', children: []}
+        {name: 'Home', url: '/'},
+        {name: 'Search', url: '/search'},
+        {name: 'Map', url: '/map'},
       ]
     }
   },

@@ -76,7 +76,6 @@
 
       <!--homepage底部的图标和social media icon们-->
       <div class="flex-row">
-        <div><img src="https://www.Annear.com/themes/custom/Annear/logo.svg" class="logo"/></div>
         <div style="display:flex;">
           <div class="icon-title">Follow us on:</div>
           <div class="icon-list">

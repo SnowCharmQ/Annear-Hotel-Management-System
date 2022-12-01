@@ -2,13 +2,7 @@
     <div>
         <!-- 添加区域 -->
         <div class="addRoom">
-            <i class="el-icon-office-building" ></i>
-            <!-- <el-button type="primary" size="mini"  class="addRoomButton" @click="addClick">Add Room</el-button> -->
-            <el-select v-model="form.hotel" placeholder="Shanghai Hotel" class="selection">
-                <el-option label="Shanghai Hotel" value="Shanghai Hotel"></el-option>
-                <el-option label="Beijing Hotel" value="Beijing Hotel"></el-option>
-                <el-option label="Shenzhen Hotel" value="Shenzhen Hotel"></el-option>
-            </el-select>
+            
             <i class="el-icon-s-home"></i>
             <!-- <el-button type="primary" size="mini"  class="addRoomButton" @click="addClick">Add Room</el-button> -->
             <el-select v-model="form.type" placeholder="King Bed Suite" class="selection">

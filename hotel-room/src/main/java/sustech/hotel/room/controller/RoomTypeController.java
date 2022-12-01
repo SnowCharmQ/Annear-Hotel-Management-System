@@ -115,4 +115,9 @@ public class RoomTypeController {
     void alterType(@RequestBody RoomTypeEntity roomType){
         this.roomTypeService.alterType(roomType);
     }
+
+    @GetMapping("/getRoomType")
+    public JsonResult<List<RoomTypeEntity>> getRoomType(String hotel){
+        return new JsonResult<>(this.roomTypeService.getRoomType(hotel));
+    }
 }

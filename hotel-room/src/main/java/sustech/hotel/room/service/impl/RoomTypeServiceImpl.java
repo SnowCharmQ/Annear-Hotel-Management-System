@@ -158,6 +158,12 @@ public class RoomTypeServiceImpl extends ServiceImpl<RoomTypeDao, RoomTypeEntity
     }
 
     @Override
+    public List<RoomTypeEntity> getRoomType(String hotel) {
+        HotelEntity entity = hotelService.getHotelByName(hotel);
+        return this.baseMapper.selectList(new QueryWrapper<RoomTypeEntity>().eq("hotel_id", entity.getHotelId()));
+    }
+
+    @Override
     public void addRoomType(RoomTypeEntity entity) {
         this.baseMapper.insert(entity);
     }

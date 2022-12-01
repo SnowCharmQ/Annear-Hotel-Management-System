@@ -4,17 +4,17 @@
     <div class="addRoom">
       <i class="el-icon-office-building"></i>
       <!-- <el-button type="primary" size="mini"  class="addRoomButton" @click="addClick">Add Room</el-button> -->
-      <el-select v-model="form.hotel" placeholder="Shanghai Hotel" class="selection">
-        <el-option label="Shanghai Hotel" value="Shanghai Hotel"></el-option>
-        <el-option label="Beijing Hotel" value="Beijing Hotel"></el-option>
-        <el-option label="Shenzhen Hotel" value="Shenzhen Hotel"></el-option>
-      </el-select>
+<!--      <el-select v-model="form.hotel" placeholder="Shanghai Hotel" class="selection">-->
+<!--        <el-option label="Shanghai Hotel" value="Shanghai Hotel"></el-option>-->
+<!--        <el-option label="Beijing Hotel" value="Beijing Hotel"></el-option>-->
+<!--        <el-option label="Shenzhen Hotel" value="Shenzhen Hotel"></el-option>-->
+<!--      </el-select>-->
       <i class="el-icon-s-home"></i>
       <!-- <el-button type="primary" size="mini"  class="addRoomButton" @click="addClick">Add Room</el-button> -->
       <el-select v-model="form.type" placeholder="King Bed Suite" class="selection">
-        <el-option v-for="(item) in oranizeList"
+        <el-option v-for="(item) in typeList"
                    :label="item.label"
-                   :value='item.title'>
+                   :value='item.value'>
         </el-option>
       </el-select>
       <i class="el-icon-data-line"></i>
@@ -54,6 +54,15 @@
 
         </template>
       </el-table-column>
+
+      <el-table-column label="room type" width="250">
+        <template slot-scope="scope">
+
+          {{ scope.row.type}}
+
+        </template>
+      </el-table-column>
+
       <el-table-column label="check-in date" width="250">
         <template slot-scope="scope">
 
@@ -61,6 +70,7 @@
 
         </template>
       </el-table-column>
+
       <el-table-column label="check-out date" width="250">
         <template slot-scope="scope">
 
@@ -120,13 +130,43 @@ export default {
         status: null,
         date1: null,
         date2: null,
-      }
+      },
+      typeList: []
     }
   },
   created() {
-    this.getOrderList()
+
+    let params = {'token': sessionStorage.getItem('token')};
+    this.$get(this.$baseUrl + '/auth/getUsernameByToken', params).then(data => {
+      let resp = data.data;
+      console.log(resp)
+      this.getTypeList(resp)
+    })
+
+
   },
   methods: {
+    getTypeList(hotel) {
+      let params = {'hotel': hotel};
+      this.$get(this.$baseUrl + '/room/room/roomtype/getRoomType', params).then(data => {
+        let resp = data.data
+        console.log(resp)
+        for (let i = 0; i < resp.length; i++) {
+          let item = resp[i]
+          this.typeList.push({
+            label: item.typeName,
+            value: item.typeId
+          })
+          this.form.hotel = item.hotelId
+        }
+        if (resp.length > 0) {
+          this.getOrderList()
+        }
+        console.log(this.form.hotel)
+      }).catch(err => {
+        console.log('network err')
+      })
+    },
     currentChange(pageIndex) {
       this.pageIndex = pageIndex;
       console.log("To be done current");
@@ -134,16 +174,19 @@ export default {
     },
     getOrderList() {
       let params = {}
+      let tempDate1 = new Date(this.form.date1)
+      let tempDate2 = new Date(this.form.date2)
       Object.assign(params, {
         page: this.pageIndex,
         limit: this.pageSize,
         hotel: this.form.hotel,
         type: this.form.type,
         status: this.form.status,
-        date1: this.form.date1,
-        date2: this.form.date2
+        date1: tempDate1.getTime(),
+        date2: tempDate2.getTime()
       })
       this.tableData = []
+      console.log('hi')
       console.log(params)
       this.$get(this.$baseUrl + '/order/order/order/list', params).then(data => {
         console.log(data)
@@ -156,6 +199,7 @@ export default {
             date1: item.startDate,
             date2: item.endDate,
             score: item.score,
+            type: item.typeId,
             status: item.orderStatus,
             name: item.contactName,
             phone: item.contactPhone,

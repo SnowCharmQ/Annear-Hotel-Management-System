@@ -28,4 +28,6 @@ public interface RoomTypeService extends IService<RoomTypeEntity> {
     void deleteType(Long typeId);
 
     void alterType(RoomTypeEntity roomType);
+
+    List<RoomTypeEntity> getRoomType(String hotel);
 }

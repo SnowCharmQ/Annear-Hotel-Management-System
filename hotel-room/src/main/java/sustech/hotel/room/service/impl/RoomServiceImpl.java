@@ -38,5 +38,9 @@ public class RoomServiceImpl extends ServiceImpl<RoomDao, RoomEntity> implements
         return this.baseMapper.selectAvailableRoomId(conflictList, hotelId, typeId);
     }
 
-
+    @Override
+    public boolean typeExist(Long typeId){
+        List<RoomEntity> rooms = this.baseMapper.selectList(new QueryWrapper<RoomEntity>().eq("type_id", typeId));
+        return !rooms.isEmpty();
+    }
 }

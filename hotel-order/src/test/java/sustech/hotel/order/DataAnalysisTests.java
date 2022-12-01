@@ -14,17 +14,19 @@ import java.sql.Timestamp;
 
 @SpringBootTest
 public class DataAnalysisTests {
-    @Autowired
-    DataAnalysisService dataAnalysisService;
-
-    @Test
-    void test(){
-        DataAnalysisVo vo = dataAnalysisService.getLastMonthOrderNumber();
-
-        DataAnalysisVo vo1 = dataAnalysisService.getLastYearRoomTypeOrderNumber();
-
-        DataAnalysisVo vo2 = dataAnalysisService.getLastYearIncome();
-
-        DataAnalysisVo vo3 = dataAnalysisService.getStarDistribution();
-    }
+//    @Autowired
+//    DataAnalysisService dataAnalysisService;
+//
+//    @Test
+//    void test(){
+//        long hotelId = 1;
+//
+//        DataAnalysisVo vo = dataAnalysisService.getLastMonthOrderNumber(hotelId);
+//
+//        DataAnalysisVo vo1 = dataAnalysisService.getLastYearRoomTypeOrderNumber(hotelId);
+//
+//        DataAnalysisVo vo2 = dataAnalysisService.getLastYearIncome(hotelId);
+//
+//        DataAnalysisVo vo3 = dataAnalysisService.getStarDistribution(hotelId);
+//    }
 }

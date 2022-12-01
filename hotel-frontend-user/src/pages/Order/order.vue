@@ -6,7 +6,7 @@
     <el-row class="card-search" :gutter="20" style="width:1250px;margin:20px auto;">
       <el-col :span="17" style="background:#fff; padding: 0 0;">
 
-        <el-col :span="24" class="backBtn"><i class="el-icon-back"></i> Guest Details</el-col>
+        <el-col :span="24" class="backBtn"><i class="el-icon-back" @click="back()"></i> Guest Details</el-col>
 
         <!--左侧输入区-->
         <el-col :span="24" class="btn-item info-sel">
@@ -258,6 +258,9 @@ export default {
       }).catch(err => {
         this.$message.error("Network Error");
       })
+    },
+    back() {
+      this.$router.go(-1);
     }
   },
   created() {
@@ -417,6 +420,7 @@ export default {
     font-size: 30px;
     line-height: 50px;
     margin-bottom: 20px;
+    cursor: pointer;
   }
 
   .form-title {

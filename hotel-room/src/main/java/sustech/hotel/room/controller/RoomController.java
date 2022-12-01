@@ -1,5 +1,6 @@
 package sustech.hotel.room.controller;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import sustech.hotel.model.to.hotel.RoomInfoTo;
+import sustech.hotel.model.to.order.OrderTo;
 import sustech.hotel.model.vo.hotel.BookingRoomInfoVo;
+import sustech.hotel.model.vo.order.OrderShowVo;
 import sustech.hotel.room.dao.RoomDao;
 import sustech.hotel.model.to.order.OrderInfoTo;
 import sustech.hotel.room.entity.HotelEntity;
@@ -129,5 +132,30 @@ public class RoomController {
     public JsonResult<List<BookingRoomInfoVo>> getFloorRoomList(@RequestParam("hotel_id") Long hotelId, @RequestParam("floor") Long floor){
         LayoutEntity layout = layoutService.getOne(new QueryWrapper<LayoutEntity>().and(o -> o.eq("hotel_id", hotelId).eq("floor", floor)));
         return new JsonResult<>(roomDao.selectRoomByHotelIdAndLayoutId(hotelId, layout.getLayoutId()));
+    }
+
+    @ResponseBody
+    @RequestMapping("/getOrderRoomInfo")
+    public JsonResult<String> getOrderRoomInfo(@RequestParam("json") String json) {
+        List<OrderTo> list = JSON.parseArray(json, OrderTo.class);
+        List<OrderShowVo> vos;
+        if (list != null) {
+            vos = list.stream().map(o -> {
+                OrderShowVo vo = new OrderShowVo();
+                Long hotelId = o.getHotelId();
+                Long typeId = o.getTypeId();
+                Long roomId = o.getRoomId();
+                HotelEntity hotel = hotelService.getById(hotelId);
+                RoomTypeEntity roomType = roomTypeService.getById(typeId);
+                RoomEntity room = roomService.getById(roomId);
+                vo.setHotelName(hotel.getHotelName());
+                vo.setTypeName(roomType.getTypeName());
+                vo.setRoomNumber(room.getRoomNumber());
+                BeanUtils.copyProperties(o, vo);
+                return vo;
+            }).toList();
+        } else vos = new ArrayList<>();
+        String s = JSON.toJSONString(vos);
+        return new JsonResult<>(s);
     }
 }

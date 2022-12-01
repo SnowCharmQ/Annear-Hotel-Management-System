@@ -17,7 +17,7 @@ public interface OrderService extends IService<OrderEntity> {
 
     String placeOrder(OrderEntity request, List<String> guestInfo, String orderToken);
 
-    Long checkUserID(String token);
+    Long checkUserId(String token);
 
     OrderConfirmRespVo confirmOrder(OrderConfirmVo request);
 

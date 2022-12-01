@@ -221,13 +221,11 @@ public class RoomController {
     @GetMapping("/deleteRoom")
     public JsonResult<Void> deleteRoom(@RequestParam("hotelId") Long hotelId, @RequestParam("roomNumber") Long roomNumber, @RequestParam("roomType") String roomType,
                                        @RequestParam("floor") Long floor, @RequestParam("floorPlan") Long floorPlan) {
-        LayoutEntity layout = layoutService.getOne(new QueryWrapper<LayoutEntity>().and(o -> o.eq("hotel_id", hotelId).eq("floor", floor)));
-        Long layoutId = layout.getLayoutId();
+        System.out.println(roomNumber);
+        System.out.println(hotelId);
         roomService.remove(new QueryWrapper<RoomEntity>()
                 .and(o -> o.eq("room_number", roomNumber)
-                        .eq("hotel_id", hotelId)
-                        .eq("floor_plan_id", floorPlan)
-                        .eq("layout_id", layoutId)));
+                        .eq("hotel_id", hotelId)));
         return new JsonResult<>();
     }
 

@@ -299,16 +299,16 @@ export default {
         re_password: ''
       },
       collectionList: [
-        // {
-        //   name: 'Anneartaka',
-        //   province: 'Guangdong',
-        //   city: 'Shenzhen',
-        //   district: "Luang Prabang Lao People's Dem Republic",
-        //   starlevel: 5,
-        //   telephone: 15566888888,
-        //   price: '1980',
-        //   img: require('../../assets/images/hotel/2.jpeg'),
-        // }
+        {
+          name: 'Anneartaka',
+          province: 'Guangdong',
+          city: 'Shenzhen',
+          district: "Luang Prabang Lao People's Dem Republic",
+          starlevel: 5,
+          telephone: 15566888888,
+          price: '1980',
+          img: require('../../assets/images/hotel/2.jpeg'),
+        }
       ],
       orderList: [
         {
@@ -351,13 +351,13 @@ export default {
           name: this.name
         })
       }).then(data => {
-        if (data.data.state === 200){
+        if (data.data.state === 200) {
           this.$message({
             type: 'success',
             message: 'alter info done'
           });
         } else {
-         this.$message.error(data.data.message);
+          this.$message.error(data.data.message);
         }
       })
     }
@@ -384,67 +384,96 @@ export default {
         this.growth = 'growth: ' + info.growth
         this.balance = 'balance: ' + info.balance
         this.dataForm.phone = info.phone
+
+
+        this.$http({
+          url: this.$http.adornUrl('/member/member/userinfo/queryUserInfoById'),
+          method: 'get',
+          params: this.$http.adornParams({
+            id: this.user_id
+          })
+        }).then(data => {
+          let resp = data.data
+          for (let i = 0; i < resp.length; i++) {
+            let item = resp[i]
+            collectionList.push(
+                {
+                  name: 'Anneartaka',
+                  province: 'Guangdong',
+                  city: 'Shenzhen',
+                  district: "Luang Prabang Lao People's Dem Republic",
+                  starlevel: 5,
+                  telephone: 15566888888,
+                  price: '1980',
+                  img: require('../../assets/images/hotel/2.jpeg'),
+                }
+            )
+          }
+
+        })
+
       })
+
+
       //TODO: init user order
-  }
-  ,
-  show_comments_page() {
-    this.dialogVisible = true
-  }
-  ,
-  submit_comments(star, comment) {
-    this.dialogVisible = false
-    this.$message({
-      type: 'success',
-      message: 'upload comments done'
-    });
-  }
-  ,
-  handleRemove(file, fileList) {
-    console.log(file, fileList);
-  }
-  ,
-  handlePreview(file) {
-    console.log(file);
-  }
-  ,
-  uploadPicture(file) {
-    let picture = file.file
-    let formData = new FormData();
-    formData.append('file', picture)
-    formData.append('orderId', this.selectedOrderId)
-    let url = this.$http.adornUrl('/auth/uploadPicture')
+    }
+    ,
+    show_comments_page() {
+      this.dialogVisible = true
+    }
+    ,
+    submit_comments(star, comment) {
+      this.dialogVisible = false
+      this.$message({
+        type: 'success',
+        message: 'upload comments done'
+      });
+    }
+    ,
+    handleRemove(file, fileList) {
+      console.log(file, fileList);
+    }
+    ,
+    handlePreview(file) {
+      console.log(file);
+    }
+    ,
+    uploadPicture(file) {
+      let picture = file.file
+      let formData = new FormData();
+      formData.append('file', picture)
+      formData.append('orderId', this.selectedOrderId)
+      let url = this.$http.adornUrl('/auth/uploadPicture')
 
-    axios.post(url, formData, {
-      headers: {'Content-Type': 'multipart/form-data'}
-    }).then(data => {
-      let pictureUrl = data.data.data
-      console.log(pictureUrl)
-      this.fileList.push({name: picture.name, url: pictureUrl})
-    });
+      axios.post(url, formData, {
+        headers: {'Content-Type': 'multipart/form-data'}
+      }).then(data => {
+        let pictureUrl = data.data.data
+        console.log(pictureUrl)
+        this.fileList.push({name: picture.name, url: pictureUrl})
+      });
+    }
+    ,
+    uploadVideo(file) {
+      let video = file.file
+      let formData = new FormData();
+      formData.append('file', video)
+      formData.append('orderId', this.selectedOrderId)
+      let url = this.$http.adornUrl('/auth/uploadVideo')
+
+      axios.post(url, formData, {
+        headers: {'Content-Type': 'multipart/form-data'}
+      }).then(data => {
+        let videoUrl = data.data.data
+        console.log(videoUrl)
+        this.videoList.push({name: video.name, url: videoUrl})
+      });
+    }
   }
   ,
-  uploadVideo(file) {
-    let video = file.file
-    let formData = new FormData();
-    formData.append('file', video)
-    formData.append('orderId', this.selectedOrderId)
-    let url = this.$http.adornUrl('/auth/uploadVideo')
-
-    axios.post(url, formData, {
-      headers: {'Content-Type': 'multipart/form-data'}
-    }).then(data => {
-      let videoUrl = data.data.data
-      console.log(videoUrl)
-      this.videoList.push({name: video.name, url: videoUrl})
-    });
+  mounted() {
+    this.init()
   }
-}
-,
-mounted()
-{
-  this.init()
-}
 }
 
 

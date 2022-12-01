@@ -2,7 +2,6 @@
   <div>
     <!-- 添加区域 -->
     <div class="addRoom">
-      <i class="el-icon-office-building"></i>
       <!-- <el-button type="primary" size="mini"  class="addRoomButton" @click="addClick">Add Room</el-button> -->
       <!--      <el-select v-model="form.hotel" placeholder="Shanghai Hotel" class="selection">-->
       <!--        <el-option label="Shanghai Hotel" value="Shanghai Hotel"></el-option>-->
@@ -31,12 +30,11 @@
       <i class="el-icon-date"></i>
       <el-date-picker type="date" placeholder="check-out" v-model="form.date2" style="width: 15%;">
       </el-date-picker>
-      <div class="addRoom">
-        <el-button type="primary" size="mini" class="addRoomButton" @click="getOrderList">Search</el-button>
-      </div>
-      <div class="addRoom">
-        <el-button type="primary" size="mini" class="addRoomButton" @click="clearSelected">clear</el-button>
-      </div>
+      <i class="el-icon-search"></i>
+      <el-button type="primary" size="mini" class="addRoomButton" @click="getOrderList">Search</el-button>
+      <i class="el-icon-refresh-right"></i>
+
+      <el-button type="primary" size="mini" class="addRoomButton" @click="clearSelected">clear</el-button>
     </div>
     <!-- 表格区域 -->
     <el-table :data="tableData" style="width: 98%; min-width: 1000px"
@@ -197,6 +195,7 @@ export default {
             email: item.contactEmail
           })
         }
+        this.count = resp.length
       }).catch(err => {
         this.$message.error("Network Error");
       })
@@ -343,5 +342,19 @@ export default {
 .el-pagination.is-background .el-pager {
   background-color: #f3eee7;
   color: #FFF;
+}
+
+.el-icon-search {
+  padding-left: 10px;
+  padding-right: 5px;
+  width: 18px;
+  height: 25px;
+}
+
+.el-icon-refresh-right {
+  padding-left: 10px;
+  padding-right: 5px;
+  width: 18px;
+  height: 25px;
 }
 </style>

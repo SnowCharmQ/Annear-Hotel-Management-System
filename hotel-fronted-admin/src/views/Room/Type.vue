@@ -411,6 +411,16 @@ export default {
             console.log(data)
             if (data.state == 200) {
               this.$message.success("Edit Success")
+              if (this.fileList) {
+                let parm = {
+                  typeId: this.form2.typeId,
+                  picturePath: this.fileList[0].url,
+                  cover: 1
+                }
+                this.$get(this.$baseUrl + '/room/room/roomtypepicture/addRoomPicture', parm).then(data => {
+                  console.log('cus')
+                })
+              }
               this.getTableData()
             }
           })
@@ -468,9 +478,9 @@ export default {
                 }
                 this.$get(this.$baseUrl + '/room/room/roomtypepicture/addRoomPicture', parm).then(data => {
                   console.log('cus')
-                  this.getTableData()
                 })
               }
+              this.getTableData()
             }
             console.log("hello world!");
           })

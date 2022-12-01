@@ -30,6 +30,10 @@ const routes = [
         component:() => import('@/views/Room/Room.vue')
       },
       {
+        path: 'order',
+        component:() => import('@/views/Order/Order.vue')
+      },
+      {
         path: 'graph1',
         component:() => import('@/views/Graphs/graphs1.vue')
       }, {

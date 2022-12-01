@@ -218,9 +218,24 @@ export default {
     book() {
       let strings = []
       for (let i = 0; i < this.guests.length; i++) {
-        let s = this.guests[i].name === undefined ? '' : this.guests[i].name + ',' +
-        this.guests[i].phone === undefined ? '' : this.guests[i].phone + ',' +
-        this.guests[i].identity === undefined ? '' : this.guests[i].identity;
+        let s = '';
+        if (this.guests[i].name) {
+          s +=  this.guests[i].name;
+        } else {
+          s += ' ';
+        }
+        s += ',';
+        if (this.guests[i].phone) {
+          s +=  this.guests[i].phone;
+        } else {
+          s += ' ';
+        }
+        s += ',';
+        if (this.guests[i].identity) {
+          s +=  this.guests[i].identity;
+        } else {
+          s += ' ';
+        }
         strings.push(s);
       }
       this.$http({
@@ -239,9 +254,8 @@ export default {
           'contactEmail': this.email
         })
       }).then(data => {
-        console.log(data);
+        this.$router.push('confirmation?orderId=' + data.data.data);
       }).catch(err => {
-        console.log(err)
         this.$message.error("Network Error");
       })
     }

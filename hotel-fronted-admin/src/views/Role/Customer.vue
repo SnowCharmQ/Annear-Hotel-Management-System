@@ -2,29 +2,30 @@
     <div>
         <!-- 添加区域 -->
         <div class="addCustomer">
-            <el-button type="primary" size="mini" class="addCustomerButton" @click="addClick">Add Customer</el-button>
+            <el-button type="primary" round size="mini" class="addCustomerButton" @click="addClick">Add Customer</el-button>
         </div>
         <!-- 表格区域 -->
         <el-table :data="tableData" style="width: 98%; min-width: 1000px"
-            :header-cell-style="{ color: 'black', fontSize: '14px', fontFamily: 'nano', background: '#f3eee7' }"
+        :header-cell-style="{ color: 'black', fontSize: '20px', fontFamily: 'nano', background: '#f3eee7', textAlign: 'center', borderBottomColor: 'black' }"
+        :cell-style="{ textAlign: 'center', background: '#f3eee7', fontSize: '18px', borderBottomColor: 'black' }"            
             :row-style="setRowStyle" border-collapse:collapse stripe fit highlight-current-row border
             empty-text="No Customer Added">
             <el-table-column label="Date" text-align="center" width="180">
                 <template slot-scope="scope">
-                    <i class="el-icon-time"></i>
-                    <span style="margin-left: 10px">{{ scope.row.date }}</span>
+                   {{ scope.row.date }}
                 </template>
             </el-table-column>
             <el-table-column label="Name" width="180">
                 <template slot-scope="scope">
-                    <el-popover trigger="hover" placement="top">
-                        <p>Name: {{ scope.row.customer_name }}</p>
-
-                        <div slot="reference" class="name-wrapper">
-                            <el-tag size="medium">{{ scope.row.customer_name }}</el-tag>
-                        </div>
-                    </el-popover>
+                   {{ scope.row.customer_name }}
+                
                 </template>
+            </el-table-column>
+            <el-table-column label="ID" width="180">
+                <template slot-scope="scope">
+                   {{ scope.row.customer_id }}
+
+                           </template>
             </el-table-column>
 
             <el-table-column label="Operations">
@@ -100,9 +101,17 @@ export default {
         return {
             // 表格数据
             tableData: [{
-                date: '2016-05-03',
-                customer_name: 'Tom',
-                customer_password: 'xxx'
+                date: '2022-11-22',
+                customer_name: 'sui_h',
+                customer_password: '11111',
+                customer_id: '1'
+
+            },
+            {
+                date: '2022-11-27',
+                customer_name: 'SUI_H',
+                customer_password: '111211',
+                customer_id: '2'
 
             }],
             count: 5,
@@ -110,6 +119,7 @@ export default {
                 date: '',
                 customer_name: '',
                 customer_password: '',
+                customer_id: ''
             },
             rules: {
 
@@ -195,5 +205,52 @@ export default {
 
 .drawerStyle {
     color: #dc8917;
+}
+
+.el-button--primary {
+    background-color: #f3eee7;
+    border-color: #000000;
+    color: black;
+}
+
+.editButton {
+    margin-top: 0px;
+    font-family: 'nano';
+    height: 30px;
+    font-size: 15px;
+    line-height: 0.4;
+    background-color: #f1e4a6;
+    border: 1px solid rgb(238, 213, 184);
+    text-align: center;
+    color: black;
+
+
+    span {
+        font-family: 'nano';
+        color: white;
+        font-size: 14px;
+        letter-spacing: 1px;
+    }
+}
+
+.el-button--danger {
+    background-color: #f15973;
+    border-color: #ec9bad;
+    font-family: 'nano';
+    font-size: 15px;
+}
+
+.el-button--danger:hover {
+    background-color: #e9173a;
+
+}
+::v-deep .el-table tbody tr:hover>td {
+    background-color: #8dfae1;
+    opacity: 70%;
+}
+
+
+.el-button--primary:hover {
+    background-color: #ffffff;
 }
 </style>

@@ -1,7 +1,7 @@
 drop table if exists cho_order;
 CREATE TABLE cho_order
 (
-    order_id       varchar(30) primary key,
+    order_id       varchar(64) primary key,
     user_id        bigint(20)                                                   not null,
     type_id        bigint(20)                                                   not null,
     room_id        bigint(20)                                                   not null, -- room
@@ -25,7 +25,7 @@ CREATE TABLE cho_order
 drop table if exists cho_order_info;
 CREATE TABLE cho_order_info
 (
-    order_id      varchar(30)                                                  not null,
+    order_id      varchar(64)                                                  not null,
     tenant_name   varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
     identity_card char(18)                                                     not null,
     telephone     varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT NULL
@@ -38,7 +38,7 @@ CREATE TABLE cho_order_info
 drop table if exists cho_order_operation;
 CREATE TABLE cho_order_operation
 (
-    order_id       varchar(30) not null,
+    order_id       varchar(64) not null,
     operation      int         not null, -- 0 booking, 1 payed, 2 checkIn, 3 leave, 4 cancel
     operation_time datetime    not null,
     primary key (order_id, operation)
@@ -51,7 +51,7 @@ CREATE TABLE cho_order_operation
 drop table if exists cho_order_comments;
 CREATE TABLE cho_order_comments
 (
-    order_id     varchar(30) not null,
+    order_id     varchar(64) not null,
     comments     text CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci,
     comment_time datetime    not null,
     picture      varchar(1000),
@@ -65,7 +65,7 @@ CREATE TABLE cho_order_comments
 drop table if exists cho_income_refund;
 CREATE TABLE cho_income_refund
 (
-    order_id varchar(30)    not null,
+    order_id varchar(64)    not null,
     income   decimal(18, 2) not null, -- positive means income, negative means outcome
     time     datetime       not null
 ) ENGINE = InnoDB
@@ -74,11 +74,11 @@ CREATE TABLE cho_income_refund
   COLLATE = utf8mb4_general_ci
   ROW_FORMAT = DYNAMIC;
 
-drop table if exists chb_booking;
+drop table if exists cho_booking;
 CREATE TABLE cho_booking
 (                                     -- this table will be updated every day, if end_time passed, the item will be deleted
     user_id     bigint(20)  not null,
-    order_id    varchar(30) not null,
+    order_id    varchar(64) not null,
     hotel_id    bigint(20)  not null,
     type_id     bigint(20)  not null,
     room_id     bigint(20)  not null, -- room_id

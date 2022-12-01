@@ -1,5 +1,6 @@
 package sustech.hotel.order.controller;
 
+import java.sql.Timestamp;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -9,13 +10,22 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import sustech.hotel.exception.ExceptionCodeEnum;
+import sustech.hotel.exception.order.OrderNotExistException;
+import sustech.hotel.exception.order.OrderNotFinishException;
 import sustech.hotel.model.vo.order.CommentVo;
+import sustech.hotel.order.dao.BookingDao;
+import sustech.hotel.order.dao.OrderCommentsDao;
+import sustech.hotel.order.dao.OrderDao;
 import sustech.hotel.order.entity.OrderCommentsEntity;
 import sustech.hotel.order.entity.OrderEntity;
+import sustech.hotel.order.entity.OrderOperationEntity;
 import sustech.hotel.order.feign.RoomFeignService;
+import sustech.hotel.order.service.BookingService;
 import sustech.hotel.order.service.OrderCommentsService;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
+import sustech.hotel.order.service.OrderOperationService;
 import sustech.hotel.order.service.OrderService;
 
 
@@ -29,6 +39,34 @@ public class OrderCommentsController {
     @Autowired
     private OrderCommentsService orderCommentsService;
 
+    @Autowired
+    private OrderDao orderDao;
+
+    @Autowired
+    private OrderOperationService orderOperationService;
+
+    @Autowired
+    private BookingDao bookingDao;
+
+    @RequestMapping("/commentOrder")
+    public JsonResult<Void> commentOrder(@RequestBody CommentVo comment) {
+        OrderEntity orderEntity = orderService.getById(comment.getOrderId());
+        if (orderEntity == null)
+            throw new OrderNotExistException(ExceptionCodeEnum.ORDER_NOT_EXIST_EXCEPTION);
+        if (orderEntity.getOrderStatus() != 3)
+            throw new OrderNotFinishException(ExceptionCodeEnum.ORDER_NOT_FINISH_EXCEPTION);
+        OrderCommentsEntity orderCommentsEntity = new OrderCommentsEntity();
+        BeanUtils.copyProperties(comment, orderCommentsEntity);
+        orderCommentsService.save(orderCommentsEntity);
+        orderDao.updateOrderStatus(comment.getOrderId(), 4);
+        OrderOperationEntity orderOperationEntity = new OrderOperationEntity();
+        orderOperationEntity.setOperationTime(new Timestamp(System.currentTimeMillis()));
+        orderOperationEntity.setOrderId(comment.getOrderId());
+        orderOperationEntity.setOperation(4);
+        orderOperationService.save(orderOperationEntity);
+        bookingDao.deleteByOrderId(comment.getOrderId());
+        return new JsonResult<>();
+    }
 
     @ResponseBody
     @RequestMapping("/getComments")

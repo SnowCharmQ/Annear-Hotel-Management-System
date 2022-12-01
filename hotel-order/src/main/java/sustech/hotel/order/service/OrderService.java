@@ -15,7 +15,7 @@ public interface OrderService extends IService<OrderEntity> {
 
     List<OrderTo> queryOrderByUser(Long userId);
 
-    void placeOrder(OrderEntity request, List<String> guestInfo, String orderToken);
+    String placeOrder(OrderEntity request, List<String> guestInfo, String orderToken);
 
     Long checkUserID(String token);
 

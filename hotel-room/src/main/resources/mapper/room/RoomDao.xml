@@ -17,4 +17,8 @@
             #{item}
         </foreach>
     </select>
+
+    <select id="selectRoomByHotelIdAndLayoutId" resultType="sustech.hotel.model.vo.hotel.BookingRoomInfoVo">
+        select * from chr_room join chr_room_type crt on chr_room.type_id = crt.type_id where crt.hotel_id = #{hotel_id} and layout_id = #{layout_id}
+    </select>
 </mapper>

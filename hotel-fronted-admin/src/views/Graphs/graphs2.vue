@@ -18,7 +18,6 @@ export default {
   mounted() {
     let params = {'hotelId': 1};
     this.$get(baseUrl + '/order/order/analysis/getLastYearRoomTypeOrderNumber', params).then(data => {
-      console.log(data)
       this.xdata = data.data.xdata
       this.ydata = data.data.ydata
       this.initCharts()

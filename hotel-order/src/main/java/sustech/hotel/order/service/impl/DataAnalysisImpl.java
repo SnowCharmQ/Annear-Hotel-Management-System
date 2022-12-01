@@ -163,15 +163,4 @@ public class DataAnalysisImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         return new DataAnalysisVo(xdata, ydata);
     }
 
-
-    public static void main(String[] args) {
-        SimpleDateFormat ft = new SimpleDateFormat("yyyy-MM-dd");
-        Calendar c = Calendar.getInstance();
-        c.add(Calendar.DATE, -31);
-        Date start = c.getTime();
-        Date end = new Date();
-        c.setTime(end);
-        System.out.println(end);
-        System.out.println(c.get(Calendar.DATE));
-    }
 }

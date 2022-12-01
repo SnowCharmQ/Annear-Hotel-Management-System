@@ -7,6 +7,7 @@ import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.*;
 
 import sustech.hotel.common.utils.JwtHelper;
@@ -14,10 +15,12 @@ import sustech.hotel.exception.ExceptionCodeEnum;
 import sustech.hotel.exception.order.UserNotLoginException;
 import sustech.hotel.member.entity.CollectHotelEntity;
 import sustech.hotel.member.entity.UserInfoEntity;
+import sustech.hotel.member.feign.RoomFeignService;
 import sustech.hotel.member.service.CollectHotelService;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.member.service.UserInfoService;
+import sustech.hotel.model.vo.hotel.HotelVo;
 
 
 @RestController
@@ -29,6 +32,9 @@ public class CollectHotelController {
 
     @Autowired
     private UserInfoService userInfoService;
+
+    @Autowired
+    private RoomFeignService roomFeignService;
 
     /**
      * 根据传入的参数map进行分页查询
@@ -71,9 +77,9 @@ public class CollectHotelController {
     @RequestMapping("/collectHotel")
     public JsonResult<Void> collectHotelByUser(@RequestParam("token") String token, @RequestParam("hotelId") Long hotelId) {
         Long userId;
-        try{
+        try {
             userId = userInfoService.getUserId(token);
-        } catch (UserNotLoginException e){
+        } catch (UserNotLoginException e) {
             return new JsonResult<>(e);
         }
         List<CollectHotelEntity> list = collectHotelService.list(new QueryWrapper<CollectHotelEntity>()
@@ -88,9 +94,9 @@ public class CollectHotelController {
     @RequestMapping("/cancelCollectHotel")
     public JsonResult<Void> cancelCollectHotelByUser(@RequestParam("token") String token, @RequestParam("hotelId") Long hotelId) {
         Long userId;
-        try{
+        try {
             userId = userInfoService.getUserId(token);
-        } catch (UserNotLoginException e){
+        } catch (UserNotLoginException e) {
             return new JsonResult<>(e);
         }
         collectHotelService.cancelCollectHotel(userId, hotelId);
@@ -100,5 +106,11 @@ public class CollectHotelController {
     @RequestMapping("/showCollectedHotel")
     public JsonResult<List<Long>> showCollectedHotel(@RequestParam("userId") Long userId) {
         return new JsonResult<>(collectHotelService.showCollectedHotel(userId));
+    }
+
+    @RequestMapping("/collectedList")
+    public JsonResult<List<HotelVo>> getCollectedList(@RequestParam("userId") Long userId) {
+        List<Long> hotelList = collectHotelService.showCollectedHotel(userId);
+        return new JsonResult<>(roomFeignService.getCollectedList(hotelList).getData());
     }
 }

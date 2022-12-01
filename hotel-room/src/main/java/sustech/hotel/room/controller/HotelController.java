@@ -8,6 +8,7 @@ import sustech.hotel.common.utils.JsonResult;
 import sustech.hotel.common.utils.PageUtils;
 import sustech.hotel.exception.BaseException;
 import sustech.hotel.model.vo.hotel.*;
+import sustech.hotel.room.dao.HotelDao;
 import sustech.hotel.room.entity.HotelEntity;
 import sustech.hotel.room.entity.RoomTypeEntity;
 import sustech.hotel.room.service.HotelService;
@@ -25,7 +26,7 @@ public class HotelController {
     private HotelService hotelService;
 
     @Autowired
-    private RoomTypeService roomTypeService;
+    private HotelDao hotelDao;
 
 
     @ResponseBody
@@ -118,13 +119,13 @@ public class HotelController {
 
     @ResponseBody
     @GetMapping("/getMapInfo")
-    public JsonResult<List<HotelMapVo>> getMapInfo(){
+    public JsonResult<List<HotelMapVo>> getMapInfo() {
         return new JsonResult<>(hotelService.getMapInfo());
     }
 
     @ResponseBody
     @GetMapping("/initAdminRoom")
-    public JsonResult<AdminRoomVo> getHotelByName(String name){
+    public JsonResult<AdminRoomVo> getHotelByName(String name) {
         AdminRoomVo vo = new AdminRoomVo();
         HotelEntity hotel = hotelService.getOne(new QueryWrapper<HotelEntity>().eq("hotel_name", name));
         Long hotelId = hotel.getHotelId();
@@ -135,5 +136,13 @@ public class HotelController {
         vo.setFloors(hotel.getFloors());
         vo.setTypeNames(strings);
         return new JsonResult<>(vo);
+    }
+
+    @PostMapping("/collectedList")
+    public JsonResult<List<HotelVo>> getCollectedList(@RequestBody List<Long> hotelId) {
+        List<HotelVo> list = new ArrayList<>();
+        for (Long id : hotelId)
+            list.add(hotelDao.selectByHotelId(id));
+        return new JsonResult<>(list);
     }
 }

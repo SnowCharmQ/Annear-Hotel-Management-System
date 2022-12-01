@@ -1,6 +1,7 @@
 package sustech.hotel.room.controller;
 
 import java.math.BigDecimal;
+import java.sql.Date;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -11,6 +12,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import sustech.hotel.common.utils.DateConverter;
+import sustech.hotel.exception.ExceptionCodeEnum;
+import sustech.hotel.exception.others.InvalidDateException;
 import sustech.hotel.model.to.hotel.AvailableRoomTypeTo;
 import sustech.hotel.model.to.hotel.CommentInfoTo;
 import sustech.hotel.model.vo.hotel.RoomTypeSearchVo;
@@ -44,6 +48,11 @@ public class RoomTypeController {
                                                @RequestParam("breakfast") Boolean breakfast, @RequestParam("windows") Boolean windows,
                                                @RequestParam("television") Boolean television, @RequestParam("bathtub") Boolean bathtub,
                                                @RequestParam("thermos") Boolean thermos) {
+        Date start = DateConverter.convertStringToDate(startDate);
+        Date end = DateConverter.convertStringToDate(endDate);
+        Date cur = DateConverter.currentDate();
+        if (cur.getTime() > start.getTime() || start.getTime() >= end.getTime())
+            return new JsonResult<>(new InvalidDateException(ExceptionCodeEnum.INVALID_DATE_EXCEPTION));
         RoomTypeSearchVo vo = roomTypeService.search(hotelId, guests, startDate, endDate, sortBy, reversed, lowest, highest, breakfast, windows, television, bathtub, thermos);
         return new JsonResult<>(vo);
     }
@@ -102,22 +111,22 @@ public class RoomTypeController {
     }
 
     @PostMapping("/addRoomTYpe")
-    void addRoomType(@RequestBody RoomTypeEntity entity){
+    void addRoomType(@RequestBody RoomTypeEntity entity) {
         this.roomTypeService.addRoomType(entity);
     }
 
     @PostMapping("/deleteType")
-    void deleteType(Long typeId){
+    void deleteType(Long typeId) {
         this.roomTypeService.deleteType(typeId);
     }
 
     @PostMapping("/alterType")
-    void alterType(@RequestBody RoomTypeEntity roomType){
+    void alterType(@RequestBody RoomTypeEntity roomType) {
         this.roomTypeService.alterType(roomType);
     }
 
     @GetMapping("/getRoomType")
-    public JsonResult<List<RoomTypeEntity>> getRoomType(String hotel){
+    public JsonResult<List<RoomTypeEntity>> getRoomType(String hotel) {
         return new JsonResult<>(this.roomTypeService.getRoomType(hotel));
     }
 }

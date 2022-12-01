@@ -449,9 +449,13 @@ export default {
           thermos: this.checked7
         }
       }).then(data => {
-        let obj = data.data.data;
-        this.roomTypes = obj.roomTypes;
-        this.roomTypeImages = obj.roomTypeImages;
+        if (data.data.state === 200){
+          let obj = data.data.data;
+          this.roomTypes = obj.roomTypes;
+          this.roomTypeImages = obj.roomTypeImages;
+        } else {
+          this.$message.error(data.data.message);
+        }
       }).catch(err => {
         this.$message.error("Network Error");
       })

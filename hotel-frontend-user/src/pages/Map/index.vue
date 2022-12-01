@@ -123,8 +123,8 @@ export default {
           name: hotel.hotelName,
           addr: hotel.province + ', ' + hotel.city + ', ' + hotel.district + ', ' + hotel.detailAddress,
           price: hotel.price,
-          lng: hotel.latitude,
-          lat: hotel.longitude,
+          lng: hotel.longitude,
+          lat: hotel.latitude,
           img: hotel.picture
         }
         this.hotelList.push(item)

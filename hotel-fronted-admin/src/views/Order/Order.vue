@@ -32,7 +32,7 @@
       <el-date-picker type="date" placeholder="check-out" v-model="form.date2" style="width: 15%;">
       </el-date-picker>
       <div class="addRoom">
-        <el-button type="primary" size="mini" class="addRoomButton" @click="getOrderList">Add Room</el-button>
+        <el-button type="primary" size="mini" class="addRoomButton" @click="getOrderList">Search</el-button>
       </div>
       <div class="addRoom">
         <el-button type="primary" size="mini" class="addRoomButton" @click="clearSelected">clear</el-button>
@@ -44,7 +44,7 @@
               :header-cell-style="{ color: 'black', fontSize: '20px', fontFamily: 'nano', background: '#f3eee7', textAlign: 'center', borderBottomColor: 'black' }"
               :row-style="setRowStyle" stripe fit highlight-current-row border empty-text="No Room Added">
 
-      <el-table-column label="orderID" width="100">
+      <el-table-column label="orderID" width="50">
         <template slot-scope="scope">
           {{ scope.row.orderID }}
         </template>

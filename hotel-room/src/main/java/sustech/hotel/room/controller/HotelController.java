@@ -17,13 +17,15 @@ import sustech.hotel.room.service.RoomTypeService;
 import java.math.BigDecimal;
 import java.util.*;
 
-
 @RestController
 @RequestMapping("room/hotel")
 public class HotelController {
 
     @Autowired
     private HotelService hotelService;
+
+    @Autowired
+    private RoomTypeService roomTypeService;
 
     @Autowired
     private HotelDao hotelDao;

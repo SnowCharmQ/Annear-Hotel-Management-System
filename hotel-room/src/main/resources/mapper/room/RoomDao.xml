@@ -19,7 +19,7 @@
     </select>
 
     <select id="selectRoomByHotelIdAndLayoutId" resultType="sustech.hotel.model.vo.hotel.BookingRoomInfoVo">
-        select *, crtp.picture_path, ch.floors as picture
+        select *, crtp.picture_path as picture, ch.floors
         from chr_room as cr
                  join chr_room_type as crt on cr.type_id = crt.type_id
                  join chr_room_type_picture crtp on cr.type_id = crtp.type_id

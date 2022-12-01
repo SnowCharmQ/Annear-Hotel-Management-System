@@ -72,6 +72,7 @@
           <el-input placeholder="Address" v-model="address"/>
         </el-col>
         <el-button @click="alter_info()" class="submit-btn">Alter Info</el-button>
+        <el-button @click="view_orders()" class="submit-btn">View Orders</el-button>
       </el-col>
 
     </el-row>
@@ -243,6 +244,9 @@ export default {
 
     }
   }, methods: {
+    view_orders() {
+      this.$router.push('orderList');
+    },
     alter_info() {
       this.$http({
         url: this.$http.adornUrl('/member/member/userinfo/alterUserInfo'),

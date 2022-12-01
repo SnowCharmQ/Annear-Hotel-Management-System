@@ -192,7 +192,7 @@ public class OrderController {
     @ResponseBody
     @GetMapping("/getUserOrders")
     public JsonResult<PageUtils> getUserOrders(@RequestParam Map<String, Object> params) {
-        try{
+        try {
             PageUtils pageUtils = orderService.getUserOrders(params);
             return new JsonResult<>(pageUtils);
         } catch (BaseException e) {

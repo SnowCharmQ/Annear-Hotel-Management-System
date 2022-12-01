@@ -121,4 +121,9 @@ public class HotelController {
     public JsonResult<List<HotelMapVo>> getMapInfo(){
         return new JsonResult<>(hotelService.getMapInfo());
     }
+
+    @GetMapping("/getHotelByName")
+    public JsonResult<HotelEntity> getHotelByName(String name){
+        return new JsonResult<>(this.hotelService.getHotelByName(name));
+    }
 }

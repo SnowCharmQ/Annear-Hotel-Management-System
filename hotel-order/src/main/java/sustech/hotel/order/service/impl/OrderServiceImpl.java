@@ -82,14 +82,18 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
         int status = -1;
-        int type = -1;
+        int roomId = -1;
         Date date1 = null;
         Date date2 = null;
+        System.out.println("roomId");
+        System.out.println(params.get("roomId"));
         if (params.get("status") != null) {
             status = Integer.parseInt(params.get("status").toString());
         }
-        if (params.get("type") != null) {
-            type = Integer.parseInt(params.get("type").toString());
+        if (params.get("roomId") != null) {
+            System.out.println("roomId");
+            System.out.println(params.get("roomId"));
+            roomId = Integer.parseInt(params.get("roomId").toString());
         }
         if (params.get("date1") != null && !params.get("date1").equals("0")) {
             date1 = new Date(Long.parseLong(params.get("date1").toString()));
@@ -104,9 +108,9 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
             int finalStatus = status;
             entities = entities.stream().filter(entitie -> entitie.getOrderStatus() == finalStatus).toList();
         }
-        if (type!= -1){
-            int finalType = type;
-            entities = entities.stream().filter(entitie -> entitie.getTypeId() == finalType).toList();
+        if (roomId!= -1){
+            int finalType = roomId;
+            entities = entities.stream().filter(entitie -> entitie.getRoomId() == finalType).toList();
         }
         if (date1!=null){
             Date finalDate = date1;

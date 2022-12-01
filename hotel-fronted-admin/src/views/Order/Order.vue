@@ -4,19 +4,19 @@
     <div class="addRoom">
       <i class="el-icon-office-building"></i>
       <!-- <el-button type="primary" size="mini"  class="addRoomButton" @click="addClick">Add Room</el-button> -->
-<!--      <el-select v-model="form.hotel" placeholder="Shanghai Hotel" class="selection">-->
-<!--        <el-option label="Shanghai Hotel" value="Shanghai Hotel"></el-option>-->
-<!--        <el-option label="Beijing Hotel" value="Beijing Hotel"></el-option>-->
-<!--        <el-option label="Shenzhen Hotel" value="Shenzhen Hotel"></el-option>-->
-<!--      </el-select>-->
+      <!--      <el-select v-model="form.hotel" placeholder="Shanghai Hotel" class="selection">-->
+      <!--        <el-option label="Shanghai Hotel" value="Shanghai Hotel"></el-option>-->
+      <!--        <el-option label="Beijing Hotel" value="Beijing Hotel"></el-option>-->
+      <!--        <el-option label="Shenzhen Hotel" value="Shenzhen Hotel"></el-option>-->
+      <!--      </el-select>-->
       <i class="el-icon-s-home"></i>
       <!-- <el-button type="primary" size="mini"  class="addRoomButton" @click="addClick">Add Room</el-button> -->
-      <el-select v-model="form.type" placeholder="King Bed Suite" class="selection">
-        <el-option v-for="(item) in typeList"
-                   :label="item.label"
-                   :value='item.value'>
-        </el-option>
-      </el-select>
+      <el-input v-model="form.roomId" placeholder="King Bed Suite" class="selection">
+        <!--        <el-option v-for="(item) in typeList"-->
+        <!--                   :label="item.label"-->
+        <!--                   :value='item.value'>-->
+        <!--        </el-option>-->
+      </el-input>
       <i class="el-icon-data-line"></i>
       <el-select v-model="form.status" placeholder="Finished" class="selection">
         <el-option label="Finished" value='5'></el-option>
@@ -33,6 +33,9 @@
       </el-date-picker>
       <div class="addRoom">
         <el-button type="primary" size="mini" class="addRoomButton" @click="getOrderList">Add Room</el-button>
+      </div>
+      <div class="addRoom">
+        <el-button type="primary" size="mini" class="addRoomButton" @click="clearSelected">clear</el-button>
       </div>
     </div>
     <!-- 表格区域 -->
@@ -55,10 +58,10 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="room type" width="250">
+      <el-table-column label="room id" width="250">
         <template slot-scope="scope">
 
-          {{ scope.row.type}}
+          {{ scope.row.roomId }}
 
         </template>
       </el-table-column>
@@ -120,52 +123,40 @@
 export default {
   data() {
     return {
+      hotelId: '',
       tableData: [],
       pageIndex: 1,
       pageSize: 8,
       count: 5,
       form: {
-        hotel: null,
-        type: null,
+        roomId: null,
         status: null,
         date1: null,
         date2: null,
       },
-      typeList: []
     }
   },
   created() {
-
     let params = {'token': sessionStorage.getItem('token')};
     this.$get(this.$baseUrl + '/auth/getUsernameByToken', params).then(data => {
       let resp = data.data;
       console.log(resp)
-      this.getTypeList(resp)
-    })
-
-
-  },
-  methods: {
-    getTypeList(hotel) {
-      let params = {'hotel': hotel};
-      this.$get(this.$baseUrl + '/room/room/roomtype/getRoomType', params).then(data => {
+      let para = {'name': resp}
+      this.$get(this.$baseUrl + '/room/room/hotel/getHotelByName', para).then(data => {
         let resp = data.data
         console.log(resp)
-        for (let i = 0; i < resp.length; i++) {
-          let item = resp[i]
-          this.typeList.push({
-            label: item.typeName,
-            value: item.typeId
-          })
-          this.form.hotel = item.hotelId
-        }
-        if (resp.length > 0) {
-          this.getOrderList()
-        }
-        console.log(this.form.hotel)
-      }).catch(err => {
-        console.log('network err')
+        this.hotelId = resp.hotelId
+        console.log(this.hotelId)
+        this.getOrderList()
       })
+    })
+  },
+  methods: {
+    clearSelected() {
+      this.form.roomId = null
+      this.form.status = null
+      this.form.date2 = null
+      this.form.date1 = null
     },
     currentChange(pageIndex) {
       this.pageIndex = pageIndex;
@@ -179,8 +170,8 @@ export default {
       Object.assign(params, {
         page: this.pageIndex,
         limit: this.pageSize,
-        hotel: this.form.hotel,
-        type: this.form.type,
+        hotel: this.hotelId,
+        roomId: this.form.roomId,
         status: this.form.status,
         date1: tempDate1.getTime(),
         date2: tempDate2.getTime()
@@ -199,7 +190,7 @@ export default {
             date1: item.startDate,
             date2: item.endDate,
             score: item.score,
-            type: item.typeId,
+            roomId: item.roomId,
             status: item.orderStatus,
             name: item.contactName,
             phone: item.contactPhone,

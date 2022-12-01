@@ -203,14 +203,11 @@ public class RoomTypeServiceImpl extends ServiceImpl<RoomTypeDao, RoomTypeEntity
         RoomTypeEntity entity = new RoomTypeEntity();
         BeanUtils.copyProperties(entityVo, entity);
         this.baseMapper.insert(entity);
-        System.out.println(entity.getTypeId());
         return entity.getTypeId();
     }
 
     @Override
     public void deleteType(Long typeId) {
-        System.out.println("delete");
-        System.out.println(typeId);
         if (roomService.typeExist(typeId)) {
             throw new RoomConflictsException(ExceptionCodeEnum.ROOM_CONFLICTS_EXCEPTION);
         } else {
@@ -220,8 +217,6 @@ public class RoomTypeServiceImpl extends ServiceImpl<RoomTypeDao, RoomTypeEntity
 
     @Override
     public void alterType(RoomTypeEntity roomType) {
-        System.out.println("update");
-        System.out.println(roomType.toString());
         this.updateById(roomType);
     }
 }

@@ -47,7 +47,8 @@ public class JwtHelper {
         if (StringUtils.isEmpty(token)) return null;
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(tokenSignKey).parseClaimsJws(token);
         Claims claims = claimsJws.getBody();
-        return (Long) claims.get("userId");
+        Integer integer = (Integer) claims.get("userId");
+        return integer.longValue();
     }
 
     /**

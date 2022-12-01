@@ -180,13 +180,40 @@ public class RoomController {
         room.setFloorPlanId(floorPlan);
         room.setHotelId(hotelId);
         room.setTypeId(type.getTypeId());
+        this.save(room);
         return new JsonResult<>();
     }
 
     @ResponseBody
     @GetMapping("/editRoom")
     public JsonResult<Void> editRoom(@RequestParam("hotelId") Long hotelId, @RequestParam("roomNumber") Long roomNumber, @RequestParam("roomType") String roomType,
-                                     @RequestParam("floor") Long floor, @RequestParam("floorPlan") Long floorPlan) {
-        return null;
+                                     @RequestParam("floor") Long floor, @RequestParam("floorPlan") Long floorPlan, @RequestParam("oldFloor") Long oldFloor,
+                                     @RequestParam("oldFloorPlan") Long oldFloorPlan) {
+        LayoutEntity layout = layoutService.getOne(new QueryWrapper<LayoutEntity>().and(o -> o.eq("hotel_id", hotelId).eq("floor", oldFloor)));
+        Long layoutId = layout.getLayoutId();
+        RoomEntity originRoom = roomService.getOne(new QueryWrapper<RoomEntity>()
+                .and(o -> o.eq("hotel_id", hotelId)
+                        .eq("layout_id", layoutId)
+                        .eq("floor_plan_id", oldFloorPlan)));
+        RoomEntity byRoomNumber = roomService.getOne(new QueryWrapper<RoomEntity>().and(o -> o.eq("room_number", roomNumber).eq("hotel_id", hotelId)));
+        if (byRoomNumber != null && !originRoom.equals(byRoomNumber)) {
+            return new JsonResult<>(new RoomExistedException(ExceptionCodeEnum.ROOM_EXISTED_EXCEPTION));
+        }
+        LayoutEntity newLayout = layoutService.getOne(new QueryWrapper<LayoutEntity>().and(o -> o.eq("hotel_id", hotelId).eq("floor", floor)));
+        Long newLayoutId = newLayout.getLayoutId();
+        RoomEntity byLocation = roomService.getOne(new QueryWrapper<RoomEntity>()
+                .and(o -> o.eq("hotel_id", hotelId)
+                        .eq("layout_id", newLayoutId)
+                        .eq("floor_plan_id", floorPlan)));
+        if (byLocation != null && !originRoom.equals(byLocation)) {
+            return new JsonResult<>(new RoomExistedException(ExceptionCodeEnum.ROOM_EXISTED_EXCEPTION));
+        }
+        RoomTypeEntity type = roomTypeService.getOne(new QueryWrapper<RoomTypeEntity>().and(o -> o.eq("type_name", roomType).eq("hotel_id", hotelId)));
+        originRoom.setRoomNumber(roomNumber);
+        originRoom.setTypeId(type.getTypeId());
+        originRoom.setLayoutId(newLayoutId);
+        originRoom.setFloorPlanId(floorPlan);
+        this.roomService.updateById(originRoom);
+        return new JsonResult<>();
     }
 }

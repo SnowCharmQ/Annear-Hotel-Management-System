@@ -51,7 +51,7 @@ create table chr_room_type
 drop table if exists chr_room;
 create table chr_room
 (
-    room_id       bigint(20) primary key,
+    room_id       bigint(20) primary key auto_increment,
     hotel_id      bigint(20) not null,
     room_number   bigint(20) not null,
     type_id       bigint(20) not null,

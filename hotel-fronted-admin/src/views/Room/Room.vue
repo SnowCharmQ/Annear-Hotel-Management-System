@@ -47,18 +47,36 @@
       </el-table-column>
     </el-table>
     <el-dialog :visible.async="dialogFormVisible" :beforeClose="handleDialogFormClose">
-      <el-form :rules="rules" label-width="100px">
+      <el-form ref="form2" :model="form2" :rules="rules" label-width="100px">
         <el-form-item>
           <div class="form_header">
             <h1>Edit Room</h1>
           </div>
         </el-form-item>
+        <el-form-item label="Room No" prop="room_num">
+          <el-input style="width: 280px" v-model="rn"></el-input>
+        </el-form-item>
+        <el-form-item label="Type" prop="type">
+          <el-select style="width: 280px" v-model="rt" placeholder="Choose The Room Type">
+            <el-option v-for="roomType in roomTypes" :value="roomType"></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="Floor" prop="floor">
+          <el-select style="width: 280px" v-model="f" placeholder="Choose The Floor">
+            <el-option v-for="floor in floors" :value="floor"></el-option>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item label="Floor Plan" prop="floor">
+          <el-select style="width: 280px" v-model="form2.floor_plan" placeholder="Choose The Floor Plan Index">
+            <el-option v-for="f in 15" :value="f"></el-option>
+          </el-select>
+        </el-form-item>
 
         <el-form-item>
           <div class="button_div">
-            <el-button type="primary" size="small" @click="editForm()">Edit</el-button>
-            <el-button size="small" class="normal_button" @click="resetForm()">Cancel
-            </el-button>
+            <el-button type="primary" size="small" @click="editForm('form2')">Edit</el-button>
           </div>
         </el-form-item>
 
@@ -150,9 +168,14 @@ export default {
       // 是否打开抽屉
       drawer: false,
       form: {roomNumber: '', roomType: '', floor: '', floorPlan: ''},
+      form2: {roomNumber: '', roomType: '', floor: '', floorPlan: '', index: ''},
       roomTypes: [],
       floors: 0,
-      roomNumber: ''
+      roomNumber: '',
+      rn: 0,
+      rt: 0,
+      f: 0,
+      fp: 0
     }
   },
   created() {
@@ -165,7 +188,7 @@ export default {
         this.hotelId = resp.hotelId
         this.roomTypes = resp.typeNames;
         this.floors = resp.floors;
-        // this.getTableData();
+        this.getTableData();
       })
     })
   },
@@ -181,7 +204,15 @@ export default {
       this.tableData = []
       this.$get(this.$baseUrl + '/room/room/room/list', params).then(data => {
         let resp = data.data.list
-
+        for (let i = 0; i < resp.length; i++) {
+          let item = resp[i]
+          this.tableData.push({
+            room_num: item.roomNumber,
+            room_type: item.typeName,
+            floor: item.layoutId,
+            floor_plan: item.floorPlanId
+          })
+        }
       }).catch(err => {
         this.$message.error("Network Error");
       })
@@ -191,12 +222,17 @@ export default {
     },
     editClass(index) {
 
-      // this.form2.room_num = this.tableData[index].room_num
-      // this.form2.room_type = this.tableData[index].room_type
-      // this.form2.floor = this.tableData[index].floor
-      // this.form2.floor_plan = this.tableData[index].floor_plan
-      //
-      // this.form2.index = index
+      this.form2.room_num = this.tableData[index].room_num
+      this.form2.room_type = this.tableData[index].room_type
+      this.form2.floor = this.tableData[index].floor
+      this.form2.floor_plan = this.tableData[index].floor_plan
+
+      this.rn = this.form2.room_num;
+      this.rt = this.form2.room_type;
+      this.f = this.form2.floor;
+      this.fp = this.form2.floor_plan;
+
+      this.form2.index = index
 
       this.dialogFormVisible = true
     },
@@ -209,21 +245,37 @@ export default {
     editForm(formName) {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
-
-          this.tableData[this.form2.index] = JSON.parse(JSON.stringify(this.form2))
-          // 为了更新表单
-          this.num = Math.random();
+          let params = {}
+          Object.assign(params, {
+            hotelId: this.hotelId,
+            roomNumber: this.rn,
+            roomType: this.rt,
+            floor: this.f,
+            floorPlan: this.fp,
+            oldFloor: this.tableData[this.form2.index].floor,
+            oldFloorPlan: this.tableData[this.form2.index].floor_plan
+          })
+          this.$get(this.$baseUrl + '/room/room/room/editRoom', params).then(data => {
+            if (data.state === 200) {
+              this.$message.success("Successfully Edited");
+              location.reload();
+            } else {
+              this.$message.error(data.message);
+            }
+          }).catch(err => {
+            this.$message.error("Network Error");
+          })
+          this.dialogFormVisible = false;
         } else {
+          this.$message.error("Wrong Input");
           return false;
         }
-        this.dialogFormVisible = false;
       });
     },
     handleDialogFormClose() {
 
       // this.$refs['form2'].resetFields();
       this.dialogFormVisible = false;
-
     },
     currentChange(pageIndex) {
       this.pageIndex = pageIndex;
@@ -240,11 +292,17 @@ export default {
       this.$refs[formName].validate(async (valid) => {
         if (valid) {
           this.$get(this.$baseUrl + '/room/room/room/addRoom', params).then(data => {
-            console.log(data);
+            if (data.state === 200) {
+              this.$message.success("Successfully Added");
+              location.reload();
+            } else {
+              this.$message.error(data.message);
+            }
           }).catch(err => {
             this.$message.error("Network Error");
           })
         } else {
+          this.$message.error("Wrong Input");
           return false;
         }
         this.$refs[formName].resetFields();
@@ -256,27 +314,6 @@ export default {
       return 'color:black;'
       // }
     },
-    async resetForm(formName) {
-      this.$refs[formName].resetFields();
-      this.dialogFormVisible = false;
-    },
-    // 上传成功
-    handleAvatarSuccess(res, file) {
-      this.imageUrl = URL.createObjectURL(file.raw);
-    },
-    beforeAvatarUpload(file) {
-      const isJPG = file.type === 'image/jpeg';
-      const isLt2M = file.size / 1024 / 1024 < 2;
-
-      if (!isJPG) {
-        this.$message.error('Avatar picture must be JPG format!');
-      }
-      if (!isLt2M) {
-        this.$message.error('Avatar picture size can not exceed 2MB!');
-      }
-      return isJPG && isLt2M;
-    }
-
   }
 }
 </script>

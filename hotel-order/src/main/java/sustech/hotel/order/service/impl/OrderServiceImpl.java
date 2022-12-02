@@ -236,7 +236,8 @@ public class OrderServiceImpl extends ServiceImpl<OrderDao, OrderEntity> impleme
         JsonResult<RoomTypeTo> roomType = roomFeignService.getRoomTypeByID(room.getData().getTypeId());
         if (guestInfo.size() > roomType.getData().getUpperLimit())
             throw new GuestNumberExceedLimitException(ExceptionCodeEnum.GUEST_NUMBER_EXCEED_LIMIT_EXCEPTION);
-        request.setOriginMoney(roomType.getData().getPrice());
+        long day = (request.getEndDate().getTime() - request.getStartDate().getTime())/86400000;
+        request.setOriginMoney(roomType.getData().getPrice().multiply(new BigDecimal(day)));
         // TODO: 2022/11/27 Get the After Discount Money
         request.setAfterDiscount(request.getOriginMoney());
         this.baseMapper.insert(request);

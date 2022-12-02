@@ -33,4 +33,6 @@ public interface OrderService extends IService<OrderEntity> {
     PageUtils getUserOrders(Map<String, Object> params);
 
     void sendMail(String orderId, String to, Date startDate, Date endDate);
+
+//    void modifyOrder(String orderId, String phone, String )
 }
